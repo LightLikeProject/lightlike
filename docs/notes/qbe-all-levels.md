@@ -404,3 +404,50 @@ Correction: at the pause (07e2c0d) the file did not compile (the 16 GB build gua
 (`L_{2r-2-x} = -L_x` for the limit term `limTerm`, all three x-triads above the level). Cause of the blow-up: omega calls
 with many `/2` atoms and truncated subtractions in context; the cure is small arithmetic lemmas and half-sums
 generalized to variables. Remaining: the term-level limit, the pair sum, the RHS limit, the assembly.
+
+## L5 dictionary: the pentagon of `klCoef` as `GenBE` (27 Nov, oscillatory; derived on paper, MEASURED)
+
+Convention: `q = e^{iθ}` (not `e^{iθ/2}`), so `qb q n = sin(nθ)/sin θ = qnG θ n` and `qfac q n = qfG θ n`. Write
+`F^{abc}_D[i,j] = klCoef q a b c e d f d'` with `i = a+b-2e`, `D = i+c-2d`, `j = b+c-2f`, and `RS(j₁…j₆)` for the
+generic Racah sum (`racahG θ`), `Δ² = delta2G θ`, `s(x,y,z) = (x+y+z)/2`.
+
+1. `tetKL q a b c D i j = tetPre · Σ_z tetTerm` is `RS(a,b,i,c,D,j)` (triads `(a,b,i),(a,D,j),(c,b,j),(c,D,i)`,
+   β's `B₃, B₁, B₂`) times `Π_faces Π[s_f - edge]! / Π_edges [e]!`; with `θ_f = (-1)^{s_f} [s_f+1]! Π[s_f-·]! / Π_{e∈f}[e]!`
+   this gives `klCoef = (-1)^{i+s₁+s₂} [i+1] [i]! Π₃ Π₄ RS / ([j]! [s₁+1]! [s₂+1]!)` (faces 1 = `(a,b,i)`, 2 = `(i,c,D)`,
+   3 = `(b,c,j)`, 4 = `(a,j,D)`, `Π_f = Π[s_f - ·]! = Δ²_f [s_f+1]!`).
+2. Gauge: `klCoef = (Φ(j-tree)/Φ(i-tree)) · K`, `Φ(tree) = (-1)^{e+s_{v₁}+s_{v₂}} Π_v Π_v / [e+1]!` (product over the two
+   vertices, `e` the internal edge), multiplicative, so it cancels in the pentagon; `K[i,j] = (-1)^{j+s(b,c,j)+s(a,j,D)}
+   [j+1] Δ²(a,b,i) Δ²(i,c,D) RS(a,b,i,c,D,j)`.
+3. Dictionary (pentagon `TemperleyLieb.pentagon` ↔ `GenBE θ a' b' c' d' e' f' p q r'`): blocks `(a,b,c,d) = (e',a',b',c')`,
+   channels `I1 = a+b-2e₀ = r'`, `I2 = I1+c-2d₀ = f'`, total `T = I2+d-2g₀ = q`, `J1 = c+d-2j = p`, `J2 = b+J1-2m = d'`,
+   `T = a+J2-2i`; summed `x = b+c-2f`. The six channel indices `e₀ d₀ g₀ j m i` exist exactly by the six hypotheses
+   `Tri e' a' r', Tri b' f' r', Tri c' f' q, Tri c' b' p, Tri a' d' p, Tri e' d' q` of `GenBE`. In `K` form the three
+   factors give `Δ²(b,c,x) Δ²(x,d,J2) Δ²(a,x,I2) [x+1]` and the three `RS` of `GenBE` (up to the tetrahedral symmetry of
+   `RS`); the common factor `[J1+1][J2+1] Δ²(a,b,I1) Δ²(I1,c,I2) Δ²(I2,d,T)` cancels, and the signs agree up to
+   `(-1)^{s(I1,J1,T)}`, which turns the pentagon into `GenBE` exactly.
+4. MEASURED (mpmath 40 digits, θ = 0.2137, 60 random tuples with colours ≤ 4 and `e', a', b' ≥ 1`): `GenBE` holds, the
+   `klCoef` pentagon holds, and every pentagon summand divided by the `GenBE` summand equals `PR/R` (x-independent);
+   worst relative error 7.7e-40. Script: `~/lightlike-ops/state/notes/qu1-l5-dict.py` (outside the repository).
+5. Not covered by `pentagon` (it needs `1 ≤ a, b, c`): tuples with `e' = 0`, `a' = 0` or `b' = 0`; these need a separate
+   argument (a zero colour collapses the sums to one term) or a symmetry of `GenBE` moving the zero to an unrestricted slot.
+
+## L2: the one-strand block in closed form (27 Nov, oscillatory; MEASURED, partly proved)
+
+For the blocks `(a, b, 1)` and total `D`, `E = (a+b+1-D)/2`, `X = a+b-2E` (q = e^{iθ}, `[n] = sin nθ / sin θ`):
+`F00 = Fc(a,b,1;E,0;0,E) = [a+b-E+2][b-E+1]/([b+1][X+2])` (= `κ(a,b+1,E)/κ(a,b,E)`, `Fc_top`),
+`F01 = Fc(a,b,1;E,0;1,E-1) = -[a-E+1]/[X+2]`, `F10 = Fc(a,b,1;E-1,1;0,E) = [E]/[b+1]`, `F11 = Fc(a,b,1;E-1,1;1,E-1) = 1`.
+MEASURED with the Kauffman–Lins coefficient (mpmath 40 digits, `a, b ≤ 5`): `F10`, `F11` to 3e-41; `F01` found by a
+search over ratios of products of quantum integers with small linear arguments. At `b = 1` they agree with the
+proved cup entries (`Fc_cup_low = d_{n}/d_{n+1} = -[n+1]/[n+2]`, `Fc_cup_high = 1`). Also MEASURED: the mirror inverse
+`Σ_i F^{cba}[j', i] F^{abc}[i, j] = δ_{j' j}` (421 checks, `a, b, c ≤ 3`, 9e-41). Scripts: `~/lightlike-ops/state/notes/`.
+Route (proved pieces in `OneStrand.lean`, `ThirdBlock.lean`, `MirrorTree.lean`): the pentagon recursion in `b`
+(`Fc_b_rec`) gives two relations per level among `F01, F10, F11`, the mirror inverse a third; the remaining
+input is the mirror of the tree vectors (caps and cups done: `reflect_capOp`, `reflect_cupOp`).
+Proved since (oscillatory/qu1-l2): `reflect_UR`, `reflect_UL`, `Fc_mirror_inv` (`F^{cba} F^{abc} = I`, MirrorTree.lean).
+Finding (on paper): the recursion in `b` determines `F11` and `F01` level by level but never `F10`, and the mirror
+inverse adds no equation (the top entry of `F^{1ba}` exists only for `E ≤ 1`). The missing relation is the vertical
+flip: for the basis pairing `B(x, y) = Σ_σ x_σ y_σ`, `B(cap_i x, y) = -q⁻¹ B(x, cup_i y)` and `modelE` is self-adjoint
+(checked on basis words), so `U_L'(i) U_R(j)` and `U_R'(j) U_L(i)` have the same scalar (the powers `(-q)^{e+d}` and
+`(-q)^{f+d'}` agree since `e + d = f + d'`), i.e. `F^{abc}(i,j) κ_L(i) = κ_R(j) F^{cba}(j,i)`; with the mirror inverse this
+is the orthogonality that fixes the one-strand block up to signs, which the recursion in `b` fixes.
+
