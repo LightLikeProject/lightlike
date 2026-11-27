@@ -377,6 +377,8 @@ import Lightlike.Geometry.HeatKernel.WorldFunctionTaylor
 import Lightlike.Geometry.HeatKernel.WorldFunctionTaylorTests
 import Lightlike.Geometry.HeatKernel.FrozenGaussian
 import Lightlike.Geometry.HeatKernel.FrozenGaussianTests
+import Lightlike.Geometry.HeatKernel.ChartDelta
+import Lightlike.Geometry.HeatKernel.ChartDeltaTests
 import Lightlike.Geometry.HeatKernel.CutoffAnsatz
 import Lightlike.Geometry.HeatKernel.CutoffAnsatzTests
 import Lightlike.Geometry.HeatKernel.ChartParametrix
