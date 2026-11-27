@@ -288,6 +288,7 @@ three keep infinity, while a special conformal transformation moves the point at
 139. Lightlike/Spacetime/RoundSphereTwoChart.lean - `inner_fderiv_chartInv2`: the inverse stereographic chart of the 2-sphere is conformal with the factor 16 / (‖u‖² + 4)².
 140. Lightlike/Spacetime/RoundSphereTwoCoord.lean - `coordMetric_round2`, `chart_symm_deriv2`, `mfderiv_I2_chart_symm`: the coordinate metric of the round 2-sphere in the charts of Mathlib's atlas.
 141. Lightlike/Spacetime/RoundSphereTwoCurvature.lean - `coordMetric_round2_eq`, `roundSphere2_scalarCurvatureAt`, `roundSphere2_exists_leviCivita`: the round 2-sphere of radius r has scalar curvature 2 / r².
+142. Lightlike/Spacetime/VolumeMeasureFinite.lean - `NondegMetric.volumeMeasure_restrict_source`, `NondegMetric.lintegral_chart`, `NondegMetric.integral_chart`, `NondegMetric.isLocallyFiniteMeasure_volumeMeasure`, `NondegMetric.isFiniteMeasure_volumeMeasure`, `NondegMetric.isOpenPosMeasure_volumeMeasure`, `NondegMetric.volumeMeasure_univ_lt_top`, `NondegMetric.volumeMeasure_univ_pos`: the volume measure of a nondegenerate metric in a chart, locally finite, finite on a compact manifold, positive on nonempty open sets.
 
 ## References
 
