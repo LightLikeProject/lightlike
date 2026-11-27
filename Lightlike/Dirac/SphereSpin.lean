@@ -9,7 +9,7 @@ import Lightlike.Spacetime.StereoConformal
 
 The library's unit 2-sphere `S2` (Mathlib's `sphere (0 : ℝ³) 1` with the transported model `I2` on
 `Fin 2 → ℝ`) with the round metric `roundMetric2I 1`. This file builds the frames of its spin structure
-(`sphereSpinStructure`, in progress) from two explicit inverse stereographic maps into the sphere:
+(`sphereSpinStructure`) from two explicit inverse stereographic maps into the sphere:
 
 * `stereoN y = (2y₀, 2y₁, |y|²-1)/(|y|²+1)`, the inverse of the projection from the north pole
   `N = (0,0,1)`, onto `S2 ∖ {N}`;
@@ -21,10 +21,14 @@ Mathlib's own charts (`stereographic'`) are not used for the frames: they compos
 `(ℝ ∙ v)ᗮ` chosen by `OrthonormalBasis.fromOrthogonalSpanSingleton`, so their transition carries an unspecified
 orthogonal matrix. Mathlib's atlas enters only through the smooth structure (`mfderiv`, `TangentSpace I2`).
 
-## Main definitions (this layer)
+## Main results
 
-* `stereoNE`, `stereoSE`: the two maps into `ℝ³`; `stereoNE_mem`, `stereoSE_mem`: they land on the sphere;
-* `stereoN`, `stereoS`: the same as maps into `S2`, smooth for the model `I2` (`contMDiff_stereoN`, `contMDiff_stereoS`).
+* `stereoN`, `stereoS`: the two maps as maps into `S2`, smooth for `I2`; `invN`, `invS`: their inverses;
+* `roundMetric_stereoN`, `roundMetric_stereoS`: the round metric on their coordinate vectors is `4/(|y|²+1)² δ`;
+* `frameN`, `frameS`: the two orthonormal frames (`frameN_orthonormal`, `frameN_smooth`, …);
+* `frameS_eq`: on the overlap the frame change is the rotation `rotNS (invN p)`; `isSpinLift_liftNS`: its lift
+  `ι(y/|y|) ι(e₁)` to `Spin(2)`; `sphereSpinCocycle`: the cocycle;
+* `sphereSpinStructure : SpinStructure (roundMetric2I 1 one_ne_zero) Bool`.
 -/
 
 open Bundle Manifold Metric
@@ -734,5 +738,80 @@ noncomputable def sphereSpinCocycle : SpinCocycle 2 S2 Bool where
       exact (spinGroup.mul_star_self_of_mem (liftNS_mem h1 h2)).symm
 
 end Assembly
+
+section Structure
+
+open CliffordAlgebra
+
+lemma contMDiffAt_unitE_invN {p : S2} (h1 : pc p 2 ≠ 1) (h2 : pc p 2 ≠ -1) :
+    ContMDiffAt I2 𝓘(ℝ, E 2) ∞ (fun q => unitE (invN q)) p := by
+  have hn := nsq_invN_ne_zero h1 h2
+  have hq : ContDiff ℝ ∞ nsq := by unfold nsq; fun_prop
+  have hs : ContDiffAt ℝ ∞ (fun y => (√(nsq y))⁻¹) (invN p) :=
+    ((hq.contDiffAt).sqrt hn).inv (Real.sqrt_ne_zero'.2 (lt_of_le_of_ne (nsq_nonneg _) (Ne.symm hn)))
+  have hu : ContDiffAt ℝ ∞ unitE (invN p) :=
+    hs.smul (modelEquiv2.symm : (Fin 2 → ℝ) →L[ℝ] E 2).contDiff.contDiffAt
+  have hu' : ContMDiffAt 𝓘(ℝ, Fin 2 → ℝ) 𝓘(ℝ, E 2) ∞ unitE (invN p) := hu.contMDiffAt
+  exact hu'.comp p (contMDiffAt_invN h1)
+
+/-- The lifts are smooth on the overlaps: every linear coordinate of `liftNS (invN p)` and of its star is a linear
+function of the smooth unit vector `invN p / |invN p|`. -/
+lemma sLift_smooth (i j : Bool) (φ : Module.Dual ℝ (CliffordAlgebra (Qneg 2))) {p : S2} (hi : p ∈ sDom i)
+    (hj : p ∈ sDom j) : ContMDiffAt I2 𝓘(ℝ, ℝ) ∞ (fun q => φ (sLift i j q)) p := by
+  cases i <;> cases j
+  · simp only [sLift]; exact contMDiffAt_const
+  · obtain ⟨h1, h2⟩ := mem_sDom_both hi hj (by simp)
+    set Λ : E 2 →ₗ[ℝ] ℝ := φ ∘ₗ (LinearMap.mulLeft ℝ (ι (Qneg 2) (e 1))) ∘ₗ (ι (Qneg 2))
+    have hf : (fun q => φ (sLift false true q)) = (LinearMap.toContinuousLinearMap Λ) ∘ fun q => unitE (invN q) := by
+      funext q
+      simp only [sLift, liftNS, star_mul, star_ι, neg_mul_neg, Function.comp_apply,
+        LinearMap.coe_toContinuousLinearMap', Λ, LinearMap.coe_comp, LinearMap.mulLeft_apply]
+    rw [hf]
+    exact (LinearMap.toContinuousLinearMap Λ).contDiff.contMDiff.contMDiffAt.comp p (contMDiffAt_unitE_invN h1 h2)
+  · obtain ⟨h1, h2⟩ := mem_sDom_both hi hj (by simp)
+    set Λ : E 2 →ₗ[ℝ] ℝ := φ ∘ₗ (LinearMap.mulRight ℝ (ι (Qneg 2) (e 1))) ∘ₗ (ι (Qneg 2))
+    have hf : (fun q => φ (sLift true false q)) = (LinearMap.toContinuousLinearMap Λ) ∘ fun q => unitE (invN q) := by
+      funext q
+      simp only [sLift, liftNS, Function.comp_apply, LinearMap.coe_toContinuousLinearMap', Λ, LinearMap.coe_comp,
+        LinearMap.mulRight_apply]
+    rw [hf]
+    exact (LinearMap.toContinuousLinearMap Λ).contDiff.contMDiff.contMDiffAt.comp p (contMDiffAt_unitE_invN h1 h2)
+  · simp only [sLift]; exact contMDiffAt_const
+
+/-- **The spin structure of the round unit 2-sphere**: the library's `S2` (Mathlib's unit sphere of `ℝ³`, model
+`I2`) with the round metric, two orthonormal frames from the stereographic projections from the north and the south
+pole (the second with one axis reversed, so that the frame change is a rotation), and the `Spin(2)` lift
+`ι(y/|y|) ι(e₁)` of the frame change on the overlap. -/
+noncomputable def sphereSpinStructure : SpinStructure (roundMetric2I 1 one_ne_zero) Bool where
+  toSpinCocycle := sphereSpinCocycle
+  frame := sFrame
+  dom_open i := by cases i; exact isOpen_pc_ne (-1); exact isOpen_pc_ne 1
+  dom_cover p := by
+    by_cases h : pc p 2 = 1
+    · refine ⟨false, ?_⟩
+      show pc p 2 ≠ -1
+      rw [h]; norm_num
+    · exact ⟨true, h⟩
+  frame_smooth i a p hp := by
+    cases i
+    · exact frameS_smooth a hp
+    · exact frameN_smooth a hp
+  lift_smooth i j φ p hi hj := sLift_smooth i j φ hi hj
+  frame_orthonormal i a b p hp := by
+    cases i
+    · exact frameS_orthonormal hp a b
+    · exact frameN_orthonormal hp a b
+  frame_change i j p hi hj a := by
+    cases i <;> cases j
+    · show frameS a p = ∑ b, (1 : Matrix (Fin 2) (Fin 2) ℝ) a b • frameS b p
+      simp [Matrix.one_apply, Finset.sum_ite_eq]
+    · obtain ⟨h1, h2⟩ := mem_sDom_both (show p ∈ sDom false from hi) (show p ∈ sDom true from hj) (by simp)
+      exact frameN_eq h1 h2 a
+    · obtain ⟨h1, h2⟩ := mem_sDom_both (show p ∈ sDom true from hi) (show p ∈ sDom false from hj) (by simp)
+      exact frameS_eq h1 h2 a
+    · show frameN a p = ∑ b, (1 : Matrix (Fin 2) (Fin 2) ℝ) a b • frameN b p
+      simp [Matrix.one_apply, Finset.sum_ite_eq]
+
+end Structure
 
 end Lightlike.Dirac
