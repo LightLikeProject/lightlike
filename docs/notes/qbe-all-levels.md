@@ -443,4 +443,11 @@ proved cup entries (`Fc_cup_low = d_{n}/d_{n+1} = -[n+1]/[n+2]`, `Fc_cup_high = 
 Route (proved pieces in `OneStrand.lean`, `ThirdBlock.lean`, `MirrorTree.lean`): the pentagon recursion in `b`
 (`Fc_b_rec`) gives two relations per level among `F01, F10, F11`, the mirror inverse a third; the remaining
 input is the mirror of the tree vectors (caps and cups done: `reflect_capOp`, `reflect_cupOp`).
+Proved since (oscillatory/qu1-l2): `reflect_UR`, `reflect_UL`, `Fc_mirror_inv` (`F^{cba} F^{abc} = I`, MirrorTree.lean).
+Finding (on paper): the recursion in `b` determines `F11` and `F01` level by level but never `F10`, and the mirror
+inverse adds no equation (the top entry of `F^{1ba}` exists only for `E ≤ 1`). The missing relation is the vertical
+flip: for the basis pairing `B(x, y) = Σ_σ x_σ y_σ`, `B(cap_i x, y) = -q⁻¹ B(x, cup_i y)` and `modelE` is self-adjoint
+(checked on basis words), so `U_L'(i) U_R(j)` and `U_R'(j) U_L(i)` have the same scalar (the powers `(-q)^{e+d}` and
+`(-q)^{f+d'}` agree since `e + d = f + d'`), i.e. `F^{abc}(i,j) κ_L(i) = κ_R(j) F^{cba}(j,i)`; with the mirror inverse this
+is the orthogonality that fixes the one-strand block up to signs, which the recursion in `b` fixes.
 
