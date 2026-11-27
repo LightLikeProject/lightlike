@@ -7,8 +7,12 @@ import Lightlike.TemperleyLieb.Pentagon
 
 The recursion `klCoef_third_rec` of the Kauffman–Lins coefficient in the third block (the same identity as
 `Fc_third_rec` for `Fc`) is assembled here from the telescoped certificates (`KLTelescoping.lean`) and the
-coefficient relations (`KLThirdRec.lean`). This file holds the collapse of its left side to the two terms
-`f + h = m` (`klCoef_third_lhs`).
+coefficient relations (`KLThirdRec.lean`). The left side collapses to the two terms `f + h = m`
+(`klCoef_third_lhs`); each term is a tetrahedral sum (`kl_hat_lower_*`, `kl_hat_upper_*`), the three sums satisfy the
+telescoped identity (`kl_tel_lower`, `kl_tel_upper`), the coefficients are proportional to its coefficients wherever
+the sums do not vanish (the relations of `KLThirdRec.lean`), and an absent term has an empty box (`kl_lower_*_present`,
+`kl_upper_*_present`); `comb_of_prop` combines them for `g₀ = 1` (`kl_third_lower`) and `g₀ = 0` (`kl_third_upper`).
+The statement is at generic `q` (`q^{2x} ≠ 1` for `x ≤ 2(a+b+c)+6`), an intermediate step of `Fc = klCoef`.
 -/
 namespace Lightlike.TemperleyLieb
 open Finset
@@ -547,4 +551,77 @@ theorem kl_third_upper (q : kˣ) {a b c e₀ d₀ m i : ℕ}
       · rw [hS1 h]; ring
   rw [e0, e1, eC]
   linear_combination (-δθ) * comb
+/-- **The recursion of the Kauffman–Lins coefficient in the third block**: the same identity as `Fc_third_rec` for
+`Fc` (the pentagon with a fourth block of one strand and `j = 0`), at every `q` with `q^{2x} ≠ 1` for
+`1 ≤ x ≤ 2(a+b+c)+6`. -/
+theorem klCoef_third_rec (q : kˣ) (a b c e₀ d₀ g₀ m i : ℕ)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ 2 * (a + b + c) + 6 → (q : k) ^ (2 * x) ≠ 1)
+    (hmb : m ≤ b) (hmz : m ≤ c + 1) (hia : i ≤ a) (hiz : i ≤ b + (c + 1) - 2 * m)
+    (h₀ : ValidA a b c 1 e₀ d₀ g₀) :
+    ∑ f ∈ range (b + 1), ∑ h ∈ range (1 + 1), ∑ d' ∈ range (a + 1),
+        klCoef q b c 1 f h 0 m * (klCoef q a (b + c - 2 * f) 1 d' g₀ h i * klCoef q a b c e₀ d₀ f d') =
+      klCoef q a b (c + 1) e₀ (d₀ + g₀) m i * klCoef q (a + b - 2 * e₀) c 1 d₀ g₀ 0 (d₀ + g₀) := by
+  have hg1 : g₀ ≤ 1 := h₀.2.2.2
+  have hA10 : klCoef q b c 1 0 1 0 0 = 0 :=
+    klCoef_eq_zero_of_not fun hk => by simp only [KLAdm, le_min_iff] at hk; omega
+  -- the left side in two terms
+  have hL : ∑ f ∈ range (b + 1), ∑ h ∈ range (1 + 1), ∑ d' ∈ range (a + 1),
+        klCoef q b c 1 f h 0 m * (klCoef q a (b + c - 2 * f) 1 d' g₀ h i * klCoef q a b c e₀ d₀ f d') =
+      klCoef q b c 1 m 0 0 m * (klCoef q a (b + c - 2 * m) 1 (e₀ + d₀ - m) g₀ 0 i *
+          klCoef q a b c e₀ d₀ m (e₀ + d₀ - m)) +
+        klCoef q b c 1 (m - 1) 1 0 m * (klCoef q a (b + c - 2 * (m - 1)) 1 (e₀ + d₀ - (m - 1)) g₀ 1 i *
+          klCoef q a b c e₀ d₀ (m - 1) (e₀ + d₀ - (m - 1))) := by
+    rcases Nat.eq_zero_or_pos m with hm0 | hm
+    · subst hm0
+      rw [show (0 : ℕ) - 1 = 0 from rfl, hA10, zero_mul, add_zero]
+      have hA : ∀ f h, ¬ (f + h = 0) → klCoef q b c 1 f h 0 0 = 0 := by
+        intro f h hfh
+        refine klCoef_eq_zero_of_not fun hk => hfh ?_
+        simp only [KLAdm, le_min_iff] at hk; omega
+      have hT : ∀ d', d' ≠ e₀ + d₀ - 0 → klCoef q a b c e₀ d₀ 0 d' = 0 := by
+        intro d' hne
+        refine klCoef_eq_zero_of_not fun hk => hne ?_
+        simp only [KLAdm, le_min_iff] at hk; omega
+      rw [sum_eq_single 0 (fun f _ hf => by
+          rw [sum_eq_zero fun h _ => sum_eq_zero fun d' _ => by rw [hA f h (by omega), zero_mul]])
+        (fun hm' => absurd (mem_range.mpr (by omega)) hm')]
+      rw [sum_eq_single 0 (fun h hh hne => by rw [sum_eq_zero fun d' _ => by rw [hA 0 h (by omega), zero_mul]])
+        (fun hm' => absurd (mem_range.mpr (by omega)) hm')]
+      rw [← mul_sum, sum_eq_single (e₀ + d₀ - 0) (fun d' _ hne => by rw [hT d' hne]; ring) (fun hm' => by
+        rw [klCoef_eq_zero_of_not (a := a) (b := b) (c := c) (e := e₀) (d := d₀) (f := 0) (d' := e₀ + d₀ - 0)
+          (fun hk => by simp only [KLAdm, le_min_iff] at hk; have := mem_range.not.mp hm'; omega)]; ring)]
+    · exact klCoef_third_lhs q a b c e₀ d₀ g₀ m i hm hmb
+  rw [hL]
+  -- the terms vanish unless the total channels agree
+  by_cases hi : e₀ + d₀ + g₀ = m + i
+  · rcases Nat.lt_or_ge g₀ 1 with hg0 | hg
+    · obtain rfl : g₀ = 0 := by omega
+      have h := kl_third_upper q hq2 hmb hmz hia hiz h₀ (by omega)
+      simp only [Nat.add_zero]
+      rw [← h, show e₀ + d₀ - m = i by omega]
+      congr 1
+      rcases Nat.eq_zero_or_pos m with hm0 | hm
+      · subst hm0; simp only [show (0 : ℕ) - 1 = 0 from rfl, hA10, zero_mul]
+      · rw [show e₀ + d₀ - (m - 1) = i + 1 by omega]
+    · obtain rfl : g₀ = 1 := by omega
+      have h := kl_third_lower q hq2 hmb hmz hia hiz h₀ (by omega)
+      rw [← h, show e₀ + d₀ - m = i - 1 by omega]
+      congr 1
+      rcases Nat.eq_zero_or_pos m with hm0 | hm
+      · subst hm0; simp only [show (0 : ℕ) - 1 = 0 from rfl, hA10, zero_mul]
+      · rw [show e₀ + d₀ - (m - 1) = i by omega]
+  · obtain ⟨he, hd₀, -, -⟩ := h₀
+    simp only [le_min_iff] at he hd₀
+    have z : ∀ {f h d' : ℕ}, f + h = m → klCoef q a (b + c - 2 * f) 1 d' g₀ h i * klCoef q a b c e₀ d₀ f d' = 0 := by
+      intro f h d' hfh
+      by_cases hB : KLAdm a (b + c - 2 * f) 1 d' g₀ h i
+      · rw [klCoef_eq_zero_of_not (a := a) (b := b) (c := c) (e := e₀) (d := d₀) (f := f) (d' := d') (fun hT => by
+          simp only [KLAdm, le_min_iff] at hB hT; omega), mul_zero]
+      · rw [klCoef_eq_zero_of_not hB, zero_mul]
+    have zR : klCoef q a b (c + 1) e₀ (d₀ + g₀) m i = 0 :=
+      klCoef_eq_zero_of_not fun hk => by simp only [KLAdm, le_min_iff] at hk; omega
+    rw [zR, zero_mul]
+    rcases Nat.eq_zero_or_pos m with hm0 | hm
+    · subst hm0; rw [z (by omega), show (0 : ℕ) - 1 = 0 from rfl, hA10]; ring
+    · rw [z (by omega), z (by omega)]; ring
 end Lightlike.TemperleyLieb
