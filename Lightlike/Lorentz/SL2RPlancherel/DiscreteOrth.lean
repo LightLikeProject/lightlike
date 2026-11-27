@@ -74,4 +74,62 @@ theorem phiN_mul_sinh_le_one (s l i : ℕ) (hil : i < l) {ξ : ℝ} (hξ : 1 ≤
   calc (Real.cosh ξ - 1) ^ (i + s) ≤ Real.sinh ξ ^ (i + s) := pow_le_pow_left₀ hc1 hcs _
     _ ≤ Real.sinh ξ ^ (l + s - 1) := pow_le_pow_right₀ hsh1 (by omega)
 
+lemma phiN_nonneg (s l i : ℕ) {ξ : ℝ} (hξ : 0 < ξ) : 0 ≤ phiN s l i ξ := by
+  have hc1 : 0 ≤ Real.cosh ξ - 1 := by linarith [Real.one_le_cosh ξ]
+  exact div_nonneg (pow_nonneg hc1 _) (pow_nonneg (Real.sinh_pos_iff.2 hξ).le _)
+
+/-- `φ_i sinh` is bounded on `(0, ∞)`. -/
+theorem exists_bound_phiN_mul_sinh (s l i : ℕ) (hli : l ≤ i + s) (hil : i < l) :
+    ∃ K : ℝ, 0 ≤ K ∧ ∀ ξ : ℝ, 0 < ξ → phiN s l i ξ * Real.sinh ξ ≤ K := by
+  obtain ⟨K₁, hK₁⟩ := (isCompact_Icc (a := (0 : ℝ)) (b := 1)).exists_bound_of_continuousOn
+    ((continuous_phiHalf s l i).mul Real.continuous_sinh).continuousOn
+  refine ⟨max K₁ 1, le_max_of_le_right zero_le_one, fun ξ hξ => ?_⟩
+  by_cases h1 : 1 ≤ ξ
+  · exact (phiN_mul_sinh_le_one s l i hil h1).trans (le_max_right _ _)
+  · push Not at h1
+    have hb := hK₁ ξ ⟨hξ.le, h1.le⟩
+    rw [Real.norm_eq_abs] at hb
+    rw [phiN_eq_phiHalf s l i hli hξ]
+    exact (le_abs_self _).trans (hb.trans (le_max_left _ _))
+
+/-- **Integrability against the matrix coefficients**: `φ_i conj Φ^ν_{m,n} sinh` is integrable on
+`(0, ∞)`. -/
+theorem integrableOn_phiN_mul_conj_mcoefP (ν : ℝ) (m n : ℤ) (s l i : ℕ) (hli : l ≤ i + s)
+    (hil : i < l) :
+    IntegrableOn (fun ξ => ((phiN s l i ξ : ℝ) : ℂ) * (starRingEnd ℂ) (mcoefP ν m n ξ) *
+      (Real.sinh ξ : ℂ)) (Ioi 0) := by
+  obtain ⟨K, hK0, hK⟩ := exists_bound_phiN_mul_sinh s l i hli hil
+  have hC0 : 0 ≤ hcConst := by
+    have := hcXi_le (ξ := 0) le_rfl
+    have h0 := (norm_nonneg (mcoefP ν m n 0)).trans (norm_mcoefP_le ν 0 m n)
+    simp at this
+    linarith
+  have hg : IntegrableOn (fun ξ : ℝ => K * hcConst * Real.exp (-(1 / 4) * ξ)) (Ioi 0) :=
+    (exp_neg_integrableOn_Ioi 0 (by norm_num : (0 : ℝ) < 1 / 4)).const_mul _
+  have hcont : ContinuousOn (fun ξ => ((phiN s l i ξ : ℝ) : ℂ) * (starRingEnd ℂ) (mcoefP ν m n ξ) *
+      (Real.sinh ξ : ℂ)) (Ioi 0) := by
+    have hφ : ContinuousOn (phiN s l i) (Ioi 0) := by
+      unfold phiN
+      exact ((Real.continuous_cosh.sub continuous_const).pow _).continuousOn.div
+        (Real.continuous_sinh.pow _).continuousOn
+        fun ξ hξ => pow_ne_zero _ (Real.sinh_pos_iff.2 hξ).ne'
+    exact ((Complex.continuous_ofReal.comp_continuousOn hφ).mul
+      (Complex.continuous_conj.comp (continuous_mcoefP ν m n)).continuousOn).mul
+      (Complex.continuous_ofReal.comp Real.continuous_sinh).continuousOn
+  refine hg.mono' (hcont.aestronglyMeasurable measurableSet_Ioi) ?_
+  filter_upwards [ae_restrict_mem measurableSet_Ioi] with ξ hξ
+  have hξ0 : (0 : ℝ) < ξ := hξ
+  have hφ0 := phiN_nonneg s l i hξ0
+  have hsh := (Real.sinh_pos_iff.2 hξ0).le
+  rw [norm_mul, norm_mul, Complex.norm_conj, Complex.norm_real, Complex.norm_real,
+    Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hφ0, abs_of_nonneg hsh]
+  have hΦ := (norm_mcoefP_le ν ξ m n).trans (hcXi_le hξ0.le)
+  have hexp : Real.exp (-ξ / 4) = Real.exp (-(1 / 4) * ξ) := by ring_nf
+  rw [hexp] at hΦ
+  calc phiN s l i ξ * ‖mcoefP ν m n ξ‖ * Real.sinh ξ
+      = (phiN s l i ξ * Real.sinh ξ) * ‖mcoefP ν m n ξ‖ := by ring
+    _ ≤ K * (hcConst * Real.exp (-(1 / 4) * ξ)) :=
+        mul_le_mul (hK ξ hξ0) hΦ (norm_nonneg _) hK0
+    _ = K * hcConst * Real.exp (-(1 / 4) * ξ) := by ring
+
 end Lightlike.Lorentz.SL2RPlancherel
