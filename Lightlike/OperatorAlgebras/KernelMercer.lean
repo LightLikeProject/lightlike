@@ -500,6 +500,57 @@ theorem hasSum_eigenvalues [μ.IsOpenPosMeasure] [SecondCountableTopology X] (K 
   rw [hint]
   exact Complex.ofRealCLM.hasSum hreal
 
+/-- **The trace of a positive integral operator is `∫ K(x, x)`, in every Hilbert basis**:
+`Σ_i ⟪T_K e_i, e_i⟫ = ∫ K(x, x) dμ(x)` for any Hilbert basis `(e_i)` of `L²(X, μ)`. Proof: with an
+eigenbasis `(b_j, λ_j)`, `⟪T_K e_i, e_i⟫ = Σ_j λ_j |⟪b_j, e_i⟫|²` and `Σ_i |⟪b_j, e_i⟫|² = 1`; the
+double series has non-negative terms, so it may be summed in either order. -/
+theorem hasSum_inner_basis_eq_integral_diag [μ.IsOpenPosMeasure] [SecondCountableTopology X]
+    (K : C(X × X, ℂ)) (hK : ∀ x y, K (y, x) = starRingEnd ℂ (K (x, y)))
+    (hpos : IsPositiveKernel μ K) {κ : Type*} (e : HilbertBasis κ ℂ (Lp ℂ 2 μ)) :
+    HasSum (fun i => inner ℂ (kernelOp μ K (e i)) (e i)) (∫ x, K (x, x) ∂μ) := by
+  obtain ⟨ι, b, lam, hb⟩ := exists_hilbertBasis_eigenvectors_kernelOp μ K hK
+  have hlam : ∀ j, 0 ≤ lam j := fun j => eigen_nonneg μ hpos (hb j) (b.orthonormal.1 j)
+  set f : ι × κ → ℝ := fun p => lam p.1 * ‖inner ℂ (b p.1) (e p.2)‖ ^ 2 with hfdef
+  have hf0 : 0 ≤ f := fun p => mul_nonneg (hlam p.1) (sq_nonneg _)
+  have hrow : ∀ j, HasSum (fun i => f (j, i)) (lam j) := by
+    intro j
+    have h := (hasSum_norm_sq_inner_basis e (b j)).mul_left (lam j)
+    rw [b.orthonormal.1 j, one_pow, mul_one] at h
+    refine h.congr_fun fun i => ?_
+    simp only [hfdef, norm_inner_symm]
+  have htrC := hasSum_eigenvalues μ K hK b lam hb hpos
+  have htr : HasSum lam (∫ x, K (x, x) ∂μ).re := by
+    have := Complex.reCLM.hasSum htrC
+    simp only [Complex.reCLM_apply, Complex.ofReal_re] at this
+    exact this
+  have hsum : Summable f := by
+    refine (summable_prod_of_nonneg hf0).2 ⟨fun j => (hrow j).summable, ?_⟩
+    convert htr.summable using 1
+    funext j
+    exact (hrow j).tsum_eq
+  have ha : HasSum f (∫ x, K (x, x) ∂μ).re := by
+    have h := hsum.hasSum
+    rwa [(h.prod_fiberwise hrow).unique htr] at h
+  have hswap : HasSum (f ∘ Equiv.prodComm κ ι) (∫ x, K (x, x) ∂μ).re :=
+    (Equiv.prodComm κ ι).hasSum_iff.2 ha
+  have hcolC : ∀ i, HasSum (fun j => ((f (j, i) : ℝ) : ℂ)) (inner ℂ (kernelOp μ K (e i)) (e i)) :=
+    fun i => hasSum_inner_kernelOp μ K hK b lam hb (e i)
+  have hcol : ∀ i, HasSum (fun j => f (j, i)) (inner ℂ (kernelOp μ K (e i)) (e i)).re := by
+    intro i
+    have := Complex.reCLM.hasSum (hcolC i)
+    simp only [Complex.reCLM_apply, Complex.ofReal_re] at this
+    exact this
+  have hreal : HasSum (fun i => (inner ℂ (kernelOp μ K (e i)) (e i)).re) (∫ x, K (x, x) ∂μ).re :=
+    hswap.prod_fiberwise fun i => hcol i
+  have hI : (((∫ x, K (x, x) ∂μ).re : ℝ) : ℂ) = ∫ x, K (x, x) ∂μ :=
+    (Complex.ofRealCLM.hasSum htr).unique htrC
+  have hT : ∀ i, (((inner ℂ (kernelOp μ K (e i)) (e i)).re : ℝ) : ℂ) =
+      inner ℂ (kernelOp μ K (e i)) (e i) := fun i =>
+    (Complex.ofRealCLM.hasSum (hcol i)).unique (hcolC i)
+  have := Complex.ofRealCLM.hasSum hreal
+  simp only [Complex.ofRealCLM_apply, hT, hI] at this
+  exact this
+
 end Trace
 
 end
