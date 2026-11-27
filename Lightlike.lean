@@ -400,6 +400,8 @@ import Lightlike.Geometry.HeatKernel.ChartParametrixSmoothTests
 import Lightlike.Geometry.HeatKernel.DiagonalVanishing
 import Lightlike.Geometry.HeatKernel.DiagonalVanishingTests
 import Lightlike.Geometry.HeatKernel.ParamIntegralDeriv
+import Lightlike.Geometry.HeatKernel.ShiftedParametrix
+import Lightlike.Geometry.HeatKernel.ShiftedParametrixTests
 import Lightlike.Geometry.HeatKernel.CutoffAnsatz
 import Lightlike.Geometry.HeatKernel.CutoffAnsatzTests
 import Lightlike.Geometry.HeatKernel.ChartParametrix
