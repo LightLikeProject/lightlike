@@ -517,7 +517,7 @@ noncomputable def SRgAt (r j₁ j₂ j₃ j₄ j₅ j₆ : ℕ) : ℝ :=
     (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ)
     (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ)
 
-set_option maxHeartbeats 1000000 in
+set_option maxHeartbeats 3000000 in
 /-- **The reflection of the regularised sum in the colour `j₃`**: with the two triads through `j₃` above the
 level and the other two within it, `j₃ ↦ 2r - 2 - j₃` multiplies it by `E(j₁,j₂,j₃) E(j₄,j₅,j₃)`. -/
 theorem SRgAt_reflect (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ}
@@ -551,8 +551,12 @@ theorem SRgAt_reflect (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ}
   have eD' := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero mD')
   have eQ' := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero mQ')
   have eR' := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero mR')
-  have eX : 2 * r - 2 - j₃ + j₃ = 2 * r - 2 := Nat.sub_add_cancel hX
-  clear p1 p2 p3 p4 mP mQ mR mA' mD' mQ' mR'
+  have eX : 2 * r - 2 - j₃ + j₃ + 2 = 2 * r := by clear h1 h4 l2 l3; omega
+  have h1' : r ≤ (j₁ + j₂ + j₃) / 2 + 1 := by clear l2 l3 h4; omega
+  have h4' : r ≤ (j₄ + j₅ + j₃) / 2 + 1 := by clear l2 l3 h1; omega
+  have l2' : (j₁ + j₅ + j₆) / 2 + 2 ≤ r := by clear l3 h1 h4; omega
+  have l3' : (j₄ + j₂ + j₆) / 2 + 2 ≤ r := by clear l2 h1 h4; omega
+  clear p1 p2 p3 p4 mP mQ mR mA' mD' mQ' mR' h1 h4 l2 l3 hj1 hj2 hX
   unfold SRgAt E3
   generalize 2 * r - 2 - j₃ = X at *
   generalize (j₁ + j₂ + j₃) / 2 = A at *
@@ -619,41 +623,66 @@ lemma pair_algebra {s s' Q E1 E2 E3 S1 S2 S3 σ1 σ2 σ3 τ1 τ2 τ3 : ℝ} (h1 
     field_simp
   rw [this, hs]; ring
 
+lemma qAdm_half {a b c : ℕ} (h : qAdm r a b c) : (a + b + c) / 2 ≤ r - 2 := by
+  obtain ⟨-, h⟩ := h; omega
+
+lemma qAdm_left {a b c : ℕ} (h : qAdm r a b c) : a ≤ r - 2 := by
+  obtain ⟨⟨-, -, h1, -⟩, h⟩ := h; omega
+
+lemma qAdm_mid {a b c : ℕ} (h : qAdm r a b c) : b ≤ r - 2 := by
+  obtain ⟨⟨-, -, -, h1⟩, h⟩ := h; omega
+
+lemma tri_swap {a b x : ℕ} (h : Tri a b x) : Tri b a x := by
+  obtain ⟨h0, h1, h2, h3⟩ := h; exact ⟨by omega, by omega, by omega, by omega⟩
+
+lemma tri_le_reflect {u v x : ℕ} (ht : Tri u v x) (hu : u ≤ r - 2) (hv : v ≤ r - 2) : x ≤ 2 * r - 2 := by
+  obtain ⟨-, h1, -, -⟩ := ht; omega
+
+lemma tri_above_reflect {u v x : ℕ} (ht : Tri u v x) (hu : u ≤ r - 2) (hv : v ≤ r - 2) :
+    r - 1 ≤ (u + v + (2 * r - 2 - x)) / 2 := by
+  obtain ⟨-, h1, -, -⟩ := ht; omega
+
+lemma tri_half_le {u v x : ℕ} (ht : Tri u v x) (hu : u ≤ r - 2) (hv : v ≤ r - 2) :
+    (u + v + x) / 2 ≤ 2 * r - 3 := by
+  obtain ⟨-, h1, -, -⟩ := ht; omega
+
+/-- The parity of the signs of the pair `x`, `2r - 2 - x`. -/
+lemma limTerm_sign (hr : 2 ≤ r) {a b c d e f p q r' x : ℕ} (hx : x ≤ 2 * r - 2) (xab : x ≤ a + b) (xcd : x ≤ c + d) (xef : x ≤ e + f)
+    (h1 : r - 1 ≤ (a + b + x) / 2) (h2 : r - 1 ≤ (c + d + x) / 2) (h3 : r - 1 ≤ (e + f + x) / 2) :
+    ((a + b + c + d + e + f + p + q + r' + (2 * r - 2 - x)) / 2 +
+        (((a + b + (2 * r - 2 - x)) / 2 + 1 - r) + ((c + d + (2 * r - 2 - x)) / 2 + 1 - r) +
+          ((e + f + (2 * r - 2 - x)) / 2 + 1 - r))) % 2 =
+      ((a + b + c + d + e + f + p + q + r' + x) / 2 +
+        (((a + b + x) / 2 + 1 - r) + ((c + d + x) / 2 + 1 - r) + ((e + f + x) / 2 + 1 - r))) % 2 := by
+  have eX : 2 * r - 2 - x + x + 2 = 2 * r := by omega
+  generalize 2 * r - 2 - x = X at *
+  clear hx
+  omega
+
+set_option maxHeartbeats 1000000 in
 /-- **The limit terms cancel in pairs** `x ↔ 2r - 2 - x`. -/
 theorem limTerm_reflect (hr : 2 ≤ r) {a b c d e f p q r' x : ℕ}
     (q1 : qAdm r a d p) (q2 : qAdm r c b p) (q3 : qAdm r c f q) (q4 : qAdm r e d q) (q5 : qAdm r e a r')
     (q6 : qAdm r b f r') (t1 : Tri a b x) (t2 : Tri c d x) (t3 : Tri e f x)
     (h1 : r - 1 ≤ (a + b + x) / 2) (h2 : r - 1 ≤ (c + d + x) / 2) (h3 : r - 1 ≤ (e + f + x) / 2) :
     limTerm r a b c d e f p q r' (2 * r - 2 - x) = -limTerm r a b c d e f p q r' x := by
-  obtain ⟨⟨p1, p1a, p1b, p1c⟩, l1⟩ := q1
-  obtain ⟨⟨p2, p2a, p2b, p2c⟩, l2⟩ := q2
-  obtain ⟨⟨p3, p3a, p3b, p3c⟩, l3⟩ := q3
-  obtain ⟨⟨p4, p4a, p4b, p4c⟩, l4⟩ := q4
-  obtain ⟨⟨p5, p5a, p5b, p5c⟩, l5⟩ := q5
-  obtain ⟨⟨p6, p6a, p6b, p6c⟩, l6⟩ := q6
-  have T1 := t1; have T2 := t2; have T3 := t3
-  obtain ⟨u1, u1a, u1b, u1c⟩ := T1
-  obtain ⟨u2, u2a, u2b, u2c⟩ := T2
-  obtain ⟨u3, u3a, u3b, u3c⟩ := T3
-  have ha : a ≤ r - 2 := by omega
-  have hb : b ≤ r - 2 := by omega
-  have hc : c ≤ r - 2 := by omega
-  have hd : d ≤ r - 2 := by omega
-  have he : e ≤ r - 2 := by omega
-  have hf : f ≤ r - 2 := by omega
-  have R1 := SRgAt_reflect hr t1 (j₄ := c) (j₅ := d) (j₆ := p) ⟨p1, p1a, p1b, p1c⟩ ⟨by omega, by omega, by omega, by omega⟩
-    t2 (by omega) (by omega) h1 h2
-  have R2 := SRgAt_reflect hr t2 (j₄ := e) (j₅ := f) (j₆ := q) ⟨by omega, by omega, by omega, by omega⟩
-    ⟨by omega, by omega, by omega, by omega⟩ t3 (by omega) (by omega) h2 h3
-  have R3 := SRgAt_reflect hr t3 (j₄ := b) (j₅ := a) (j₆ := r') ⟨by omega, by omega, by omega, by omega⟩
-    ⟨by omega, by omega, by omega, by omega⟩ ⟨by omega, by omega, by omega, by omega⟩ (by omega) (by omega)
-    h3 (by omega)
-  have D1' := delta2Reg_above (u := a) (v := b) (x := 2 * r - 2 - x) hr (by omega)
-  have D2' := delta2Reg_above (u := c) (v := d) (x := 2 * r - 2 - x) hr (by omega)
-  have D3' := delta2Reg_above (u := e) (v := f) (x := 2 * r - 2 - x) hr (by omega)
+  have ha := qAdm_left q1
+  have hb := qAdm_mid q2
+  have hc := qAdm_left q2
+  have hd := qAdm_mid q1
+  have he := qAdm_left q4
+  have hf := qAdm_mid q3
+  have h1' : r - 1 ≤ (b + a + x) / 2 := by rw [Nat.add_comm b a]; exact h1
+  have R1 := SRgAt_reflect hr t1 q1.1 q2.1 t2 (qAdm_half q1) (qAdm_half q2) h1 h2
+  have R2 := SRgAt_reflect hr t2 q3.1 q4.1 t3 (qAdm_half q3) (qAdm_half q4) h2 h3
+  have R3 := SRgAt_reflect hr t3 q5.1 q6.1 (tri_swap t1) (qAdm_half q5) (qAdm_half q6) h3 h1'
+  have D1' := delta2Reg_above hr (tri_above_reflect t1 ha hb)
+  have D2' := delta2Reg_above hr (tri_above_reflect t2 hc hd)
+  have D3' := delta2Reg_above hr (tri_above_reflect t3 he hf)
   rw [E3_reflect hr ha hb t1 h1] at D1'
   rw [E3_reflect hr hc hd t2 h2] at D2'
   rw [E3_reflect hr he hf t3 h3] at D3'
+  have hx := tri_le_reflect t1 ha hb
   have hq : qnum r (2 * r - 2 - x + 1) = -qnum r (x + 1) := by
     rw [show 2 * r - 2 - x + 1 = 2 * r - (x + 1) by omega]; exact qnum_two_mul_sub hr (by omega)
   have hs : (-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + (2 * r - 2 - x)) / 2) *
@@ -662,11 +691,11 @@ theorem limTerm_reflect (hr : 2 ≤ r) {a b c d e f p q r' x : ℕ}
       (-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + x) / 2) *
       ((-1) ^ ((a + b + x) / 2 + 1 - r) * (-1) ^ ((c + d + x) / 2 + 1 - r) * (-1) ^ ((e + f + x) / 2 + 1 - r)) := by
     simp only [← pow_add]
-    exact neg_one_pow_of_mod (by omega)
+    exact neg_one_pow_of_mod (limTerm_sign hr hx t1.2.1 t2.2.1 t3.2.1 h1 h2 h3)
   unfold limTerm
   rw [hq, D1', D2', D3', R1, R2, R3, delta2Reg_above hr h1, delta2Reg_above hr h2, delta2Reg_above hr h3,
-    E3_swap r b a x]
-  exact pair_algebra (E3_ne_zero hr ha hb t1 (by omega)) (E3_ne_zero hr hc hd t2 (by omega))
-    (E3_ne_zero hr he hf t3 (by omega)) hs
+    E3_swap r a b x]
+  exact pair_algebra (E3_ne_zero hr ha hb t1 (tri_half_le t1 ha hb)) (E3_ne_zero hr hc hd t2 (tri_half_le t2 hc hd))
+    (E3_ne_zero hr he hf t3 (tri_half_le t3 he hf)) hs
 
 end Lightlike.TV
