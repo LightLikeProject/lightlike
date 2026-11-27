@@ -9,7 +9,7 @@ exponent `Σ_s invSum (complexJ K col s) (phi K σ s)` of the sign carried by th
 vertices `x < y` with `σ y < σ x`, the colours of the triangles of the link of the edge `{x, y}`, whose sum is even (`link_sum_even`).
 -/
 
-open Finset Lightlike.FourD
+open Finset Lightlike.FourD Lightlike.Recoupling
 
 namespace Lightlike.SpinFoam.EPRLStateSum
 
@@ -21,9 +21,9 @@ lemma sum_epr {M : Type*} [AddCommMonoid M] (G : Fin 5 → Fin 5 → M) :
   simp [Fin.sum_univ_succ, epr]
   abel
 
-/-- A sum over a finite set `s` of five elements is the sum over its sorted positions. -/
-lemma sum_orderEmb {M : Type*} [AddCommMonoid M] (s : Finset V) (hs : #s = 5) (f : V → M) :
-    ∑ x ∈ s, f x = ∑ p : Fin 5, f (s.orderEmbOfFin hs p) := by
+/-- A sum over a finite set `s` of `n` elements is the sum over its sorted positions. -/
+lemma sum_orderEmb {M : Type*} [AddCommMonoid M] {n : ℕ} (s : Finset V) (hs : #s = n) (f : V → M) :
+    ∑ x ∈ s, f x = ∑ p : Fin n, f (s.orderEmbOfFin hs p) := by
   symm
   refine Finset.sum_bij (fun p _ => s.orderEmbOfFin hs p) (fun p _ => Finset.orderEmbOfFin_mem s hs p)
     (fun p _ q _ h => (s.orderEmbOfFin hs).injective h) (fun x hx => ?_) (fun p _ => rfl)
@@ -100,5 +100,45 @@ theorem invSum_total_even (K : Complex4 V) (σ : V ≃ V) (hK : K.IsClosed4) (co
   · have := link_sum_even K hK col hp x y (ne_of_lt hc.1)
     simpa [hc] using this
   · simp [hc]
+
+/-- **A node with a non-zero factor sits on a tetrahedron whose four colours have an even sum.** -/
+lemma nodeF_ne_zero_even (K : Complex4 V) (col : Finset V → ℕ) (x : K.simps × Fin 5) (m : Fin 10 → ℤ) (k : ℕ)
+    (h : nodeF K col x m k ≠ 0) : Even (∑ i, legSpins K col x i) := by
+  rw [nodeF_eq_fourJT] at h
+  have hI := isInv_fourJT (legSpins K col x 0) (legSpins K col x 1) (legSpins K col x 2) (legSpins K col x 3) k
+  have hadm := hI.supp _ h
+  have hw := hI.weight _ h
+  have h0 := hadm 0
+  have h1 := hadm 1
+  have h2 := hadm 2
+  have h3 := hadm 3
+  simp only [AdmProj, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val] at h0 h1 h2 h3
+  simp only [Fin.sum_univ_four, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Bool.false_eq_true,
+    if_false] at hw
+  rw [Fin.sum_univ_four, Nat.even_iff]
+  omega
+
+/-- The sum of the four leg colours of a node is the colour sum around its tetrahedron. -/
+lemma sum_legSpins (K : Complex4 V) (col : Finset V → ℕ) (x : K.simps × Fin 5) :
+    ∑ i, legSpins K col x i = ∑ v ∈ (incTet K x).1, col ((incTet K x).1.erase v) := by
+  rw [sum_orderEmb (incTet K x).1 (Complex4.card_of_mem_faces (incTet K x).2)]
+  exact Finset.sum_congr rfl fun i _ => legSpins_eq_tetLeg K col x i
+
+/-- **A colouring whose tetrahedron sums are not all even has no invariant network.** -/
+theorem Znet_eq_zero (K : Complex4 V) (hK : K.IsClosed4) (col : Finset V → ℕ) (hp : ¬ TetPar K col) :
+    Znet K col = 0 := by
+  unfold TetPar at hp
+  simp only [not_forall, exists_prop] at hp
+  obtain ⟨g, hg, hodd⟩ := hp
+  obtain ⟨x₁, x₂, hne, hfib⟩ := fiberOf_eq_pair K hK ⟨g, hg⟩
+  have h1 : incTet K x₁ = ⟨g, hg⟩ := by
+    have : x₁ ∈ fiberOf K ⟨g, hg⟩ := by rw [hfib]; simp
+    simpa [fiberOf] using this
+  unfold Znet
+  refine Finset.sum_eq_zero fun M _ => netTerm_eq_zero_of_node K col M x₁ fun k => ?_
+  by_contra hne'
+  have := nodeF_ne_zero_even K col x₁ (M x₁.1) k hne'
+  rw [sum_legSpins, h1] at this
+  exact hodd this
 
 end Lightlike.SpinFoam.EPRLStateSum
