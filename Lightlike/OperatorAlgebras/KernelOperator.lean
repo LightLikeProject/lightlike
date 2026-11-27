@@ -15,12 +15,14 @@ are bounded and equicontinuous in `C(X, ℂ)`.
 ## Main results
 
 * `kernelOp`, `kernelOp_ae_eq`, `isCompactOperator_kernelOp`
+* `isSymmetric_kernelOp`: a Hermitian kernel `K(y, x) = conj K(x, y)` gives a self-adjoint operator
+  (Fubini on `X × X`, for second-countable `X`)
 
 ## References
 
 * P. Garrett, *Compact operators* (notes 09b, 2020), §1 [1.2] and §2: integral operators with
   kernels in `L²(X × Y)` are Hilbert–Schmidt, hence compact; here the kernel is continuous on a
-  compact space and compactness is proved directly.
+  compact space and compactness is proved directly.  §2.1: the adjoint has kernel `conj K(y, x)`.
 -/
 
 open MeasureTheory
@@ -147,6 +149,58 @@ theorem isCompactOperator_kernelToC (K : C(X × X, ℂ)) : IsCompactOperator (ke
 /-- **Integral operators with continuous kernels are compact.** -/
 theorem isCompactOperator_kernelOp (K : C(X × X, ℂ)) : IsCompactOperator (kernelOp μ K) :=
   (isCompactOperator_kernelToC μ K).clm_comp (ContinuousMap.toLp (E := ℂ) 2 μ ℂ)
+
+section Symmetric
+
+variable [SecondCountableTopology X]
+
+/-- `⟪T_K φ, ψ⟫ = ∫∫ conj K(x, y) conj φ(y) ψ(x)`. -/
+lemma inner_kernelOp_left (K : C(X × X, ℂ)) (φ ψ : Lp ℂ 2 μ) :
+    inner ℂ (kernelOp μ K φ) ψ =
+      ∫ x, ∫ y, starRingEnd ℂ (K (x, y)) * starRingEnd ℂ (φ y) * ψ x ∂μ ∂μ := by
+  rw [MeasureTheory.L2.inner_def]
+  refine integral_congr_ae ?_
+  filter_upwards [kernelOp_ae_eq μ K φ] with x hx
+  rw [RCLike.inner_apply, hx, ← integral_conj, mul_comm, ← integral_mul_const]
+  congr 1
+  funext y
+  simp only [map_mul]
+
+/-- **Hermitian kernels give self-adjoint operators**: if `K(y, x) = conj K(x, y)` then `T_K` is
+symmetric. -/
+theorem isSymmetric_kernelOp (K : C(X × X, ℂ))
+    (hK : ∀ x y, K (y, x) = starRingEnd ℂ (K (x, y))) :
+    (kernelOp μ K : Lp ℂ 2 μ →ₗ[ℂ] Lp ℂ 2 μ).IsSymmetric := by
+  intro φ ψ
+  simp only [ContinuousLinearMap.coe_coe]
+  rw [inner_kernelOp_left, ← inner_conj_symm φ (kernelOp μ K ψ), inner_kernelOp_left,
+    ← integral_conj]
+  have hint : Integrable (Function.uncurry fun (x y : X) =>
+      starRingEnd ℂ (K (x, y)) * starRingEnd ℂ (φ y) * ψ x) (μ.prod μ) := by
+    have hφ0 : Integrable (fun y => φ y) μ := (Lp.memLp φ).integrable one_le_two
+    have hφ : Integrable (fun y => starRingEnd ℂ (φ y)) μ :=
+      Integrable.mono hφ0 (Complex.continuous_conj.comp_aestronglyMeasurable
+        (Integrable.aestronglyMeasurable hφ0)) (Filter.Eventually.of_forall fun y => by simp)
+    have hψ : Integrable (fun x => ψ x) μ := (Lp.memLp ψ).integrable one_le_two
+    have hprod : Integrable (fun z : X × X => ‖ψ z.1‖ * ‖φ z.2‖) (μ.prod μ) :=
+      Integrable.mul_prod (Integrable.norm hψ) (Integrable.norm hφ0)
+    refine Integrable.mono' (g := fun z : X × X => ‖K‖ * (‖ψ z.1‖ * ‖φ z.2‖))
+      (Integrable.const_mul hprod ‖K‖) ?_ (Filter.Eventually.of_forall fun z => ?_)
+    · exact ((Complex.continuous_conj.comp K.continuous).aestronglyMeasurable.mul
+        (hφ.aestronglyMeasurable.comp_snd)).mul (hψ.aestronglyMeasurable.comp_fst)
+    · simp only [Function.uncurry, norm_mul, Complex.norm_conj]
+      have := K.norm_coe_le_norm (z.1, z.2)
+      calc ‖K (z.1, z.2)‖ * ‖φ z.2‖ * ‖ψ z.1‖ ≤ ‖K‖ * ‖φ z.2‖ * ‖ψ z.1‖ := by gcongr
+        _ = ‖K‖ * (‖ψ z.1‖ * ‖φ z.2‖) := by ring
+  rw [integral_integral_swap hint]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)
+  beta_reduce
+  rw [← integral_conj]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+  simp only [hK x y, map_mul, Complex.conj_conj]
+  ring
+
+end Symmetric
 
 end
 
