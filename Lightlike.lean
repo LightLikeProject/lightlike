@@ -373,6 +373,7 @@ import Lightlike.Geometry.HeatKernel.WorldFunctionJet
 import Lightlike.Geometry.HeatKernel.CoordDensityDeriv
 import Lightlike.Geometry.HeatKernel.JetInvariants
 import Lightlike.Geometry.HeatKernel.FourthJet
+import Lightlike.Geometry.HeatKernel.FourthJetContract
 import Lightlike.Geometry.HeatKernel.HeatCoeffsTests
 import Lightlike.Geometry.HeatKernel.WorldFunctionBounds
 import Lightlike.Geometry.HeatKernel.WorldFunctionBoundsTests
