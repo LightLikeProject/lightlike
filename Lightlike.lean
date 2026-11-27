@@ -367,6 +367,8 @@ import Lightlike.Geometry.HeatKernel.HeatCoeffZero
 import Lightlike.Geometry.HeatKernel.HeatCoeffZeroTests
 import Lightlike.Geometry.HeatKernel.HeatCoeffs
 import Lightlike.Geometry.HeatKernel.HeatCoeffsTests
+import Lightlike.Geometry.HeatKernel.WorldFunctionBounds
+import Lightlike.Geometry.HeatKernel.WorldFunctionBoundsTests
 import Lightlike.Geometry.HeatKernel.GaussianDeriv
 import Lightlike.Geometry.HeatKernel.Potential
 import Lightlike.Geometry.HeatKernel.InducedGravity
@@ -2825,6 +2827,7 @@ import Lightlike.Spacetime.WaveEquationGreenOperators.Test1
 import Lightlike.Asymptotics.AiryFunctions.Test
 import Lightlike.Asymptotics.SmoothExtension
 import Lightlike.Asymptotics.SmoothExtensionTests
+import Lightlike.Asymptotics.ExpDecay
 import Lightlike.Asymptotics.EulerPrimitive
 import Lightlike.Asymptotics.EulerPrimitiveTests
 import Lightlike.GFT.DualPseudoManifold.Check
