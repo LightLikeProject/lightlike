@@ -32,6 +32,7 @@ variable {m : ℕ}
 /-- The coordinates `κ(a, x) = (a, x₀, …, x_m)` of the ambient space `ℝ × ℝ^{m+1}`. -/
 abbrev dSCoord (m : ℕ) : DSAmb m ≃L[ℝ] (Fin (m + 2) → ℝ) := dSModelEquiv (m + 1)
 
+/-- `κ(a, x) = (a, x₀, …, x_m)`. -/
 theorem dSCoord_apply (u : DSAmb m) : dSCoord m u = Fin.cons u.1 (fun i => u.2 i) := rfl
 
 /-- **The ambient form in coordinates** is the Minkowski form of `ℝ^{m+2}`. -/
@@ -47,6 +48,7 @@ theorem dSForm_eq_minkowski (u v : DSAmb m) : dSForm m u v = minkowskiForm (m + 
 def dSGen (A : (Fin (m + 2) → ℝ) →L[ℝ] (Fin (m + 2) → ℝ)) : DSAmb m →L[ℝ] DSAmb m :=
   ((dSCoord m).symm : (Fin (m + 2) → ℝ) →L[ℝ] DSAmb m).comp (A.comp (dSCoord m : DSAmb m →L[ℝ] (Fin (m + 2) → ℝ)))
 
+/-- The transport of an `η`-skew map of `ℝ^{m+2}` is skew for the form of `ℝ × ℝ^{m+1}`. -/
 theorem dSGen_skew {A : (Fin (m + 2) → ℝ) →L[ℝ] (Fin (m + 2) → ℝ)} (hA : A ∈ skewEta (m + 2)) (u v : DSAmb m) :
     dSForm m (dSGen A u) v + dSForm m u (dSGen A v) = 0 := by
   simp only [dSForm_eq_minkowski, dSGen, ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe,
@@ -67,6 +69,7 @@ def dSField (hL : L ≠ 0) (B : DSAmb m →L[ℝ] DSAmb m) (hB : ∀ u v, dSForm
     Π p : deSitterSpace m, TangentSpace (IdS m) p :=
   fun p => Classical.choose (exists_dι_dSIncl_eq hL p (B (dSIncl L p)) (dSForm_self_skew hB _))
 
+/-- The defining property of the induced field: `dι (dSField B) = B ∘ ι`. -/
 theorem dι_dSField (hL : L ≠ 0) (B : DSAmb m →L[ℝ] DSAmb m) (hB : ∀ u v, dSForm m (B u) v + dSForm m u (B v) = 0)
     (p : deSitterSpace m) : dι (I := IdS m) (dSIncl L) p (dSField hL B hB p) = B (dSIncl L p) :=
   Classical.choose_spec (exists_dι_dSIncl_eq hL p (B (dSIncl L p)) (dSForm_self_skew hB _))
