@@ -13,9 +13,20 @@ the coefficient sum `U` satisfies `|U − 1| ≤ C₂(‖z‖ + t)` (all for `�
 with `K` depending only on `c, r, C₁, C₂`. The three parts: `θ (e^{-σ/4t} − e^{-q/4t}) U` (`|e^x − e^y| ≤ e^{max}|x − y|`
 and the third moment `u√u e^{-u} ≤ 8 e^{-u/2}`), `θ e^{-q/4t} (U − 1)` (the first moment `√u e^{-u} ≤ e^{-u/2}`), and
 `(θ − 1) e^{-q/4t}`, supported in `‖z‖ ≥ r/2` (the second moment `u e^{-u} ≤ 2 e^{-u/2}`).
+
+`cutoffGauss_sub_frozen_le₂` needs the Taylor and coefficient bounds only on a smaller ball `‖z‖ < r_b`, with
+`|U| ≤ A` on the support of the cutoff; `delta_of_pointwise` integrates such a pointwise comparison against a bounded
+uniformly continuous function and gets the delta property from that of the frozen Gaussian
+(`Lightlike.frozenGaussian_approx`).
+
+## Main results
+
+* `Lightlike.cutoffGauss_sub_frozen_le`, `Lightlike.cutoffGauss_sub_frozen_le₂`: the pointwise comparisons.
+* `Lightlike.delta_of_pointwise`: a family within `O(√t)` Gaussians of the frozen Gaussian has the delta property,
+  `∫ H(t, p, y) F(y) dy → F(p)/√det G(p)` uniformly in `p`.
 -/
 
-open Set Real
+open Set Real MeasureTheory Filter Matrix
 
 noncomputable section
 
@@ -232,5 +243,125 @@ theorem cutoffGauss_sub_frozen_le₂ {t c r rb C₁ C₂ A : ℝ} (ht : 0 < t) (
             have : 32 / (rb ^ 2 * c) ≤ (A + 1) * (32 / (rb ^ 2 * c)) :=
               le_mul_of_one_le_left (by positivity) (by linarith)
             nlinarith [mul_nonneg hK₀0 hE0, mul_le_mul_of_nonneg_right this hE0]
+
+/-- **The delta property from a pointwise comparison with the frozen Gaussian**: if a family `H(t, p, ·)` of
+continuous functions is within `(4πt)^{-n/2} K √t e^{-c‖y−p‖²/8t}` of the frozen Gaussian of `G_p` (positive definite,
+`λ`-bounded below), then `∫ H(t, p, y) F(y) dy → F(p)/√det G_p` uniformly in `p ∈ S`, for bounded uniformly
+continuous `F`. -/
+theorem delta_of_pointwise {S : Set (Fin n → ℝ)} {G : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ}
+    (hG : ∀ p ∈ S, (G p).PosDef) {lam : ℝ} (hlam : 0 < lam)
+    (hlow : ∀ p ∈ S, ∀ w, lam * ‖w‖ ^ 2 ≤ w ⬝ᵥ (G p *ᵥ w)) {Hf : ℝ → (Fin n → ℝ) → (Fin n → ℝ) → ℝ}
+    {K c : ℝ} (hK : 0 ≤ K) (hc : 0 < c)
+    (hcmp : ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p ∈ S, ∀ y, |Hf t p y - (4 * π * t) ^ (-(n : ℝ) / 2) *
+        Real.exp (-((y - p) ⬝ᵥ (G p *ᵥ (y - p))) / (4 * t))| ≤
+      (4 * π * t) ^ (-(n : ℝ) / 2) * (K * √t * Real.exp (-(c * ‖y - p‖ ^ 2 / (4 * t)) / 2)))
+    (hcont : ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p ∈ S, Continuous (Hf t p)) {F : (Fin n → ℝ) → ℝ} {B : ℝ}
+    (hB : ∀ y, |F y| ≤ B) (hF : UniformContinuous F) :
+    ∀ ε > 0, ∃ t₀ > 0, ∀ t ∈ Ioo (0 : ℝ) t₀, ∀ p ∈ S,
+      |(∫ y, Hf t p y * F y) - F p / √(G p).det| ≤ ε := by
+  intro ε hε
+  have hB0 : 0 ≤ B := (abs_nonneg _).trans (hB 0)
+  obtain ⟨t₁, ht₁, hfr⟩ := frozenGaussian_approx hG hlam hlow hB hF (ε / 2) (by linarith)
+  -- the dominating Gaussian of the comparison
+  set a := (c / 2) / (4 * ((n : ℝ) + 1)) with ha
+  have ha0 : 0 < a := by positivity
+  set A := (1 / (4 * a)) ^ ((n : ℝ) / 2) with hA
+  have hA0 : 0 ≤ A := by positivity
+  -- `t₂` with `B K A √t₂ ≤ ε/2`
+  set t₂ := min 1 ((ε / (2 * (B * K * A + 1))) ^ 2) with ht₂
+  have ht₂0 : 0 < t₂ := lt_min one_pos (by positivity)
+  refine ⟨min t₁ t₂, lt_min ht₁ ht₂0, fun t ht p hp => ?_⟩
+  have ht0 : 0 < t := ht.1
+  have htt₁ : t < t₁ := lt_of_lt_of_le ht.2 (min_le_left _ _)
+  have htt₂ : t < t₂ := lt_of_lt_of_le ht.2 (min_le_right _ _)
+  have ht1 : t ≤ 1 := (htt₂.trans_le (min_le_left _ _)).le
+  have htI : t ∈ Ioc (0 : ℝ) 1 := ⟨ht0, ht1⟩
+  set k : (Fin n → ℝ) → ℝ := fun y =>
+    (4 * π * t) ^ (-(n : ℝ) / 2) * Real.exp (-((y - p) ⬝ᵥ (G p *ᵥ (y - p))) / (4 * t)) with hk
+  set D : (Fin n → ℝ) → ℝ := fun y =>
+    (4 * π * t) ^ (-(n : ℝ) / 2) * Real.exp (-(a / t) * ∑ i, (y i - p i) ^ 2) with hD
+  have hDi : Integrable D := (integrable_exp_neg_mul_sum_sq_sub n (div_pos ha0 ht0) p).const_mul _
+  have hDint : ∫ y, D y = A := integral_heat_gauss_sum ha0 ht0 p
+  -- the comparison bound is dominated by `K √t D`
+  have hdom : ∀ y, (4 * π * t) ^ (-(n : ℝ) / 2) * (K * √t * Real.exp (-(c * ‖y - p‖ ^ 2 / (4 * t)) / 2)) ≤
+      K * √t * D y := by
+    intro y
+    have he : Real.exp (-(c * ‖y - p‖ ^ 2 / (4 * t)) / 2) ≤ Real.exp (-(a / t) * ∑ i, (y i - p i) ^ 2) := by
+      apply Real.exp_le_exp.2
+      have hs : ∑ i, (y i - p i) ^ 2 ≤ ((n : ℝ) + 1) * ‖y - p‖ ^ 2 := by
+        have := sum_sq_le_card_mul_norm_sq (y - p)
+        simp only [Pi.sub_apply] at this
+        nlinarith [sq_nonneg ‖y - p‖]
+      have hn : (0 : ℝ) < (n : ℝ) + 1 := by positivity
+      have h1 : -(a / t) * ∑ i, (y i - p i) ^ 2 = -(c * (∑ i, (y i - p i) ^ 2) / ((n : ℝ) + 1)) / (8 * t) := by
+        rw [ha]; set S := ∑ i, (y i - p i) ^ 2; field_simp; ring
+      rw [h1, show -(c * ‖y - p‖ ^ 2 / (4 * t)) / 2 = -(c * ‖y - p‖ ^ 2) / (8 * t) by ring, neg_div, neg_div,
+        neg_le_neg_iff]
+      apply div_le_div_of_nonneg_right _ (by positivity)
+      rw [div_le_iff₀ hn]
+      nlinarith
+    simp only [hD]
+    have hG0 : 0 ≤ (4 * π * t) ^ (-(n : ℝ) / 2) := by positivity
+    nlinarith [mul_le_mul_of_nonneg_left he (mul_nonneg hG0 (mul_nonneg hK (Real.sqrt_nonneg t)))]
+  -- integrability
+  have hkc : Continuous k := by
+    simp only [hk]
+    exact continuous_const.mul (Real.continuous_exp.comp ((((continuous_id.sub continuous_const).dotProduct
+      (continuous_const.matrix_mulVec (continuous_id.sub continuous_const))).neg).div_const _))
+  have hk0 : ∀ y, 0 ≤ k y := fun y => by positivity
+  have hkD : ∀ y, k y ≤ ((1 : ℝ) / 1) * ((4 * π * t) ^ (-(n : ℝ) / 2) *
+      Real.exp (-(lam / (4 * ((n : ℝ) + 1)) / t) * ∑ i, (y i - p i) ^ 2)) := fun y => by
+    rw [div_one, one_mul]
+    exact mul_le_mul_of_nonneg_left (frozenGauss_le (hlow p hp) ht0 p y hlam.le le_rfl) (by positivity)
+  have hD₁i : Integrable fun y : Fin n → ℝ => ((1 : ℝ) / 1) * ((4 * π * t) ^ (-(n : ℝ) / 2) *
+      Real.exp (-(lam / (4 * ((n : ℝ) + 1)) / t) * ∑ i, (y i - p i) ^ 2)) :=
+    ((integrable_exp_neg_mul_sum_sq_sub n (div_pos (by positivity) ht0) p).const_mul _).const_mul _
+  have hFc : Continuous F := hF.continuous
+  have hkFi : Integrable fun y => k y * F y :=
+    (hD₁i.const_mul B).mono' (hkc.mul hFc).aestronglyMeasurable (Eventually.of_forall fun y => by
+      rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (hk0 y)]
+      calc k y * |F y| ≤ _ * B := mul_le_mul (hkD y) (hB y) (abs_nonneg _) ((hk0 y).trans (hkD y))
+        _ = _ := mul_comm _ _)
+  have hdiffi : Integrable fun y => (Hf t p y - k y) * F y := by
+    refine ((hDi.const_mul (K * √t)).const_mul B).mono'
+      (((hcont t htI p hp).sub hkc).mul hFc).aestronglyMeasurable (Eventually.of_forall fun y => ?_)
+    rw [Real.norm_eq_abs, abs_mul]
+    calc |Hf t p y - k y| * |F y| ≤ (K * √t * D y) * B :=
+          mul_le_mul ((hcmp t htI p hp y).trans (hdom y)) (hB y) (abs_nonneg _) (by positivity)
+      _ = B * (K * √t * D y) := mul_comm _ _
+  have hHFi : Integrable fun y => Hf t p y * F y := by
+    have : (fun y => Hf t p y * F y) = fun y => (Hf t p y - k y) * F y + k y * F y := by funext y; ring
+    rw [this]; exact hdiffi.add hkFi
+  -- the two estimates
+  have h1 : |(∫ y, Hf t p y * F y) - ∫ y, k y * F y| ≤ B * (K * √t * A) := by
+    rw [← integral_sub hHFi hkFi]
+    have : (fun y => Hf t p y * F y - k y * F y) = fun y => (Hf t p y - k y) * F y := by funext y; ring
+    rw [this]
+    calc |∫ y, (Hf t p y - k y) * F y| ≤ ∫ y, |(Hf t p y - k y) * F y| := abs_integral_le_integral_abs
+      _ ≤ ∫ y, B * (K * √t * D y) := by
+          refine integral_mono_of_nonneg (Eventually.of_forall fun y => abs_nonneg _)
+            ((hDi.const_mul _).const_mul _) (Eventually.of_forall fun y => ?_)
+          show |(Hf t p y - k y) * F y| ≤ B * (K * √t * D y)
+          rw [abs_mul]
+          calc |Hf t p y - k y| * |F y| ≤ (K * √t * D y) * B :=
+                mul_le_mul ((hcmp t htI p hp y).trans (hdom y)) (hB y) (abs_nonneg _) (by positivity)
+            _ = B * (K * √t * D y) := mul_comm _ _
+      _ = B * (K * √t * A) := by rw [integral_const_mul, integral_const_mul, hDint]
+  have h2 := hfr t ⟨ht0, htt₁⟩ p hp
+  have hsq : √t ≤ ε / (2 * (B * K * A + 1)) := by
+    have h3 : t ≤ (ε / (2 * (B * K * A + 1))) ^ 2 := htt₂.le.trans (min_le_right _ _)
+    calc √t ≤ √((ε / (2 * (B * K * A + 1))) ^ 2) := Real.sqrt_le_sqrt h3
+      _ = ε / (2 * (B * K * A + 1)) := Real.sqrt_sq (by positivity)
+  have h4 : B * (K * √t * A) ≤ ε / 2 := by
+    have hBKA : 0 ≤ B * K * A := by positivity
+    calc B * (K * √t * A) = (B * K * A) * √t := by ring
+      _ ≤ (B * K * A) * (ε / (2 * (B * K * A + 1))) := by gcongr
+      _ ≤ ε / 2 := by
+          rw [mul_div_assoc', div_le_div_iff₀ (by positivity) (by norm_num)]
+          nlinarith
+  calc |(∫ y, Hf t p y * F y) - F p / √(G p).det|
+      ≤ |(∫ y, Hf t p y * F y) - ∫ y, k y * F y| + |(∫ y, k y * F y) - F p / √(G p).det| := abs_sub_le _ _ _
+    _ ≤ ε / 2 + ε / 2 := add_le_add (h1.trans h4) h2
+    _ = ε := by ring
 
 end Lightlike
