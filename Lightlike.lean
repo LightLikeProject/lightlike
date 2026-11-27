@@ -366,6 +366,7 @@ import Lightlike.Geometry.HeatKernel.ParamLaplacianTests
 import Lightlike.Geometry.HeatKernel.HeatCoeffZero
 import Lightlike.Geometry.HeatKernel.HeatCoeffZeroTests
 import Lightlike.Geometry.HeatKernel.HeatCoeffs
+import Lightlike.Geometry.HeatKernel.HeatCoeffOneDiag
 import Lightlike.Geometry.HeatKernel.HeatCoeffsTests
 import Lightlike.Geometry.HeatKernel.WorldFunctionBounds
 import Lightlike.Geometry.HeatKernel.WorldFunctionBoundsTests
