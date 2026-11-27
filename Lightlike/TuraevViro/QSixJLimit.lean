@@ -263,11 +263,18 @@ def InBox (α₁ α₂ α₃ α₄ β₁ β₂ β₃ : ℤ) (z : ℕ) : Prop :=
 /-- Out of the box, one factor `1/[u]!` has `u < 0`, so the summand vanishes identically. -/
 lemma racahTermG_out {α₁ α₂ α₃ α₄ β₁ β₂ β₃ : ℤ} {z : ℕ} (h : ¬ InBox α₁ α₂ α₃ α₄ β₁ β₂ β₃ z)
     (θ : ℝ) : racahTermG θ α₁ α₂ α₃ α₄ β₁ β₂ β₃ z = 0 := by
+  have hz : ∀ {u : ℤ}, u < 0 → invQFG θ u = 0 := fun hu => if_neg (not_le.mpr hu)
   unfold InBox at h
   unfold racahTermG
   simp only [not_and_or, not_le] at h
-  rcases h with h | h | h | h | h | h | h <;>
-    simp [invQFG, show ¬ (0 : ℤ) ≤ _ from not_le.mpr (sub_neg.mpr h)]
+  rcases h with h | h | h | h | h | h | h
+  · rw [hz (show (z : ℤ) - α₁ < 0 by omega)]; ring
+  · rw [hz (show (z : ℤ) - α₂ < 0 by omega)]; ring
+  · rw [hz (show (z : ℤ) - α₃ < 0 by omega)]; ring
+  · rw [hz (show (z : ℤ) - α₄ < 0 by omega)]; ring
+  · rw [hz (show β₁ - (z : ℤ) < 0 by omega)]; ring
+  · rw [hz (show β₂ - (z : ℤ) < 0 by omega)]; ring
+  · rw [hz (show β₃ - (z : ℤ) < 0 by omega)]; ring
 
 lemma continuousAt_racahTermG (hr : 2 ≤ r) {α₁ α₂ α₃ α₄ β₁ β₂ β₃ : ℤ} {z : ℕ}
     (H : InBox α₁ α₂ α₃ α₄ β₁ β₂ β₃ z → (z : ℤ) - α₁ < r ∧ (z : ℤ) - α₂ < r ∧ (z : ℤ) - α₃ < r ∧
@@ -300,7 +307,7 @@ lemma box_lt {α₁ α₂ α₃ α₄ β₁ β₂ β₃ : ℤ} {z : ℕ} (hz : I
   exact ⟨by linarith, by linarith, by linarith, by linarith, by linarith, by linarith, by linarith⟩
 
 /-- The six differences of the Racah parameters are below `r` under `RacahBound`. -/
-lemma racah_bounds {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} (hb : RacahBound r j₁ j₂ j₄ j₅ j₆) :
+lemma racah_bounds (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} (hb : RacahBound r j₁ j₂ j₄ j₅ j₆) :
     (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) < r ∧
     (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ) < r ∧
     (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ) < r ∧
@@ -314,7 +321,7 @@ lemma continuousAt_racahG (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} (
     ContinuousAt (fun θ => racahG θ j₁ j₂ j₃ j₄ j₅ j₆) (π / r) := by
   obtain ⟨b1, b2, b4, b5, b6⟩ := hb
   unfold racahG
-  obtain ⟨k1, k2, k3, k4, m2, m3⟩ := racah_bounds (j₃ := j₃) ⟨b1, b2, b4, b5, b6⟩
+  obtain ⟨k1, k2, k3, k4, m2, m3⟩ := racah_bounds hr (j₃ := j₃) ⟨b1, b2, b4, b5, b6⟩
   exact tendsto_finset_sum _ fun z _ => continuousAt_racahTermG hr fun h => box_lt h k1 k2 k3 k4 m2 m3
 
 lemma racahG_root (j₁ j₂ j₃ j₄ j₅ j₆ : ℕ) :
@@ -337,11 +344,18 @@ noncomputable def racahRG (r : ℕ) (θ : ℝ) (j₁ j₂ j₃ j₄ j₅ j₆ : 
 
 lemma racahTermRG_out {α₁ α₂ α₃ α₄ β₁ β₂ β₃ : ℤ} {z : ℕ} (h : ¬ InBox α₁ α₂ α₃ α₄ β₁ β₂ β₃ z)
     (θ : ℝ) : racahTermRG r θ α₁ α₂ α₃ α₄ β₁ β₂ β₃ z = 0 := by
+  have hz : ∀ {u : ℤ}, u < 0 → invQFG θ u = 0 := fun hu => if_neg (not_le.mpr hu)
   unfold InBox at h
   unfold racahTermRG
   simp only [not_and_or, not_le] at h
-  rcases h with h | h | h | h | h | h | h <;>
-    simp [invQFG, show ¬ (0 : ℤ) ≤ _ from not_le.mpr (sub_neg.mpr h)]
+  rcases h with h | h | h | h | h | h | h
+  · rw [hz (show (z : ℤ) - α₁ < 0 by omega)]; ring
+  · rw [hz (show (z : ℤ) - α₂ < 0 by omega)]; ring
+  · rw [hz (show (z : ℤ) - α₃ < 0 by omega)]; ring
+  · rw [hz (show (z : ℤ) - α₄ < 0 by omega)]; ring
+  · rw [hz (show β₁ - (z : ℤ) < 0 by omega)]; ring
+  · rw [hz (show β₂ - (z : ℤ) < 0 by omega)]; ring
+  · rw [hz (show β₃ - (z : ℤ) < 0 by omega)]; ring
 
 /-- If one triad of the summation box is above the level (`α ≥ r - 1` for `α = α₁` or `α₄`), every summand
 carries the factor `[r]`: `racahG = η · racahRG`. -/
@@ -355,7 +369,13 @@ lemma racahG_eq_eta_mul (θ : ℝ) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ}
       (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ) (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ)
       (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ)
       (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) z
-  · have hz : r ≤ z + 1 := by unfold InBox at hb; omega
+  · have hz : r ≤ z + 1 := by
+      obtain ⟨h1, -, -, h4, -⟩ := hb
+      rcases h with h | h
+      · have : (j₁ + j₂ + j₃) / 2 ≤ z := by exact_mod_cast h1
+        omega
+      · have : (j₄ + j₅ + j₃) / 2 ≤ z := by exact_mod_cast h4
+        omega
     unfold racahTermG racahTermRG
     rw [qfG_eq_reg r θ (z + 1), if_pos ⟨hz, hr⟩]
     ring
@@ -372,7 +392,7 @@ lemma continuousAt_racahRG (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} 
       (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) z
   · have H : ∀ u : ℤ, u < r → ContinuousAt (fun θ => invQFG θ u) (π / r) :=
       fun u hu => continuousAt_invQFG hr hu
-    obtain ⟨k1, k2, k3, k4, m2, m3⟩ := racah_bounds (j₃ := j₃) ⟨b1, b2, b4, b5, b6⟩
+    obtain ⟨k1, k2, k3, k4, m2, m3⟩ := racah_bounds hr (j₃ := j₃) ⟨b1, b2, b4, b5, b6⟩
     obtain ⟨c1, c2, c3, c4, c5, c6, c7⟩ := box_lt hbox k1 k2 k3 k4 m2 m3
     unfold racahTermRG
     exact (continuousAt_const.mul (continuousAt_qfRegG hr _)).mul
@@ -395,10 +415,13 @@ lemma racahRG_root (j₁ j₂ j₃ j₄ j₅ j₆ : ℕ) :
   unfold racahRG Refl.SRg
   simp only [racahTermRG_root]
   symm
-  refine sum_subset (range_subset.2 (by omega)) fun z hz hz' => ?_
-  rw [mem_range] at hz hz'
+  have hP : (j₁ + j₂ + j₄ + j₅) / 2 ≤ j₁ + j₂ + j₃ + j₄ + j₅ + j₆ := by omega
+  refine sum_subset (range_subset_range.2 ?_) fun z hz hz' => ?_
+  · rw [Int.toNat_natCast]; omega
+  rw [mem_range, Int.toNat_natCast] at hz'
   unfold Refl.regTerm
-  simp [invQFact, show ¬ (0 : ℤ) ≤ (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - z by omega]
+  rw [Refl.invQFact_neg (show (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - z < 0 by omega)]
+  ring
 
 /-- `racahG = η^k · C`, `k = 1` when the first or the fourth triad is above the level (then `C → SRg`), else
 `k = 0` (then `C = racahG`, continuous, `→ qRacahSum`). -/
@@ -414,7 +437,9 @@ lemma decomp_racahG (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} (hb : R
   by_cases h : r - 1 ≤ (j₁ + j₂ + j₃) / 2 ∨ r - 1 ≤ (j₄ + j₅ + j₃) / 2
   · simp only [if_pos h]
     exact ⟨fun θ => racahRG r θ j₁ j₂ j₃ j₄ j₅ j₆, continuousAt_racahRG hr hb, racahRG_root _ _ _ _ _ _,
-      fun θ => by rw [racahG_eq_eta_mul θ h (by omega)]; simp⟩
+      fun θ => by
+        show racahG θ j₁ j₂ j₃ j₄ j₅ j₆ = etaG r θ ^ 1 * (etaG r θ)⁻¹ ^ 0 * racahRG r θ j₁ j₂ j₃ j₄ j₅ j₆
+        rw [pow_one, pow_zero, mul_one]; exact racahG_eq_eta_mul θ h (by omega)⟩
   · simp only [if_neg h]
     have := Decomp.of_continuousAt (r := r) (continuousAt_racahG (j₃ := j₃) hr hb)
     rwa [racahG_root] at this
@@ -450,11 +475,10 @@ lemma delta2Reg_above (hr : 2 ≤ r) {u v x : ℕ} (hs : r - 1 ≤ (u + v + x) /
   rw [Refl.qfactReg_of_ge hr (by omega)]
   have h1 : ((-1 : ℝ) ^ ((u + v + x) / 2 + 1 - r))⁻¹ = (-1) ^ ((u + v + x) / 2 + 1 - r) := by
     rw [← inv_pow, inv_neg, inv_one]
-  rw [div_mul_eq_div_div, mul_comm (qfact r (r - 1)), ← div_div, mul_div_assoc', div_div,
-    mul_comm _ (qfact r (r - 1))]
-  field_simp
-  rw [← h1]
-  field_simp
+  rw [div_eq_mul_inv, div_eq_mul_inv]
+  simp only [mul_inv]
+  rw [h1, show (u + v + x) / 2 + 1 - r = (u + v + x) / 2 + 1 - r from rfl]
+  ring
 
 /-- `E(u, v, 2r-2-x) = E(u, v, x)⁻¹` (from `[r-1-k]! [k]! = [r-1]!`). -/
 lemma E3_reflect (hr : 2 ≤ r) {u v x : ℕ} (hu : u ≤ r - 2) (hv : v ≤ r - 2) (ht : Tri u v x)
@@ -493,6 +517,7 @@ noncomputable def SRgAt (r j₁ j₂ j₃ j₄ j₅ j₆ : ℕ) : ℝ :=
     (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ)
     (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ)
 
+set_option maxHeartbeats 1000000 in
 /-- **The reflection of the regularised sum in the colour `j₃`**: with the two triads through `j₃` above the
 level and the other two within it, `j₃ ↦ 2r - 2 - j₃` multiplies it by `E(j₁,j₂,j₃) E(j₄,j₅,j₃)`. -/
 theorem SRgAt_reflect (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ}
@@ -500,45 +525,67 @@ theorem SRgAt_reflect (hr : 2 ≤ r) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ}
     (l2 : (j₁ + j₅ + j₆) / 2 ≤ r - 2) (l3 : (j₄ + j₂ + j₆) / 2 ≤ r - 2)
     (h1 : r - 1 ≤ (j₁ + j₂ + j₃) / 2) (h4 : r - 1 ≤ (j₄ + j₅ + j₃) / 2) :
     SRgAt r j₁ j₂ (2 * r - 2 - j₃) j₄ j₅ j₆ = E3 r j₁ j₂ j₃ * E3 r j₄ j₅ j₃ * SRgAt r j₁ j₂ j₃ j₄ j₅ j₆ := by
-  unfold Tri at t1 t2 t3 t4
-  have H : Refl.ReflHyp r (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ) (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ)
-      (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ)
-      (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ)
-      (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) := by
+  -- the half-sums are exact (parity), and become variables with linear defining equations
+  obtain ⟨p1, t1a, t1b, t1c⟩ := t1
+  obtain ⟨p2, t2a, t2b, t2c⟩ := t2
+  obtain ⟨p3, t3a, t3b, t3c⟩ := t3
+  obtain ⟨p4, t4a, t4b, t4c⟩ := t4
+  have hj1 : j₁ ≤ r - 2 := by clear h1 h4 l3; omega
+  have hj2 : j₂ ≤ r - 2 := by clear h1 h4 l2; omega
+  have hX : j₃ ≤ 2 * r - 2 := by clear h1 h4 l2 l3; omega
+  have mP : (j₁ + j₂ + j₄ + j₅) % 2 = 0 := by clear h1 h4 l2 l3; omega
+  have mQ : (j₂ + j₃ + j₅ + j₆) % 2 = 0 := by clear h1 h4 l2 l3; omega
+  have mR : (j₃ + j₁ + j₆ + j₄) % 2 = 0 := by clear h1 h4 l2 l3; omega
+  have mA' : (j₁ + j₂ + (2 * r - 2 - j₃)) % 2 = 0 := by clear h1 h4 l2 l3; omega
+  have mD' : (j₄ + j₅ + (2 * r - 2 - j₃)) % 2 = 0 := by clear h1 h4 l2 l3; omega
+  have mQ' : (j₂ + (2 * r - 2 - j₃) + j₅ + j₆) % 2 = 0 := by clear h1 h4 l2 l3; omega
+  have mR' : ((2 * r - 2 - j₃) + j₁ + j₆ + j₄) % 2 = 0 := by clear h1 h4 l2 l3; omega
+  have eA := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero p1)
+  have eB := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero p2)
+  have eC := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero p3)
+  have eD := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero p4)
+  have eP := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero mP)
+  have eQ := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero mQ)
+  have eR := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero mR)
+  have eA' := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero mA')
+  have eD' := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero mD')
+  have eQ' := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero mQ')
+  have eR' := Nat.div_mul_cancel (Nat.dvd_of_mod_eq_zero mR')
+  have eX : 2 * r - 2 - j₃ + j₃ = 2 * r - 2 := Nat.sub_add_cancel hX
+  clear p1 p2 p3 p4 mP mQ mR mA' mD' mQ' mR'
+  unfold SRgAt E3
+  generalize 2 * r - 2 - j₃ = X at *
+  generalize (j₁ + j₂ + j₃) / 2 = A at *
+  generalize (j₁ + j₅ + j₆) / 2 = B at *
+  generalize (j₄ + j₂ + j₆) / 2 = C at *
+  generalize (j₄ + j₅ + j₃) / 2 = D at *
+  generalize (j₁ + j₂ + j₄ + j₅) / 2 = P at *
+  generalize (j₂ + j₃ + j₅ + j₆) / 2 = Q at *
+  generalize (j₃ + j₁ + j₆ + j₄) / 2 = R at *
+  generalize (j₁ + j₂ + X) / 2 = A' at *
+  generalize (j₄ + j₅ + X) / 2 = D' at *
+  generalize (j₂ + X + j₅ + j₆) / 2 = Q' at *
+  generalize (X + j₁ + j₆ + j₄) / 2 = R' at *
+  have H : Refl.ReflHyp r (B : ℤ) (A : ℤ) (D : ℤ) (C : ℤ) (P : ℤ) (Q : ℤ) (R : ℤ) := by
     constructor <;> omega
   have hR := Refl.SRg_reflect hr H
   unfold Refl.ReflAt Refl.rd at hR
-  unfold SRgAt
-  rw [← SRg_swap12_34 r (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ), ← SRg_swap12_34 r (((j₁ + j₂ + (2 * r - 2 - j₃)) / 2 : ℕ) : ℤ)]
-  have q1 : (((j₁ + j₂ + (2 * r - 2 - j₃)) / 2 : ℕ) : ℤ) = (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) +
-      ((r : ℤ) - 1 - ((((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) + (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) -
-        (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ))) := by omega
-  have q2 : (((j₄ + j₅ + (2 * r - 2 - j₃)) / 2 : ℕ) : ℤ) = (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) +
-      ((r : ℤ) - 1 - ((((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) + (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) -
-        (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ))) := by omega
-  have q3 : (((j₂ + (2 * r - 2 - j₃) + j₅ + j₆) / 2 : ℕ) : ℤ) = (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ) +
-      ((r : ℤ) - 1 - ((((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) + (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) -
-        (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ))) := by omega
-  have q4 : ((((2 * r - 2 - j₃) + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) = (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) +
-      ((r : ℤ) - 1 - ((((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) + (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) -
-        (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ))) := by omega
+  rw [← SRg_swap12_34 r (A : ℤ), ← SRg_swap12_34 r (A' : ℤ)]
+  have q1 : (A' : ℤ) = A + ((r : ℤ) - 1 - ((A : ℤ) + D - P)) := by omega
+  have q2 : (D' : ℤ) = D + ((r : ℤ) - 1 - ((A : ℤ) + D - P)) := by omega
+  have q3 : (Q' : ℤ) = Q + ((r : ℤ) - 1 - ((A : ℤ) + D - P)) := by omega
+  have q4 : (R' : ℤ) = R + ((r : ℤ) - 1 - ((A : ℤ) + D - P)) := by omega
   rw [q1, q2, q3, q4, hR]
   congr 1
-  unfold Refl.regFac E3
-  have f1 : ((((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ) - (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ)).toNat =
-      (j₁ + j₂ + j₃) / 2 - j₁ := by omega
-  have f2 : ((((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) - (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ)).toNat =
-      (j₁ + j₂ + j₃) / 2 - j₂ := by omega
-  have f3 : ((((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ)).toNat =
-      (j₁ + j₂ + j₃) / 2 - j₃ := by omega
-  have f4 : ((((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ) - (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ)).toNat =
-      (j₄ + j₅ + j₃) / 2 - j₄ := by omega
-  have f5 : ((((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) - (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ)).toNat =
-      (j₄ + j₅ + j₃) / 2 - j₅ := by omega
-  have f6 : ((((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - (((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ)).toNat =
-      (j₄ + j₅ + j₃) / 2 - j₃ := by omega
-  have f7 : ((((j₁ + j₂ + j₃) / 2 : ℕ) : ℤ) - r + 1).toNat = (j₁ + j₂ + j₃) / 2 + 1 - r := by omega
-  have f8 : ((((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) - r + 1).toNat = (j₄ + j₅ + j₃) / 2 + 1 - r := by omega
+  unfold Refl.regFac
+  have f1 : ((Q : ℤ) - B).toNat = A - j₁ := by omega
+  have f2 : ((R : ℤ) - C).toNat = A - j₂ := by omega
+  have f3 : ((P : ℤ) - D).toNat = A - j₃ := by omega
+  have f4 : ((Q : ℤ) - C).toNat = D - j₄ := by omega
+  have f5 : ((R : ℤ) - B).toNat = D - j₅ := by omega
+  have f6 : ((P : ℤ) - A).toNat = D - j₃ := by omega
+  have f7 : ((A : ℤ) - r + 1).toNat = A + 1 - r := by omega
+  have f8 : ((D : ℤ) - r + 1).toNat = D + 1 - r := by omega
   rw [f1, f2, f3, f4, f5, f6, f7, f8]
   ring
 
