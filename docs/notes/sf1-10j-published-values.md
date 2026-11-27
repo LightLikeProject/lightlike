@@ -1,7 +1,9 @@
 # SF1 t1: published values of the Riemannian Barrett–Crane 10j symbol
 
-Status: literature search done and the values compared numerically (27 Nov 2026). No Lean test yet;
-item t1 stays open. This note records what is published, the conventions, and which values the
+Status: literature search done, values compared numerically, and three values proved in Lean
+(27 Nov 2026): `Tests.bcVertex_half` (7/18), `Tests.bcVertex_one` (307/1500) and
+`Tests.bcVertexBC_mixed` (−163/1728), in `Lightlike/SpinFoam/BarrettCraneValues.lean`; the numerical
+check is `scripts/spin4/bc10j_check.py`. This note records what is published, the conventions, and which values the
 library's `Lightlike.SpinFoam.BC.bcVertex` reproduces.
 
 ## Sources read
@@ -57,8 +59,7 @@ author's table (2) and Egan's exact values (3).
 The library's definition was evaluated directly in floating point: `fourJ` from the Wigner 3j
 symbols (SymPy), `k5Legs` (a negated projection is a reversed index), and `edgeSign` on each edge.
 Then `bcVertex = Σ_i k5Contract(j; ι_{i_a})²` (`k5Contract4_mul`), with numpy einsum over the ten
-edge projections. The script is not in the repository; a SymPy check under `scripts/` with this
-wrong-input control would go with the Lean test.
+edge projections (`scripts/spin4/bc10j_check.py`).
 
 | spins (Christensen–Egan order) | published | `bcVertexBC` (float) |
 |---|---|---|
@@ -83,11 +84,12 @@ Candidates, smallest first (each would be a theorem in `Lightlike/SpinFoam/Barre
 - `bcVertex` with all ten spins `1/2` (doubled `1`) equals `7/18`: 32 channel tuples, each a 15j
   symbol of spin-½ legs with channels in {0, 1};
 - all spins `1` equals `307/1500`;
-- the negative mixed value, through `bcVertexBC`, giving `−163/1728`. This rational form is PROXY,
-  from the float `0.094328703703704 · 1728 = 163.000`.
+- the negative mixed value, through `bcVertexBC`, giving `−163/1728` (now proved exactly; the table's
+  `−0.0943287037037036923959` agrees to double precision).
 
 The library already has the spin-0 value (`Tests.bcVertex_zero`, value 1) and the closed-loop and
 triangle values, which are not 4-simplex values. Route: `bcVertex_eq_sum` reduces to 15j symbols,
 then `fifteenJSimplex` values from the 6j formula (`Lightlike/Recoupling/FifteenJ.lean`) at doubled
 spin 1, using the finite-case method of AGENTS.md: an integer table and kernel `decide`. This is not
-started.
+started at the time of the search; it is now done for the three values above. The value at ten
+spins 3/2 (1024 channel tuples) is beyond this kernel evaluation and is checked numerically only.
