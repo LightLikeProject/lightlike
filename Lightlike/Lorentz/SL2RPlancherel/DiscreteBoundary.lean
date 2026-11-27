@@ -8,6 +8,8 @@ For the discrete direction `φ_i` (`l - s ≤ i < l`) and a matrix coefficient `
 Casimir boundary form `B = sinh (φ_i conj Φ' - φ_i' conj Φ)` tends to `0` at `0⁺`
 (`tendsto_casBdry_phiN_zero`: `φ_i` extends continuously and `sinh φ_i' → 0`) and at `∞`
 (`tendsto_casBdry_phiN_atTop`: `sinh φ_i` is bounded and `|Φ|, |Φ'| ≤ C e^{-ξ/4}`).
+Hence the Casimir integral `∫_{(0,∞)} (L φ_i conj Φ - φ_i conj (L Φ)) sinh` vanishes whenever its
+integrand is integrable (`integral_casimir_phiN_mcoefP_eq_zero`).
 Layer 2c-v of the Plancherel formula on `SL(2,ℝ)` (opposite-sign blocks), milestone HA3.
 -/
 
@@ -171,5 +173,48 @@ theorem tendsto_casBdry_phiN_atTop (s l i : ℕ) (hli : l ≤ i + s) (hil : i < 
         simpa [neg_div] using (tendsto_neg_atTop_atBot.atBot_div_const (by norm_num : (0 : ℝ) < 4))
       exact this
     simpa using this.const_mul M
+
+lemma contDiffOn_phiN (s l i : ℕ) :
+    ContDiffOn ℝ 2 (fun t => ((phiN s l i t : ℝ) : ℂ)) (Ioi 0) := by
+  have h : ContDiffOn ℝ 2 (phiN s l i) (Ioi 0) := by
+    unfold phiN
+    exact ((Real.contDiff_cosh.sub contDiff_const).pow _).contDiffOn.div
+      (Real.contDiff_sinh.pow _).contDiffOn fun t ht => pow_ne_zero _ (Real.sinh_pos_iff.2 ht).ne'
+  exact Complex.ofRealCLM.contDiff.comp_contDiffOn h
+
+/-- **The Casimir integral of `φ_i` against a matrix coefficient vanishes**, for an integrable
+symmetric integrand. -/
+theorem integral_casimir_phiN_mcoefP_eq_zero (s l i : ℕ) (hli : l ≤ i + s) (hil : i < l) (ν : ℝ)
+    (m n : ℤ) (r : ℝ)
+    (hf : IntegrableOn (fun x => (radialCasimir l r (fun t => ((phiN s l i t : ℝ) : ℂ)) x *
+      (starRingEnd ℂ) (mcoefP ν m n x) - ((phiN s l i x : ℝ) : ℂ) *
+        (starRingEnd ℂ) (radialCasimir l r (mcoefP ν m n) x)) * (Real.sinh x : ℂ)) (Ioi 0)) :
+    ∫ x in Ioi 0, (radialCasimir l r (fun t => ((phiN s l i t : ℝ) : ℂ)) x *
+      (starRingEnd ℂ) (mcoefP ν m n x) - ((phiN s l i x : ℝ) : ℂ) *
+        (starRingEnd ℂ) (radialCasimir l r (mcoefP ν m n) x)) * (Real.sinh x : ℂ) = 0 := by
+  set F : ℝ → ℂ := fun t => ((phiN s l i t : ℝ) : ℂ) with hF
+  have hFc := contDiffOn_phiN s l i
+  have hGc : ContDiffOn ℝ 2 (mcoefP ν m n) (Ioi 0) :=
+    ((contDiff_mcoefP ν m n).of_le (by norm_cast)).contDiffOn
+  have hint_b : ∀ b : ℝ, 0 < b → ∫ x in (0 : ℝ)..b, (radialCasimir l r F x *
+      (starRingEnd ℂ) (mcoefP ν m n x) - F x *
+        (starRingEnd ℂ) (radialCasimir l r (mcoefP ν m n) x)) * (Real.sinh x : ℂ) =
+      casBdry F (mcoefP ν m n) b := by
+    intro b hb
+    rw [intervalIntegral.integral_of_le hb.le]
+    have hl := tendsto_intervalIntegral_zero_right hb (hf.mono_set Ioc_subset_Ioi_self)
+    have heq : ∀ᶠ a in 𝓝[>] (0 : ℝ), casBdry F (mcoefP ν m n) b - casBdry F (mcoefP ν m n) a =
+        ∫ x in a..b, (radialCasimir l r F x * (starRingEnd ℂ) (mcoefP ν m n x) - F x *
+          (starRingEnd ℂ) (radialCasimir l r (mcoefP ν m n) x)) * (Real.sinh x : ℂ) := by
+      filter_upwards [Ioo_mem_nhdsGT hb] with a ha
+      exact (integral_radialCasimir_symm _ _ ha.1 ha.2.le hFc hGc).symm
+    have hl2 := (tendsto_const_nhds (x := casBdry F (mcoefP ν m n) b)).sub
+      (tendsto_casBdry_phiN_zero s l i hli ν m n)
+    rw [sub_zero] at hl2
+    exact tendsto_nhds_unique hl (hl2.congr' heq)
+  have hlim := intervalIntegral_tendsto_integral_Ioi 0 hf tendsto_id
+  have hlim2 := (tendsto_casBdry_phiN_atTop s l i hli hil ν m n).congr'
+    (by filter_upwards [eventually_gt_atTop (0 : ℝ)] with b hb using (hint_b b hb).symm)
+  exact tendsto_nhds_unique hlim hlim2
 
 end Lightlike.Lorentz.SL2RPlancherel
