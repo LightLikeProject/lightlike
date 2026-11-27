@@ -14,7 +14,7 @@ Part 1: the side conditions of the pentagon at `q = e^{iθ}` from `sin (nθ) ≠
 `qE_pow_ne_one` (`q^{2n} ≠ 1`), `loopVal_qE_ne_zero`, `chebD_qE_ne_zero`, `qfG_ne_zero`.
 -/
 
-open Complex Finset
+open Complex Finset Lightlike.Pentagon
 
 namespace Lightlike.TV
 
@@ -375,5 +375,82 @@ theorem klK_right (θ : ℝ) {a b c d I1 I2 T J1 J2 : ℕ} :
   unfold klK
   rw [pow_add]
   ring
+
+/-! ## Admissibility and the triangles of the middle colour -/
+
+/-- A triangle `(x, y, z)` in multiplied-out form: `x + y = z + 2u` with `u ≤ x`, `u ≤ y`,
+`u = (x + y - z)/2`. -/
+theorem tri_halves {x y z : ℕ} (h : Tri x y z) :
+    x + y = z + 2 * ((x + y - z) / 2) ∧ (x + y - z) / 2 ≤ x ∧ (x + y - z) / 2 ≤ y := by
+  unfold Tri at h; omega
+
+/-- **The three admissibilities of the left side of the pentagon from the triangles of `x`**
+(in multiplied-out form). -/
+theorem kladm_of_tri {a b c d e f p q r' e₀ d₀ g₀ j m i fi x h dd : ℕ}
+    (hx : x + 2 * fi = a + b) (hfa : fi ≤ a) (hfb : fi ≤ b)
+    (hh : x + c = d + 2 * h) (hhx : h ≤ x) (hhc : h ≤ c)
+    (hdd : e + x = f + 2 * dd) (hde : dd ≤ e) (hdx : dd ≤ x)
+    (h1 : e + a = r' + 2 * e₀) (h1a : e₀ ≤ e) (h1b : e₀ ≤ a)
+    (h2 : r' + b = f + 2 * d₀) (h2a : d₀ ≤ r') (h2b : d₀ ≤ b)
+    (h3 : f + c = q + 2 * g₀) (h3a : g₀ ≤ f) (h3b : g₀ ≤ c)
+    (h4 : b + c = p + 2 * j) (h4a : j ≤ b) (h4b : j ≤ c)
+    (h5 : a + p = d + 2 * m) (h5a : m ≤ a) (h5b : m ≤ p)
+    (h6 : e + d = q + 2 * i) (h6a : i ≤ e) (h6b : i ≤ d) :
+    KLAdm a b c fi h j m ∧ KLAdm e (a + b - 2 * fi) c dd g₀ h i ∧ KLAdm e a b e₀ d₀ fi dd := by
+  unfold KLAdm
+  simp only [le_min_iff]
+  refine ⟨⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩, ⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩,
+    ⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩⟩ <;> omega
+
+/-- **The triangles of `x` from the admissibilities** (the converse of `kladm_of_tri`). -/
+theorem tri_of_kladm {a b c d e f p q r' e₀ d₀ g₀ j m i fi h dd : ℕ}
+    (h1 : e + a = r' + 2 * e₀) (h2 : r' + b = f + 2 * d₀)
+    (h4 : b + c = p + 2 * j) (h4a : j ≤ b) (h4b : j ≤ c) (h5 : a + p = d + 2 * m) (h5a : m ≤ a)
+    (h5b : m ≤ p)
+    (A1 : KLAdm a b c fi h j m) (A3 : KLAdm e a b e₀ d₀ fi dd) :
+    Tri a b (a + b - 2 * fi) ∧ Tri c d (a + b - 2 * fi) ∧ Tri e f (a + b - 2 * fi) := by
+  unfold KLAdm at A1 A3
+  simp only [le_min_iff] at A1 A3
+  obtain ⟨⟨a11, a12⟩, ⟨a21, a22⟩, -, -, a5⟩ := A1
+  obtain ⟨⟨b11, b12⟩, ⟨b21, b22⟩, -, ⟨b41, b42⟩, b5⟩ := A3
+  unfold Tri
+  refine ⟨⟨?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_, ?_⟩⟩ <;> omega
+
+theorem tri_swap {x y z : ℕ} (h : Tri x y z) : Tri y x z := by unfold Tri at *; omega
+
+theorem tri_rot {x y z : ℕ} (h : Tri x y z) : Tri y z x := by unfold Tri at *; omega
+
+/-- The q-Racah sum vanishes when a face sum exceeds a pair sum (its support is empty). -/
+theorem racahG_eq_zero_of_lt (θ : ℝ) {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ}
+    (h : min ((j₁ + j₂ + j₄ + j₅) / 2) (min ((j₂ + j₃ + j₅ + j₆) / 2) ((j₃ + j₁ + j₆ + j₄) / 2)) <
+      max (max ((j₁ + j₂ + j₃) / 2) ((j₁ + j₅ + j₆) / 2)) (max ((j₄ + j₂ + j₆) / 2) ((j₄ + j₅ + j₃) / 2))) :
+    racahG θ j₁ j₂ j₃ j₄ j₅ j₆ = 0 := by
+  rw [racahG_eq_Icc, Icc_eq_empty (by omega), sum_empty]
+
+/-- **Reindexing the sum of `GenBE`** by `x = a + b - 2f`: a function supported on the triangles
+`(a, b, x)` sums over `x ≤ a + b` as over `f ≤ min a b`. -/
+theorem sum_reindex {a b : ℕ} (g : ℕ → ℝ) (hg : ∀ x, g x ≠ 0 → Tri a b x) :
+    ∑ fi ∈ range (a + 1), (if fi ≤ min a b then g (a + b - 2 * fi) else 0) =
+      ∑ x ∈ range (a + b + 1), g x := by
+  refine sum_bij_ne_zero (fun fi _ _ => a + b - 2 * fi) ?_ ?_ ?_ ?_
+  · intro fi hfi hne
+    simp only [mem_range] at hfi ⊢
+    omega
+  · intro f₁ h₁₁ h₁₂ f₂ h₂₁ h₂₂ heq
+    have k1 : f₁ ≤ min a b := by by_contra hc; exact h₁₂ (by rw [ite_eq_right hc])
+    have k2 : f₂ ≤ min a b := by by_contra hc; exact h₂₂ (by rw [ite_eq_right hc])
+    simp only [le_min_iff] at k1 k2
+    omega
+  · intro x hx hgx
+    have ht := hg x hgx
+    unfold Tri at ht
+    refine ⟨(a + b - x) / 2, by simp only [mem_range]; omega, ?_, ?_⟩
+    · rw [ite_eq_left (by simp only [le_min_iff]; omega),
+        show a + b - 2 * ((a + b - x) / 2) = x by omega]
+      exact hgx
+    · omega
+  · intro fi _ hne
+    have k : fi ≤ min a b := by by_contra hc; exact hne (by rw [ite_eq_right hc])
+    rw [ite_eq_left k]
 
 end Lightlike.TV
