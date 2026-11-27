@@ -392,6 +392,8 @@ import Lightlike.Geometry.HeatKernel.DiagonalVanishingTests
 import Lightlike.Geometry.HeatKernel.ParamIntegralDeriv
 import Lightlike.Geometry.HeatKernel.ShiftedParametrix
 import Lightlike.Geometry.HeatKernel.ShiftedParametrixTests
+import Lightlike.Geometry.HeatKernel.ChartOperatorBound
+import Lightlike.Geometry.HeatKernel.ChartOperatorBoundTests
 import Lightlike.Geometry.HeatKernel.CutoffAnsatz
 import Lightlike.Geometry.HeatKernel.CutoffAnsatzTests
 import Lightlike.Geometry.HeatKernel.ChartParametrix
