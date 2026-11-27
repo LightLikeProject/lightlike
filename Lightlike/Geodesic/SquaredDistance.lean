@@ -11,7 +11,8 @@ by a unique short geodesic, with initial velocity `V(p, y)` depending smoothly o
 
 `σ(p, y) = g_p(V(p, y), V(p, y))`
 
-is smooth near the diagonal, vanishes on it, its velocity `V(p, ·)` has derivative the identity at `p`, the raised gradient
+is smooth near the diagonal, has a smooth joint inverse `E(p, v)` (normal coordinates with the base point as a
+parameter), vanishes on it, its velocity `V(p, ·)` has derivative the identity at `p`, the raised gradient
 `T = g⁻¹ dσ/2` satisfies `D_y V(p, y) T = V(p, y)` (so `g⁻¹(dσ, du)/2` is the Euler operator in normal coordinates), and it
 satisfies the **eikonal equation**
 
@@ -86,6 +87,9 @@ lemma fderiv_pairing_self (hg : Lightlike.IsCoordMetric g U) {p : Fin n → ℝ}
 theorem exists_sqDist_eikonal (hg : Lightlike.IsCoordMetric g U) {x : Fin n → ℝ} (hx : x ∈ U) :
     ∃ (W : Set ((Fin n → ℝ) × (Fin n → ℝ))) (V : (Fin n → ℝ) × (Fin n → ℝ) → (Fin n → ℝ)),
       IsOpen W ∧ (x, x) ∈ W ∧ ContDiffOn ℝ ∞ V W ∧
+      (∃ (S : Set ((Fin n → ℝ) × (Fin n → ℝ))) (Ex : (Fin n → ℝ) × (Fin n → ℝ) → (Fin n → ℝ)),
+        IsOpen S ∧ ContDiffOn ℝ ∞ Ex S ∧ (∀ q ∈ W, (q.1, V q) ∈ S ∧ Ex (q.1, V q) = q.2) ∧
+        ∀ s ∈ S, (s.1, Ex s) ∈ W ∧ V (s.1, Ex s) = s.2) ∧
       (∀ q ∈ W, q.1 ∈ U ∧ q.2 ∈ U) ∧
       (∀ p, (p, p) ∈ W → V (p, p) = 0) ∧
       (∀ p, (p, p) ∈ W → HasFDerivAt (fun y => V (p, y)) (ContinuousLinearMap.id ℝ (Fin n → ℝ)) p) ∧
@@ -124,7 +128,23 @@ theorem exists_sqDist_eikonal (hg : Lightlike.IsCoordMetric g U) {x : Fin n → 
     refine ContDiffOn.sum fun i _ => ContDiffOn.sum fun j _ => ?_
     refine ((contDiffOn_pi.1 hVs i).mul (((hg.smooth i j).comp contDiffOn_fst fun q hq => hU1 q hq).mul
       (contDiffOn_pi.1 hVs j)))
-  refine ⟨W, V, hWo, ⟨?_, ?_⟩, hVs, fun q hq => ⟨hU1 q hq, hU2 q hq⟩, ?_, ?_, ?_, hσs, ?_⟩
+  -- the joint inverse `E` of `V` (normal coordinates, with the base point as a parameter)
+  have hEinv : ∃ (S : Set ((Fin n → ℝ) × (Fin n → ℝ))) (Ex : (Fin n → ℝ) × (Fin n → ℝ) → (Fin n → ℝ)),
+      IsOpen S ∧ ContDiffOn ℝ ∞ Ex S ∧ (∀ q ∈ W, (q.1, V q) ∈ S ∧ Ex (q.1, V q) = q.2) ∧
+      ∀ s ∈ S, (s.1, Ex s) ∈ W ∧ V (s.1, Ex s) = s.2 := by
+    refine ⟨Θ.source ∩ {s | (s.1, (0 : Fin n → ℝ)) ∈ Θ.source}, E,
+      Θ.open_source.inter (Θ.open_source.preimage (continuous_fst.prodMk continuous_const)),
+      hEs.mono fun s hs => hΘs hs.1, fun q hq => ?_, fun s hs => ?_⟩
+    · have hsrc : (q.1, V q) ∈ Θ.source := hrq q hq ▸ hr q hq
+      refine ⟨⟨hsrc, hq.2⟩, ?_⟩
+      rw [← hrq q hq]
+      exact ((hq12 q hq).2).symm
+    · have hΘs' := hΘ s hs.1
+      refine ⟨⟨?_, hs.2⟩, ?_⟩
+      · rw [← hΘs']; exact Θ.map_source hs.1
+      · simp only [hV]
+        rw [← hΘs', Θ.left_inv hs.1]
+  refine ⟨W, V, hWo, ⟨?_, ?_⟩, hVs, hEinv, fun q hq => ⟨hU1 q hq, hU2 q hq⟩, ?_, ?_, ?_, hσs, ?_⟩
   · -- `(x, x) ∈ Θ.target`
     have := Θ.map_source hx0
     rwa [hΘ _ hx0, hE0 x (mem_ball_self hρ)] at this
