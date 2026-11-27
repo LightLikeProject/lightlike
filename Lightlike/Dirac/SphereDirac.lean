@@ -2,6 +2,8 @@ import Mathlib
 import Lightlike.Dirac.SphereSpin
 import Lightlike.Spacetime.LeviCivita
 import Lightlike.Dirac.SpinManifold
+import Lightlike.Dirac.StereoSphere
+import Lightlike.Dirac.LichnerowiczGeneral
 
 /-!
 # The spin connection of the 2-sphere in the north frame
@@ -189,5 +191,65 @@ theorem connForm_sphere_north (y : Fin 2 → ℝ) (a b c : Fin 2) :
   rw [mvfderiv_gpair_frameN b c hp, mvfderiv_gpair_frameN c a hp, mvfderiv_gpair_frameN a b hp,
     g_frameN_bracket, g_frameN_bracket, g_frameN_bracket]
   fin_cases a <;> fin_cases b <;> fin_cases c <;> simp <;> ring
+
+/-! ## The Dirac operator in the north frame is the chart operator `diracF ρ stereoF stereoOmega` -/
+
+section Chart
+
+variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+
+lemma connForm_sphere_north_eq (x : E 2) (a : Fin 2) :
+    sphereSpinStructure.connForm true (stereoN (modelEquiv2 x)) a = stereoOmega x a := by
+  ext b c
+  rw [connForm_sphere_north]
+  rfl
+
+lemma stereoH_eq (x : E 2) : stereoH x = (nsq (modelEquiv2 x) + 1) / 2 := by
+  unfold stereoH
+  rw [← norm_sq_modelEquiv2_symm, ContinuousLinearEquiv.symm_apply_apply]; ring
+
+lemma modelEquiv2_stereoF (x : E 2) (a : Fin 2) :
+    modelEquiv2 (stereoF x a) = frameFlat a (modelEquiv2 x) := by
+  unfold stereoF frameFlat
+  rw [map_smul, stereoH_eq]
+  congr 1
+
+/-- The chain rule through the north chart: `d(φ ∘ σN ∘ e)ₓ(v) = dφ(dσN(e v))`. -/
+lemma fderiv_comp_stereoN {φ : S2 → V} {x : E 2}
+    (hφ : MDifferentiableAt I2 𝓘(ℝ, V) φ (stereoN (modelEquiv2 x))) (v : E 2) :
+    fderiv ℝ (φ ∘ stereoN ∘ modelEquiv2) x v =
+      mvfderiv I2 φ (stereoN (modelEquiv2 x)) (mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 stereoN (modelEquiv2 x) (modelEquiv2 v)) := by
+  have hσ : MDifferentiableAt 𝓘(ℝ, Fin 2 → ℝ) I2 stereoN (modelEquiv2 x) :=
+    (contMDiff_stereoN (modelEquiv2 x)).mdifferentiableAt (by simp)
+  have h1 : fderiv ℝ ((φ ∘ stereoN) ∘ modelEquiv2) x =
+      (fderiv ℝ (φ ∘ stereoN) (modelEquiv2 x)).comp (modelEquiv2 : E 2 →L[ℝ] Fin 2 → ℝ) :=
+    modelEquiv2.comp_right_fderiv
+  show fderiv ℝ ((φ ∘ stereoN) ∘ modelEquiv2) x v = _
+  have h2 : fderiv ℝ (φ ∘ stereoN) (modelEquiv2 x) (modelEquiv2 v) =
+      mfderiv 𝓘(ℝ, Fin 2 → ℝ) 𝓘(ℝ, V) (φ ∘ stereoN) (modelEquiv2 x) (modelEquiv2 v) := by
+    rw [mfderiv_eq_fderiv]; rfl
+  rw [h1, ContinuousLinearMap.comp_apply]
+  erw [h2, mfderiv_comp _ hφ hσ]
+  rfl
+
+/-- **The Dirac operator of the spin structure of `S2` in the north frame** is the chart operator
+`diracF ρ stereoF stereoOmega` of `Lightlike/Dirac/StereoSphere.lean`, read through the north chart. -/
+theorem dirac_sphere_north (ρ : CliffordRep 2 V) {φ : S2 → V} {x : E 2}
+    (hφ : MDifferentiableAt I2 𝓘(ℝ, V) φ (stereoN (modelEquiv2 x))) :
+    sphereSpinStructure.dirac ρ true φ (stereoN (modelEquiv2 x)) =
+      diracF ρ stereoF stereoOmega (φ ∘ stereoN ∘ modelEquiv2) x := by
+  unfold SpinStructure.dirac diracF
+  refine Finset.sum_congr rfl fun a _ => ?_
+  congr 1
+  unfold SpinStructure.nabla SpinStructure.nablaV nablaF
+  rw [fderiv_comp_stereoN hφ, modelEquiv2_stereoF]
+  have hC := connForm_sphere_north_eq x a
+  unfold SpinStructure.connForm at hC
+  rw [hC]
+  congr 2
+  rw [← dStereoN_apply]
+  exact frameN_stereoN a (modelEquiv2 x)
+
+end Chart
 
 end Lightlike.Dirac
