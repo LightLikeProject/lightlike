@@ -1,0 +1,26 @@
+- id: LL-XXXX-a
+  title: The q-Biedenharn–Elliott identity holds at every level r ≥ 2
+  area: TuraevViro
+  file: Lightlike/TuraevViro/QBiedenharnElliott.lean
+  decls: [Lightlike.TV.qBiedenharnElliott_all]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VI. 6j-symbols|10.1515/9783110883275-007"}
+  review: kernel-checked
+  note: "For every level r ≥ 2, qBiedenharnElliott hr (the pentagon identity of the quantum 6j symbols at q = e^{iπ/r}, in the form used by the Turaev–Viro state sum, LL-0031) is a theorem with no hypothesis. Route: the recoupling coefficient of the Temperley–Lieb model is the Kauffman–Lins coefficient at generic q (TemperleyLieb.Fc_eq_klCoef); with it the Temperley–Lieb pentagon gives the generic identity GenBE θ at every angle θ with sin(nθ) ≠ 0 for 1 ≤ n ≤ 2S + 4 (genBE_of_generic, S the sum of the nine arguments); these finitely many conditions hold on a punctured neighbourhood of π/r (eventually_sin_ne: at a zero of sin(nθ) the derivative n cos(nθ) does not vanish), and the limit θ → π/r gives the identity at the root of unity (qBiedenharnElliott_of_genBE). It contains the earlier cases r = 3 (qBiedenharnElliott_three) and r = 4, 5 (the task files Tasks/QU/T_QU1_P2.lean and T_QU1_P4.lean), which stay as they are. Checked: the statement is the existing qBiedenharnElliott hr, unchanged."
+  since: unreleased
+- id: LL-XXXX-b
+  title: Turaev–Viro invariance under the 2-3 and 1-4 moves at every level r ≥ 2, with no hypothesis
+  area: TuraevViro
+  file: Lightlike/TuraevViro/TuraevViroMoves.lean
+  decls: [Lightlike.TV.turaevViro_move23_all, Lightlike.TV.turaevViro_move14_all]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
+  review: kernel-checked
+  note: "At every level r ≥ 2 the normalised Turaev–Viro state sum of a triangulated 3-manifold is unchanged by the 2-3 and the 1-4 Pachner move, with no hypothesis: turaevViro_move23_all and turaevViro_move14_all apply turaevViro_move23_of_BE and turaevViro_move14_of_BE to qBiedenharnElliott_all (LL-XXXX-a), the q-orthogonality being qOrthogonality_proved (LL-0075). This discharges the hypotheses of LL-0031, whose conditional statements turaevViro_move23 and turaevViro_move14 stay. Not covered here: invariance up to PL homeomorphism at r ≥ 4; at r = 3 it is turaevViro3_plHomeomorphic (LL-0289)."
+  since: unreleased
