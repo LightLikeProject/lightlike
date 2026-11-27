@@ -2307,6 +2307,7 @@ import Lightlike.SpinFoam.EPRLStateSum.OrderDependence
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
+import Lightlike.SpinFoam.BarrettCraneUnique
 import Lightlike.SpinFoam.BarrettCraneTests
 import Lightlike.SpinFoam.ReisenbergerCore
 import Lightlike.SpinFoam.GaugeIndependence
