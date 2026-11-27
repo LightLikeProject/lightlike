@@ -392,6 +392,19 @@ non-vacuity check (stated, not proven) [41].
     `Lorentz.SL2RPlancherel.integral_chain_mul_profile_eq_zero`: ladder chain images with an offset a ∈ {0, 1/2} are
     orthogonal to the radial profiles of `D_n⁻`, n = 2(a + ν)
 
+96. Lightlike/Lorentz/SL2RIrreducible/Criterion.lean - `Lorentz.SL2R.IsTopologicallyIrreducible`,
+    `Lorentz.SL2R.isTopologicallyIrreducible_of_weights`, `Lorentz.SL2R.isTopologicallyIrreducible_comp`
+97. Lightlike/Lorentz/SL2RIrreducible/Discrete.lean - `Lorentz.SL2R.discreteSeries_isIrreducible`,
+    `Lorentz.SL2R.discreteSeriesMinus`, `Lorentz.SL2R.discreteSeriesMinus_rot`,
+    `Lorentz.SL2R.discreteSeriesMinus_isIrreducible`
+98. Lightlike/Lorentz/SL2RIrreducible/PrincipalWeights.lean - `Lorentz.SL2R.weightVec`,
+    `Lorentz.SL2R.principalSeries_rot_weightL2`, `Lorentz.SL2R.inner_weightL2_of_ne`
+99. Lightlike/Lorentz/SL2RIrreducible/PrincipalLadder.lean - `Lorentz.SL2R.ladder_weightVec`,
+    `Lorentz.SL2R.hasDerivAt_diagPairing`, `Lorentz.SL2R.exists_inner_ne_zero`
+100. Lightlike/Lorentz/SL2RIrreducible/PrincipalComplete.lean - `Lorentz.SL2R.weightL2_complete`
+101. Lightlike/Lorentz/SL2RIrreducible/Principal.lean - `Lorentz.SL2R.principalSeries_isIrreducible`,
+    `Lorentz.SL2R.weightExp_sub_eq_zero_iff`, `Lorentz.SL2R.exists_weightExp_sub_eq_zero_iff`
+
 ## References
 
 1. W. Rühl, *The Lorentz Group and Harmonic Analysis*, W. A. Benjamin, 1970.
