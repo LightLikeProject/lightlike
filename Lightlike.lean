@@ -703,6 +703,8 @@ import Lightlike.Lorentz.SL2RPlancherel.OppositeIdent
 import Lightlike.Lorentz.SL2RPlancherel.OppositeL2
 import Lightlike.Lorentz.SL2RPlancherel.OppositeBlockIdent
 import Lightlike.Lorentz.SL2RPlancherel.OppositeBlockCoeff
+import Lightlike.Lorentz.SL2RPlancherel.PrincipalBlockFull
+import Lightlike.Lorentz.SL2RPlancherel.PrincipalBlockSameFull
 import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Linearity
 import Lightlike.Lorentz.SL2RPlancherel.WeightIntegrable
