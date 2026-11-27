@@ -2597,6 +2597,7 @@ import Lightlike.Spacetime.PullbackMetric
 import Lightlike.Spacetime.InducedKilling
 import Lightlike.Spacetime.ImmersionSection
 import Lightlike.Spacetime.SpaceForms.DeSitter
+import Lightlike.Spacetime.SpaceForms.DeSitterKilling
 import Lightlike.Spacetime.SphereMetric
 import Lightlike.Spacetime.StereoConformal
 import Lightlike.Spacetime.ConformalKilling

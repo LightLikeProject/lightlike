@@ -7412,3 +7412,16 @@
   review: kernel-checked
   note: "The manifold is the whole of R x S^m (Mathlib's product of the line and the unit sphere of R^(m+1), the model transported to Fin (m+1) -> R, time first), m any natural number and L any nonzero real. The metric is the pullback of the Minkowski form -ab + <x, y> of R x R^(m+1) by iota(tau, omega) = (L sinh tau, L cosh tau omega), whose image is the hyperboloid eta(x, x) = L^2 (dSForm_dSIncl_self); in the coordinates (tau, omega) it is L^2 (-dtau^2 + cosh^2 tau dOmega^2), the global form of de Sitter space. d iota is injective with image exactly the eta-orthogonal complement of the point (dι_dSIncl_injective, exists_dι_dSIncl_eq), so the metric is nondegenerate on every tangent space (deSitterSpaceMetric, through pullback_nondeg_of_quadric). MEASURED: the metric has Lorentzian signature (-, +, ..., +) at every point (isLorentzianForm_deSitterSpaceMetric), shown with an explicit eta-orthonormal frame, (1/L) d_tau and (L cosh tau)^(-1) times preimages of an orthonormal basis of the orthogonal complement of omega, and isLorentzianForm_of_frame (n eta-orthonormal vectors of an n-dimensional space form a basis); deSitterSpaceLorentzian is the resulting LorentzianMetric. Curvature and Killing fields are separate entries. Comparison with the cited section (Carroll, chapter 8, de Sitter space as a hyperboloid in Minkowski space) pending: no source was read at the location."
   since: unreleased
+- id: LL-0576
+  title: De Sitter space R x S^m has n(n+1)/2 linearly independent smooth Killing fields, the Lorentz algebra of the ambient Minkowski space
+  area: Spacetime
+  file: Lightlike/Spacetime/SpaceForms/DeSitterKilling.lean
+  decls: [Lightlike.dSForm_eq_minkowski, Lightlike.dSField, Lightlike.dι_dSField, Lightlike.contMDiff_dSField, Lightlike.isKillingAt_dSField, Lightlike.eq_zero_of_vanish_dSIncl, Lightlike.exists_killing_deSitterSpace]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "On the whole manifold deSitterSpace m = R x S^m with the metric induced from the hyperboloid eta(x, x) = L^2 (L nonzero), every eta-skew endomorphism B of the ambient Minkowski space R x R^(m+1) gives a field dSField with d iota (dSField) = B o iota (it exists because B x is eta-orthogonal to x and the image of d iota is that orthogonal complement); it is smooth (contMDiff_dSField, through contMDiffAt_section_of_immersion) and a Killing field of the Levi-Civita connection at every point (isKillingAt_dSField, through isKillingAt_of_related). exists_killing_deSitterSpace: n(n+1)/2 such fields, n = m + 1 the dimension, smooth, Killing at every point and linearly independent, the images of a basis of the library's Lorentz algebra skewEta (m + 2) (dimension (m+2)(m+1)/2) transported by the coordinates of dSForm_eq_minkowski; independence because a linear map vanishing on the hyperboloid is zero (eq_zero_of_vanish_dSIncl). This is the Killing part of maximal symmetry; constant curvature is a separate entry. Comparison with the cited section (Carroll, chapter 8, the isometries of de Sitter space as the Lorentz group of the embedding space) pending: no source was read at the location."
+  since: unreleased
