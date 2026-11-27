@@ -624,6 +624,7 @@ import Lightlike.Lorentz.SL2RPlancherel.PrincipalPairing
 import Lightlike.Lorentz.SL2RPlancherel.HaarTorusIntegral
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalGroupCoeff
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalBlock
+import Lightlike.Lorentz.SL2RPlancherel.PrincipalPairingOpp
 import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Linearity
 import Lightlike.Lorentz.SL2RPlancherel.WeightIntegrable
