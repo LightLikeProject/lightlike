@@ -2789,6 +2789,7 @@ import Lightlike.Asymptotics.SmoothExtension
 import Lightlike.Asymptotics.SmoothExtensionTests
 import Lightlike.Asymptotics.ExpDecay
 import Lightlike.Asymptotics.GaussianIntegralPi
+import Lightlike.Asymptotics.GaussianIntegralPiTests
 import Lightlike.GFT.DualPseudoManifold.Check
 import Lightlike.PonzanoRegge.TriangulationIndependence.Tests.ExchangeSearch
 import Lightlike.NCG.DiracConverse
