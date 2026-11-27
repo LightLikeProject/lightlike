@@ -205,6 +205,7 @@ import Lightlike.Bundles.Principal.Basic
 import Lightlike.Bundles.Principal.Equiv
 import Lightlike.Bundles.Pullback
 import Lightlike.Bundles.SpinGroup
+import Lightlike.Bundles.SpinKernel
 import Lightlike.Bundles.TotalSpaceAction
 import Lightlike.Bundles.VectorBundle.GramSchmidt
 import Lightlike.Bundles.VectorBundle.OrthonormalFrame.Basic
