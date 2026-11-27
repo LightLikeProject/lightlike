@@ -167,6 +167,69 @@ theorem re_diag_nonneg [μ.IsOpenPosMeasure] {K : C(X × X, ℂ)} (hpos : IsPosi
     nlinarith
   exact absurd (h0.trans hre) (not_le.2 this)
 
+/-- The rank-one kernel `g(x) conj g(y)`. -/
+def tensorKer (g : C(X, ℂ)) : C(X × X, ℂ) :=
+  ⟨fun p => g p.1 * starRingEnd ℂ (g p.2), by fun_prop⟩
+
+lemma kernelToC_sub (K L : C(X × X, ℂ)) (f : Lp ℂ 2 μ) :
+    kernelToC μ (K - L) f = kernelToC μ K f - kernelToC μ L f := by
+  ext x
+  simp only [ContinuousMap.sub_apply, kernelToC_apply, kernelVecOf]
+  have : kernelCurry (K - L) x = kernelCurry K x - kernelCurry L x := by
+    ext y; simp [kernelCurry_apply]
+  rw [this, map_sub, inner_sub_left]
+
+lemma kernelToC_smul (c : ℂ) (L : C(X × X, ℂ)) (f : Lp ℂ 2 μ) :
+    kernelToC μ (c • L) f = c • kernelToC μ L f := by
+  ext x
+  simp only [ContinuousMap.smul_apply, kernelToC_apply, kernelVecOf, smul_eq_mul]
+  have : kernelCurry (c • L) x = (starRingEnd ℂ c) • kernelCurry L x := by
+    ext y; simp [kernelCurry_apply]
+  rw [this, map_smul, inner_smul_left, Complex.conj_conj]
+
+lemma kernelToC_sum {ι : Type*} (S : Finset ι) (L : ι → C(X × X, ℂ)) (f : Lp ℂ 2 μ) :
+    kernelToC μ (∑ i ∈ S, L i) f = ∑ i ∈ S, kernelToC μ (L i) f := by
+  classical
+  induction S using Finset.induction_on with
+  | empty =>
+    ext x
+    simp only [Finset.sum_empty, kernelToC_apply, kernelVecOf, ContinuousMap.zero_apply]
+    have : kernelCurry (0 : C(X × X, ℂ)) x = 0 := by ext y; simp [kernelCurry_apply]
+    rw [this, map_zero, inner_zero_left]
+  | insert a S ha ih =>
+    rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]
+    have h := kernelToC_sub μ (L a + ∑ i ∈ S, L i) (∑ i ∈ S, L i) f
+    rw [add_sub_cancel_right] at h
+    rw [h, sub_add_cancel]
+
+lemma kernelToC_tensorKer (g : C(X, ℂ)) (f : Lp ℂ 2 μ) :
+    kernelToC μ (tensorKer g) f = inner ℂ (ContinuousMap.toLp (E := ℂ) 2 μ ℂ g) f • g := by
+  ext x
+  simp only [kernelToC_apply, kernelVecOf, ContinuousMap.smul_apply, smul_eq_mul]
+  have : kernelCurry (tensorKer g) x = (starRingEnd ℂ (g x)) • g := by
+    ext y; simp [kernelCurry_apply, tensorKer, mul_comm]
+  rw [this, map_smul, inner_smul_left, Complex.conj_conj, mul_comm]
+
+lemma kernelOp_eq_toLp (K : C(X × X, ℂ)) (f : Lp ℂ 2 μ) :
+    kernelOp μ K f = ContinuousMap.toLp (E := ℂ) 2 μ ℂ (kernelToC μ K f) := rfl
+
+/-- `⟪T_K f, f⟫ = Σ_i λ_i |⟪b_i, f⟫|²` for a symmetric `T_K` and an eigenbasis. -/
+lemma hasSum_inner_kernelOp [SecondCountableTopology X] (K : C(X × X, ℂ))
+    (hK : ∀ x y, K (y, x) = starRingEnd ℂ (K (x, y))) {ι : Type*}
+    (b : HilbertBasis ι ℂ (Lp ℂ 2 μ)) (lam : ι → ℝ)
+    (hb : ∀ i, kernelOp μ K (b i) = (lam i : ℂ) • b i) (f : Lp ℂ 2 μ) :
+    HasSum (fun i => ((lam i * ‖inner ℂ (b i) f‖ ^ 2 : ℝ) : ℂ)) (inner ℂ (kernelOp μ K f) f) := by
+  have h := b.hasSum_inner_mul_inner (kernelOp μ K f) f
+  refine h.congr_fun fun i => ?_
+  have hS := isSymmetric_kernelOp μ K hK
+  have e : inner ℂ (kernelOp μ K f) (b i) = (lam i : ℂ) * inner ℂ f (b i) := by
+    have := hS f (b i)
+    simp only [ContinuousLinearMap.coe_coe] at this
+    rw [this, hb i, inner_smul_right]
+  rw [e, mul_assoc, ← inner_conj_symm f (b i), Complex.conj_mul']
+  push_cast
+  ring
+
 end
 
 end Lightlike.OperatorAlgebras
