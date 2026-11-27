@@ -659,6 +659,7 @@ import Lightlike.Lorentz.SL2RPlancherel.DiscreteProfileImages
 import Lightlike.Lorentz.SL2RPlancherel.DiscreteProfileBdry
 import Lightlike.Lorentz.SL2RPlancherel.DiscreteProfileReal
 import Lightlike.Lorentz.SL2RPlancherel.DiscreteBlock
+import Lightlike.Lorentz.SL2RPlancherel.DiscreteProfileChain
 import Lightlike.Lorentz.SL2RPrincipal
 import Lightlike.Lorentz.SU2Average
 import Lightlike.Lorentz.SU2AverageTests
