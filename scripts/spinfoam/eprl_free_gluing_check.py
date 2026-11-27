@@ -1,13 +1,14 @@
-"""Order dependence of the EPRL (gamma = 1) state sum on the boundary of the 5-simplex: the library's gluing against the
-basis-free gluing of the tetrahedra (numerical evidence, not a proof).
+"""Order dependence of the EPRL (gamma = 1) state sum on the boundary of the 5-simplex: the basis-free gluing of the tetrahedra, which is the
+gluing of the Lean `amplitudeI` (`simpEIAux_eq_contract5`), against the positional gluing without the sign `nodeEta`, the wrong-input control
+(numerical evidence, not a proof).
 
 Doubled spins and projections throughout. Two ways of gluing the vertex amplitudes of the six 4-simplices of the boundary of the
 5-simplex (`sphere6`) along the fifteen tetrahedra, for a fixed colouring of the triangles by spins:
 
-* library gluing (`eprl_order_check.vertex`, the intrinsic vertex of `IntrinsicVertex.lean`): the vertex is the 15j symbol with
-  positional labels, rewritten in the sorted basis of each tetrahedron by the transition matrices `nodeT`, which are built from
-  `fourRecoupling` through the channel (0 2 | 1 3) of the legs; the sorted labels of a tetrahedron are summed in the two
-  adjacent vertices.
+* positional gluing (`eprl_order_check.vertex`, the wrong-input control): the vertex is the 15j symbol with positional labels,
+  rewritten in the sorted basis of each tetrahedron by transition matrices built from `fourRecoupling` through the channel
+  (0 2 | 1 3) of the legs, without the sign `nodeEta` between the channel tensors of the sorted and the cyclic legs; the sorted labels of a
+  tetrahedron are summed in the two adjacent vertices.
 * basis-free gluing (`free_vertex`): the node tensor of a tetrahedron is the intertwiner of its legs in the SORTED order (the
   same tensor from both adjacent 4-simplices, `vertex_check.fourj`), the five nodes of a vertex are contracted along the ten
   links with the bilinear form `eps(m, m') = (-1)^((j - m)/2) delta_{m', -m}` (first end = lower position, `vertex_check.cmat`),
@@ -47,7 +48,7 @@ def simplex_J(col, s):
 
 
 def lib_summand(col):
-    """Face weights times the sum over the sorted tetrahedron labels of the product of the six library vertices."""
+    """Face weights times the sum over the sorted tetrahedron labels of the product of the six positional vertices."""
     legs = {t: [col[tuple(v for v in t if v != t[k])] for k in range(4)] for t in TETS}
     inner = 0.0
     for zs in itertools.product(*[range(legs[t][0] + legs[t][1] + 1) for t in TETS]):
@@ -149,15 +150,15 @@ def main():
             c2 = relabel(col, sig)
             ratios.append((lib_summand(c2) / s0, free_summand(c2) / f0))
         rows.append((sum(col.values()), s0, f0, ratios))
-        print('sum of colours %2d  library %9.4f  free %9.4f  ratios (library, free): %s' % (
+        print('sum of colours %2d  positional %9.4f  free %9.4f  ratios (positional, free): %s' % (
             rows[-1][0], s0, f0, ', '.join('(%.4f, %.4f)' % r for r in ratios)), flush=True)
     dev_free = max(abs(r[1] - 1.0) for row in rows for r in row[3])
     dev_lib = max(abs(abs(r[0]) - 1.0) for row in rows for r in row[3])
-    print('max |free ratio - 1| = %.2e; max ||library ratio| - 1| = %.4f' % (dev_free, dev_lib))
+    print('max |free ratio - 1| = %.2e; max ||positional ratio| - 1| = %.4f' % (dev_free, dev_lib))
     amps = {}
     for u, w in edges:
         amps[(u, w)] = (cutoff_sum(free_summand, bone(u, w)), cutoff_sum(lib_summand, bone(u, w)))
-        print('bone cutoff of edge %s: free %.4f, library %.4f' % ((u, w), *amps[(u, w)]), flush=True)
+        print('bone cutoff of edge %s: free %.4f, positional %.4f' % ((u, w), *amps[(u, w)]), flush=True)
     ok = dev_free < 1e-6 and dev_lib > 0.1 and all(abs(v[0] - 5.0) < 1e-6 for v in amps.values())
     print('OK' if ok else 'FAILED')
     return 0 if ok else 1
