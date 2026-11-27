@@ -76,10 +76,14 @@ Baez–Christensen vertex `bcVertexBC` is `(-1)^(Σ_e j_e)` times ours, with `j_
 non-positive when they sum to a half-integer [14]. The vertex is 1 at spin 0, `1/(j + 1)²` on the
 closed loop of spin `j/2`, which sums to an integer, and `1/(j + 1)` on the triangle of spin
 `j/2`, whose spins sum to `3j/2`; so at spin `1/2` the two conventions give `1/2` and `-1/2` [15].
+The intertwiner is unique: a Spin(4)-invariant tensor of four simple representations whose
+components are diagonal in the `(01)(23)` and the `(02)(13)` tree bases is a multiple of
+`Σ_i ι_i ⊗ ι_i`. This is Reisenberger's theorem for four legs, assuming two of his three pairings;
+the proof uses a stretched 6j symbol, which is nonzero [41].
 The vertex is an exact rational number for all spins, because the square of each 15j symbol is
-rational [41]. It reproduces the published Riemannian 10j values of Christensen and Egan: `7/18` at
+rational [42]. It reproduces the published Riemannian 10j values of Christensen and Egan: `7/18` at
 ten spins `½`, `307/1500` at ten spins `1`, and `-163/1728`, with the Baez–Christensen sign, at
-spins `1` and `½` on the two 5-cycles of `K₅` [41].
+spins `1` and `½` on the two 5-cycles of `K₅` [42].
 
 Whether the Ponzano–Regge cutoff can be removed is a cohomological question {7}. A flat `SU(2)`
 connection on a finite 2-complex, with the adjoint representation on `su(2) ≅ ℝ³`, has a twisted
@@ -279,7 +283,9 @@ Ooguri amplitude and of the EPRL amplitude on the boundary of the 5-simplex is n
     `SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_low_spin`, `SpinFoam.EPRLStateSum.Trust.amplitudeI_wrong_face`
 40. Lightlike/SpinFoam/EPRLStateSum/OrderDependence.lean - `SpinFoam.EPRLStateSum.Trust.eprlGlobalSign_bone`,
     `SpinFoam.EPRLStateSum.Trust.bone_admitted`
-41. Lightlike/SpinFoam/BarrettCraneValues.lean - `SpinFoam.BC.bcVertex_eq_vertexQ`, `SpinFoam.BC.fifteenJ_sq`,
+41. Lightlike/SpinFoam/BarrettCraneUnique.lean - `SpinFoam.BC.bcNode_unique`, `SpinFoam.BC.bcNode_hyp`,
+    `SpinFoam.BC.sixJSym_extreme_ne_zero`, `SpinFoam.BC.coefA_bcNodeR_half`
+42. Lightlike/SpinFoam/BarrettCraneValues.lean - `SpinFoam.BC.bcVertex_eq_vertexQ`, `SpinFoam.BC.fifteenJ_sq`,
     `SpinFoam.BC.Tests.bcVertex_half`, `SpinFoam.BC.Tests.bcVertex_one`, `SpinFoam.BC.Tests.bcVertexBC_mixed`
 
 ## References
