@@ -132,7 +132,17 @@ blocks, the squared norms of the projections of F onto the even antiholomorphic 
 the squared norms of the projections of the blocks onto their discrete parts; the same holds for the holomorphic
 series applied to the complex conjugate of F [94].
 
-The irreducibility of the principal series is not yet formalized. [TODO]
+Topological irreducibility of a unitary representation (the only closed invariant subspaces are 0 and
+everything) follows from a complete family of K-weight vectors with pairwise distinct weights and a connected
+linking graph (`⟪e_a, π(g) e_b⟫ ≠ 0` for some g) [96]. The holomorphic discrete series `D_n⁺` is irreducible for
+every `n ≥ 2`, and so is `D_n⁻`, defined as `D_n⁺` composed with the automorphism `g ↦ JgJ`, `J = diag(1, −1)`,
+which negates the K-weights [97]. For the principal series of both parities the vectors
+`e_k(x) = (1 + x²)^{(iν−1−ε)/2} (x − i)^{k+ε} (x + i)^{−k}` of K-weight `2k + ε` are orthogonal eigenvectors of
+the rotations [98], satisfy the ladder relation `x e_k' − w e_k = ((s − k)/2) e_{k+1} + ((s + k + ε)/2) e_{k−1}`,
+and the matrix coefficient between neighbouring weights has derivative `(s − k) ‖e_{k+1}‖²` at 0, which vanishes
+only for `ν = 0` and `1 + ε + 2k = 0` [99]; the weight vectors are complete in `L²(ℝ)` [100]. Hence the principal
+series of SL(2,R) is irreducible for every real ν when the parity is even and for every ν ≠ 0 when it is odd; the
+single excluded case, the odd series at ν = 0, is exactly where the linking argument breaks [101].
 
 Further results of this area in the results catalogue:
 The spherical Plancherel theorem for SL(2,R): the spherical transform is a unitary equivalence from
