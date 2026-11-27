@@ -2240,6 +2240,7 @@ import Lightlike.TemperleyLieb.TopEntry
 import Lightlike.TemperleyLieb.ThirdBlock
 import Lightlike.TemperleyLieb.OneStrand
 import Lightlike.TemperleyLieb.MirrorTree
+import Lightlike.TemperleyLieb.Adjoint
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3

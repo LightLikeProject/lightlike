@@ -9,8 +9,10 @@ import Lightlike.TemperleyLieb.MirrorTree
 
 `pairB x y = Σ_σ x_σ y_σ` is the symmetric bilinear form of the basis of words. For it the cap and the cup at the
 same positions are adjoint up to the scalar `-q⁻¹` (`pairB_capOp`), so the generators `modelE = cup cap` are
-self-adjoint. This is the vertical flip of the diagrams; it relates the pairings `U_L' U_R` and `U_R' U_L` of the
-tree vectors.
+self-adjoint. This is the vertical flip of the diagrams: the tree vectors are adjoint to their duals
+(`pairB_UL`, `pairB_UR`), the pairings `U_L' U_R` and `U_R' U_L` carry the same scalar (`flip_scalar`), and with the
+mirror (`reflect_URd`) the Gram coefficients of `(a, b, c)` and `(c, b, a)` are transposes of each other
+(`gramCoef_flip`, `Fc_flip`). With `Fc_mirror_inv` this is the orthogonality of the recoupling matrix.
 -/
 
 namespace Lightlike.TemperleyLieb
@@ -261,5 +263,49 @@ theorem reflect_URd (q : kˣ) (a b c f d' : ℕ) (hfb : f ≤ b) (hfc : f ≤ c)
   calc reflectOp k D * URd q a b c f d' = reflectOp k D * (URd q a b c f d' * reflectOp k N) * reflectOp k N := by
         rw [mul_assoc, mul_assoc, hρN, mul_one]
     _ = ULd q c b a f d' * reflectOp k N := by rw [h1, ← mul_assoc, hρD, one_mul]
+
+/-- **The Gram coefficients are symmetric under the flip**: `G^{abc}(e,d;f,d') = G^{cba}(f,d';e,d)`. -/
+theorem gramCoef_flip (q : kˣ) (hδ : loopVal q ≠ 0) {a b c e d f d' : ℕ} (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c + 1 → chebD (loopVal q) j ≠ 0)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    gramCoef q a b c e d f d' = gramCoef q c b a f d' e d := by
+  have hd1 : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hd2 : ∀ j, j ≤ c + b + a → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  by_cases hD : a + b - 2 * e + c - 2 * d = a + (b + c - 2 * f) - 2 * d'
+  · have hg := gram_spec q hδ a b c e d f d' hN hd1 hea heb hfb hfc hdc hdA hda hdf
+    have hg' := gram_spec q hδ c b a f d' e d (by omega) hd2 hfc hfb heb hea hda (by omega) hdc (by omega)
+    have hR := reflect_URd (k := k) q a b c f d' hfb hfc hda hdf (fun j hj => hd j (by omega))
+    have hL := reflect_UL (k := k) q a b c e d heb hea hdc hdA (fun j hj => hd j (by omega))
+    rw [show c + b - 2 * f + a - 2 * d' = a + b - 2 * e + c - 2 * d by omega] at hg'
+    rw [← hD] at hR
+    set D := a + b - 2 * e + c - 2 * d
+    have hρ := reflectOp_mul_self (k := k) D
+    have hpD : reflectOp k D * jwAt q 0 D = jwAt q 0 D * reflectOp k D := by
+      have := reflect_jwAt (k := k) q 0 0 D (fun j hj => hd j (by omega)); rwa [show 0 + 0 + D = D by omega] at this
+    have hh : URd q a b c f d' * UL q a b c e d = gramCoef q c b a f d' e d • jwAt q 0 D := by
+      have h1 : reflectOp k D * (URd q a b c f d' * UL q a b c e d) =
+          (gramCoef q c b a f d' e d • jwAt q 0 D) * reflectOp k D := by
+        rw [← mul_assoc, hR, mul_assoc, hL, ← mul_assoc, hg']
+      calc URd q a b c f d' * UL q a b c e d
+          = reflectOp k D * (reflectOp k D * (URd q a b c f d' * UL q a b c e d)) := by rw [← mul_assoc, hρ, one_mul]
+        _ = gramCoef q c b a f d' e d • jwAt q 0 D := by
+          rw [h1, smul_mul_assoc, mul_smul_comm, ← mul_assoc, hpD, mul_assoc, hρ, mul_one]
+    exact flip_scalar q (by omega) hg hh
+  · rw [gramCoef_zero_of_ne q hδ a b c e d f d' hN hd1 hea heb hfb hfc hdc hdA hda hdf hD,
+      gramCoef_zero_of_ne q hδ c b a f d' e d (by omega) hd2 hfc hfb heb hea hda (by omega) hdc (by omega)
+        (by omega)]
+
+/-- **The transpose relation**: `κ_L(e,d) Fc^{abc}(e,d;f,d') = κ_L^{cba}(f,d') Fc^{cba}(f,d';e,d)`. -/
+theorem Fc_flip (q : kˣ) (hδ : loopVal q ≠ 0) {a b c e d f d' : ℕ} (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c + 1 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    (hea : e ≤ a) (heb : e ≤ b) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    kapRec q a b e * kapRec q (a + b - 2 * e) c d * Fc q a b c e d f d' =
+      kapRec q c b f * kapRec q (c + b - 2 * f) a d' * Fc q c b a f d' e d := by
+  rw [← gramCoef_eq_kap_mul_Fc q (le_min hea heb) (le_min hdA hdc) hq2,
+    ← gramCoef_eq_kap_mul_Fc q (le_min hfc hfb) (le_min (by omega) hda) (fun j h1 h2 => hq2 j h1 (by omega)),
+    gramCoef_flip q hδ hN hd hea heb hdc hdA hfb hfc hda hdf]
 
 end Lightlike.TemperleyLieb
