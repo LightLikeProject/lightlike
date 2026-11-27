@@ -2,6 +2,7 @@ import Mathlib
 import Lightlike.TemperleyLieb.Mirror
 import Lightlike.TemperleyLieb.CupCap
 import Lightlike.TemperleyLieb.Reduction
+import Lightlike.TemperleyLieb.Expansion
 
 /-!
 # The mirror image of caps and cups
@@ -64,4 +65,48 @@ theorem reflect_nestCup (q : kˣ) {l n : ℕ} (hl : l ≤ n) : ∀ i,
     simp only [nestCup]
     rw [← mul_assoc, hc, mul_assoc, reflect_nestCup q hl i, ← mul_assoc]
 
+/-- **The mirror of the second-bracketing tree vector** of the blocks `(a, b, c)` is the first-bracketing one
+of `(c, b, a)`: `R_{a+b+c} U_R(a,b,c;f,d') = U_L(c,b,a;f,d') R_D`. -/
+theorem reflect_UR (q : kˣ) (a b c f d' : ℕ) (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f)
+    (hd : ∀ j, j < a + b + c + 1 → chebD (loopVal q) j ≠ 0) :
+    reflectOp k (a + b + c) * UR q a b c f d' = UL q c b a f d' * reflectOp k (a + (b + c - 2 * f) - 2 * d') := by
+  unfold UR UL Vop Qab
+  simp only [sh_mul, sh_jwAt, sh_nestCup, Nat.zero_add, mul_assoc]
+  set Y := b + c - 2 * f with hY
+  set D := a + Y - 2 * d' with hD
+  rw [show c + b - 2 * f = Y by omega, show Y + a - 2 * d' = D by omega]
+  have hd' : ∀ m, m ≤ a + b + c → ∀ j, j < m → chebD (loopVal q) j ≠ 0 := fun m hm j hj => hd j (by omega)
+  have push : ∀ {n n' : ℕ} {X X' : Module.End k (ModelSpace k)},
+      reflectOp k n * X = X' * reflectOp k n' → ∀ T, reflectOp k n * (X * T) = X' * (reflectOp k n' * T) :=
+    fun h T => by rw [← mul_assoc, h, mul_assoc]
+  have h1 : reflectOp k (a + b + c) * jwAt q a b = jwAt q c b * reflectOp k (a + b + c) := by
+    have := reflect_jwAt (k := k) q a c b (hd' b (by omega)); rwa [show a + c + b = a + b + c by omega] at this
+  have h2 : reflectOp k (a + b + c) * jwAt q (b + a) c = jwAt q 0 c * reflectOp k (a + b + c) := by
+    have := reflect_jwAt (k := k) q (b + a) 0 c (hd' c (by omega)); rwa [show b + a + 0 + c = a + b + c by omega] at this
+  have h3 : reflectOp k (a + b + c) * nestCup q (b - f + a) f = nestCup q (c - f) f * reflectOp k (a + Y) := by
+    have := reflect_nestCup (k := k) q (l := b - f + a) (n := a + Y) (by omega) f
+    rwa [show a + Y + 2 * f = a + b + c by omega, show a + Y - (b - f + a) = c - f by omega] at this
+  have h4 : reflectOp k (a + Y) * jwAt q a Y = jwAt q 0 Y * reflectOp k (a + Y) := by
+    have := reflect_jwAt (k := k) q a 0 Y (hd' Y (by omega)); rwa [show a + 0 + Y = a + Y by omega] at this
+  have h5 : reflectOp k (a + Y) * jwAt q 0 a = jwAt q Y a * reflectOp k (a + Y) := by
+    have := reflect_jwAt (k := k) q 0 Y a (hd' a (by omega)); rwa [show 0 + Y + a = a + Y by omega] at this
+  have h6 : reflectOp k (a + Y) * nestCup q (a - d') d' = nestCup q (Y - d') d' * reflectOp k D := by
+    have := reflect_nestCup (k := k) q (l := a - d') (n := D) (by omega) d'
+    rwa [show D + 2 * d' = a + Y by omega, show D - (a - d') = Y - d' by omega] at this
+  have r7 : reflectOp k D * jwAt q 0 D = jwAt q 0 D * reflectOp k D := by
+    have := reflect_jwAt (k := k) q 0 0 D (hd' D (by omega)); rwa [show 0 + 0 + D = D by omega] at this
+  have r1 := push h1
+  have r2 := push h2
+  have r3 := push h3
+  have r4 := push h4
+  have r5 := push h5
+  have r6 := push h6
+  simp only [r1, r2, r3, r4, r5, r6, r7]
+  have c1 : (jwAt q c b : Module.End k (ModelSpace k)) * jwAt q 0 c = jwAt q 0 c * jwAt q c b :=
+    (jwAt_comm_far q (by omega)).symm
+  have c2 : (jwAt q 0 Y : Module.End k (ModelSpace k)) * jwAt q Y a = jwAt q Y a * jwAt q 0 Y :=
+    jwAt_comm_far q (by omega)
+  rw [← mul_assoc (jwAt q c b), c1, mul_assoc]
+  congr 3
+  rw [← mul_assoc (jwAt q Y a), ← c2, mul_assoc]
 end Lightlike.TemperleyLieb
