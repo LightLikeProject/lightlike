@@ -654,6 +654,11 @@ milestones:
         text: "The Plancherel formula for L2(SL(2,R)): principal series with density rho tanh(pi rho), discrete series, all K-types"
         decls: []
         hint: "Only the spherical (K-biinvariant) part is on main: Lightlike.Lorentz.SL2RPlancherel.sphericalL2Equiv, Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_sph. Missing: non-spherical K-types, discrete-series weights (n - 1/2), the statement tying the abstract decomposition of L2(SL(2,R)) to the density."
+      - id: m3
+        kind: main
+        text: "The principal series (even and odd) and the discrete series of SL(2,R) are irreducible; the statement excludes only the known reducible point, the odd principal series at rho = 0"
+        decls: []
+        hint: "The done-when of HA3 requires irreducibility. Not stated on main (rg irreducible in SL2R*.lean, SL2RPlancherel/*.lean finds nothing)."
       - id: p1
         kind: piece
         text: "The principal series of SL(2,R) is a strongly continuous unitary representation"

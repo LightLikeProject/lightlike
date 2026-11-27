@@ -38,8 +38,14 @@ checklist), and do not block individual contributions.
    result. Statements are checked against Lean's junk values (`a / 0 = 0`, the inverse of a
    singular matrix is `0`, `fderiv` of a non-differentiable function is `0`), so that a theorem
    cannot hold for a degenerate reason.
-4. **No silent weakening.** Each theorem proves what the milestone describes, or the weaker
-   version is stated explicitly in the module docstring and in the results entry.
+4. **No weaker results.** Each theorem proves what the milestone describes, at full strength. A
+   weaker version (an added hypothesis, a case left out, a smaller class) may be merged as
+   progress, stated explicitly as weaker in the module docstring and in the results entry, but it
+   never ticks a checklist item and never closes a milestone. Technical choices inside a proof are
+   the contributor's, as long as no stated result ends up weaker than its source; a change that
+   would weaken a stated result goes to the maintainers first. Nobody changes a milestone's
+   done-when, size or checklist items, in either direction, without the maintainers' decision:
+   propose the change with the reason.
 5. **Recorded.** Its results are entered in `docs/results.yaml`, from which
    [RESULTS.md](../RESULTS.md) is generated, and in the API map of its folder.
 
