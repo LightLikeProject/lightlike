@@ -46,6 +46,7 @@ CHECKS = [
     ("scripts/regge/schlaefli_check.py", False), ("scripts/spin4/coherent_check.py", True),
     ("scripts/spin4/eprl_check.py", False), ("scripts/spin4/spin4_check.py", False),
     ("scripts/spin4/vertex_check.py", False),
+    ("scripts/spin4/bc10j_check.py", False),
     ("scripts/asymptotics/closing_check.py", False),
     ("scripts/asymptotics/contour_identity_check.py", False),
     ("scripts/asymptotics/gamma_bounds_check.py", False),
