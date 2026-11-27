@@ -1,5 +1,7 @@
 import Mathlib
 import Lightlike.TemperleyLieb.Expansion
+import Lightlike.TemperleyLieb.Pentagon
+import Lightlike.TemperleyLieb.FusionIdentity
 
 /-!
 # The recoupling coefficient with both channels of the third block maximal
@@ -83,5 +85,43 @@ theorem ULd_mul_UR_top (q : kˣ) (a b c e : ℕ) (hea : e ≤ a) (heb : e ≤ b)
           jwAt q 0 (X + c) := by
         rw [hfull, habsX, hmid]; simp only [mul_assoc]
     _ = kapRec q a (b + c) e • jwAt q 0 (X + c) := hvn
+
+/-- **The recoupling coefficient with both channels of the third block maximal**:
+`Fc q a b c e 0 0 e = κ(a, b+c, e) / κ(a, b, e)`. -/
+theorem Fc_top (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e : ℕ) (hea : e ≤ a) (heb : e ≤ b) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0) :
+    Fc q a b c e 0 0 e = kapRec q a (b + c) e / kapRec q a b e := by
+  have h1 := gram_spec q hδ a b c e 0 0 e hN hd hea heb (Nat.zero_le _) (Nat.zero_le _) (Nat.zero_le _)
+    (Nat.zero_le _) hea (by omega)
+  have h2 := ULd_mul_UR_top q a b c e hea heb hd
+  have h3 : (gramCoef q a b c e 0 0 e - kapRec q a (b + c) e) •
+      (jwAt q 0 (a + b - 2 * e + c - 2 * 0) : Module.End k (ModelSpace k)) = 0 :=
+    (sub_smul (gramCoef q a b c e 0 0 e) (kapRec q a (b + c) e)
+      (jwAt q 0 (a + b - 2 * e + c - 2 * 0) : Module.End k (ModelSpace k))).trans
+      (sub_eq_zero.mpr (h1.symm.trans h2))
+  have hg : gramCoef q a b c e 0 0 e = kapRec q a (b + c) e :=
+    sub_eq_zero.mp ((smul_eq_zero.mp h3).resolve_right (jwAt_ne_zero q _))
+  unfold Fc
+  rw [if_pos ⟨le_min hea heb, Nat.zero_le _⟩, hg]
+  simp only [kapRec, inv_one, mul_one]
+  rw [div_eq_inv_mul]
+
+/-- **The recoupling coefficient with an empty third block** is the identity matrix:
+`Fc q a b 0 e 0 0 d' = δ_{e d'}`. -/
+theorem Fc_zero_third (q : kˣ) (hδ : loopVal q ≠ 0) (a b e d' : ℕ) (he : e ≤ min a b) (hd' : d' ≤ min a b)
+    (hN : 1 ≤ a + b) (hd : ∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    Fc q a b 0 e 0 0 d' = if d' = e then 1 else 0 := by
+  have hea : e ≤ a := he.trans (min_le_left _ _)
+  have heb : e ≤ b := he.trans (min_le_right _ _)
+  by_cases h : d' = e
+  · subst h
+    rw [if_pos rfl, Fc_top q hδ a b 0 d' hea heb (by omega) (fun j hj => hd j (by omega)), Nat.add_zero]
+    exact div_self (kapRec_ne q d' a b hea heb hq2)
+  · rw [if_neg h]
+    unfold Fc
+    rw [if_pos ⟨he, by simp⟩, gramCoef_zero_of_ne q hδ a b 0 e 0 0 d' (by omega) (fun j hj => hd j (by omega))
+      hea heb (Nat.zero_le _) le_rfl le_rfl (Nat.zero_le _) (hd'.trans (min_le_left _ _))
+      (by have := hd'.trans (min_le_right _ _); omega) (by omega), mul_zero]
 
 end Lightlike.TemperleyLieb

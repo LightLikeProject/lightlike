@@ -1,5 +1,6 @@
 import Lightlike.TuraevViro.Reflect.RacahReal
 import Lightlike.TuraevViro.Reflect.EndRowTrig
+import Lightlike.TuraevViro.Reflect.QDougallMap
 
 /-!
 # The regularised q-Racah sum at `q = e^{iπ/r}` and its reflection symmetry
@@ -326,10 +327,6 @@ lemma rcR_shift_fCq {r : ℕ} (hr : 2 ≤ r) (a1 a2 a3 a4 b2 b3 δ : ℤ)
   rw [inv_inv]; ring
 
 /-! ## The reflection -/
-
-/-- `1/[n]!` for a natural `n`. -/
-lemma invQFact_nat (r n : ℕ) : invQFact r (n : ℤ) = (qfact r n)⁻¹ := by
-  simp [invQFact]
 
 lemma inv_qfact_reflect {r : ℕ} (hr : 2 ≤ r) {k : ℕ} (hk : k ≤ r - 1) :
     (qfact r (r - 1 - k))⁻¹ = qfact r k / qfact r (r - 1) := by
