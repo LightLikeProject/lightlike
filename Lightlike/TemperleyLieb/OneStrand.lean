@@ -402,4 +402,51 @@ theorem Fc_b_rec_two [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b e₀ d�
   simp only [Nat.mul_zero, Nat.sub_zero, Nat.mul_one, show 1 - 0 = 1 from rfl, show 1 - 1 = 0 from rfl,
     show b + 1 - 2 = b - 1 by omega, Nat.sub_zero]
   ring
+lemma qfac_succ' (q : kˣ) (n : ℕ) : qfac q (n + 1) = qfac q n * qb q (n + 1) := rfl
+
+/-- The lower cup entry in quantum integers: `Fc(n+1,1,1;1,0;1,0) = -[n+1]/[n+2]`. -/
+theorem Fc_cup_low_qb (q : kˣ) (hδ : loopVal q ≠ 0) (hD : (q : k) - (q : k)⁻¹ ≠ 0) (n : ℕ)
+    (hd : ∀ j, j ≤ n + 3 → chebD (loopVal q) j ≠ 0) :
+    Fc q (n + 1) 1 1 1 0 1 0 = -(qb q (n + 1) / qb q (n + 2)) := by
+  rw [Fc_cup_low q hδ n hd, chebD_eq_qb q hD, chebD_eq_qb q hD]
+  have h1 := hd (n + 1) (by omega)
+  rw [chebD_eq_qb q hD] at h1
+  have h2 : qb q (n + 1 + 1) ≠ 0 := fun h => h1 (by rw [h, mul_zero])
+  rw [pow_succ]
+  field_simp
+
+/-- **The top entry of the one-strand block** in quantum integers. -/
+theorem Fc_top_one_qb (q : kˣ) (hδ : loopVal q ≠ 0) {a b E : ℕ} (hEa : E ≤ a) (hEb : E ≤ b) (hN : 1 ≤ a + b)
+    (hd : ∀ j, j ≤ a + b + 1 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 2 → (q : k) ^ (2 * j) ≠ 1) :
+    Fc q a b 1 E 0 0 E = qb q (a + b - E + 2) * qb q (b - E + 1) / (qb q (b + 1) * qb q (a + b - 2 * E + 2)) := by
+  rw [Fc_top q hδ a b 1 E hEa hEb (by omega) hd, kapRec_eq q E a (b + 1) hEa (by omega)
+    (fun j h1 h2 => hq2 j h1 (by omega)), kapRec_eq q E a b hEa hEb (fun j h1 h2 => hq2 j h1 (by omega))]
+  have hnz := qfac_ne_of_pow q (N := a + b + 2) (by omega) hq2
+  have hD : (q : k) - (q : k)⁻¹ ≠ 0 := by
+    have := hq2 1 le_rfl (by omega)
+    intro h; apply this
+    have hq : (q : k) ≠ 0 := q.ne_zero
+    field_simp at h
+    linear_combination h
+  obtain ⟨α, rfl⟩ : ∃ α, a = E + α := ⟨a - E, by omega⟩
+  obtain ⟨β, rfl⟩ : ∃ β, b = E + β := ⟨b - E, by omega⟩
+  have e1 : E + α + (E + β + 1) - E + 1 = E + α + β + 1 + 1 := by omega
+  have e2 : E + α + (E + β) - E + 1 = E + α + β + 1 := by omega
+  have e3 : E + β + 1 - E = β + 1 := by omega
+  have e4 : E + β - E = β := by omega
+  have e5 : E + α - E = α := by omega
+  have e6 : E + α + (E + β + 1) - 2 * E + 1 = α + β + 1 + 1 := by omega
+  have e7 : E + α + (E + β) - 2 * E + 1 = α + β + 1 := by omega
+  have e8 : E + α + (E + β) - E + 2 = E + α + β + 1 + 1 := by omega
+  have e9 : E + β - E + 1 = β + 1 := by omega
+  have e10 : E + α + (E + β) - 2 * E + 2 = α + β + 1 + 1 := by omega
+  simp only [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10]
+  rw [qfac_succ' q (E + α + β + 1), qfac_succ' q β,
+    qfac_succ' q (α + β + 1), qfac_succ' q (E + β)]
+  have := hnz (E + α + β + 1) (by omega); have := hnz β (by omega); have := hnz (α + β + 1) (by omega)
+  have := hnz (E + β) (by omega); have := hnz E (by omega); have := hnz α (by omega); have := hnz (E + α) (by omega)
+  have hb1 : qb q (E + β + 1) ≠ 0 := qb_ne q hD _ (hq2 _ (by omega) (by omega))
+  have hb2 : qb q (α + β + 1 + 1) ≠ 0 := qb_ne q hD _ (hq2 _ (by omega) (by omega))
+  field_simp
 end Lightlike.TemperleyLieb
