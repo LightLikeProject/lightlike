@@ -477,4 +477,42 @@ theorem hasDerivAt_qForm_cT_zero (ν : ℝ) (n : ℤ) (ξ x : ℝ) :
   linear_combination (2 * kVecP ν n x * x * wP ν * (Complex.exp ξ - Complex.exp (-ξ)) +
     2 * I * kVecP ν n x * n * Complex.exp ξ) * Complex.I_sq
 
+lemma aR_mul_aR_neg (ξ : ℝ) : aR ξ * aR (-ξ) = 1 := by
+  ext i j
+  have h : Real.exp (ξ / 2) * Real.exp (-(ξ / 2)) = 1 := by
+    rw [← Real.exp_add, show ξ / 2 + -(ξ / 2) = 0 by ring, Real.exp_zero]
+  have h' : (Real.exp (ξ / 2))⁻¹ * (Real.exp (-(ξ / 2)))⁻¹ = 1 := by rw [← mul_inv, h, inv_one]
+  fin_cases i <;> fin_cases j <;>
+    simp [aR, diagSL, Matrix.mul_apply, Fin.sum_univ_two, neg_div, h, h']
+
+lemma aR_neg_mul_aR (ξ : ℝ) : aR (-ξ) * aR ξ = 1 := by
+  simpa using aR_mul_aR_neg (-ξ)
+
+lemma aR_mul_cT (ξ t : ℝ) : aR ξ * cT ξ t = rot t * aR ξ := by
+  rw [cT, ← mul_assoc, ← mul_assoc, aR_mul_aR_neg, one_mul]
+
+/-- **The exact rotation identity**: `⟪π(a(-ξ)) e_m, π(c(t)) e_n⟫ = e^{-2imt} Φ^ν_{m,n}(ξ)`. -/
+theorem inner_cT_eq (ν ξ t : ℝ) (m n : ℤ) :
+    inner ℂ (principalSeries 0 ν (aR (-ξ)) (kVecL2 ν m)) (principalSeries 0 ν (cT ξ t) (kVecL2 ν n)) =
+      Complex.exp (-(2 * m * t * I)) * mcoefP ν m n ξ := by
+  have hu := principalSeries_inner 0 ν (aR ξ) (principalSeries 0 ν (aR (-ξ)) (kVecL2 ν m))
+    (principalSeries 0 ν (cT ξ t) (kVecL2 ν n))
+  rw [← hu, ← ContinuousLinearMap.mul_apply, ← principalSeries_mul, aR_mul_aR_neg,
+    principalSeries_one, ContinuousLinearMap.one_apply, ← ContinuousLinearMap.mul_apply,
+    ← principalSeries_mul, aR_mul_cT]
+  have h := inner_kVecL2_kak ν t ξ 0 m n
+  rw [rot_zero, mul_one] at h
+  rw [h]
+  congr 1
+  push_cast
+  ring_nf
+
+/-- `⟪π(a(-ξ)) e_m, e_k⟫ = Φ^ν_{m,k}(ξ)`. -/
+lemma inner_aR_neg_kVecL2 (ν ξ : ℝ) (m k : ℤ) :
+    inner ℂ (principalSeries 0 ν (aR (-ξ)) (kVecL2 ν m)) (kVecL2 ν k) = mcoefP ν m k ξ := by
+  have hu := principalSeries_inner 0 ν (aR ξ) (principalSeries 0 ν (aR (-ξ)) (kVecL2 ν m))
+    (kVecL2 ν k)
+  rw [← hu, ← ContinuousLinearMap.mul_apply, ← principalSeries_mul, aR_mul_aR_neg,
+    principalSeries_one, ContinuousLinearMap.one_apply, mcoefP]
+
 end Lightlike.Lorentz.SL2RPlancherel
