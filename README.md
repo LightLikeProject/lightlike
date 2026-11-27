@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/LightLikeProject/lightlike/actions/workflows/ci.yml/badge.svg)](https://github.com/LightLikeProject/lightlike/actions/workflows/ci.yml)
 
-An open Lean 4 library of the mathematics of fundamental physics, mainly quantum gravity, built on [Mathlib](https://github.com/leanprover-community/mathlib4) and [Physlib](https://github.com/leanprover-community/physlib). It formalizes published results, each with its source, and, outside the exploratory tier, proposes no new theories.
+An open Lean 4 library of the mathematics of fundamental physics, mainly quantum gravity, built on [Mathlib](https://github.com/leanprover-community/mathlib4) and [Physlib](https://github.com/leanprover-community/physlib). It formalizes published results with their sources (the entries that cite none are counted below) and, outside the exploratory tier, proposes no new theories.
 
 So far it covers spin-foam and state-sum quantum gravity with the topology, representation theory and asymptotics it rests on, the geometry of general relativity, and operator theory for quantum systems, with first results in other approaches. Most of the code is written by AI coding agents under human direction.
 

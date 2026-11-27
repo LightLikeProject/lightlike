@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import re
+from collections import Counter
 import subprocess
 import sys
 import tempfile
@@ -505,18 +506,25 @@ def summary(reg: list[dict]) -> str:
 
     human = ("No entry has had expert human review yet" if not h else
              f"{count(h, 'entry has', 'entries have')} had expert human review")
-    text = (f"The [catalog](docs/RESULTS.md) has {count(len(live), 'entry', 'entries')}, each citing "
-            f"the source of its statement: {count(c['proven'], 'proven result', 'proven results')}"
+    k = counts(reg)
+    nosrc = Counter(e["source"] for e in live if isinstance(e.get("source"), str))
+    nosrc_n = sum(nosrc.values())
+    kinds_txt = " and ".join(count(nosrc[t], t, t) for t in sorted(nosrc)) if nosrc else ""
+    text = (f"The [catalog](docs/RESULTS.md) has {count(len(live), 'entry', 'entries')}: "
+            f"{count(c['proven'], 'proven result', 'proven results')}"
             f"{', ' if c['stated'] else ' and '}"
             f"{count(c['conditional'], 'conditional result', 'conditional results')} (proven under "
             f"hypotheses that are named Lean propositions)"
             + (f" and {count(c['stated'], 'stated target', 'stated targets')} (the statement is "
                f"defined in Lean, the proof is open)" if c['stated'] else "") +
-            f". Lean's kernel has checked every proof. Statements are "
+            f". {count(nosrc_n, 'entry cites', 'entries cite')} no source for the statement"
+            + (f" ({kinds_txt})" if nosrc else "") +
+            f"; the other {len(live) - nosrc_n} cite one"
+            f", of which {k['pending_cited']} were not yet read against the text at the cited location. "
+            f"Lean's kernel has checked every proof. Statements are "
             f"reviewed against their sources by agents, since the kernel cannot check that a statement matches "
             f"its source. {human}, and a review of any entry is welcome "
             f"([how to report a mismatch](#review)).")
-    k = counts(reg)
     kinds = sum(k[x] for x in KINDS)
     text2 = (f"Read the count with care ([details](docs/RESULTS.md#how-to-read-the-count)): "
              f"{count(kinds, 'entry is', 'entries are')} a supporting lemma, an elementary fact or a wrapper of a "
