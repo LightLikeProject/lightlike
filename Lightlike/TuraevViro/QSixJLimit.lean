@@ -698,4 +698,91 @@ theorem limTerm_reflect (hr : 2 ≤ r) {a b c d e f p q r' x : ℕ}
   exact pair_algebra (E3_ne_zero hr ha hb t1 (tri_half_le t1 ha hb)) (E3_ne_zero hr hc hd t2 (tri_half_le t2 hc hd))
     (E3_ne_zero hr he hf t3 (tri_half_le t3 he hf)) hs
 
+/-! ## The limit of one summand -/
+
+lemma qAdm_right {a b c : ℕ} (h : qAdm r a b c) : c ≤ r - 2 := by
+  obtain ⟨⟨-, h1, -, -⟩, h⟩ := h; omega
+
+lemma Decomp.tendsto_of_eq {F : ℝ → ℝ} {k m : ℕ} {L : ℝ} (hF : Decomp r F k m L) (hr : 2 ≤ r) (h : k = m) :
+    Tendsto F (𝓝[≠] (π / r)) (𝓝 L) := by
+  subst h; exact hF.tendsto_eq hr
+
+/-- When the three triads through `x` are neither all within nor all above the level, the summand has more
+factors `η` than `η⁻¹`. -/
+lemma mixed_lt (hr : 2 ≤ r) {sA sB sC sA' : ℕ} (hA : sA' = sA) (h0 : ¬ (sA + 2 ≤ r ∧ sB + 2 ≤ r ∧ sC + 2 ≤ r))
+    (h3 : ¬ (r - 1 ≤ sA ∧ r - 1 ≤ sB ∧ r - 1 ≤ sC)) :
+    0 + 0 + ((if r ≤ sA + 1 then 1 else 0) + (if r ≤ sB + 1 then 1 else 0) + (if r ≤ sC + 1 then 1 else 0)) +
+        (0 + 0 + 0) <
+      0 + 0 + (0 + 0 + 0) + ((if r - 1 ≤ sA ∨ r - 1 ≤ sB then 1 else 0) +
+        (if r - 1 ≤ sB ∨ r - 1 ≤ sC then 1 else 0) + (if r - 1 ≤ sC ∨ r - 1 ≤ sA' then 1 else 0)) := by
+  subst hA; split_ifs <;> omega
+
+/-- The limit at `π/r` of the summand of the middle colour `x`: the root-of-unity summand (divided by the six
+triangle coefficients without `x`) when the three triads through `x` are within the level, `limTerm` when
+they are all above it, and `0` otherwise. -/
+noncomputable def termLim (r a b c d e f p q r' x : ℕ) : ℝ :=
+  if (a + b + x) / 2 + 2 ≤ r ∧ (c + d + x) / 2 + 2 ≤ r ∧ (e + f + x) / 2 + 2 ≤ r then
+    (-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + x) / 2) * qnum r (x + 1) *
+      (qDelta r a b x ^ 2 * qDelta r c d x ^ 2 * qDelta r e f x ^ 2) *
+      (qRacahSum r a b x c d p * qRacahSum r c d x e f q * qRacahSum r e f x b a r')
+  else if r - 1 ≤ (a + b + x) / 2 ∧ r - 1 ≤ (c + d + x) / 2 ∧ r - 1 ≤ (e + f + x) / 2 then
+    limTerm r a b c d e f p q r' x
+  else 0
+
+/-- **The limit of one summand** of the generic Biedenharn–Elliott sum, for six admissible fixed triads. -/
+theorem tendsto_genBETerm (hr : 2 ≤ r) {a b c d e f p q r' x : ℕ}
+    (q1 : qAdm r a d p) (q2 : qAdm r c b p) (q3 : qAdm r c f q) (q4 : qAdm r e d q) (q5 : qAdm r e a r')
+    (q6 : qAdm r b f r') (t1 : Tri a b x) (t2 : Tri c d x) (t3 : Tri e f x) :
+    Tendsto (fun θ => genBETerm θ a b c d e f p q r' x) (𝓝[≠] (π / r))
+      (𝓝 (termLim r a b c d e f p q r' x)) := by
+  have ha := qAdm_left q1
+  have hb := qAdm_mid q2
+  have hc := qAdm_left q2
+  have hd := qAdm_mid q1
+  have he := qAdm_left q4
+  have hf := qAdm_mid q3
+  have hp := qAdm_right q1
+  have hq := qAdm_right q3
+  have hr' := qAdm_right q5
+  have s1 := tri_half_le t1 ha hb
+  have s2 := tri_half_le t2 hc hd
+  have s3 := tri_half_le t3 he hf
+  have H := (((decomp_const (r := r) ((-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + x) / 2))).mul
+      (decomp_qnG hr (x + 1))).mul
+      (((decomp_delta2G hr a b x (by omega)).mul (decomp_delta2G hr c d x (by omega))).mul
+        (decomp_delta2G hr e f x (by omega)))).mul
+      (((decomp_racahG (j₁ := a) (j₂ := b) (j₃ := x) (j₄ := c) (j₅ := d) (j₆ := p) hr ⟨ha, hb, hc, hd, hp⟩).mul
+        (decomp_racahG (j₁ := c) (j₂ := d) (j₃ := x) (j₄ := e) (j₅ := f) (j₆ := q) hr ⟨hc, hd, he, hf, hq⟩)).mul
+        (decomp_racahG (j₁ := e) (j₂ := f) (j₃ := x) (j₄ := b) (j₅ := a) (j₆ := r') hr ⟨he, hf, hb, ha, hr'⟩))
+  replace H := H.congr (G := fun θ => genBETerm θ a b c d e f p q r' x)
+    (fun θ => by rw [genBETerm, if_pos ⟨t1, t2, t3⟩])
+  have hba : (b + a + x) / 2 = (a + b + x) / 2 := by rw [Nat.add_comm b a]
+  unfold termLim
+  by_cases h0 : (a + b + x) / 2 + 2 ≤ r ∧ (c + d + x) / 2 + 2 ≤ r ∧ (e + f + x) / 2 + 2 ≤ r
+  · rw [if_pos h0]
+    obtain ⟨w1, w2, w3⟩ := h0
+    have n1 : ¬ r - 1 ≤ (a + b + x) / 2 := by omega
+    have n2 : ¬ r - 1 ≤ (c + d + x) / 2 := by omega
+    have n3 : ¬ r - 1 ≤ (e + f + x) / 2 := by omega
+    have n4 : ¬ r - 1 ≤ (b + a + x) / 2 := by rw [hba]; exact n1
+    have m1 : ¬ r ≤ (a + b + x) / 2 + 1 := by omega
+    have m2 : ¬ r ≤ (c + d + x) / 2 + 1 := by omega
+    have m3 : ¬ r ≤ (e + f + x) / 2 + 1 := by omega
+    simp only [n1, n2, n3, n4, m1, m2, m3, or_self, ↓reduceIte, add_zero] at H
+    rw [delta2Reg_of_lt hr (by omega), delta2Reg_of_lt hr (by omega), delta2Reg_of_lt hr (by omega)] at H
+    exact H.tendsto_eq hr
+  · rw [if_neg h0]
+    by_cases h3 : r - 1 ≤ (a + b + x) / 2 ∧ r - 1 ≤ (c + d + x) / 2 ∧ r - 1 ≤ (e + f + x) / 2
+    · rw [if_pos h3]
+      obtain ⟨w1, w2, w3⟩ := h3
+      have w4 : r - 1 ≤ (b + a + x) / 2 := by rw [hba]; exact w1
+      have m1 : r ≤ (a + b + x) / 2 + 1 := by omega
+      have m2 : r ≤ (c + d + x) / 2 + 1 := by omega
+      have m3 : r ≤ (e + f + x) / 2 + 1 := by omega
+      simp only [w1, w2, w3, w4, m1, m2, m3, or_self, ↓reduceIte, add_zero, zero_add] at H
+      unfold limTerm SRgAt
+      exact H.tendsto_eq hr
+    · rw [if_neg h3]
+      exact H.tendsto_zero hr (mixed_lt hr hba h0 h3)
+
 end Lightlike.TV
