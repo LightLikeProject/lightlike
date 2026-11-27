@@ -7176,29 +7176,3 @@
   review: kernel-checked
   note: "The metrics 4 delta / (1 - |x|^2)^2 on the open unit ball of R^n, (L^2 / x_0^2) eta on x_0 < 0 and (L^2 / x_last^2) eta on x_last > 0 (L nonzero) are coordinate metrics on their domains. This is the definitional piece of GE12: it states that the three formulas define metrics, not that they are maximally symmetric or of constant curvature (+1/L^2, -1/L^2, -1), which is not proved here. The formulas are the standard conformally flat forms; the comparison of the curvature values with the cited section (Carroll, chapter 8, maximally symmetric spaces) is pending, and no source was read at a location for these charts. Limits: one chart each, with no global statement."
   since: unreleased
-- id: LL-XXXX
-  title: Constant curvature and maximal symmetry of a pseudo-Riemannian manifold, and constant curvature from the coordinate curvature in every chart
-  area: Spacetime
-  file: Lightlike/Spacetime/ConstantCurvature.lean
-  decls: [Lightlike.HasConstantCurvature, Lightlike.IsMaximallySymmetric, Lightlike.HasConstantCurvature.of_charts, Lightlike.curvatureAt_of_chart, Lightlike.hasConstantCurvature_minkowski]
-  status: proven
-  tier: established
-  source:
-    refs:
-      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
-  review: kernel-checked
-  note: "For a smooth symmetric nondegenerate metric (any signature) on a manifold modelled on Fin n -> R (any model with corners): HasConstantCurvature g K says that every locally smooth Levi-Civita connection has R(X, Y) Z = K (g(Y, Z) X - g(X, Z) Y) at every point (the sign convention of curvatureAt); IsMaximallySymmetric g K adds n(n+1)/2 smooth Killing fields of leviCivita g that are linearly independent (at most n(n+1)/2 exist on a connected manifold, finrank_killingFieldSpace_le for the model of R^n). HasConstantCurvature.of_charts: if in every chart the coordinate Riemann tensor of the coordinate metric is R^rho_{sigma mu nu} = K (delta^rho_mu g_{sigma nu} - delta^rho_nu g_{sigma mu}), the manifold has constant curvature K (through riemann_coord_compW, the chart formula of the curvature). Non-vacuity: Minkowski space has constant curvature 0. Comparison with the cited section (Carroll, chapter 8) pending: no source was read at the location for these definitions."
-  since: unreleased
-- id: LL-XXXX
-  title: The metric induced by an immersion into a space with a symmetric bilinear form, and its nondegeneracy on the tangent space of a quadric
-  area: Spacetime
-  file: Lightlike/Spacetime/PullbackMetric.lean
-  decls: [Lightlike.NondegMetric.pullback, Lightlike.NondegMetric.pullback_apply, Lightlike.pullback_nondeg_of_quadric, Lightlike.exists_pullback_euclidean, Lightlike.pullback_nondeg_of_quadric_circle]
-  status: proven
-  tier: established
-  source:
-    refs:
-      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
-  review: kernel-checked
-  note: "NondegMetric.pullback: for a smooth map into a normed space with a symmetric bilinear form L of any signature, the pullback L(d iota, d iota) is a NondegMetric when it is nondegenerate on every tangent space (smoothness and symmetry from pullbackForm). pullback_nondeg_of_quadric: if L is nondegenerate on V, L(x, x) is not zero and a linear map D is injective with image the L-orthogonal complement of x, the pullback L(D, D) is nondegenerate (V is the direct sum of x-perp and the line of x); this is the tangent space of the quadric L(x, x) = c, c nonzero, as used for de Sitter and anti-de Sitter space. Non-vacuity: the identity of a Euclidean space, and the unit circle at e_0. Comparison with the cited section (Carroll, chapter 8, the embedding of maximally symmetric spaces as quadrics) pending: no source was read at the location."
-  since: unreleased
