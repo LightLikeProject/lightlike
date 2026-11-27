@@ -1,6 +1,7 @@
 import Mathlib
 import Lightlike.Dirac.SphereSpin
 import Lightlike.Spacetime.LeviCivita
+import Lightlike.Dirac.SpinManifold
 
 /-!
 # The spin connection of the 2-sphere in the north frame
@@ -145,5 +146,48 @@ theorem mlieBracket_frameN (a b : Fin 2) (y : Fin 2 → ℝ) :
   change dStereoN y (lieBracket ℝ (frameFlat a) (frameFlat b) y) = _
   rw [hflat, map_sub, map_smul, map_smul]
   rfl
+
+/-! ## The connection coefficients of the north frame -/
+
+lemma gpair_frameN_eventually (b c : Fin 2) {p : S2} (hp : pc p 2 ≠ 1) :
+    gpair (roundMetric2I 1 one_ne_zero) (frameN b) (frameN c) =ᶠ[nhds p]
+      fun _ => if b = c then (1 : ℝ) else 0 := by
+  filter_upwards [(isOpen_pc_ne 1).mem_nhds hp] with q hq using frameN_orthonormal hq b c
+
+lemma mvfderiv_gpair_frameN (b c : Fin 2) {p : S2} (hp : pc p 2 ≠ 1) (v : TangentSpace I2 p) :
+    mvfderiv I2 (gpair (roundMetric2I 1 one_ne_zero) (frameN b) (frameN c)) p v = 0 := by
+  rw [mvfderiv_congr_nhds' (gpair_frameN_eventually b c hp), mvfderiv_const]
+  rfl
+
+lemma g_frameN_bracket (a b c : Fin 2) (y : Fin 2 → ℝ) :
+    (roundMetric2I 1 one_ne_zero).g (stereoN y) (frameN c (stereoN y))
+        (mlieBracket I2 (frameN a) (frameN b) (stereoN y)) =
+      y a * (if c = b then 1 else 0) - y b * (if c = a then 1 else 0) := by
+  have hp := pc_stereoN_ne y
+  have hb := mlieBracket_frameN a b y
+  change (roundMetric2I 1 one_ne_zero).g (stereoN y) (frameN c (stereoN y))
+    ((mlieBracket I2 (frameN a) (frameN b) (stereoN y) : Fin 2 → ℝ)) = _
+  rw [hb]
+  change (roundMetric2I 1 one_ne_zero).g (stereoN y) (frameN c (stereoN y))
+    (y a • frameN b (stereoN y) - y b • frameN a (stereoN y)) = _
+  rw [map_sub, map_smul, map_smul, frameN_orthonormal hp, frameN_orthonormal hp, smul_eq_mul, smul_eq_mul]
+
+/-- **The connection coefficients of the north frame are those of `stereoF`**: at `stereoN y`,
+`ω_abc = g(∇_{Fₐ} F_b, F_c) = y_c δ_ab − y_b δ_ac` (`stereoOmega`). -/
+theorem connForm_sphere_north (y : Fin 2 → ℝ) (a b c : Fin 2) :
+    sphereSpinStructure.connForm true (stereoN y) a b c =
+      (if a = b then y c else 0) - (if a = c then y b else 0) := by
+  have hp := pc_stereoN_ne y
+  have hd : ∀ d, MDifferentiableAt I2 (I2.prod 𝓘(ℝ, Fin 2 → ℝ))
+      (fun q => (⟨q, frameN d q⟩ : TangentBundle I2 S2)) (stereoN y) :=
+    fun d => (frameN_smooth d hp).mdifferentiableAt (by simp)
+  change (roundMetric2I 1 one_ne_zero).g (stereoN y)
+    (leviCivita (roundMetric2I 1 one_ne_zero) (frameN b) (stereoN y) (frameN a (stereoN y)))
+    (frameN c (stereoN y)) = _
+  rw [g_leviCivita (roundMetric2I 1 one_ne_zero) (hd a) (hd b) (hd c)]
+  unfold koszul
+  rw [mvfderiv_gpair_frameN b c hp, mvfderiv_gpair_frameN c a hp, mvfderiv_gpair_frameN a b hp,
+    g_frameN_bracket, g_frameN_bracket, g_frameN_bracket]
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> simp <;> ring
 
 end Lightlike.Dirac
