@@ -2,6 +2,7 @@ import Mathlib
 import Lightlike.TemperleyLieb.KLCoef
 import Lightlike.TemperleyLieb.TopEntry
 import Lightlike.TemperleyLieb.VertexNorm
+import Lightlike.TemperleyLieb.Slide
 
 /-!
 # Base values of the Kauffman–Lins coefficient
@@ -208,5 +209,90 @@ theorem Fc_b_rec [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b e₀ d₀ g
   simp only [show 1 + 1 - 2 * 1 = 0 by omega, Nat.zero_add, range_one, sum_singleton]
   rw [Fc_zero_third q hδ a b e₀ e₀ h₀.1 h₀.1 (by omega) (fun j hj => hd j (by omega))
     (fun j h1 h2 => hq2 j h1 (by omega)), if_pos rfl, one_mul]
+
+/-- **The edge of the one-strand block**: with every strand of the second and third blocks cupped into the first,
+the two tree vectors coincide, `U_R(a,b,1;0,b+1) = U_L(a,b,1;b,1)`. -/
+theorem UR_edge_eq_UL (q : kˣ) (a b : ℕ) (hab : b + 1 ≤ a) (hd : ∀ j, j ≤ a + b + 1 → chebD (loopVal q) j ≠ 0) :
+    UR q a b 1 0 (b + 1) = UL q a b 1 b 1 := by
+  have j1 : ∀ s, (jwAt q s 1 : Module.End k (ModelSpace k)) = 1 := fun s => rfl
+  unfold UR UL
+  rw [sh_Vop_zero q a b 1 (fun j hj => hd j (by omega))]
+  unfold Vop Qab
+  simp only [Nat.mul_zero, Nat.sub_zero, j1, mul_one, show a + b - 2 * b = a - b by omega,
+    show a + (b + 1) - 2 * (b + 1) = a - b - 1 by omega, show a - b + 1 - 2 * 1 = a - b - 1 by omega,
+    show a - b - 1 = a - b - 1 from rfl, show a - (b + 1) = a - b - 1 by omega]
+  set N := nestCup q (a - b - 1) (b + 1) with hNdef
+  have hd' : ∀ j, j < a + b + 1 → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have slide1 : (jwAt q a (b + 1) : Module.End k (ModelSpace k)) * N = jwAt q (a - b - 1) (b + 1) * N := by
+    have := jwAt_mul_nestCup_slide (k := k) q (l := a - b - 1) (i := b + 1) (m := b + 1) le_rfl
+      (fun j hj => hd j (by omega))
+    rwa [show a - b - 1 + (b + 1) = a by omega, show a - (b + 1) = a - b - 1 by omega] at this
+  have slide2 : (jwAt q a b : Module.End k (ModelSpace k)) * N = jwAt q (a - b) b * N := by
+    have := jwAt_mul_nestCup_slide (k := k) q (l := a - b - 1) (i := b + 1) (m := b) (by omega)
+      (fun j hj => hd j (by omega))
+    rwa [show a - b - 1 + (b + 1) = a by omega] at this
+  have abs1 : (jwAt q 0 a : Module.End k (ModelSpace k)) * jwAt q (a - b - 1) (b + 1) = jwAt q 0 a := by
+    have := jwAt_absorb_suffix_all_right (k := k) q 0 (a - b - 1) (b + 1) (fun j hj => hd j (by omega))
+    rwa [show b + 1 + (a - b - 1) = a by omega, Nat.zero_add] at this
+  have abs2 : (jwAt q 0 a : Module.End k (ModelSpace k)) * jwAt q (a - b) b = jwAt q 0 a := by
+    have := jwAt_absorb_suffix_all_right (k := k) q 0 (a - b) b (fun j hj => hd j (by omega))
+    rwa [show b + (a - b) = a by omega, Nat.zero_add] at this
+  have hP := jwProps_of_le (isTL_shift (k := k) q 0) (a + b + 1) hd' a (by omega)
+  have absP : (jwAt q 0 a : Module.End k (ModelSpace k)) * jwAt q 0 (a - b) = jwAt q 0 a := hP.absR (a - b) (by omega)
+  have hX := jwProps_of_le (isTL_shift (k := k) q 0) (a + b + 1) hd' (a - b) (by omega)
+  have idX : (jwAt q 0 (a - b) : Module.End k (ModelSpace k)) * jwAt q 0 (a - b) = jwAt q 0 (a - b) :=
+    hX.absR (a - b) le_rfl
+  have hW := jwProps_of_le (isTL_shift (k := k) q a) (a + b + 1) (fun j hj => hd j (by omega)) (b + 1) (by omega)
+  have idW : (jwAt q a (b + 1) : Module.End k (ModelSpace k)) * jwAt q a (b + 1) = jwAt q a (b + 1) :=
+    hW.absR (b + 1) le_rfl
+  have cWP : (jwAt q a (b + 1) : Module.End k (ModelSpace k)) * jwAt q 0 a = jwAt q 0 a * jwAt q a (b + 1) :=
+    (jwAt_comm_far q (by omega)).symm
+  have cVX : (jwAt q a b : Module.End k (ModelSpace k)) * jwAt q 0 (a - b) = jwAt q 0 (a - b) * jwAt q a b :=
+    (jwAt_comm_far q (by omega)).symm
+  have hcomm := jwAt_mul_nestCup (k := k) q (a := a - b) (l := a - b) le_rfl b
+  have hN : N = nestCup q (a - b) b * cupOp q (a - b - 1) := by
+    rw [hNdef, nestCup_succ_left, show a - b - 1 + 1 = a - b by omega]
+  have hL : jwAt q a (b + 1) * (jwAt q 0 a * jwAt q a (b + 1) * N * jwAt q 0 (a - b - 1)) =
+      (jwAt q 0 a * N * jwAt q 0 (a - b - 1) : Module.End k (ModelSpace k)) := by
+    calc _ = jwAt q a (b + 1) * jwAt q 0 a * jwAt q a (b + 1) * N * jwAt q 0 (a - b - 1) := by simp only [mul_assoc]
+      _ = jwAt q 0 a * (jwAt q a (b + 1) * jwAt q a (b + 1)) * N * jwAt q 0 (a - b - 1) := by
+          rw [cWP]; simp only [mul_assoc]
+      _ = _ := by rw [idW, mul_assoc (jwAt q 0 a), slide1, ← mul_assoc, abs1]
+  have hR : jwAt q 0 a * jwAt q a b * nestCup q (a - b) b * jwAt q 0 (a - b) *
+      (jwAt q 0 (a - b) * nestCup q (a - b - 1) 1 * jwAt q 0 (a - b - 1)) =
+      (jwAt q 0 a * N * jwAt q 0 (a - b - 1) : Module.End k (ModelSpace k)) := by
+    simp only [nestCup, mul_one, Nat.add_zero]
+    calc _ = jwAt q 0 a * jwAt q a b * (nestCup q (a - b) b * (jwAt q 0 (a - b) * jwAt q 0 (a - b))) *
+          cupOp q (a - b - 1) * jwAt q 0 (a - b - 1) := by simp only [mul_assoc]
+      _ = jwAt q 0 a * (jwAt q a b * jwAt q 0 (a - b)) * nestCup q (a - b) b *
+          cupOp q (a - b - 1) * jwAt q 0 (a - b - 1) := by rw [idX, ← hcomm]; simp only [mul_assoc]
+      _ = (jwAt q 0 a * jwAt q 0 (a - b)) * jwAt q a b * (nestCup q (a - b) b * cupOp q (a - b - 1)) *
+          jwAt q 0 (a - b - 1) := by rw [cVX]; simp only [mul_assoc]
+      _ = _ := by rw [absP, ← hN, mul_assoc (jwAt q 0 a), slide2, ← mul_assoc, abs2]
+  rw [hL, hR]
+
+/-- **The edge entry of the one-strand block** is `1`: `Fc(a, b, 1; b, 1; 0, b+1) = 1` for `b + 1 ≤ a`. -/
+theorem Fc_edge [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b : ℕ) (hab : b + 1 ≤ a)
+    (hd : ∀ j, j ≤ a + b + 1 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 1 + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    Fc q a b 1 b 1 0 (b + 1) = 1 := by
+  have h1 := gram_spec q hδ a b 1 b 1 0 (b + 1) (by omega) hd (by omega) le_rfl (Nat.zero_le _) (Nat.zero_le _)
+    le_rfl (by omega) hab (by omega)
+  have h2 := ULd_mul_UL q a b 1 hd (fun j h1 h2 => hq2 j h1 (by omega)) (e := b) (d := 1) (e' := b) (d' := 1)
+    (by omega) le_rfl (by omega) le_rfl (by omega) le_rfl (by omega) le_rfl
+  rw [if_pos ⟨rfl, rfl⟩] at h2
+  rw [UR_edge_eq_UL q a b hab hd, h2] at h1
+  set K := kapRec q a b b * kapRec q (a + b - 2 * b) 1 1
+  have h3 : (gramCoef q a b 1 b 1 0 (b + 1) - K) •
+      (jwAt q 0 (a + b - 2 * b + 1 - 2 * 1) : Module.End k (ModelSpace k)) = 0 :=
+    (sub_smul (gramCoef q a b 1 b 1 0 (b + 1)) K
+      (jwAt q 0 (a + b - 2 * b + 1 - 2 * 1) : Module.End k (ModelSpace k))).trans (sub_eq_zero.mpr h1.symm)
+  have hg := sub_eq_zero.mp ((smul_eq_zero.mp h3).resolve_right (jwAt_ne_zero q _))
+  have k1 := kapRec_ne (k := k) q b a b (by omega) le_rfl (fun x h1 h2 => hq2 x h1 (by omega))
+  have k2 := kapRec_ne (k := k) q 1 (a + b - 2 * b) 1 (by omega) le_rfl (fun x h1 h2 => hq2 x h1 (by omega))
+  unfold Fc
+  rw [if_pos ⟨by omega, by omega⟩, hg]
+  simp only [K]
+  field_simp
 
 end Lightlike.TemperleyLieb
