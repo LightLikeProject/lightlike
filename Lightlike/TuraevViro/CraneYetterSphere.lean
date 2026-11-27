@@ -156,16 +156,9 @@ def tetCol (γ : Finset (Fin 6) → ℕ) (t : Finset (Fin 6)) : ℕ :=
 def coneCol (γ : Finset (Fin 6) → ℕ) (f : Finset (Fin 6)) : ℕ :=
   if #f = 3 then triCol γ f else if #f = 4 then tetCol γ f else 0
 
-/-- **Every cone cocycle of `∂Δ⁵` has weight `1` at `r = 3`**: for every choice of the colours `0, 1` on the ten triangles
-through the vertex `0`, either `sphereM = 1` and `sphereE ≡ 0` or `sphereM = -1` and `sphereE ≡ 6` modulo `12`, i.e.
-`sphereM · (q^{1/2})^{sphereE} = 1` (as `(q^{1/2})^{12} = 1`). The check is by kernel evaluation of the 1024 cases. -/
-theorem sphere_weight_one :
-    ∀ b ∈ tri0.pi (fun _ => range 2),
-      (sphereM (coneCol (Lightlike.PR.extS tri0 b)) = 1 ∧ sphereE (coneCol (Lightlike.PR.extS tri0 b)) % 12 = 0) ∨
-        (sphereM (coneCol (Lightlike.PR.extS tri0 b)) = -1 ∧
-          sphereE (coneCol (Lightlike.PR.extS tri0 b)) % 12 = 6) := by
-  unfold sphereM sphereE tetModel cy3Eps cy3Exp cyA cyB cyC cyS cyP pr3 Jp Ip tetLeg tetIdx theta3Z tet3Z
-    coneCol triCol tetCol tri0 Lightlike.PR.extS
-  decide +kernel
+/-- The weight of the cone colouring of the datum `γ` is `1`: `sphereM · (q^{1/2})^{sphereE} = 1`. -/
+def WeightOne (γ : Finset (Fin 6) → ℕ) : Prop :=
+  (sphereM (coneCol γ) = 1 ∧ sphereE (coneCol γ) % 12 = 0) ∨
+    (sphereM (coneCol γ) = -1 ∧ sphereE (coneCol γ) % 12 = 6)
 
 end Lightlike.TV
