@@ -2,6 +2,7 @@ import Mathlib
 import Lightlike.TemperleyLieb.CupCap
 import Lightlike.TemperleyLieb.Vertex
 import Lightlike.TemperleyLieb.Reduction
+import Lightlike.TemperleyLieb.MirrorTree
 
 /-!
 # The vertical flip: the basis pairing of the model
@@ -154,5 +155,70 @@ theorem pairB_nestCup (q : kˣ) (l : ℕ) : ∀ i (x y : ModelSpace k),
   | i + 1, x, y => by
     simp only [nestCup, nestCap, Module.End.mul_apply]
     rw [pairB_cupOp, pairB_nestCup q l i, pow_succ]; ring
+
+lemma isSelfAdj_Qab (q : kˣ) (a b : ℕ) : IsSelfAdj (Qab q a b : Module.End k (ModelSpace k)) :=
+  (isSelfAdj_jwAt q 0 a).mul_comm (isSelfAdj_jwAt q a b) (jwAt_comm_far q (by omega))
+
+/-- The vertex operator is adjoint to the dual vertex, up to `(-q)^i`. -/
+theorem pairB_Vop (q : kˣ) (a b i : ℕ) (x y : ModelSpace k) :
+    pairB (Vop q a b i x) y = (-(q : k)) ^ i * pairB x (Wop q a b i y) := by
+  unfold Vop Wop
+  simp only [Module.End.mul_apply]
+  rw [isSelfAdj_Qab, pairB_nestCup, isSelfAdj_jwAt]
+
+/-- The dual of the second-bracketing tree vector: `U_R' = W_{d'} · sh_a W_f`. -/
+noncomputable def URd (q : kˣ) (a b c f d' : ℕ) : Module.End k (ModelSpace k) :=
+  Wop q a (b + c - 2 * f) d' * sh a (Wop q b c f)
+
+theorem pairB_UL (q : kˣ) (a b c e d : ℕ) (x y : ModelSpace k) :
+    pairB (UL q a b c e d x) y = (-(q : k)) ^ (e + d) * pairB x (ULd q a b c e d y) := by
+  unfold UL ULd
+  simp only [Module.End.mul_apply]
+  rw [pairB_Vop, pairB_Vop, pow_add]; ring
+
+theorem pairB_UR (q : kˣ) (a b c f d' : ℕ) (x y : ModelSpace k) :
+    pairB (UR q a b c f d' x) y = (-(q : k)) ^ (f + d') * pairB x (URd q a b c f d' y) := by
+  have hV : ∀ x y : ModelSpace k, pairB (sh a (Vop q b c f) x) y = (-(q : k)) ^ f * pairB x (sh a (Wop q b c f) y) := by
+    intro x y
+    unfold Vop Wop Qab
+    simp only [sh_mul, sh_jwAt, sh_nestCup, sh_nestCap, Module.End.mul_apply]
+    have hQ : IsSelfAdj (jwAt q (0 + a) b * jwAt q (b + a) c : Module.End k (ModelSpace k)) :=
+      (isSelfAdj_jwAt q _ b).mul_comm (isSelfAdj_jwAt q _ c) (jwAt_comm_far q (by omega))
+    have := hQ (nestCup q (b - f + a) f (jwAt q (0 + a) (b + c - 2 * f) x)) y
+    simp only [Module.End.mul_apply] at this
+    rw [this, pairB_nestCup, isSelfAdj_jwAt]
+  unfold UR URd
+  simp only [Module.End.mul_apply]
+  rw [hV, pairB_Vop, pow_add]; ring
+
+/-- A non-zero operator is detected by the pairing. -/
+lemma exists_pairB_ne {T : Module.End k (ModelSpace k)} (hT : T ≠ 0) : ∃ x y, pairB x (T y) ≠ 0 := by
+  by_contra h
+  push_neg at h
+  apply hT
+  refine LinearMap.ext fun y => Finsupp.ext fun σ => ?_
+  have := h (single σ 1) y
+  rw [pairB_single_left, one_mul] at this
+  simpa using this
+
+/-- **The vertical flip of the pairings**: `U_L'(e,d) U_R(f,d')` and `U_R'(f,d') U_L(e,d)` carry the same scalar. -/
+theorem flip_scalar (q : kˣ) {a b c e d f d' D : ℕ} {g h : k} (hn : e + d = f + d')
+    (hg : ULd q a b c e d * UR q a b c f d' = g • jwAt q 0 D)
+    (hh : URd q a b c f d' * UL q a b c e d = h • jwAt q 0 D) : g = h := by
+  obtain ⟨x, y, hxy⟩ := exists_pairB_ne (jwAt_ne_zero (k := k) q D)
+  have e1 := pairB_UR q a b c f d' x (UL q a b c e d y)
+  have e2 := pairB_UL q a b c e d y (UR q a b c f d' x)
+  have k1 := congrArg (fun T : Module.End k (ModelSpace k) => T y) hh
+  have k2 := congrArg (fun T : Module.End k (ModelSpace k) => T x) hg
+  simp only [Module.End.mul_apply, LinearMap.smul_apply] at k1 k2
+  rw [k1, pairB_smul_right] at e1
+  rw [k2, pairB_smul_right, ← isSelfAdj_jwAt, pairB_comm (jwAt q 0 D y) x] at e2
+  rw [pairB_comm, ← hn] at e1
+  have hq : (-(q : k)) ^ (e + d) ≠ 0 := pow_ne_zero _ (neg_ne_zero.mpr q.ne_zero)
+  have := e1.symm.trans e2
+  have h3 : (-(q : k)) ^ (e + d) * pairB x (jwAt q 0 D y) * (h - g) = 0 := by linear_combination this
+  rcases mul_eq_zero.mp h3 with h4 | h4
+  · exact absurd h4 (mul_ne_zero hq hxy)
+  · exact (sub_eq_zero.mp h4).symm
 
 end Lightlike.TemperleyLieb
