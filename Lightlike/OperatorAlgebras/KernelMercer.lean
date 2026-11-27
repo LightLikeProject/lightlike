@@ -230,6 +230,72 @@ lemma hasSum_inner_kernelOp [SecondCountableTopology X] (K : C(X × X, ℂ))
   push_cast
   ring
 
+/-- The truncated kernel `K - Σ_{i ∈ S} λ_i φ_i(x) conj φ_i(y)`. -/
+def truncKer (K : C(X × X, ℂ)) {ι : Type*} (S : Finset ι) (lam : ι → ℝ) (φ : ι → C(X, ℂ)) :
+    C(X × X, ℂ) :=
+  K - ∑ i ∈ S, ((lam i : ℝ) : ℂ) • tensorKer (φ i)
+
+/-- `toLp φ = b` for an eigenvector with `λ ≠ 0`. -/
+lemma toLp_eigenFun (K : C(X × X, ℂ)) {b : Lp ℂ 2 μ} {lam : ℝ} (hl : lam ≠ 0)
+    (hb : kernelOp μ K b = (lam : ℂ) • b) :
+    ContinuousMap.toLp (E := ℂ) 2 μ ℂ (eigenFun μ K b lam) = b := by
+  refine Lp.ext ?_
+  filter_upwards [ContinuousMap.coeFn_toLp (E := ℂ) (p := 2) (μ := μ) (𝕜 := ℂ)
+    (eigenFun μ K b lam), ae_eq_eigenFun μ K hl hb] with x hx1 hx2
+  rw [hx1, hx2]
+
+/-- **The truncated kernel is positive.** -/
+theorem isPositiveKernel_truncKer [μ.IsOpenPosMeasure] [SecondCountableTopology X]
+    (K : C(X × X, ℂ)) (hK : ∀ x y, K (y, x) = starRingEnd ℂ (K (x, y))) {ι : Type*}
+    (b : HilbertBasis ι ℂ (Lp ℂ 2 μ)) (lam : ι → ℝ)
+    (hb : ∀ i, kernelOp μ K (b i) = (lam i : ℂ) • b i) (hpos : IsPositiveKernel μ K)
+    (S : Finset ι) :
+    IsPositiveKernel μ (truncKer K S lam fun i => eigenFun μ K (b i) (lam i)) := by
+  intro f
+  set φ := fun i => eigenFun μ K (b i) (lam i) with hφ
+  have hlam : ∀ i, 0 ≤ lam i := fun i => eigen_nonneg μ hpos (hb i) (b.orthonormal.1 i)
+  -- the operator of the truncated kernel
+  have hop : kernelOp μ (truncKer K S lam φ) f = kernelOp μ K f -
+      ∑ i ∈ S, ((lam i : ℂ) * inner ℂ (b i) f) • b i := by
+    rw [kernelOp_eq_toLp, truncKer, kernelToC_sub, kernelToC_sum, map_sub, map_sum]
+    congr 1
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [kernelToC_smul, kernelToC_tensorKer, map_smul, map_smul, smul_smul]
+    by_cases hl : lam i = 0
+    · simp [hl]
+    · rw [toLp_eigenFun μ K hl (hb i)]
+  have htot := hasSum_inner_kernelOp μ K hK b lam hb f
+  have hre : HasSum (fun i => lam i * ‖inner ℂ (b i) f‖ ^ 2)
+      (RCLike.re (inner ℂ (kernelOp μ K f) f)) := by
+    have := Complex.reCLM.hasSum htot
+    simp only [Complex.reCLM_apply, Complex.ofReal_re] at this
+    exact this
+  have hpart : ∑ i ∈ S, lam i * ‖inner ℂ (b i) f‖ ^ 2 ≤ RCLike.re (inner ℂ (kernelOp μ K f) f) :=
+    sum_le_hasSum S (fun i _ => mul_nonneg (hlam i) (sq_nonneg _)) hre
+  rw [hop, inner_sub_left, sum_inner, map_sub, map_sum]
+  have hterm : ∀ i ∈ S, RCLike.re (inner ℂ (((lam i : ℂ) * inner ℂ (b i) f) • b i) f) =
+      lam i * ‖inner ℂ (b i) f‖ ^ 2 := by
+    intro i _
+    rw [inner_smul_left, map_mul (starRingEnd ℂ), Complex.conj_ofReal, mul_assoc,
+      Complex.conj_mul', ← Complex.ofReal_pow, ← Complex.ofReal_mul, RCLike.re_to_complex,
+      Complex.ofReal_re]
+  rw [Finset.sum_congr rfl hterm]
+  linarith
+
+/-- **The diagonal bound**: `Σ_{i ∈ S} λ_i |φ_i(x)|² ≤ re K(x, x)` for every finite `S`. -/
+theorem sum_le_diag [μ.IsOpenPosMeasure] [SecondCountableTopology X]
+    (K : C(X × X, ℂ)) (hK : ∀ x y, K (y, x) = starRingEnd ℂ (K (x, y))) {ι : Type*}
+    (b : HilbertBasis ι ℂ (Lp ℂ 2 μ)) (lam : ι → ℝ)
+    (hb : ∀ i, kernelOp μ K (b i) = (lam i : ℂ) • b i) (hpos : IsPositiveKernel μ K)
+    (S : Finset ι) (x : X) :
+    ∑ i ∈ S, lam i * ‖eigenFun μ K (b i) (lam i) x‖ ^ 2 ≤ (K (x, x)).re := by
+  have h := re_diag_nonneg μ (isPositiveKernel_truncKer μ K hK b lam hb hpos S) x
+  simp only [truncKer, ContinuousMap.sub_apply, ContinuousMap.coe_sum, Finset.sum_apply,
+    ContinuousMap.smul_apply, tensorKer, ContinuousMap.coe_mk, Complex.sub_re, Complex.re_sum,
+    smul_eq_mul, Complex.re_ofReal_mul, Complex.mul_conj', ← Complex.ofReal_pow,
+    Complex.ofReal_re] at h
+  linarith
+
 end
 
 end Lightlike.OperatorAlgebras
