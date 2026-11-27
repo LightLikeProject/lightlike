@@ -2334,6 +2334,7 @@ import Lightlike.SpinFoam.EPRLStateSum.NetworkCovariance
 import Lightlike.SpinFoam.EPRLStateSum.LinkParity
 import Lightlike.SpinFoam.EPRLStateSum.InversionParity
 import Lightlike.SpinFoam.EPRLStateSum.RelabelAmplitude
+import Lightlike.SpinFoam.EPRLStateSum.LinkSignEven
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
