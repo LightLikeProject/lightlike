@@ -91,8 +91,9 @@ section Manifold
 open Bundle Manifold
 open scoped Manifold ContDiff
 
-variable {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
-  [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M]
+variable {M : Type*} [TopologicalSpace M] {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ (Fin n → ℝ) H}
+  [ChartedSpace H M]
+  [IsManifold I ∞ M]
 
 /-- A **spin structure** on `M` for the metric `g`: a family of local orthonormal frames, with open
 domains covering `M` and smooth on them, whose frame changes `Rot` (defined by
@@ -104,17 +105,17 @@ the principal `Spin(n)`-bundle double covering the frame bundle (a representatio
 atlas form; equivalence with the principal `Spin(n)`-bundle definition not proved.  The frames are
 smooth sections of the tangent bundle and the lifts are smooth maps into the Clifford algebra
 (every linear coordinate of `lift i j` is smooth on the overlap). -/
-structure SpinStructure (g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M) (ι : Type*) extends
+structure SpinStructure (g : NondegMetric I M) (ι : Type*) extends
     SpinCocycle n M ι where
   /-- The local frame `i`. -/
-  frame : ι → Fin n → Π x : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) x
+  frame : ι → Fin n → Π x : M, TangentSpace I x
   dom_open : ∀ i, IsOpen (dom i)
   dom_cover : ∀ x : M, ∃ i, x ∈ dom i
   frame_smooth : ∀ i a, ∀ x ∈ dom i,
-    ContMDiffAt 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ)) ∞
-      (fun y => (⟨y, frame i a y⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) x
+    ContMDiffAt I (I.prod 𝓘(ℝ, Fin n → ℝ)) ∞
+      (fun y => (⟨y, frame i a y⟩ : TangentBundle I M)) x
   lift_smooth : ∀ i j (φ : Module.Dual ℝ (CliffordAlgebra (Qneg n))) x, x ∈ dom i → x ∈ dom j →
-    ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, ℝ) ∞ (fun y => φ (lift i j y)) x
+    ContMDiffAt I 𝓘(ℝ, ℝ) ∞ (fun y => φ (lift i j y)) x
   frame_orthonormal : ∀ i a b x, x ∈ dom i →
     g.g x (frame i a x) (frame i b x) = if a = b then 1 else 0
   frame_change : ∀ i j x, x ∈ dom i → x ∈ dom j → ∀ a,

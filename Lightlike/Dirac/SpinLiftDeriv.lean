@@ -4,6 +4,7 @@ import Lightlike.Dirac.CliffordCenter
 import Lightlike.Dirac.CliffordNorm
 import Lightlike.Spacetime.ChartCurvature
 import Lightlike.Spacetime.LeviCivita
+import Lightlike.Spacetime.Corners.ChartCurvature
 
 /-!
 # The derivative of the spin lifts of a spin structure
@@ -31,23 +32,40 @@ open scoped Manifold ContDiff Matrix Topology
 
 namespace Lightlike.Dirac
 
-variable {n : ℕ} {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
-  [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M]
-  {g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M} {ι : Type*} (S : SpinStructure g ι)
+variable {n : ℕ} {M : Type*} [TopologicalSpace M] {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ (Fin n → ℝ) H}
+  [ChartedSpace H M]
+  [IsManifold I ∞ M] [I.Boundaryless]
+  {g : NondegMetric I M} {ι : Type*} (S : SpinStructure g ι)
 
+variable (I) in
 /-- Differentiability of a vector field at a point, with the model of `M` written out. -/
-abbrev SecDiffAt (X : Π y : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) y) (x : M) : Prop :=
-  MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ))
-    (fun y => (⟨y, X y⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) x
+abbrev SecDiffAt (X : Π y : M, TangentSpace I y) (x : M) : Prop :=
+  MDifferentiableAt I (I.prod 𝓘(ℝ, Fin n → ℝ))
+    (fun y => (⟨y, X y⟩ : TangentBundle I M)) x
 
+variable (I) in
 /-- Differentiability of a vector-valued function at a point, with the model of `M` written out. -/
 abbrev FunDiffAt {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] (f : M → F) (x : M) : Prop :=
-  MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, F) f x
+  MDifferentiableAt I 𝓘(ℝ, F) f x
+
+/-- The chart rule for a boundaryless model: the derivative in the chart is a plain `fderiv`. -/
+lemma mdiffAt_comp_symmB {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] (g : M → F) (p : M)
+    (hg : FunDiffAt I g p) :
+    DifferentiableAt ℝ (g ∘ (extChartAt I p).symm) (extChartAt I p p) := by
+  have := mdiffAt_comp_symmW (I := I) g p hg
+  rwa [I.range_eq_univ, differentiableWithinAt_univ] at this
+
+/-- `mvfderiv` through the chart, for a boundaryless model. -/
+lemma mvfderiv_eq_chartB {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] (g : M → F) (p : M)
+    (hg : FunDiffAt I g p) (u : TangentSpace I p) :
+    mvfderiv I g p u =
+      fderiv ℝ (g ∘ (extChartAt I p).symm) (extChartAt I p p) (mfderiv I 𝓘(ℝ, Fin n → ℝ) (extChartAt I p) p u) := by
+  rw [mvfderiv_eq_chartW g p hg u, I.range_eq_univ, fderivWithin_univ]
 
 /-- Eventually equal functions have the same derivative. -/
 lemma mvfderiv_congr_nhds' {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {f₁ f₂ : M → F}
     {x : M} (h : f₁ =ᶠ[𝓝 x] f₂) :
-    mvfderiv 𝓘(ℝ, Fin n → ℝ) f₁ x = mvfderiv 𝓘(ℝ, Fin n → ℝ) f₂ x := by
+    mvfderiv I f₁ x = mvfderiv I f₂ x := by
   unfold mvfderiv
   rw [h.mfderiv_eq]
   ext v
@@ -75,13 +93,13 @@ lemma SpinStructure.rot_eq_rmat {i j : ι} {y : M} (hi : y ∈ S.dom i) (hj : y 
   simp [S.frame_orthonormal i _ _ y hi, Finset.sum_apply]
 
 /-- The derivative of the frame-change matrix along a tangent vector `v` at `x`. -/
-noncomputable def SpinStructure.rmatD (i j : ι) (x : M) (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) :
+noncomputable def SpinStructure.rmatD (i j : ι) (x : M) (v : TangentSpace I x) :
     Matrix (Fin n) (Fin n) ℝ :=
-  Matrix.of fun a b => mvfderiv 𝓘(ℝ, Fin n → ℝ) (S.rmatE i j a b) x v
+  Matrix.of fun a b => mvfderiv I (S.rmatE i j a b) x v
 
-@[simp] lemma SpinStructure.rmatD_apply (i j : ι) (x : M) (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x)
+@[simp] lemma SpinStructure.rmatD_apply (i j : ι) (x : M) (v : TangentSpace I x)
     (a b : Fin n) :
-    S.rmatD i j x v a b = mvfderiv 𝓘(ℝ, Fin n → ℝ) (S.rmatE i j a b) x v := rfl
+    S.rmatD i j x v a b = mvfderiv I (S.rmatE i j a b) x v := rfl
 
 /-- The frame change is orthogonal: `R Rᵀ = 1` on the overlap. -/
 lemma SpinStructure.rmat_mul_transpose {i j : ι} {y : M} (hi : y ∈ S.dom i) (hj : y ∈ S.dom j) :
@@ -101,12 +119,12 @@ lemma SpinStructure.transpose_mul_rmat {i j : ι} {y : M} (hi : y ∈ S.dom i) (
 
 /-- The frames are differentiable on their domains. -/
 lemma SpinStructure.mdiffAt_frame {i : ι} (a : Fin n) {y : M} (hy : y ∈ S.dom i) :
-    SecDiffAt (S.frame i a) y :=
+    SecDiffAt I (S.frame i a) y :=
   (S.frame_smooth i a y hy).mdifferentiableAt (by simp)
 
 /-- The entries of the frame change are differentiable on the overlap. -/
 lemma SpinStructure.mdiffAt_rmat {i j : ι} {y : M} (hi : y ∈ S.dom i) (hj : y ∈ S.dom j)
-    (a b : Fin n) : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, ℝ) (S.rmatE i j a b) y :=
+    (a b : Fin n) : MDifferentiableAt I 𝓘(ℝ, ℝ) (S.rmatE i j a b) y :=
   mdiffAt_gpair g (S.mdiffAt_frame a hj) (S.mdiffAt_frame b hi)
 
 /-- The spin lift lifts the frame-change matrix of pairings. -/
@@ -137,9 +155,9 @@ attribute [local instance] clNormedRing clNormedAlgebra
 
 /-- The spin lifts are smooth as maps into the (normed) Clifford algebra. -/
 lemma SpinStructure.contMDiffAt_lift {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x ∈ S.dom j) :
-    ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, CliffordAlgebra (Qneg n)) ∞ (S.lift i j) x := by
+    ContMDiffAt I 𝓘(ℝ, CliffordAlgebra (Qneg n)) ∞ (S.lift i j) x := by
   set b := clBasis n
-  have hc : ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin (Module.finrank ℝ (CliffordAlgebra (Qneg n))) → ℝ) ∞
+  have hc : ContMDiffAt I 𝓘(ℝ, Fin (Module.finrank ℝ (CliffordAlgebra (Qneg n))) → ℝ) ∞
       (fun y => b.equivFun (S.lift i j y)) x :=
     contMDiffAt_pi_module_iff.2 fun k => by simpa using S.lift_smooth i j (b.coord k) x hi hj
   have hL : S.lift i j = ((b.equivFun.symm.toContinuousLinearEquiv :
@@ -174,13 +192,13 @@ lemma hasFDerivAt_unique_of_eventuallyEq {F G : Type*} [NormedAddCommGroup F] [N
 /-- **The derivative of a spin lift.**  On the overlap of the frames `i` and `j`, along a tangent
 vector `v`: `d_v lift = clSpinForm (Rᵀ · d_v R) · lift`, with `R = rmat i j x`. -/
 theorem SpinStructure.mvfderiv_lift {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x ∈ S.dom j)
-    (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) :
-    mvfderiv 𝓘(ℝ, Fin n → ℝ) (S.lift i j) x v =
+    (v : TangentSpace I x) :
+    mvfderiv I (S.lift i j) x v =
       clSpinForm ((S.rmat i j x)ᵀ *
         S.rmatD i j x v) * S.lift i j x := by
-  set φ := extChartAt 𝓘(ℝ, Fin n → ℝ) x with hφ
+  set φ := extChartAt I x with hφ
   set z0 := φ x
-  set w : Fin n → ℝ := mfderiv 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) φ x v
+  set w : Fin n → ℝ := mfderiv I 𝓘(ℝ, Fin n → ℝ) φ x v
   have hx0 : φ.symm z0 = x := φ.left_inv (mem_extChartAt_source x)
   have hopen : IsOpen (S.dom i ∩ S.dom j) := (S.dom_open i).inter (S.dom_open j)
   have hnearZ : ∀ᶠ z in 𝓝 z0, φ.symm z ∈ S.dom i ∧ φ.symm z ∈ S.dom j := by
@@ -190,19 +208,19 @@ theorem SpinStructure.mvfderiv_lift {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj 
   -- the lift in the chart
   set ls := S.lift i j ∘ φ.symm
   have hlsM := (S.contMDiffAt_lift hi hj).mdifferentiableAt (by simp)
-  have hls : HasFDerivAt ls (fderiv ℝ ls z0) z0 := (mdiffAt_comp_symm _ x hlsM).hasFDerivAt
+  have hls : HasFDerivAt ls (fderiv ℝ ls z0) z0 := (mdiffAt_comp_symmB _ x hlsM).hasFDerivAt
   set δ := fderiv ℝ ls z0 w
-  have hδ : mvfderiv 𝓘(ℝ, Fin n → ℝ) (S.lift i j) x v = δ := mvfderiv_eq_chart _ x hlsM v
+  have hδ : mvfderiv I (S.lift i j) x v = δ := mvfderiv_eq_chartB _ x hlsM v
   have hlsz : ls z0 = S.lift i j x := by simp [ls, hx0]
   -- the frame-change entries in the chart
   set rs : Fin n → Fin n → (Fin n → ℝ) → ℝ := fun a b => (S.rmatE i j a b) ∘ φ.symm
   have hrs : ∀ a b, HasFDerivAt (rs a b) (fderiv ℝ (rs a b) z0) z0 := fun a b =>
-    (mdiffAt_comp_symm _ x (S.mdiffAt_rmat hi hj a b)).hasFDerivAt
+    (mdiffAt_comp_symmB _ x (S.mdiffAt_rmat hi hj a b)).hasFDerivAt
   set R := S.rmat i j x
   set Rd : Matrix (Fin n) (Fin n) ℝ := fun a b => fderiv ℝ (rs a b) z0 w
   have hRd : S.rmatD i j x v = Rd := by
     ext a b
-    exact mvfderiv_eq_chart _ x (S.mdiffAt_rmat hi hj a b) v
+    exact mvfderiv_eq_chartB _ x (S.mdiffAt_rmat hi hj a b) v
   have hrsz : ∀ a b, rs a b z0 = R a b := fun a b => by simp [rs, hx0, R]
   rw [hδ, hRd, ← hlsz]
   have hs : ls z0 ∈ spinGroup (Qneg n) := by rw [hlsz]; exact (S.isLift i j x hi hj).1
@@ -296,8 +314,8 @@ end Normed
 `d_v (ρ ∘ lift) = spinForm ρ (Rᵀ · d_v R) ∘ ρ(lift)`, with `R = rmat i j x`. -/
 theorem SpinStructure.mvfderiv_rho_lift {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (ρ : CliffordRep n V) {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x ∈ S.dom j)
-    (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) :
-    mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun y => ρ (S.lift i j y)) x v =
+    (v : TangentSpace I x) :
+    mvfderiv I (fun y => ρ (S.lift i j y)) x v =
       spinForm ρ ((S.rmat i j x)ᵀ *
         S.rmatD i j x v) * ρ (S.lift i j x) := by
   let _ := clNormedRing n
@@ -307,30 +325,30 @@ theorem SpinStructure.mvfderiv_rho_lift {V : Type*} [NormedAddCommGroup V] [Norm
   have hlsM := (S.contMDiffAt_lift hi hj).mdifferentiableAt (by simp)
   have hcomp : (fun y => ρ (S.lift i j y)) = ρL ∘ S.lift i j := by
     funext y; rfl
-  have hM : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, V →L[ℝ] V) (fun y => ρ (S.lift i j y)) x := by
+  have hM : MDifferentiableAt I 𝓘(ℝ, V →L[ℝ] V) (fun y => ρ (S.lift i j y)) x := by
     rw [hcomp]; exact ρL.mdifferentiableAt.comp x hlsM
-  rw [mvfderiv_eq_chart _ x hM v]
-  have := mvfderiv_eq_chart _ x hlsM v
+  rw [mvfderiv_eq_chartB _ x hM v]
+  have := mvfderiv_eq_chartB _ x hlsM v
   rw [S.mvfderiv_lift hi hj v] at this
-  have hc : (fun y => ρ (S.lift i j y)) ∘ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm =
-      ρL ∘ (S.lift i j ∘ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm) := by
+  have hc : (fun y => ρ (S.lift i j y)) ∘ (extChartAt I x).symm =
+      ρL ∘ (S.lift i j ∘ (extChartAt I x).symm) := by
     rw [hcomp]; rfl
-  have hfd := (ρL.hasFDerivAt.comp _ (mdiffAt_comp_symm _ x hlsM).hasFDerivAt).fderiv
+  have hfd := (ρL.hasFDerivAt.comp _ (mdiffAt_comp_symmB _ x hlsM).hasFDerivAt).fderiv
   rw [hc, hfd]
-  change ρL (fderiv ℝ (S.lift i j ∘ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm)
-    (extChartAt 𝓘(ℝ, Fin n → ℝ) x x)
-      (mfderiv 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) (extChartAt 𝓘(ℝ, Fin n → ℝ) x) x v)) = _
+  change ρL (fderiv ℝ (S.lift i j ∘ (extChartAt I x).symm)
+    (extChartAt I x x)
+      (mfderiv I 𝓘(ℝ, Fin n → ℝ) (extChartAt I x) x v)) = _
   rw [← this]
   simp [ρL, map_mul, map_clSpinForm]
 
 /-- The derivative of a finite sum of differentiable functions. -/
 lemma mvfderiv_finsum {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {f : Fin n → M → F}
-    {x : M} (h : ∀ b, MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, F) (f b) x) :
-    mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun y => ∑ b, f b y) x = ∑ b, mvfderiv 𝓘(ℝ, Fin n → ℝ) (f b) x := by
+    {x : M} (h : ∀ b, MDifferentiableAt I 𝓘(ℝ, F) (f b) x) :
+    mvfderiv I (fun y => ∑ b, f b y) x = ∑ b, mvfderiv I (f b) x := by
   classical
-  have key : ∀ s : Finset (Fin n), MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, F) (fun y => ∑ b ∈ s, f b y) x ∧
-      mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun y => ∑ b ∈ s, f b y) x =
-        ∑ b ∈ s, mvfderiv 𝓘(ℝ, Fin n → ℝ) (f b) x := by
+  have key : ∀ s : Finset (Fin n), MDifferentiableAt I 𝓘(ℝ, F) (fun y => ∑ b ∈ s, f b y) x ∧
+      mvfderiv I (fun y => ∑ b ∈ s, f b y) x =
+        ∑ b ∈ s, mvfderiv I (f b) x := by
     intro s
     induction s using Finset.induction_on with
     | empty => exact ⟨by simpa using mdifferentiableAt_const, by simp [mvfderiv_const]⟩
@@ -343,13 +361,13 @@ lemma mvfderiv_finsum {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {f 
 
 /-- The derivative of the orthogonality `R Rᵀ = 1` of the frame change. -/
 lemma SpinStructure.rmat_deriv_orth {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x ∈ S.dom j)
-    (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) :
+    (v : TangentSpace I x) :
     S.rmatD i j x v * (S.rmat i j x)ᵀ +
       S.rmat i j x * (S.rmatD i j x v)ᵀ = 0 := by
   have hnear : ∀ᶠ y in 𝓝 x, y ∈ S.dom i ∧ y ∈ S.dom j :=
     ((S.dom_open i).inter (S.dom_open j)).mem_nhds ⟨hi, hj⟩
   ext a c
-  have hm : ∀ b, MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, ℝ)
+  have hm : ∀ b, MDifferentiableAt I 𝓘(ℝ, ℝ)
       (S.rmatE i j a b * S.rmatE i j c b) x := fun b =>
     (S.mdiffAt_rmat hi hj a b).mul (S.mdiffAt_rmat hi hj c b)
   have heq : (fun y => ∑ b, (S.rmatE i j a b * (S.rmatE i j c b)) y) =ᶠ[𝓝 x]
@@ -372,7 +390,7 @@ lemma SpinStructure.rmat_deriv_orth {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj 
 
 /-- `Rᵀ Ṙ` is skew for the frame change `R = rmat i j x` and its derivative `Ṙ` along `v`. -/
 lemma SpinStructure.rmat_deriv_skew {i j : ι} {x : M} (hi : x ∈ S.dom i) (hj : x ∈ S.dom j)
-    (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) (p q : Fin n) :
+    (v : TangentSpace I x) (p q : Fin n) :
     ((S.rmat i j x)ᵀ * S.rmatD i j x v) p q =
       -((S.rmat i j x)ᵀ * S.rmatD i j x v) q p :=
   skew_of_orth (S.transpose_mul_rmat hi hj) (S.rmat_deriv_orth hi hj v) p q

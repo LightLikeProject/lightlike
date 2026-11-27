@@ -11,6 +11,11 @@ import Lightlike.Spacetime.LieDerivation
 import Lightlike.Spacetime.HypersurfaceConstraints
 import Lightlike.Spacetime.LeviCivitaSmooth
 import Lightlike.Spacetime.ChartCurvature
+import Lightlike.Spacetime.Corners.CurvatureSymmetries
+import Lightlike.Spacetime.Corners.ChartCurvature
+import Lightlike.Spacetime.Corners.LieDerivation
+import Lightlike.Spacetime.Corners.LeviCivitaSmooth
+import Lightlike.Spacetime.Corners.ScalarCurvatureFrame
 
 /-!
 # The Lichnerowicz formula on a spin manifold
@@ -35,9 +40,10 @@ open scoped Manifold ContDiff Matrix Topology
 namespace Lightlike.Dirac
 
 variable {n : ℕ} {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
-  {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
-  [IsManifold 𝓘(ℝ, Fin n → ℝ) ∞ M]
-  {g : NondegMetric 𝓘(ℝ, Fin n → ℝ) M} {ι : Type*} (S : SpinStructure g ι) (ρ : CliffordRep n V)
+  {M : Type*} [TopologicalSpace M] {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ (Fin n → ℝ) H}
+  [ChartedSpace H M]
+  [IsManifold I ∞ M] [I.Boundaryless]
+  {g : NondegMetric I M} {ι : Type*} (S : SpinStructure g ι) (ρ : CliffordRep n V)
 
 /-- The connection coefficients in an orthonormal frame are skew: `ω_a bc = -ω_a cb`
 (metric compatibility of the Levi-Civita connection). -/
@@ -57,7 +63,7 @@ lemma SpinStructure.connForm_skew {i : ι} {x : M} (hx : x ∈ S.dom i) (a b c :
 
 /-- `∇ₐ` of a finite sum. -/
 lemma SpinStructure.nabla_finsum (i : ι) (a : Fin n) {ψ : Fin n → M → V} {x : M}
-    (h : ∀ b, FunDiffAt (n := n) (ψ b) x) :
+    (h : ∀ b, FunDiffAt I (ψ b) x) :
     S.nabla ρ i a (fun y => ∑ b, ψ b y) x = ∑ b, S.nabla ρ i a (ψ b) x := by
   unfold SpinStructure.nabla SpinStructure.nablaV
   rw [mvfderiv_finsum h]
@@ -66,12 +72,12 @@ lemma SpinStructure.nabla_finsum (i : ι) (a : Fin n) {ψ : Fin n → M → V} {
 /-- Clifford multiplication is parallel up to the connection coefficients:
 `∇ₐ (γₖ ψ) = γₖ ∇ₐ ψ + ∑ⱼ ωₐ,ₖⱼ γⱼ ψ`. -/
 lemma SpinStructure.nabla_gam {i : ι} {x : M} (hx : x ∈ S.dom i) (a k : Fin n) {ψ : M → V}
-    (hψ : FunDiffAt (n := n) ψ x) :
+    (hψ : FunDiffAt I ψ x) :
     S.nabla ρ i a (fun y => gam ρ k (ψ y)) x =
       gam ρ k (S.nabla ρ i a ψ x) + ∑ j, S.connForm i x a k j • gam ρ j (ψ x) := by
-  have hd : mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun y => gam ρ k (ψ y)) x (S.frame i a x) =
-      gam ρ k (mvfderiv 𝓘(ℝ, Fin n → ℝ) ψ x (S.frame i a x)) := by
-    rw [mvfderiv_clm_apply (fun _ => gam ρ k) ψ x mdifferentiableAt_const hψ, mvfderiv_const]
+  have hd : mvfderiv I (fun y => gam ρ k (ψ y)) x (S.frame i a x) =
+      gam ρ k (mvfderiv I ψ x (S.frame i a x)) := by
+    rw [mvfderiv_clm_applyW (fun _ => gam ρ k) ψ x mdifferentiableAt_const hψ, mvfderiv_const]
     simp
   have hc := congrArg (fun L => L (ψ x)) (spinForm_comm ρ (S.connForm_skew hx a) k)
   simp only [ContinuousLinearMap.sub_apply, mul_apply_eq_comp,
@@ -94,7 +100,7 @@ lemma SpinStructure.roughLaplacian_eq_hess (i : ι) (φ : M → V) (x : M) :
 
 /-- `D² φ = ∑ₐ_b γₐγ_b ∇²ₐ_b φ`. -/
 theorem SpinStructure.dirac_dirac_hess {i : ι} {x : M} (hx : x ∈ S.dom i) {φ : M → V}
-    (hf : ∀ b, FunDiffAt (n := n) (fun y => S.nabla ρ i b φ y) x) :
+    (hf : ∀ b, FunDiffAt I (fun y => S.nabla ρ i b φ y) x) :
     S.dirac ρ i (S.dirac ρ i φ) x = ∑ a, ∑ b, gam ρ a (gam ρ b (S.hess ρ i φ x a b)) := by
   have h1 : ∀ a, S.nabla ρ i a (fun y => ∑ b, gam ρ b (S.nabla ρ i b φ y)) x =
       ∑ b, (gam ρ b (S.nabla ρ i a (fun y => S.nabla ρ i b φ y) x) +
@@ -124,7 +130,7 @@ theorem SpinStructure.dirac_dirac_hess {i : ι} {x : M} (hx : x ∈ S.dom i) {φ
 
 /-- `D² φ = -∑ₐ ∇²ₐₐ φ + ½ ∑ₐ_b γₐγ_b (∇²ₐ_b - ∇²_bₐ) φ`. -/
 theorem SpinStructure.dirac_dirac_antisymm {i : ι} {x : M} (hx : x ∈ S.dom i) {φ : M → V}
-    (hf : ∀ b, FunDiffAt (n := n) (fun y => S.nabla ρ i b φ y) x) :
+    (hf : ∀ b, FunDiffAt I (fun y => S.nabla ρ i b φ y) x) :
     S.dirac ρ i (S.dirac ρ i φ) x = S.roughLaplacian ρ i φ x +
       (1 / 2 : ℝ) • ∑ a, ∑ b, gam ρ a (gam ρ b (S.hess ρ i φ x a b - S.hess ρ i φ x b a)) := by
   rw [S.dirac_dirac_hess ρ hx hf, S.roughLaplacian_eq_hess]
@@ -139,49 +145,49 @@ variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
 
 /-- The chain rule through the chart at `x`, at a point `y` of its source. -/
 lemma mvfderiv_eq_chart_at (φ : M → F) {x y : M}
-    (hy : y ∈ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).source) (hφ : FunDiffAt (n := n) φ y)
-    (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) y) :
-    mvfderiv 𝓘(ℝ, Fin n → ℝ) φ y v =
-      fderiv ℝ (φ ∘ (extChartAt 𝓘(ℝ, Fin n → ℝ) x).symm) (extChartAt 𝓘(ℝ, Fin n → ℝ) x y)
-        (mfderiv 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) (extChartAt 𝓘(ℝ, Fin n → ℝ) x) y v) := by
-  set ψ := extChartAt 𝓘(ℝ, Fin n → ℝ) x with hψ
-  have h1 : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) ψ y :=
+    (hy : y ∈ (extChartAt I x).source) (hφ : FunDiffAt I φ y)
+    (v : TangentSpace I y) :
+    mvfderiv I φ y v =
+      fderiv ℝ (φ ∘ (extChartAt I x).symm) (extChartAt I x y)
+        (mfderiv I 𝓘(ℝ, Fin n → ℝ) (extChartAt I x) y v) := by
+  set ψ := extChartAt I x with hψ
+  have h1 : MDifferentiableAt I 𝓘(ℝ, Fin n → ℝ) ψ y :=
     mdifferentiableAt_extChartAt (by rwa [hψ, extChartAt_source] at hy)
-  have h2 : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) ψ.symm (ψ y) := by
-    have := mdifferentiableWithinAt_extChartAt_symm (I := 𝓘(ℝ, Fin n → ℝ)) (x := x)
+  have h2 : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) I ψ.symm (ψ y) := by
+    have := mdifferentiableWithinAt_extChartAt_symm (I := I) (x := x)
       (ψ.map_source hy)
-    simpa [hψ, mdifferentiableWithinAt_univ] using this
+    simpa [hψ, I.range_eq_univ, mdifferentiableWithinAt_univ] using this
   have h3 : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, F) (φ ∘ ψ.symm) (ψ y) := by
     refine MDifferentiableAt.comp (ψ y) ?_ h2
     rw [ψ.left_inv hy]; exact hφ
   have heq : φ =ᶠ[𝓝 y] (φ ∘ ψ.symm) ∘ ψ := by
-    filter_upwards [(isOpen_extChartAt_source (I := 𝓘(ℝ, Fin n → ℝ)) x).mem_nhds hy] with z hz
+    filter_upwards [(isOpen_extChartAt_source (I := I) x).mem_nhds hy] with z hz
     simp [ψ.left_inv hz]
   rw [mvfderiv_congr_nhds' heq, mvfderiv_comp y h3 h1]
   simp [mvfderiv_eq_fderiv]
   rfl
 
 /-- **The directional derivative of a smooth function along a smooth field is differentiable.** -/
-lemma mdiffAt_mvfderiv_apply {φ : M → F} {X : Π y : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) y} {x : M}
-    (hφ : ∀ᶠ y in 𝓝 x, ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, F) ∞ φ y)
-    (hX : ContMDiffAt 𝓘(ℝ, Fin n → ℝ) (𝓘(ℝ, Fin n → ℝ).prod 𝓘(ℝ, Fin n → ℝ)) ∞
-      (fun q : M => (⟨q, X q⟩ : TangentBundle 𝓘(ℝ, Fin n → ℝ) M)) x) :
-    FunDiffAt (n := n) (fun y => mvfderiv 𝓘(ℝ, Fin n → ℝ) φ y (X y)) x := by
-  set ψ := extChartAt 𝓘(ℝ, Fin n → ℝ) x with hψ
+lemma mdiffAt_mvfderiv_apply {φ : M → F} {X : Π y : M, TangentSpace I y} {x : M}
+    (hφ : ∀ᶠ y in 𝓝 x, ContMDiffAt I 𝓘(ℝ, F) ∞ φ y)
+    (hX : ContMDiffAt I (I.prod 𝓘(ℝ, Fin n → ℝ)) ∞
+      (fun q : M => (⟨q, X q⟩ : TangentBundle I M)) x) :
+    FunDiffAt I (fun y => mvfderiv I φ y (X y)) x := by
+  set ψ := extChartAt I x with hψ
   have hsrc : x ∈ ψ.source := mem_extChartAt_source x
-  have hbase : x ∈ (tTriv (E := Fin n → ℝ) (M := M) x).baseSet :=
+  have hbase : x ∈ (tTrivW (E := Fin n → ℝ) (M := M) (I := I) x).baseSet :=
     FiberBundle.mem_baseSet_trivializationAt' x
   -- the components of `X` in the chart
-  have hXh : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) (hat x X) x :=
-    (mdiffAt_hat_iff x X hbase).1 (hX.mdifferentiableAt (by simp))
-  have hhat : ∀ z ∈ ψ.source, hat x X z =
-      mfderiv 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) ψ z (X z) := by
+  have hXh : MDifferentiableAt I 𝓘(ℝ, Fin n → ℝ) (hatW x X) x :=
+    (mdiffAt_hat_iffW x X hbase).1 (hX.mdifferentiableAt (by simp))
+  have hhat : ∀ z ∈ ψ.source, hatW x X z =
+      mfderiv I 𝓘(ℝ, Fin n → ℝ) ψ z (X z) := by
     intro z hz
-    have hz' : z ∈ (chartAt (Fin n → ℝ) x).source := by rwa [hψ, extChartAt_source] at hz
-    have := TangentBundle.continuousLinearMapAt_trivializationAt (I := 𝓘(ℝ, Fin n → ℝ)) hz'
-    have hzb : z ∈ (tTriv (E := Fin n → ℝ) (M := M) x).baseSet := by
+    have hz' : z ∈ (chartAt H x).source := by rwa [hψ, extChartAt_source] at hz
+    have := TangentBundle.continuousLinearMapAt_trivializationAt (I := I) hz'
+    have hzb : z ∈ (tTrivW (E := Fin n → ℝ) (M := M) (I := I) x).baseSet := by
       simpa [tTriv, TangentBundle.trivializationAt_baseSet] using hz'
-    have h2 : hat x X z = (tTriv (E := Fin n → ℝ) (M := M) x).continuousLinearMapAt ℝ z (X z) := by
+    have h2 : hatW x X z = (tTrivW (E := Fin n → ℝ) (M := M) (I := I) x).continuousLinearMapAt ℝ z (X z) := by
       rw [Trivialization.continuousLinearMapAt_apply, Trivialization.linearMapAt_apply,
         ite_eq_left hzb]
       rfl
@@ -189,8 +195,8 @@ lemma mdiffAt_mvfderiv_apply {φ : M → F} {X : Π y : M, TangentSpace 𝓘(ℝ
     exact congrArg (fun L => L (X z)) this
   -- `φ` in the chart is smooth at `ψ x`
   have hφt : ContDiffAt ℝ ∞ (φ ∘ ψ.symm) (ψ x) := by
-    have h2 : ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) ∞ ψ.symm (ψ x) := by
-      have := contMDiffWithinAt_extChartAt_symm_target (I := 𝓘(ℝ, Fin n → ℝ)) (n := ∞) x
+    have h2 : ContMDiffAt 𝓘(ℝ, Fin n → ℝ) I ∞ ψ.symm (ψ x) := by
+      have := contMDiffWithinAt_extChartAt_symm_target (I := I) (n := ∞) x
         (ψ.map_source hsrc)
       have ht : ψ.target ∈ 𝓝 (ψ x) := extChartAt_target_mem_nhds x
       exact this.contMDiffAt ht
@@ -200,12 +206,12 @@ lemma mdiffAt_mvfderiv_apply {φ : M → F} {X : Π y : M, TangentSpace 𝓘(ℝ
     exact contMDiffAt_iff_contDiffAt.1 h3
   have hdφ : DifferentiableAt ℝ (fderiv ℝ (φ ∘ ψ.symm)) (ψ x) :=
     (hφt.fderiv_right (m := ∞) le_rfl).differentiableAt (by simp)
-  have hψx : MDifferentiableAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, Fin n → ℝ) ψ x :=
+  have hψx : MDifferentiableAt I 𝓘(ℝ, Fin n → ℝ) ψ x :=
     mdifferentiableAt_extChartAt (by rw [hψ, extChartAt_source] at hsrc; exact hsrc)
-  have hD : FunDiffAt (n := n) (fun y => fderiv ℝ (φ ∘ ψ.symm) (ψ y) (hat x X y)) x :=
+  have hD : FunDiffAt I (fun y => fderiv ℝ (φ ∘ ψ.symm) (ψ y) (hatW x X y)) x :=
     (hdφ.comp_mdifferentiableAt hψx).clm_apply hXh
   refine hD.congr_of_eventuallyEq ?_
-  filter_upwards [(isOpen_extChartAt_source (I := 𝓘(ℝ, Fin n → ℝ)) x).mem_nhds hsrc, hφ]
+  filter_upwards [(isOpen_extChartAt_source (I := I) x).mem_nhds hsrc, hφ]
     with y hy hφy
   rw [mvfderiv_eq_chart_at φ hy (hφy.mdifferentiableAt (by simp)), hhat y hy]
 
@@ -227,9 +233,9 @@ lemma SpinStructure.frame_linearIndependent {i : ι} {x : M} (hx : x ∈ S.dom i
 
 /-- **Expansion in an orthonormal frame**: `w = ∑ₗ g(w, F_l) F_l`. -/
 lemma SpinStructure.frame_expand {i : ι} {x : M} (hx : x ∈ S.dom i)
-    (w : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) :
+    (w : TangentSpace I x) :
     w = ∑ l, g.g x w (S.frame i l x) • S.frame i l x := by
-  have hcard : Fintype.card (Fin n) = Module.finrank ℝ (TangentSpace 𝓘(ℝ, Fin n → ℝ) x) := by
+  have hcard : Fintype.card (Fin n) = Module.finrank ℝ (TangentSpace I x) := by
     simp only [Fintype.card_fin]; exact (Module.finrank_fin_fun ℝ).symm
   set b := basisOfLinearIndependentOfCardEqFinrank' _ (S.frame_linearIndependent hx) hcard
   have hb : ∀ l, b l = S.frame i l x := fun l => by
@@ -246,7 +252,7 @@ lemma SpinStructure.frame_expand {i : ι} {x : M} (hx : x ∈ S.dom i)
 
 /-- `∇_v F_k = ∑_l ω_v,kl F_l`. -/
 lemma SpinStructure.cov_frame_expand {i : ι} {x : M} (hx : x ∈ S.dom i)
-    (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) (k : Fin n) :
+    (v : TangentSpace I x) (k : Fin n) :
     leviCivita g (S.frame i k) x v = ∑ l, S.connFormV i x v k l • S.frame i l x :=
   S.frame_expand hx _
 
@@ -254,39 +260,39 @@ lemma SpinStructure.cov_frame_expand {i : ι} {x : M} (hx : x ∈ S.dom i)
 
 /-- The frames are smooth near every point of their domain. -/
 lemma SpinStructure.smoothNear_frame {i : ι} (a : Fin n) {x : M} (hx : x ∈ S.dom i) :
-    SmoothNear (S.frame i a) x := by
+    SmoothNearW (S.frame i a) x := by
   filter_upwards [(S.dom_open i).mem_nhds hx] with y hy
   exact S.frame_smooth i a y hy
 
 /-- The connection coefficients `y ↦ ω_a bc(y) = g(∇_{F_a} F_b, F_c)(y)` are smooth on the domain
 of the frame. -/
 lemma SpinStructure.contMDiffAt_connForm {i : ι} {x : M} (hx : x ∈ S.dom i) (a b c : Fin n) :
-    ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, ℝ) ∞ (fun y => S.connForm i y a b c) x := by
-  have hcov := contMDiffAt_covApply (leviCivita g) (S.frame_smooth i a x hx)
+    ContMDiffAt I 𝓘(ℝ, ℝ) ∞ (fun y => S.connForm i y a b c) x := by
+  have hcov := contMDiffAt_covApplyW (leviCivita g) (S.frame_smooth i a x hx)
     (S.smoothNear_frame b hx)
-  exact contMDiffAt_gpair g hcov (S.frame_smooth i c x hx)
+  exact contMDiffAt_gpairW g hcov (S.frame_smooth i c x hx)
 
 lemma SpinStructure.mdiffAt_connForm {i : ι} {x : M} (hx : x ∈ S.dom i) (a b c : Fin n) :
-    FunDiffAt (n := n) (fun y => S.connForm i y a b c) x :=
+    FunDiffAt I (fun y => S.connForm i y a b c) x :=
   (S.contMDiffAt_connForm hx a b c).mdifferentiableAt (by simp)
 
 set_option synthInstance.maxHeartbeats 100000 in
 /-- The spinorial connection form `y ↦ spinForm ρ (ω_b(y))` is differentiable, with derivative the
 spinorial form of the derivative of `ω_b`. -/
 lemma SpinStructure.mvfderiv_spinForm {i : ι} {x : M} (hx : x ∈ S.dom i) (b : Fin n)
-    (v : TangentSpace 𝓘(ℝ, Fin n → ℝ) x) :
-    FunDiffAt (n := n) (fun y => spinForm ρ (S.connForm i y b)) x ∧
-    mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun y => spinForm ρ (S.connForm i y b)) x v =
-      spinForm ρ (Matrix.of fun k l => mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun y => S.connForm i y b k l) x v) := by
+    (v : TangentSpace I x) :
+    FunDiffAt I (fun y => spinForm ρ (S.connForm i y b)) x ∧
+    mvfderiv I (fun y => spinForm ρ (S.connForm i y b)) x v =
+      spinForm ρ (Matrix.of fun k l => mvfderiv I (fun y => S.connForm i y b k l) x v) := by
   have hexp : (fun y => spinForm ρ (S.connForm i y b)) =
       fun y => ∑ k, ∑ l, S.connForm i y b k l • ((1 / 4 : ℝ) • (gam ρ k * gam ρ l)) := by
     funext y
     simp only [spinForm, Finset.smul_sum, smul_smul]
     refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
     rw [mul_comm]
-  have hterm : ∀ k l, FunDiffAt (n := n) (fun y => S.connForm i y b k l • ((1 / 4 : ℝ) • (gam ρ k * gam ρ l))) x :=
+  have hterm : ∀ k l, FunDiffAt I (fun y => S.connForm i y b k l • ((1 / 4 : ℝ) • (gam ρ k * gam ρ l))) x :=
     fun k l => (S.mdiffAt_connForm hx b k l).smul mdifferentiableAt_const
-  have hrow : ∀ k, FunDiffAt
+  have hrow : ∀ k, FunDiffAt I
       (fun y => ∑ l, S.connForm i y b k l • ((1 / 4 : ℝ) • (gam ρ k * gam ρ l))) x :=
     fun k => mdiffAt_finsum fun l => hterm k l
   refine ⟨by rw [hexp]; exact mdiffAt_finsum hrow, ?_⟩
@@ -306,43 +312,43 @@ lemma SpinStructure.mvfderiv_spinForm {i : ι} {x : M} (hx : x ∈ S.dom i) (b :
 /-! ### Second derivatives along fields commute up to the bracket -/
 
 /-- **The derivative of a vector-valued function along `[X, Y]`** is the commutator of the
-derivatives along `X` and `Y` (Hahn–Banach reduces it to `mfderiv_mlieBracket`). -/
+derivatives along `X` and `Y` (Hahn–Banach reduces it to `mfderiv_mlieBracketW`). -/
 theorem deriv_comm_V {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {p : M} {f : M → F}
-    (hf : ∀ᶠ y in 𝓝 p, ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, F) ∞ f y)
-    {X Y : Π y : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) y}
-    (hX : SecDiffAt X p) (hY : SecDiffAt Y p)
-    (hDY : FunDiffAt (n := n) (fun z => mvfderiv 𝓘(ℝ, Fin n → ℝ) f z (Y z)) p)
-    (hDX : FunDiffAt (n := n) (fun z => mvfderiv 𝓘(ℝ, Fin n → ℝ) f z (X z)) p) :
-    mvfderiv 𝓘(ℝ, Fin n → ℝ) f p (mlieBracket 𝓘(ℝ, Fin n → ℝ) X Y p) =
-      mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun z => mvfderiv 𝓘(ℝ, Fin n → ℝ) f z (Y z)) p (X p) -
-        mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun z => mvfderiv 𝓘(ℝ, Fin n → ℝ) f z (X z)) p (Y p) := by
+    (hf : ∀ᶠ y in 𝓝 p, ContMDiffAt I 𝓘(ℝ, F) ∞ f y)
+    {X Y : Π y : M, TangentSpace I y}
+    (hX : SecDiffAt I X p) (hY : SecDiffAt I Y p)
+    (hDY : FunDiffAt I (fun z => mvfderiv I f z (Y z)) p)
+    (hDX : FunDiffAt I (fun z => mvfderiv I f z (X z)) p) :
+    mvfderiv I f p (mlieBracket I X Y p) =
+      mvfderiv I (fun z => mvfderiv I f z (Y z)) p (X p) -
+        mvfderiv I (fun z => mvfderiv I f z (X z)) p (Y p) := by
   rw [SeparatingDual.eq_iff_forall_dual_eq (R := ℝ)]
   intro ℓ
   rw [map_sub]
   set h : M → ℝ := fun z => ℓ (f z) with hh
-  have hgsm : ∀ᶠ y in 𝓝 p, ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, ℝ) ∞ h y := by
+  have hgsm : ∀ᶠ y in 𝓝 p, ContMDiffAt I 𝓘(ℝ, ℝ) ∞ h y := by
     filter_upwards [hf] with y hy
     exact ℓ.contDiff.contMDiff.contMDiffAt.comp y hy
-  have hd := mfderiv_mlieBracket h X Y p hgsm hX hY
-  have hfd : ∀ᶠ y in 𝓝 p, FunDiffAt (n := n) f y := by
+  have hd := mfderiv_mlieBracketW h X Y p hgsm hX hY
+  have hfd : ∀ᶠ y in 𝓝 p, FunDiffAt I f y := by
     filter_upwards [hf] with y hy using hy.mdifferentiableAt (by simp)
-  have hder : ∀ (W : Π y : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) y)
-      (hW : FunDiffAt (n := n) (fun z => mvfderiv 𝓘(ℝ, Fin n → ℝ) f z (W z)) p)
-      (u : TangentSpace 𝓘(ℝ, Fin n → ℝ) p),
-      mvfderiv 𝓘(ℝ, Fin n → ℝ) (dirDeriv h W) p u =
-        ℓ (mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun z => mvfderiv 𝓘(ℝ, Fin n → ℝ) f z (W z)) p u) := by
+  have hder : ∀ (W : Π y : M, TangentSpace I y)
+      (hW : FunDiffAt I (fun z => mvfderiv I f z (W z)) p)
+      (u : TangentSpace I p),
+      mvfderiv I (dirDerivW h W) p u =
+        ℓ (mvfderiv I (fun z => mvfderiv I f z (W z)) p u) := by
     intro W hW u
-    have heq : dirDeriv h W =ᶠ[𝓝 p] fun z => ℓ (mvfderiv 𝓘(ℝ, Fin n → ℝ) f z (W z)) := by
+    have heq : dirDerivW h W =ᶠ[𝓝 p] fun z => ℓ (mvfderiv I f z (W z)) := by
       filter_upwards [hfd] with z hz
-      exact mvfderiv_clm_comp ℓ f z hz (W z)
+      exact mvfderiv_clm_compW ℓ f z hz (W z)
     rw [mvfderiv_congr_nhds' heq]
-    exact mvfderiv_clm_comp ℓ _ p hW u
-  have hfp : FunDiffAt (n := n) f p := hfd.self_of_nhds
-  calc ℓ (mvfderiv 𝓘(ℝ, Fin n → ℝ) f p (mlieBracket 𝓘(ℝ, Fin n → ℝ) X Y p)) =
-        mvfderiv 𝓘(ℝ, Fin n → ℝ) h p (mlieBracket 𝓘(ℝ, Fin n → ℝ) X Y p) :=
-        (mvfderiv_clm_comp ℓ f p hfp _).symm
-    _ = mvfderiv 𝓘(ℝ, Fin n → ℝ) (dirDeriv h Y) p (X p) -
-          mvfderiv 𝓘(ℝ, Fin n → ℝ) (dirDeriv h X) p (Y p) := hd
+    exact mvfderiv_clm_compW ℓ _ p hW u
+  have hfp : FunDiffAt I f p := hfd.self_of_nhds
+  calc ℓ (mvfderiv I f p (mlieBracket I X Y p)) =
+        mvfderiv I h p (mlieBracket I X Y p) :=
+        (mvfderiv_clm_compW ℓ f p hfp _).symm
+    _ = mvfderiv I (dirDerivW h Y) p (X p) -
+          mvfderiv I (dirDerivW h X) p (Y p) := hd
     _ = _ := by rw [hder Y hDY, hder X hDX]
 
 /-! ### The curvature in an orthonormal frame -/
@@ -354,21 +360,21 @@ noncomputable def SpinStructure.riem (i : ι) (x : M) (a b k l : Fin n) : ℝ :=
 
 /-- The derivative `d_{F_a} ω_b` of the connection coefficients, as a matrix. -/
 noncomputable def SpinStructure.dConn (i : ι) (x : M) (a b : Fin n) : Matrix (Fin n) (Fin n) ℝ :=
-  Matrix.of fun k l => mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun y => S.connForm i y b k l) x (S.frame i a x)
+  Matrix.of fun k l => mvfderiv I (fun y => S.connForm i y b k l) x (S.frame i a x)
 
 /-- `∇_{F_a} (∇_{F_b} F_k)` paired with `F_m`: `d_a ω_bkm + ∑_l ω_bkl ω_alm`. -/
 lemma SpinStructure.cov_cov_frame {i : ι} {x : M} (hx : x ∈ S.dom i) (a b k m : Fin n) :
     g.g x (leviCivita g (fun y => leviCivita g (S.frame i k) y (S.frame i b y)) x (S.frame i a x))
       (S.frame i m x) =
       S.dConn i x a b k m + ∑ l, S.connForm i x b k l * S.connForm i x a l m := by
-  set σ : Fin n → Π y : M, TangentSpace 𝓘(ℝ, Fin n → ℝ) y :=
+  set σ : Fin n → Π y : M, TangentSpace I y :=
     fun l => (fun y => S.connForm i y b k l) • S.frame i l
-  have hσ : ∀ l, SecDiffAt (σ l) x := fun l =>
+  have hσ : ∀ l, SecDiffAt I (σ l) x := fun l =>
     (S.mdiffAt_connForm hx b k l).smul_section (S.mdiffAt_frame l hx)
   have hfield : leviCivita g (fun y => leviCivita g (S.frame i k) y (S.frame i b y)) x =
       leviCivita g (∑ l, σ l) x := by
     refine (leviCivita g).isCovariantDerivativeOn.congr_of_eventuallyEq ?_ ?_ Filter.univ_mem ?_
-    · exact (contMDiffAt_covApply (leviCivita g) (S.frame_smooth i b x hx)
+    · exact (contMDiffAt_covApplyW (leviCivita g) (S.frame_smooth i b x hx)
         (S.smoothNear_frame k hx)).mdifferentiableAt (by simp)
     · have := MDifferentiableAt.sum_section (s := Finset.univ) (t := σ) (x₀ := x) fun l _ => hσ l
       simpa [Finset.sum_fn] using this
@@ -380,7 +386,7 @@ lemma SpinStructure.cov_cov_frame {i : ι} {x : M} (hx : x ∈ S.dom i) (a b k m
     ContinuousLinearMap.coe_sum']
   have hl : ∀ l, leviCivita g (σ l) x (S.frame i a x) =
       S.connForm i x b k l • leviCivita g (S.frame i l) x (S.frame i a x) +
-        mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun y => S.connForm i y b k l) x (S.frame i a x) • S.frame i l x := by
+        mvfderiv I (fun y => S.connForm i y b k l) x (S.frame i a x) • S.frame i l x := by
     intro l
     rw [(leviCivita g).isCovariantDerivativeOn.leibniz (S.mdiffAt_frame l hx)
       (S.mdiffAt_connForm hx b k l)]
@@ -397,10 +403,10 @@ theorem SpinStructure.riem_eq {i : ι} {x : M} (hx : x ∈ S.dom i) (a b : Fin n
     (Matrix.of fun k l => S.riem i x a b k l) =
       S.dConn i x a b - S.dConn i x b a +
         (S.connForm i x b * S.connForm i x a - S.connForm i x a * S.connForm i x b) -
-        S.connFormV i x (mlieBracket 𝓘(ℝ, Fin n → ℝ) (S.frame i a) (S.frame i b) x) := by
+        S.connFormV i x (mlieBracket I (S.frame i a) (S.frame i b) x) := by
   ext k m
   simp only [Matrix.of_apply, SpinStructure.riem, Connection.riemannLowerAt]
-  rw [curvatureAt_apply_eventually (leviCivita g) (S.frame i a) (S.frame i b) (S.frame i k) x
+  rw [curvatureAt_apply_eventuallyW (leviCivita g) (S.frame i a) (S.frame i b) (S.frame i k) x
     (S.smoothNear_frame a hx) (S.smoothNear_frame b hx) (S.smoothNear_frame k hx)]
   simp only [map_sub, ContinuousLinearMap.sub_apply, S.cov_cov_frame hx]
   simp only [Matrix.sub_apply, Matrix.add_apply, Matrix.mul_apply, SpinStructure.connFormV]
@@ -411,38 +417,38 @@ theorem SpinStructure.riem_eq {i : ι} {x : M} (hx : x ∈ S.dom i) (a b : Fin n
 /-- **Ricci identity.**  For `φ` smooth near `x`, the antisymmetrized second covariant derivative is
 the action of the spinor curvature: `∇²_ab φ - ∇²_ba φ = ¼ ∑_kl R_abkl γ_k γ_l φ`. -/
 theorem SpinStructure.hess_antisymm {i : ι} {x : M} (hx : x ∈ S.dom i) {φ : M → V}
-    (hφ : ∀ᶠ y in 𝓝 x, ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, V) ∞ φ y) (a b : Fin n) :
+    (hφ : ∀ᶠ y in 𝓝 x, ContMDiffAt I 𝓘(ℝ, V) ∞ φ y) (a b : Fin n) :
     S.hess ρ i φ x a b - S.hess ρ i φ x b a =
       spinForm ρ (Matrix.of fun k l => S.riem i x a b k l) (φ x) := by
-  have hφx : FunDiffAt (n := n) φ x := hφ.self_of_nhds.mdifferentiableAt (by simp)
-  have hdir : ∀ c, FunDiffAt (n := n) (fun y => mvfderiv 𝓘(ℝ, Fin n → ℝ) φ y (S.frame i c y)) x := fun c =>
+  have hφx : FunDiffAt I φ x := hφ.self_of_nhds.mdifferentiableAt (by simp)
+  have hdir : ∀ c, FunDiffAt I (fun y => mvfderiv I φ y (S.frame i c y)) x := fun c =>
     mdiffAt_mvfderiv_apply hφ (S.frame_smooth i c x hx)
   have hΩ := fun c => S.mvfderiv_spinForm ρ hx c
   -- `∇_a ∇_c φ` expanded
   have hexp : ∀ a c, S.nabla ρ i a (fun y => S.nabla ρ i c φ y) x =
-      mvfderiv 𝓘(ℝ, Fin n → ℝ) (fun y => mvfderiv 𝓘(ℝ, Fin n → ℝ) φ y (S.frame i c y)) x
+      mvfderiv I (fun y => mvfderiv I φ y (S.frame i c y)) x
           (S.frame i a x) +
         spinForm ρ (S.dConn i x a c) (φ x) +
-        spinForm ρ (S.connForm i x c) (mvfderiv 𝓘(ℝ, Fin n → ℝ) φ x (S.frame i a x)) +
+        spinForm ρ (S.connForm i x c) (mvfderiv I φ x (S.frame i a x)) +
         spinForm ρ (S.connForm i x a) (S.nabla ρ i c φ x) := by
     intro a c
     have h1 : (fun y => S.nabla ρ i c φ y) =
-        (fun y => mvfderiv 𝓘(ℝ, Fin n → ℝ) φ y (S.frame i c y)) +
+        (fun y => mvfderiv I φ y (S.frame i c y)) +
           fun y => spinForm ρ (S.connForm i y c) (φ y) := rfl
-    have h2 : FunDiffAt (n := n) (fun y => spinForm ρ (S.connForm i y c) (φ y)) x :=
+    have h2 : FunDiffAt I (fun y => spinForm ρ (S.connForm i y c) (φ y)) x :=
       (hΩ c (S.frame i a x)).1.clm_apply hφx
     change S.nablaV ρ i x (S.frame i a x) (fun y => S.nabla ρ i c φ y) = _
     unfold SpinStructure.nablaV
     rw [h1, mvfderiv_add (hdir c) h2, ContinuousLinearMap.add_apply,
-      mvfderiv_clm_apply _ _ x (hΩ c (S.frame i a x)).1 hφx, (hΩ c (S.frame i a x)).2]
+      mvfderiv_clm_applyW _ _ x (hΩ c (S.frame i a x)).1 hφx, (hΩ c (S.frame i a x)).2]
     simp only [SpinStructure.dConn, SpinStructure.connForm, SpinStructure.nabla,
       SpinStructure.nablaV, Pi.add_apply, map_add]
     abel
   -- the bracket terms
   have hbr : ∑ k, S.connForm i x a b k • S.nabla ρ i k φ x -
       ∑ k, S.connForm i x b a k • S.nabla ρ i k φ x =
-      S.nablaV ρ i x (mlieBracket 𝓘(ℝ, Fin n → ℝ) (S.frame i a) (S.frame i b) x) φ := by
-    have ht := cov_torsion (leviCivita_torsion g) (S.mdiffAt_frame a hx) (S.mdiffAt_frame b hx)
+      S.nablaV ρ i x (mlieBracket I (S.frame i a) (S.frame i b) x) φ := by
+    have ht := cov_torsionW (leviCivita_torsion g) (S.mdiffAt_frame a hx) (S.mdiffAt_frame b hx)
     rw [← ht, S.cov_frame_expand hx, S.cov_frame_expand hx (S.frame i b x) a]
     rw [← Finset.sum_sub_distrib (f := fun l => S.connFormV i x (S.frame i a x) b l • S.frame i l x)]
     simp only [← sub_smul]
@@ -472,7 +478,7 @@ theorem SpinStructure.hess_antisymm {i : ι} {x : M} (hx : x ∈ S.dom i) {φ : 
 
 /-- The orthonormal frame as a basis of the tangent space. -/
 noncomputable def SpinStructure.frameBasis {i : ι} {x : M} (hx : x ∈ S.dom i) :
-    Module.Basis (Fin n) ℝ (TangentSpace 𝓘(ℝ, Fin n → ℝ) x) :=
+    Module.Basis (Fin n) ℝ (TangentSpace I x) :=
   basisOfLinearIndependentOfCardEqFinrank' _ (S.frame_linearIndependent hx)
     (by simp only [Fintype.card_fin]; exact (Module.finrank_fin_fun ℝ).symm)
 
@@ -487,10 +493,10 @@ theorem SpinStructure.scalarCurvature_eq {i : ι} {x : M} (hx : x ∈ S.dom i) :
       if a = b then (fun _ => (1 : ℝ)) a else 0 := by
     intro a b
     simp [S.frameBasis_apply, S.frame_orthonormal i a b x hx]
-  rw [scalarCurvatureAt_frame (leviCivita g) g (leviCivita_torsion g) (leviCivita_compat g) x
+  rw [scalarCurvatureAt_frameW (leviCivita g) g (leviCivita_torsion g) (leviCivita_compat g) x
     (S.frameBasis hx) (fun _ => 1) (fun _ => by norm_num) hf]
   refine Finset.sum_congr rfl fun a _ => ?_
-  rw [ricciAt_frame (leviCivita g) g x (S.frameBasis hx) (fun _ => 1) (fun _ => by norm_num) hf]
+  rw [ricciAt_frameW (leviCivita g) g x (S.frameBasis hx) (fun _ => 1) (fun _ => by norm_num) hf]
   simp [S.frameBasis_apply, SpinStructure.riem, Connection.riemannLowerAt]
 
 /-! ### The Lichnerowicz formula -/
@@ -501,9 +507,9 @@ lemma SpinStructure.riem_symm {i : ι} {x : M} (hx : x ∈ S.dom i) :
     (∀ a b k l, S.riem i x a b k l = S.riem i x k l a b) ∧
     (∀ a b k l, S.riem i x a b k l + S.riem i x b k a l + S.riem i x k a b l = 0) := by
   refine ⟨fun a b k l => ?_, fun a b k l => ?_, fun a b k l => ?_⟩
-  · exact riemannLowerAt_antisymm_first (leviCivita g) g x _ _ _ _
-  · exact riemannLowerAt_pair_symm (leviCivita g) g (leviCivita_torsion g) (leviCivita_compat g) x _ _ _ _
-  · have h := bianchi_first_proved (leviCivita g) (leviCivita_torsion g) x (S.frame i a x)
+  · exact riemannLowerAt_antisymm_firstW (leviCivita g) g x _ _ _ _
+  · exact riemannLowerAt_pair_symmW (leviCivita g) g (leviCivita_torsion g) (leviCivita_compat g) x _ _ _ _
+  · have h := bianchi_first_provedW (leviCivita g) (leviCivita_torsion g) x (S.frame i a x)
       (S.frame i b x) (S.frame i k x)
     have := congrArg (fun w => g.g x w (S.frame i l x)) h
     simp only [map_add, ContinuousLinearMap.add_apply, map_zero, ContinuousLinearMap.zero_apply] at this
@@ -513,15 +519,15 @@ lemma SpinStructure.riem_symm {i : ι} {x : M} (hx : x ∈ S.dom i) :
 `i`, for `φ` smooth near a point `x` of the frame domain,
 `D² φ = ∇*∇ φ + (R / 4) φ` at `x`, with `R` the scalar curvature of the Levi-Civita connection. -/
 theorem SpinStructure.dirac_sq {i : ι} {x : M} (hx : x ∈ S.dom i) {φ : M → V}
-    (hφ : ∀ᶠ y in 𝓝 x, ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, V) ∞ φ y) :
+    (hφ : ∀ᶠ y in 𝓝 x, ContMDiffAt I 𝓘(ℝ, V) ∞ φ y) :
     S.dirac ρ i (S.dirac ρ i φ) x =
       S.roughLaplacian ρ i φ x + ((1 / 4 : ℝ) * (leviCivita g).scalarCurvatureAt g x) • φ x := by
   -- the covariant derivatives of `φ` are differentiable at `x`
-  have hφx : FunDiffAt (n := n) φ x := hφ.self_of_nhds.mdifferentiableAt (by simp)
-  have hf : ∀ b, FunDiffAt (n := n) (fun y => S.nabla ρ i b φ y) x := by
+  have hφx : FunDiffAt I φ x := hφ.self_of_nhds.mdifferentiableAt (by simp)
+  have hf : ∀ b, FunDiffAt I (fun y => S.nabla ρ i b φ y) x := by
     intro b
     have h1 := mdiffAt_mvfderiv_apply hφ (S.frame_smooth i b x hx)
-    have h2 : FunDiffAt (n := n) (fun y => spinForm ρ (S.connForm i y b) (φ y)) x :=
+    have h2 : FunDiffAt I (fun y => spinForm ρ (S.connForm i y b) (φ y)) x :=
       (S.mvfderiv_spinForm ρ hx b (S.frame i b x)).1.clm_apply hφx
     exact h1.add h2
   rw [S.dirac_dirac_antisymm ρ hx hf]
@@ -546,11 +552,11 @@ theorem SpinStructure.dirac_sq {i : ι} {x : M} (hx : x ∈ S.dom i) {φ : M →
 /-- The covariant derivatives of a local representation smooth near `x` are differentiable at
 `x`. -/
 lemma SpinStructure.funDiffAt_nabla {i : ι} {x : M} (hx : x ∈ S.dom i) {φ : M → V}
-    (hφ : ∀ᶠ y in 𝓝 x, ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, V) ∞ φ y) (b : Fin n) :
-    FunDiffAt (n := n) (fun y => S.nabla ρ i b φ y) x := by
-  have hφx : FunDiffAt (n := n) φ x := hφ.self_of_nhds.mdifferentiableAt (by simp)
+    (hφ : ∀ᶠ y in 𝓝 x, ContMDiffAt I 𝓘(ℝ, V) ∞ φ y) (b : Fin n) :
+    FunDiffAt I (fun y => S.nabla ρ i b φ y) x := by
+  have hφx : FunDiffAt I φ x := hφ.self_of_nhds.mdifferentiableAt (by simp)
   have h1 := mdiffAt_mvfderiv_apply hφ (S.frame_smooth i b x hx)
-  have h2 : FunDiffAt (n := n) (fun y => spinForm ρ (S.connForm i y b) (φ y)) x :=
+  have h2 : FunDiffAt I (fun y => spinForm ρ (S.connForm i y b) (φ y)) x :=
     (S.mvfderiv_spinForm ρ hx b (S.frame i b x)).1.clm_apply hφx
   exact h1.add h2
 
@@ -560,26 +566,26 @@ variable {S ρ}
 
 /-- A spinor field is **smooth** if each local representation is smooth on its frame domain. -/
 def SpinorField.IsSmooth (ψ : SpinorField S ρ) : Prop :=
-  ∀ i x, x ∈ S.dom i → ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, V) ∞ (ψ.rep i) x
+  ∀ i x, x ∈ S.dom i → ContMDiffAt I 𝓘(ℝ, V) ∞ (ψ.rep i) x
 
 variable {ψ : SpinorField S ρ}
 
 lemma SpinorField.IsSmooth.eventually (hψ : ψ.IsSmooth) {i : ι} {x : M} (hx : x ∈ S.dom i) :
-    ∀ᶠ y in 𝓝 x, ContMDiffAt 𝓘(ℝ, Fin n → ℝ) 𝓘(ℝ, V) ∞ (ψ.rep i) y := by
+    ∀ᶠ y in 𝓝 x, ContMDiffAt I 𝓘(ℝ, V) ∞ (ψ.rep i) y := by
   filter_upwards [(S.dom_open i).mem_nhds hx] with y hy using hψ i y hy
 
 lemma SpinorField.IsSmooth.funDiffAt (hψ : ψ.IsSmooth) :
-    ∀ i x, x ∈ S.dom i → FunDiffAt (n := n) (ψ.rep i) x :=
+    ∀ i x, x ∈ S.dom i → FunDiffAt I (ψ.rep i) x :=
   fun i x hx => (hψ i x hx).mdifferentiableAt (by simp)
 
 lemma SpinorField.IsSmooth.funDiffAt_nabla (hψ : ψ.IsSmooth) :
-    ∀ i c x, x ∈ S.dom i → FunDiffAt (n := n) (fun y => S.nabla ρ i c (ψ.rep i) y) x :=
+    ∀ i c x, x ∈ S.dom i → FunDiffAt I (fun y => S.nabla ρ i c (ψ.rep i) y) x :=
   fun _ c _ hx => S.funDiffAt_nabla ρ hx (hψ.eventually hx) c
 
 lemma SpinorField.IsSmooth.funDiffAt_dirac (hψ : ψ.IsSmooth) :
-    ∀ i x, x ∈ S.dom i → FunDiffAt (n := n) ((ψ.dirac hψ.funDiffAt).rep i) x := by
+    ∀ i x, x ∈ S.dom i → FunDiffAt I ((ψ.dirac hψ.funDiffAt).rep i) x := by
   intro i x hx
-  change FunDiffAt (n := n) (fun y => ∑ a, gam ρ a (S.nabla ρ i a (ψ.rep i) y)) x
+  change FunDiffAt I (fun y => ∑ a, gam ρ a (S.nabla ρ i a (ψ.rep i) y)) x
   exact mdiffAt_finsum fun a => mdifferentiableAt_const.clm_apply (hψ.funDiffAt_nabla i a x hx)
 
 /-- **The Lichnerowicz formula for spinor fields** (Lawson–Michelsohn II, Theorem 8.8, in the
