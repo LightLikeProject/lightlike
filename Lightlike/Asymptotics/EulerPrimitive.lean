@@ -11,7 +11,8 @@ For a smooth `H : ℝⁿ → ℝ` with `H(0) = 0`,
 is smooth, `K(0) = 0`, and `DK(v) v = H(v)` for every `v` (`fderiv_eulerPrimitive_apply_self`): `K` is the primitive
 of `H` along the rays from `0` (`Φ(τ, v) = H(τ v)/τ` for `τ ≠ 0`, by Hadamard's lemma, so
 `K(λ v) = ∫₀^λ H(r v)/r dr`). Hence `U = e^K` solves the **Euler (radial transport) equation**
-`DU(v) v = H(v) U(v)` with `U(0) = 1` (`fderiv_exp_eulerPrimitive_apply_self`).
+`DU(v) v = H(v) U(v)` with `U(0) = 1` (`fderiv_exp_eulerPrimitive_apply_self`). Both `K` and the radial averages depend smoothly on a
+parameter (`contDiff_eulerPrimitive_param`, `contDiff_radialAverage_param`).
 
 In normal coordinates `v` at a point `p`, the Euler operator `DU(v) v` is `g⁻¹(dσ, du)/2` (the gradient of the world
 function `σ` is twice the radial vector field), so this solves the transport equation of order `0` with `u₀(p) = 1`,
@@ -220,5 +221,45 @@ theorem fderiv_transportSolution_apply_self (k : ℕ) (hk : 1 ≤ k) {H F : (Fin
   rw [this]
   field_simp
   ring
+
+section Parametric
+
+variable {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ P]
+
+/-- **Smooth dependence on a parameter**: for `H : P × ℝⁿ → ℝ` smooth, `(p, v) ↦ K_{H(p, ·)}(v)` is smooth. -/
+theorem contDiff_eulerPrimitive_param {H : P × (Fin n → ℝ) → ℝ} (hH : ContDiff ℝ ∞ H) :
+    ContDiff ℝ ∞ (fun q : P × (Fin n → ℝ) => eulerPrimitive (fun v => H (q.1, v)) q.2) := by
+  -- the partial derivative in `v`, as a jointly smooth function
+  have hD : ContDiff ℝ ∞ (fun r : (P × (Fin n → ℝ)) × (Fin n → ℝ) =>
+      fderiv ℝ (fun v => H (r.1.1, v)) r.1.2 r.2) := by
+    have hpart : ∀ r : P × (Fin n → ℝ), fderiv ℝ (fun v => H (r.1, v)) r.2 =
+        (fderiv ℝ H r).comp (ContinuousLinearMap.inr ℝ P (Fin n → ℝ)) := fun r => by
+      have hd : HasFDerivAt H (fderiv ℝ H r) (r.1, r.2) := ((hH.differentiable (by simp)) r).hasFDerivAt
+      have := hd.comp r.2 (hasFDerivAt_prodMk_right (𝕜 := ℝ) r.1 r.2)
+      exact this.fderiv
+    simp only [hpart]
+    have h1 : ContDiff ℝ ∞ (fun r : (P × (Fin n → ℝ)) × (Fin n → ℝ) => fderiv ℝ H r.1) :=
+      (hH.fderiv_right (m := ∞) (by exact_mod_cast le_top)).comp contDiff_fst
+    exact (h1.clm_comp contDiff_const).clm_apply contDiff_snd
+  unfold eulerPrimitive eulerKernel
+  refine contDiff_infty_integral_unit (X := P × (Fin n → ℝ))
+    (f := fun τ q => ∫ σ in (0 : ℝ)..1, fderiv ℝ (fun v => H (q.1, v)) ((σ * τ) • q.2) q.2) ?_
+  refine contDiff_infty_integral_unit (X := ℝ × (P × (Fin n → ℝ)))
+    (f := fun σ r => fderiv ℝ (fun v => H (r.2.1, v)) ((σ * r.1) • r.2.2) r.2.2) ?_
+  have hm : ContDiff ℝ ∞ (fun z : ℝ × (ℝ × (P × (Fin n → ℝ))) =>
+      (((z.2.2.1, (z.1 * z.2.1) • z.2.2.2)), z.2.2.2)) := by fun_prop
+  exact hD.comp hm
+
+/-- **Smooth dependence on a parameter** of the radial average: for `G : P × ℝⁿ → ℝ` smooth,
+`(p, v) ↦ W_k(G(p, ·))(v)` is smooth. -/
+theorem contDiff_radialAverage_param (k : ℕ) {G : P × (Fin n → ℝ) → ℝ} (hG : ContDiff ℝ ∞ G) :
+    ContDiff ℝ ∞ (fun q : P × (Fin n → ℝ) => radialAverage k (fun v => G (q.1, v)) q.2) := by
+  unfold radialAverage
+  refine contDiff_infty_integral_unit (X := P × (Fin n → ℝ))
+    (f := fun τ q => τ ^ (k - 1) * G (q.1, τ • q.2)) ?_
+  have hm : ContDiff ℝ ∞ (fun z : ℝ × (P × (Fin n → ℝ)) => (z.2.1, z.1 • z.2.2)) := by fun_prop
+  exact (contDiff_fst.pow _).mul (hG.comp hm)
+
+end Parametric
 
 end Lightlike
