@@ -20,8 +20,9 @@ spin connection has the coefficients of the Levi-Civita connection in that frame
 * `∇*∇ φ = -∑ₐ (∇ₐ∇ₐ φ - ∑ₖ ωₐ,ₐₖ ∇ₖ φ)`.
 
 These are the manifold counterparts of `Lightlike.Dirac.nablaF`, `diracF` and `hessF`, which
-treat a frame on `ℝⁿ`.  Only the atlas form of a spin structure is used; its equivalence with the
-principal `Spin(n)`-bundle definition is not proved.
+treat a frame on `ℝⁿ`.  The spin structure is in the atlas form, which is equivalent to the
+principal `Spin(n)`-bundle definition for every lift of the orthonormal frame bundle
+(`SpinLift.exists_spinStructure_equiv`).
 
 The operators are independent of the frame: `nablaV_lift`, `dirac_lift` and
 `roughLaplacian_lift` show that they commute with the change of frame `ρ(lift i j)`, so

@@ -174,7 +174,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The Dirac spectrum on the unit 2-sphere is ±(k+1) with multiplicity 2(k+1)"
-        decls: [Lightlike.Dirac.sphere_spectrum, Lightlike.Dirac.SphereEigenspace, Lightlike.Dirac.sphereEigenspace_finrank, Lightlike.Dirac.sphereEigenspace_eq_bot]
+        decls: [Lightlike.Dirac.sphere_dirac_spectrum_sections, Lightlike.Dirac.eigenSections, Lightlike.Dirac.mem_eigenSections, Lightlike.Dirac.sphereSpinStructure]
         hint: "Partial only: Lightlike.Dirac.sphere_dirac_lower_bound (eigenvalue k+1 with 2(k+1) multiplicity lower bound), Lightlike.Dirac.angular_class_complete_bounded (completeness inside an angular class, chart only). Missing: no other eigenvalues, smooth sections on S²."
       - id: t2
         kind: trust
@@ -435,8 +435,8 @@ milestones:
       - id: m3
         kind: main
         text: "De Sitter, anti-de Sitter and Hⁿ are maximally symmetric, with constant sectional curvature"
-        decls: []
-        hint: "Missing entirely. Close: Lightlike.SpaceForm.killing_P, Lightlike.SpaceForm.killing_R (3-dimensional Riemannian space form)."
+        decls: [Lightlike.isMaximallySymmetric_deSitterSpace, Lightlike.isMaximallySymmetric_antiDeSitterSpace, Lightlike.isMaximallySymmetric_poincareBall]
+        hint: "Whole spaces: de Sitter R x S^m (K = 1/L^2), anti-de Sitter S^1 x R^m (K = -1/L^2; the quadric, not its universal cover) and the Poincare ball (K = -1), each with the metric induced from its quadric; constant curvature for every locally smooth Levi-Civita connection (hasConstantCurvature_of_quadric) and n(n+1)/2 independent smooth Killing fields (IsMaximallySymmetric)."
       - id: p1
         kind: piece
         text: "The Lie derivative of tensor fields on a smooth manifold is defined"
@@ -445,8 +445,8 @@ milestones:
       - id: p2
         kind: piece
         text: "De Sitter, anti-de Sitter and Hⁿ are defined"
-        decls: [Lightlike.hyperbolicMetric, Lightlike.deSitterMetric, Lightlike.antiDeSitterMetric, Lightlike.isCoordMetric_hyperbolic, Lightlike.isCoordMetric_deSitter, Lightlike.isCoordMetric_antiDeSitter]
-        hint: "Missing: no definitions (only FLRW de Sitter examples)."
+        decls: [Lightlike.deSitterSpaceMetric, Lightlike.deSitterSpaceLorentzian, Lightlike.antiDeSitterSpaceMetric, Lightlike.antiDeSitterSpaceLorentzian, Lightlike.poincareBallMetric, Lightlike.poincareBallMetric_single]
+        hint: "Whole spaces with the metric induced from the quadric: de Sitter R x S^m and anti-de Sitter S^1 x R^m as Lorentzian metrics on the whole manifold, and the Poincare ball, whose coordinate components are hyperbolicMetric (poincareBallMetric_single)."
       - id: t1
         kind: trust
         text: "The n(n+1)/2 Killing fields of Minkowski space close into the Poincaré algebra"
@@ -1366,8 +1366,8 @@ milestones:
         hint: "Nothing on main: no Crane–Yetter state sum and no invariance theorem. Lightlike/TuraevViro/QFifteenJ.lean says so itself; invariance needs q-Biedenharn–Elliott (QU1), proven only at r = 3 (Lightlike.TV.qBiedenharnElliott_three)."
       - id: p1
         kind: piece
-        text: "The Crane–Yetter state sum (colourings of a 4-complex, face and edge weights, sum of products of quantum 15j symbols) is defined"
-        decls: []
+        text: "The Crane–Yetter state sum (colourings of a 4-complex, face and tetrahedron weights, product of the braided vertices of the 4-simplices of Crane–Kauffman–Yetter, Fig. 23) is defined"
+        decls: [Lightlike.TV.tlDelta, Lightlike.TV.tlTheta, Lightlike.TV.tlTet, Lightlike.TV.cyVertexLoc, Lightlike.TV.cyVertexAt, Lightlike.TV.cyTetWeight, Lightlike.TV.craneYetterWeight, Lightlike.TV.craneYetter]
         hint: "Missing. Only the vertex weight exists: Lightlike.TV.qFifteenJ."
       - id: p2
         kind: piece
@@ -1901,7 +1901,7 @@ milestones:
       - id: p3
         kind: piece
         text: "The EPRL state sum is independent of the orientation"
-        decls: [Lightlike.SpinFoam.EPRLStateSum.eprlVertex_swap, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_neg, Lightlike.SpinFoam.EPRLStateSum.vertexI_neg, Lightlike.SpinFoam.EPRLStateSum.nodeFusionNineJ_swap]
+        decls: [Lightlike.SpinFoam.EPRLStateSum.eprlVertex_swap, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_neg]
         hint: "EPRL.lean says orientation independence is not claimed."
       - id: t1
         kind: trust
