@@ -831,6 +831,7 @@ import Lightlike.OperatorAlgebras.FockReduction
 import Lightlike.OperatorAlgebras.HilbertSchmidtBasis
 import Lightlike.OperatorAlgebras.KernelOperator
 import Lightlike.OperatorAlgebras.KernelHilbertSchmidt
+import Lightlike.OperatorAlgebras.KernelSpectral
 import Lightlike.OperatorAlgebras.ShaleAlgebra
 import Lightlike.OperatorAlgebras.ShaleHilbertSchmidt
 import Lightlike.OperatorAlgebras.StateGNS
