@@ -509,6 +509,13 @@ def build(root=ROOT):
     return cfg, ms, tasks
 
 
+def in_v1(m, v1):
+    """Whether milestone `m` is part of v1.0: its area and size are listed under `v1.0:` of
+    docs/tasks/checklists.yaml (`v1`) and its ID is not under `later:` (scheduled after v1.0)."""
+    return (m["area"] in (v1.get("areas") or []) and m["size"] in (v1.get("sizes") or [])
+            and m["id"] not in (v1.get("later") or []))
+
+
 def add_checklists(tasks, ms, root=ROOT):
     """From docs/tasks/checklists.yaml, onto each milestone task: `release` (v1.0 or not-scheduled),
     and the `issue`, `ranking` and `checklist` given there (scripts/milestone_status.py checks the
@@ -523,8 +530,7 @@ def add_checklists(tasks, ms, root=ROOT):
         if t["kind"] != "milestone":
             continue
         m, e = ms[t["milestone"]], entries.get(t["milestone"]) or {}
-        t["release"] = "v1.0" if m["area"] in (v1.get("areas") or []) and m["size"] in (v1.get("sizes") or []) \
-            else "not-scheduled"
+        t["release"] = "v1.0" if in_v1(m, v1) else "not-scheduled"
         for k, f2 in (("issue", "issue"), ("ranking", "ranking"), ("items", "checklist")):
             if e.get(k) not in (None, [], ""):
                 t[f2] = e[k]

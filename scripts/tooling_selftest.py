@@ -380,6 +380,12 @@ finally:
 
 # --- scripts/tasks.py: milestone parsing, the generic split, readiness, sync and the file check.
 import tasks as tk  # noqa: E402
+_v1 = {"areas": ["geometry"], "sizes": ["L"], "later": ["GE16"]}
+expect("v1.0 membership: its areas and sizes select the milestones, `later` takes one out, another area stays out",
+       tk.in_v1({"id": "GE1", "area": "geometry", "size": "L"}, _v1)
+       and not tk.in_v1({"id": "GE16", "area": "geometry", "size": "L"}, _v1)
+       and not tk.in_v1({"id": "CO1", "area": "cosmology", "size": "L"}, _v1)
+       and not tk.in_v1({"id": "GE2", "area": "geometry", "size": "R"}, _v1))
 
 _road = """## Mathematical and QFT foundations
 

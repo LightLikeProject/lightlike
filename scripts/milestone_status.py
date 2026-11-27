@@ -68,8 +68,7 @@ def load_plan(root=ROOT):
     _, ms, tasks = T.build(root)
     data = T.yaml_load((root / CHECKLISTS).read_text()) or {}
     v1 = data.get("v1.0") or {}
-    ids = {m["id"] for m in ms.values()
-           if m["area"] in (v1.get("areas") or []) and m["size"] in (v1.get("sizes") or [])}
+    ids = {m["id"] for m in ms.values() if T.in_v1(m, v1)}
     return ms, tasks, data, ids
 
 
