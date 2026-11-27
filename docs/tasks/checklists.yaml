@@ -1958,7 +1958,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The Barrett–Crane vertex reproduces published 10j values"
-        decls: []
+        decls: [Lightlike.SpinFoam.BC.bcVertex_eq_vertexQ, Lightlike.SpinFoam.BC.Tests.bcVertex_half, Lightlike.SpinFoam.BC.Tests.bcVertex_one]
         hint: "Only hand-computed values exist: Lightlike.SpinFoam.BC.Tests.bcVertex_zero, Lightlike.SpinFoam.BC.Tests.bcVertex_cyc, Lightlike.SpinFoam.BC.Tests.bcVertex_triangle, Lightlike.SpinFoam.BC.Tests.bcVertexBC_triangle_one. docs/results.yaml LL-0052 says no published table was found; the sign link of bcVertexBC to Baez–Christensen is not proven."
       - id: t2
         kind: trust
