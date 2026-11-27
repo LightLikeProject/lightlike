@@ -354,4 +354,72 @@ lemma norm_qForm (ν : ℝ) (n : ℤ) {N D : ℝ} (h : 0 < N ^ 2 + D ^ 2) :
   congr 1
   simp [wP]
 
+/-- The curve `c(t) = a(ξ)⁻¹ k_t a(ξ)`. -/
+def cT (ξ t : ℝ) : SL2R := aR (-ξ) * rot t * aR ξ
+
+lemma num_cT (ξ t x : ℝ) : num (cT ξ t) x = Real.cos t * x - Real.exp ξ * Real.sin t := by
+  have h : Real.exp ξ = Real.exp (ξ / 2) * Real.exp (ξ / 2) := by rw [← Real.exp_add]; ring_nf
+  simp [num, cT, aR, diagSL, rot, Matrix.mul_apply, Fin.sum_univ_two]
+  rw [h, show -ξ / 2 = -(ξ / 2) by ring, Real.exp_neg]
+  field_simp
+  ring
+
+lemma den_cT (ξ t x : ℝ) : den (cT ξ t) x = Real.exp (-ξ) * Real.sin t * x + Real.cos t := by
+  have h : Real.exp (-ξ) = Real.exp (-(ξ / 2)) * Real.exp (-(ξ / 2)) := by
+    rw [← Real.exp_add]; ring_nf
+  simp [den, cT, aR, diagSL, rot, Matrix.mul_apply, Fin.sum_univ_two]
+  rw [h, show -ξ / 2 = -(ξ / 2) by ring, Real.exp_neg]
+  field_simp
+
+/-- **The derivative of the smooth form along a curve**: for differentiable `N, D` with
+`N² + D² > 0`, `d/dt Q(N, D) = Q · (w · 2(N N' + D D')/(N² + D²) + n · 2i(N' D - N D')/(N² + D²))`. -/
+theorem hasDerivAt_qForm_comp (ν : ℝ) (n : ℤ) {N D : ℝ → ℝ} {N' D' t : ℝ}
+    (hN : HasDerivAt N N' t) (hD : HasDerivAt D D' t) (hpos : 0 < N t ^ 2 + D t ^ 2) :
+    HasDerivAt (fun t => qForm ν n (N t) (D t))
+      (qForm ν n (N t) (D t) * (wP ν * ((2 * (N t * N' + D t * D') : ℝ) / (N t ^ 2 + D t ^ 2 : ℝ)) +
+        (n : ℂ) * (2 * I * ((N' * D t - N t * D' : ℝ) : ℂ)) / ((N t ^ 2 + D t ^ 2 : ℝ) : ℂ))) t := by
+  set A : ℝ := N t ^ 2 + D t ^ 2 with hA
+  have hslit : ((A : ℝ) : ℂ) ∈ Complex.slitPlane := Complex.ofReal_mem_slitPlane.2 hpos
+  have hAd : HasDerivAt (fun s => (((N s ^ 2 + D s ^ 2 : ℝ)) : ℂ)) (((2 * (N t * N' + D t * D') : ℝ)) : ℂ) t := by
+    have := ((hN.pow 2).add (hD.pow 2)).ofReal_comp
+    convert this using 1; push_cast; ring
+  have h1 := (Complex.hasStrictDerivAt_cpow_const (c := wP ν) hslit).hasDerivAt.comp t hAd
+  have hden : ((N t : ℝ) : ℂ) + I * (D t : ℂ) ≠ 0 := by
+    intro h0
+    have hr := congrArg Complex.re h0
+    have hi := congrArg Complex.im h0
+    simp at hr hi
+    rw [hA, hr, hi] at hpos; simp at hpos
+  have hnum : ((N t : ℝ) : ℂ) - I * (D t : ℂ) ≠ 0 := by
+    intro h0
+    have hr := congrArg Complex.re h0
+    have hi := congrArg Complex.im h0
+    simp at hr hi
+    rw [hA, hr, hi] at hpos; simp at hpos
+  have hNc : HasDerivAt (fun s => ((N s : ℝ) : ℂ)) ((N' : ℝ) : ℂ) t := hN.ofReal_comp
+  have hDc : HasDerivAt (fun s => ((D s : ℝ) : ℂ)) ((D' : ℝ) : ℂ) t := hD.ofReal_comp
+  have hP := (hNc.sub (hDc.const_mul I)).div (hNc.add (hDc.const_mul I)) hden
+  have hPne : (((N t : ℝ) : ℂ) - I * (D t : ℂ)) / (((N t : ℝ) : ℂ) + I * (D t : ℂ)) ≠ 0 :=
+    div_ne_zero hnum hden
+  have h2 := (hasDerivAt_zpow n _ (Or.inl hPne)).comp t hP
+  have h := h1.mul h2
+  have hfun : (fun t => qForm ν n (N t) (D t)) = ((fun z : ℂ => z ^ wP ν) ∘
+      fun s => (((N s ^ 2 + D s ^ 2 : ℝ)) : ℂ)) * ((fun z : ℂ => z ^ n) ∘
+      fun s => (((N s : ℝ) : ℂ) - I * (D s : ℂ)) / (((N s : ℝ) : ℂ) + I * (D s : ℂ))) := by
+    funext s; simp [qForm]
+  rw [hfun]
+  convert h using 1
+  simp only [Function.comp_apply, qForm, Pi.sub_apply, Pi.add_apply, Pi.div_apply]
+  have hA0 : ((A : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hpos.ne'
+  have hcpow : (((A : ℝ)) : ℂ) ^ (wP ν - 1) = (((A : ℝ)) : ℂ) ^ (wP ν) / ((A : ℝ) : ℂ) := by
+    rw [Complex.cpow_sub _ _ hA0, Complex.cpow_one]
+  rw [show (((N t ^ 2 + D t ^ 2 : ℝ)) : ℂ) = ((A : ℝ) : ℂ) from rfl, hcpow,
+    zpow_sub_one₀ hPne]
+  have hAeq : ((A : ℝ) : ℂ) = (((N t : ℝ) : ℂ) - I * (D t : ℂ)) * (((N t : ℝ) : ℂ) + I * (D t : ℂ)) := by
+    rw [hA]; push_cast; ring_nf; rw [Complex.I_sq]; ring
+  rw [hAeq] at hA0 ⊢
+  field_simp
+  push_cast
+  ring_nf
+
 end Lightlike.Lorentz.SL2RPlancherel
