@@ -17,22 +17,20 @@ namespace Lightlike.SpinFoam.EPRLStateSum
 
 section Abstract
 
-variable {S T : Type*} [Fintype S] [Fintype T] [DecidableEq T]
+variable {X T : Type*} [Fintype X] [Fintype T] [DecidableEq T]
 
-/-- **The sum over the labels of a product over the incidences** is the product over the tetrahedra of the sums of the two incident factors. -/
-theorem sum_prod_incidence (e : T × Bool ≃ S × Fin 5) (τ : S × Fin 5 → T) (hτ : ∀ t b, τ (e (t, b)) = t)
-    (B : T → Finset ℕ) (F : S × Fin 5 → ℕ → ℝ) :
-    ∑ i ∈ Fintype.piFinset B, ∏ x : S × Fin 5, F x (i (τ x)) =
-      ∏ t : T, ∑ k ∈ B t, F (e (t, false)) k * F (e (t, true)) k := by
-  have h1 : ∀ i : T → ℕ, ∏ x : S × Fin 5, F x (i (τ x)) =
-      ∏ t : T, (F (e (t, false)) (i t) * F (e (t, true)) (i t)) := by
+/-- **The sum over the labels of a product over the incidences** is the product over the tetrahedra of the sums, over the label, of the products
+of the factors of the incidences in the fibre of the tetrahedron. -/
+theorem sum_prod_fibre (τ : X → T) (B : T → Finset ℕ) (F : X → ℕ → ℝ) :
+    ∑ i ∈ Fintype.piFinset B, ∏ x : X, F x (i (τ x)) =
+      ∏ t : T, ∑ k ∈ B t, ∏ x ∈ univ.filter (fun x => τ x = t), F x k := by
+  have h1 : ∀ i : T → ℕ, ∏ x : X, F x (i (τ x)) = ∏ t : T, ∏ x ∈ univ.filter (fun x => τ x = t), F x (i t) := by
     intro i
-    rw [← Equiv.prod_comp e (fun x => F x (i (τ x))), Fintype.prod_prod_type]
-    refine Finset.prod_congr rfl fun t _ => ?_
-    rw [Fintype.prod_bool, hτ, hτ]
-    ring
+    rw [← Finset.prod_fiberwise univ τ (fun x => F x (i (τ x)))]
+    refine Finset.prod_congr rfl fun t _ => Finset.prod_congr rfl fun x hx => ?_
+    rw [(Finset.mem_filter.1 hx).2]
   simp_rw [h1]
-  rw [Finset.prod_univ_sum (t := B) (f := fun t k => F (e (t, false)) k * F (e (t, true)) k)]
+  rw [Finset.prod_univ_sum (t := B) (f := fun t k => ∏ x ∈ univ.filter (fun x => τ x = t), F x k)]
 
 end Abstract
 
@@ -51,15 +49,17 @@ noncomputable def edgeW (J : Fin 5 → Fin 5 → ℕ) (m : Fin 10 → ℤ) : ℝ
 noncomputable def nodeF (K : Complex4 V) (col : Finset V → ℕ) (x : K.simps × Fin 5) (m : Fin 10 → ℤ) (k : ℕ) : ℝ :=
   sortT (complexJ K col x.1) (fun _ => k) x.2 (legProj m x.2)
 
-/-- **The tetrahedron-label sum of a closed complex is a network**: the sum over the families `M s` of the edge projections of the 4-simplices
-of the product of the edge weights times, for each tetrahedron, the kernel `Σ_k` of the two incident node factors. -/
-theorem tetSum_network (K : Complex4 V) (col : Finset V → ℕ) (e : K.tets × Bool ≃ K.simps × Fin 5)
-    (he : ∀ t b, incTet K (e (t, b)) = t) :
+/-- The incidences of a tetrahedron: the pairs (4-simplex, position of an omitted vertex) whose tetrahedron is `t`. -/
+noncomputable def fiberOf (K : Complex4 V) (t : K.tets) : Finset (K.simps × Fin 5) :=
+  univ.filter (fun x => incTet K x = t)
+
+/-- **The tetrahedron-label sum of a complex is a network**: the sum over the families `M s` of the edge projections of the 4-simplices
+of the product of the edge weights times, for each tetrahedron, the sum over its label of the product of the node factors of its incidences. -/
+theorem tetSum_network (K : Complex4 V) (col : Finset V → ℕ) :
     ∑ i ∈ Fintype.piFinset (tetBoxI K col), tetSumTerm K col i =
       ∑ M ∈ Fintype.piFinset (fun s : K.simps => projBox K col s),
         (∏ s : K.simps, edgeW (complexJ K col s) (M s)) *
-          ∏ t : K.tets, ∑ k ∈ tetBoxI K col t,
-            nodeF K col (e (t, false)) (M (e (t, false)).1) k * nodeF K col (e (t, true)) (M (e (t, true)).1) k := by
+          ∏ t : K.tets, ∑ k ∈ tetBoxI K col t, ∏ x ∈ fiberOf K t, nodeF K col x (M x.1) k := by
   classical
   have hJ : ∀ s : K.simps, ∀ p q, complexJ K col s p q = complexJ K col s q p :=
     fun s => simplexJ_symm s.1 (K.card_eq _ s.2) col
@@ -85,8 +85,8 @@ theorem tetSum_network (K : Complex4 V) (col : Finset V → ℕ) (e : K.tets × 
     intro i
     rw [Finset.prod_mul_distrib, Fintype.prod_prod_type]
   simp_rw [h2]
-  rw [← Finset.mul_sum, sum_prod_incidence e (incTet K) he (tetBoxI K col)
-    (fun x k => nodeF K col x (M x.1) k)]
+  rw [← Finset.mul_sum, sum_prod_fibre (incTet K) (tetBoxI K col) (fun x k => nodeF K col x (M x.1) k)]
+  rfl
 
 end Complex
 
