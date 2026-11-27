@@ -368,6 +368,7 @@ import Lightlike.Geometry.HeatKernel.HeatCoeffZeroTests
 import Lightlike.Geometry.HeatKernel.HeatCoeffs
 import Lightlike.Geometry.HeatKernel.HeatCoeffOneDiag
 import Lightlike.Geometry.HeatKernel.PartialJets
+import Lightlike.Geometry.HeatKernel.WorldFunctionJet
 import Lightlike.Geometry.HeatKernel.HeatCoeffsTests
 import Lightlike.Geometry.HeatKernel.WorldFunctionBounds
 import Lightlike.Geometry.HeatKernel.WorldFunctionBoundsTests
