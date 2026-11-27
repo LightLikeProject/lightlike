@@ -374,6 +374,8 @@ import Lightlike.Geometry.HeatKernel.CoordDensityDeriv
 import Lightlike.Geometry.HeatKernel.JetInvariants
 import Lightlike.Geometry.HeatKernel.FourthJet
 import Lightlike.Geometry.HeatKernel.FourthJetContract
+import Lightlike.Geometry.HeatKernel.LaplacianChristoffel
+import Lightlike.Geometry.HeatKernel.TransportCoeffJet
 import Lightlike.Geometry.HeatKernel.HeatCoeffsTests
 import Lightlike.Geometry.HeatKernel.WorldFunctionBounds
 import Lightlike.Geometry.HeatKernel.WorldFunctionBoundsTests
@@ -395,6 +397,11 @@ import Lightlike.Geometry.HeatKernel.ChartBaseDelta
 import Lightlike.Geometry.HeatKernel.ChartBaseDeltaTests
 import Lightlike.Geometry.HeatKernel.ChartParametrixSmooth
 import Lightlike.Geometry.HeatKernel.ChartParametrixSmoothTests
+import Lightlike.Geometry.HeatKernel.DiagonalVanishing
+import Lightlike.Geometry.HeatKernel.DiagonalVanishingTests
+import Lightlike.Geometry.HeatKernel.ParamIntegralDeriv
+import Lightlike.Geometry.HeatKernel.ShiftedParametrix
+import Lightlike.Geometry.HeatKernel.ShiftedParametrixTests
 import Lightlike.Geometry.HeatKernel.CutoffAnsatz
 import Lightlike.Geometry.HeatKernel.CutoffAnsatzTests
 import Lightlike.Geometry.HeatKernel.ChartParametrix
@@ -627,8 +634,13 @@ import Lightlike.Lorentz.SL2RIrreducible.PrincipalComplete
 import Lightlike.Lorentz.SL2RIrreducible.PrincipalLadder
 import Lightlike.Lorentz.SL2RIrreducible.PrincipalWeights
 import Lightlike.Lorentz.SL2ROddPlancherel.AbelMulV
+import Lightlike.Lorentz.SL2ROddPlancherel.AbelMulVFourier
 import Lightlike.Lorentz.SL2ROddPlancherel.BaseCoefficient
+import Lightlike.Lorentz.SL2ROddPlancherel.ComplexFourier
+import Lightlike.Lorentz.SL2ROddPlancherel.OddContour
 import Lightlike.Lorentz.SL2ROddPlancherel.OddMehler
+import Lightlike.Lorentz.SL2ROddPlancherel.OddPolarized
+import Lightlike.Lorentz.SL2ROddPlancherel.RhoCoth
 import Lightlike.Lorentz.SL2ROddPlancherel.StripShift
 import Lightlike.Lorentz.SL2RPlancherel.AbelHalfIntegral
 import Lightlike.Lorentz.SL2RPlancherel.AbelKernel
@@ -702,6 +714,11 @@ import Lightlike.Lorentz.SL2RPlancherel.OppositeTransform
 import Lightlike.Lorentz.SL2RPlancherel.OppositeIdent
 import Lightlike.Lorentz.SL2RPlancherel.OppositeL2
 import Lightlike.Lorentz.SL2RPlancherel.OppositeBlockIdent
+import Lightlike.Lorentz.SL2RPlancherel.OppositeBlockCoeff
+import Lightlike.Lorentz.SL2RPlancherel.PrincipalBlockFull
+import Lightlike.Lorentz.SL2RPlancherel.PrincipalBlockSameFull
+import Lightlike.Lorentz.SL2RPlancherel.PlancherelEvenBlocks
+import Lightlike.Lorentz.SL2RPlancherel.PlancherelEvenSum
 import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Linearity
 import Lightlike.Lorentz.SL2RPlancherel.WeightIntegrable
@@ -2223,6 +2240,7 @@ import Lightlike.Tests.TreeDependence
 import Lightlike.TuraevViro.FMatrix
 import Lightlike.TuraevViro.Hexagon
 import Lightlike.TuraevViro.CraneYetter
+import Lightlike.TuraevViro.CraneYetterBridge
 import Lightlike.TuraevViro.CraneYetterThree
 import Lightlike.TuraevViro.CraneYetterThreeWeight
 import Lightlike.TuraevViro.CraneYetterSphere
@@ -2360,6 +2378,7 @@ import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
 import Lightlike.SpinFoam.BarrettCraneUnique
+import Lightlike.SpinFoam.BarrettCraneValues
 import Lightlike.SpinFoam.BarrettCraneTests
 import Lightlike.SpinFoam.ReisenbergerCore
 import Lightlike.SpinFoam.GaugeIndependence

@@ -46,6 +46,7 @@ CHECKS = [
     ("scripts/regge/schlaefli_check.py", False), ("scripts/spin4/coherent_check.py", True),
     ("scripts/spin4/eprl_check.py", False), ("scripts/spin4/spin4_check.py", False),
     ("scripts/spin4/vertex_check.py", False),
+    ("scripts/spin4/bc10j_check.py", False),
     ("scripts/asymptotics/closing_check.py", False),
     ("scripts/asymptotics/contour_identity_check.py", False),
     ("scripts/asymptotics/gamma_bounds_check.py", False),
@@ -70,6 +71,7 @@ CHECKS = [
     ("scripts/lorentz/radial_check.py", False),
     ("scripts/lorentz/sl2r_check.py", True),
     ("scripts/lorentz/spherical_check.py", False),
+    ("scripts/oscillatory/cy_moves_check.py", False),
     ("scripts/oscillatory/gauss_check.py", False),
     ("scripts/oscillatory/laplace_check.py", False),
     ("scripts/oscillatory/localisation_check.py", False),
@@ -105,6 +107,7 @@ CHECKS = [
     ("scripts/spinfoam/tetra_partition_check.py", False),
     ("scripts/spinfoam/eprl_node_check.py", False), ("scripts/spinfoam/eprl_high_check.py", False), ("scripts/spinfoam/u1_bubble.py", False),
     ("scripts/spinfoam/eprl_order_check.py", False),
+    ("scripts/spinfoam/eprl_free_gluing_check.py", False),
 ]
 # Scripts that are not cross-checks (tools, the gate itself)
 NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py", "scripts/sixj_support.py", "scripts/tooling_selftest.py",

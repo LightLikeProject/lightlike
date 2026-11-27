@@ -919,6 +919,7 @@ tasks:
     deps: ["T-GE1", "T-GE2", "T-GE5"]
     checks: ["the kernel of `Spin⁺(1,3) → SO⁺(1,3)` is `{+1, −1}` and the group is `SL(2,ℂ)`", "the free Dirac equation has exactly the positive and negative energy plane waves with `E² = |p|² + m²`"]
     release: "not-scheduled"
+    issue: 439
     labels: ["milestone", "area: geometry", "size: L", "advanced"]
   - id: "T-CO1"
     kind: "milestone"
@@ -2849,6 +2850,7 @@ tasks:
     deps: ["T-PL2", "T-PL4", "T-PL7a"]
     checks: ["an explicit common forward descendant of two different triangulations of S³", "the edge case of PL7a's p4 (an edge subdivision is not itself a forward descendant)"]
     release: "not-scheduled"
+    issue: 436
     labels: ["milestone", "area: pl-topology", "size: R", "research-level"]
   - id: "T-QU1"
     kind: "milestone"
@@ -5100,11 +5102,11 @@ tasks:
     ranking: 49
     labels: ["milestone", "area: spin-foams", "size: M", "intermediate"]
     checklist:
-      - {"id": "m1", "kind": "main", "text": "The Barrett–Crane intertwiner is unique (Reisenberger 1999): up to scale it is the only Spin(4)-invariant vector in the tensor product of four simple representations (j_i, j_i) satisfying the uniqueness hypotheses of Reisenberger's theorem", "decls": [], "hint": "Missing: no uniqueness or basis-independence theorem; Lightlike.SpinFoam.BC.bcNode is only defined (docstring in BarrettCrane.lean claims uniqueness). Closest: Lightlike.SpinFoam.BC.bcNode, Lightlike.SpinFoam.BC.bcVertex_eq_sum."}
+      - {"id": "m1", "kind": "main", "text": "The Barrett–Crane intertwiner is unique (Reisenberger 1999): up to scale it is the only Spin(4)-invariant vector in the tensor product of four simple representations (j_i, j_i) satisfying the uniqueness hypotheses of Reisenberger's theorem", "decls": ["Lightlike.SpinFoam.BC.bcNode_unique"], "hint": "Missing: no uniqueness or basis-independence theorem; Lightlike.SpinFoam.BC.bcNode is only defined (docstring in BarrettCrane.lean claims uniqueness). Closest: Lightlike.SpinFoam.BC.bcNode, Lightlike.SpinFoam.BC.bcVertex_eq_sum."}
       - {"id": "p1", "kind": "piece", "text": "The Barrett–Crane intertwiner and the Barrett–Crane vertex (contraction of five Barrett–Crane intertwiners along K5) are defined from the simple representations j₊ = j₋ of Spin(4)", "decls": ["Lightlike.SpinFoam.BC.bcNode", "Lightlike.SpinFoam.BC.bcVertex", "Lightlike.SpinFoam.BC.bcVertex_eq_sum"]}
       - {"id": "p2", "kind": "piece", "text": "A Spin(4) representation (n, m) with n + m > 0 satisfies the weak simplicity constraint exactly when n = m", "decls": ["Lightlike.SpinFoam.BC.simple_iff"]}
       - {"id": "p3", "kind": "piece", "text": "Basic properties of the Barrett–Crane vertex: it is real and nonnegative", "decls": ["Lightlike.SpinFoam.BC.bcVertex_im", "Lightlike.SpinFoam.BC.bcVertex_nonneg"]}
-      - {"id": "t1", "kind": "trust", "text": "The Barrett–Crane vertex reproduces published 10j values", "decls": [], "hint": "Only hand-computed values exist: Lightlike.SpinFoam.BC.Tests.bcVertex_zero, Lightlike.SpinFoam.BC.Tests.bcVertex_cyc, Lightlike.SpinFoam.BC.Tests.bcVertex_triangle, Lightlike.SpinFoam.BC.Tests.bcVertexBC_triangle_one. docs/results.yaml LL-0052 says no published table was found; the sign link of bcVertexBC to Baez–Christensen is not proven."}
+      - {"id": "t1", "kind": "trust", "text": "The Barrett–Crane vertex reproduces published 10j values", "decls": ["Lightlike.SpinFoam.BC.bcVertex_eq_vertexQ", "Lightlike.SpinFoam.BC.Tests.bcVertex_half", "Lightlike.SpinFoam.BC.Tests.bcVertex_one"], "hint": "Only hand-computed values exist: Lightlike.SpinFoam.BC.Tests.bcVertex_zero, Lightlike.SpinFoam.BC.Tests.bcVertex_cyc, Lightlike.SpinFoam.BC.Tests.bcVertex_triangle, Lightlike.SpinFoam.BC.Tests.bcVertexBC_triangle_one. docs/results.yaml LL-0052 says no published table was found; the sign link of bcVertexBC to Baez–Christensen is not proven."}
       - {"id": "t2", "kind": "trust", "text": "A non-simple representation is shown to violate the simplicity constraint", "decls": ["Lightlike.SpinFoam.BC.Tests.not_simple_half_zero", "Lightlike.SpinFoam.BC.Tests.simple_half_half"]}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
   - id: "T-SF2"
