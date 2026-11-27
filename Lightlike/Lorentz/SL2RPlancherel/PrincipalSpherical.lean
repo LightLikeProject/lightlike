@@ -264,4 +264,55 @@ theorem mcoefP_zero_zero_mehler (ν : ℝ) {ξ : ℝ} (hξ : 0 < ξ) :
   refine setIntegral_congr_fun measurableSet_Ioi fun x hx => ?_
   exact (abs_mehlerDeriv_smul hξ hx).symm
 
+lemma cosh_lt_cosh_of_abs_lt {t ξ : ℝ} (h : |t| < ξ) : Real.cosh t < Real.cosh ξ := by
+  rw [Real.cosh_lt_cosh, abs_of_pos ((abs_nonneg t).trans_lt h)]; exact h
+
+/-- **The inner Abel substitution** `w = √(2(cosh ξ - cosh t))` on `ξ > |t|`:
+`∫_{ξ > |t|} sinh ξ F(cosh ξ)/√(2(cosh ξ - cosh t)) dξ = ∫_{w > 0} F(cosh t + w²/2) dw`. -/
+theorem integral_Ioi_abs_sinh_div_sqrt (F : ℝ → ℂ) (t : ℝ) :
+    ∫ ξ in Ioi |t|, ((Real.sinh ξ / Real.sqrt (2 * (Real.cosh ξ - Real.cosh t)) : ℝ) : ℂ) *
+      F (Real.cosh ξ) = ∫ w in Ioi (0 : ℝ), F (Real.cosh t + w ^ 2 / 2) := by
+  set f : ℝ → ℝ := fun ξ => Real.sqrt (2 * (Real.cosh ξ - Real.cosh t)) with hf
+  have hpos : ∀ ξ ∈ Ioi |t|, 0 < 2 * (Real.cosh ξ - Real.cosh t) := fun ξ hξ => by
+    have := cosh_lt_cosh_of_abs_lt (t := t) hξ; linarith
+  have hder : ∀ ξ ∈ Ioi |t|, HasDerivWithinAt f (Real.sinh ξ / f ξ) (Ioi |t|) ξ := by
+    intro ξ hξ
+    have hin : HasDerivAt (fun ξ => 2 * (Real.cosh ξ - Real.cosh t)) (2 * Real.sinh ξ) ξ := by
+      have := ((Real.hasDerivAt_cosh ξ).sub_const (Real.cosh t)).const_mul 2
+      simpa using this
+    have h := (hin.sqrt (hpos ξ hξ).ne').hasDerivWithinAt (s := Ioi |t|)
+    convert h using 1
+    have hs : Real.sqrt (2 * (Real.cosh ξ - Real.cosh t)) ≠ 0 := (Real.sqrt_pos.2 (hpos ξ hξ)).ne'
+    simp only [hf]
+    field_simp
+  have hmono : StrictMonoOn f (Ioi |t|) := by
+    intro a ha b hb hab
+    have ha0 : 0 ≤ a := (abs_nonneg t).trans (le_of_lt ha)
+    have hc : Real.cosh a < Real.cosh b := by
+      rw [Real.cosh_lt_cosh, abs_of_nonneg ha0, abs_of_nonneg (ha0.trans hab.le)]; exact hab
+    exact Real.sqrt_lt_sqrt (hpos a ha).le (by linarith)
+  have himg : f '' Ioi |t| = Ioi 0 := by
+    ext w
+    constructor
+    · rintro ⟨ξ, hξ, rfl⟩; exact Real.sqrt_pos.2 (hpos ξ hξ)
+    · intro hw
+      have hw' : (0 : ℝ) < w := hw
+      have h1 : 1 ≤ Real.cosh t + w ^ 2 / 2 := by
+        have := Real.one_le_cosh t; nlinarith [sq_nonneg w]
+      refine ⟨Real.arcosh (Real.cosh t + w ^ 2 / 2), ?_, ?_⟩
+      · have hc : Real.cosh t < Real.cosh (Real.arcosh (Real.cosh t + w ^ 2 / 2)) := by
+          rw [Real.cosh_arcosh h1]; nlinarith
+        rw [Real.cosh_lt_cosh, abs_of_nonneg (Real.arcosh_nonneg h1)] at hc
+        exact hc
+      · simp only [hf, Real.cosh_arcosh h1]
+        rw [show 2 * (Real.cosh t + w ^ 2 / 2 - Real.cosh t) = w ^ 2 by ring]
+        exact Real.sqrt_sq hw'.le
+  rw [← himg, integral_image_eq_integral_abs_deriv_smul measurableSet_Ioi hder hmono.injOn]
+  refine setIntegral_congr_fun measurableSet_Ioi fun ξ hξ => ?_
+  have hξ0 : 0 < ξ := (abs_nonneg t).trans_lt hξ
+  have hsq : f ξ ^ 2 = 2 * (Real.cosh ξ - Real.cosh t) := Real.sq_sqrt (hpos ξ hξ).le
+  have hd : 0 < Real.sinh ξ / f ξ := div_pos (Real.sinh_pos_iff.2 hξ0) (Real.sqrt_pos.2 (hpos ξ hξ))
+  rw [abs_of_pos hd, Complex.real_smul, hsq, show Real.cosh t + 2 * (Real.cosh ξ - Real.cosh t) / 2 =
+    Real.cosh ξ by ring]
+
 end Lightlike.Lorentz.SL2RPlancherel
