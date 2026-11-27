@@ -1904,12 +1904,12 @@ milestones:
       - id: t1
         kind: trust
         text: "On a small closed 4-complex at low spins, the EPRL state sum computed in Lean equals the Ooguri amplitude at the BF point"
-        decls: []
+        decls: [Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_low_spin, Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_eq_weights, Lightlike.SpinFoam.EPRLStateSum.Trust.signedSum_col0]
         hint: "Missing. Only the cutoff-0 case Lightlike.SpinFoam.EPRL.amplitude_one_zero and single-simplex checks Lightlike.SpinFoam.EPRL.Tests.simpE_colA, Lightlike.SpinFoam.EPRL.Tests.weightE_colA (γ = 1/3)."
       - id: t2
         kind: trust
         text: "A wrong face amplitude is shown to break that equality"
-        decls: []
+        decls: [Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_wrong_face]
         hint: "Lightlike.SpinFoam.EPRL.faceAmp_one_ne_sq only shows (J+1)² ≠ J+1; it breaks nothing while the equality is not proven."
       - id: c1
         kind: catalogue
