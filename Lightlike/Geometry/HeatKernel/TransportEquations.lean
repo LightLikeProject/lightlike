@@ -113,7 +113,7 @@ theorem sum_range_telescope (a : ℕ → ℝ) (t : ℝ) (N : ℕ) :
 the time derivative `D` of `(4πt)^{-n/2} e^{-σ(y)/4t} Σ_{k ≤ N} tᵏ u_k(y)` satisfies
 `D + (4πt)^{-n/2} Δ(e^{-σ/4t} Σ tᵏ u_k)(y) = (4πt)^{-n/2} e^{-σ(y)/4t} t^N Δu_N(y)`. -/
 theorem heatOperator_truncated_ansatz (hg : IsCoordMetric g U) {σ : (Fin n → ℝ) → ℝ} {u : ℕ → (Fin n → ℝ) → ℝ}
-    (hσ : ContDiffOn ℝ ∞ σ U) (hu : ∀ k, ContDiffOn ℝ ∞ (u k) U) (heik : coordGradPair g σ σ = fun y => 4 * σ y)
+    (hσ : ContDiffOn ℝ ∞ σ U) (hu : ∀ k, ContDiffOn ℝ ∞ (u k) U) (heik : ∀ z ∈ U, coordGradPair g σ σ z = 4 * σ z)
     {N : ℕ} (htr : IsTransport g U σ u N) {t : ℝ} (ht : 0 < t) {y : Fin n → ℝ} (hy : y ∈ U) :
     ∃ D, HasDerivAt (fun s => heatGaussian n (σ y) s * truncAnsatz u N s y) D t ∧
       D + (4 * π * t) ^ (-(n : ℝ) / 2) * coordLaplacian g (fun z => gaussFactor t (σ z) * truncAnsatz u N t z) y =

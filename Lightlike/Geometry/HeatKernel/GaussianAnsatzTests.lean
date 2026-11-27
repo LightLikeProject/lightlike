@@ -54,6 +54,6 @@ example (t : ℝ) (ht : 0 < t) (y : Fin 1 → ℝ) :
             (coordLaplacian gLine σLine y / 4 + (1 : ℕ) / 2) * (fun _ _ => (1 : ℝ)) t y) / t) :=
   heatOperator_gaussian_ansatz isCoordMetric_gLine
     ((contDiff_apply ℝ (fun _ : Fin 1 => ℝ) 0).mul (contDiff_apply ℝ (fun _ : Fin 1 => ℝ) 0)).contDiffOn
-    (fun _ => contDiffOn_const) eikonal_σLine ht (mem_univ y) (hasDerivAt_const t 1)
+    (fun _ => contDiffOn_const) (fun z _ => congrFun eikonal_σLine z) ht (mem_univ y) (hasDerivAt_const t 1)
 
 end Lightlike.GaussianAnsatzTests

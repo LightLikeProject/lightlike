@@ -5,7 +5,7 @@ import Lightlike.Spacetime.LaplaceBeltrami.CoordCalculus
 # The Laplacian of the Gaussian ansatz `e^{-σ/4t} u`
 
 For a coordinate metric `g` on an open `U ⊆ ℝⁿ` (any signature), a smooth `σ` on `U` satisfying the eikonal equation
-`g⁻¹(dσ, dσ) = 4σ` (the world function of `Lightlike.Geodesic.exists_sqDist_eikonal`), a smooth `u` and `t ≠ 0`,
+`g⁻¹(dσ, dσ) = 4σ` on `U` (the world function of `Lightlike.Geodesic.exists_sqDist_eikonal`), a smooth `u` and `t ≠ 0`,
 
 `Δ(e^{-σ/4t} u) = e^{-σ/4t} (Δu - (Δσ / 4t) u - (σ / 4t²) u + g⁻¹(dσ, du) / 2t)`
 
@@ -76,7 +76,7 @@ theorem IsCoordMetric.coordGradPair_comp_left (hg : IsCoordMetric g U) {F H : (F
 /-- **The Laplacian of the Gaussian ansatz**: with the eikonal equation `g⁻¹(dσ, dσ) = 4σ`,
 `Δ(e^{-σ/4t} u) = e^{-σ/4t} (Δu - (Δσ/4t) u - (σ/4t²) u + g⁻¹(dσ, du)/2t)`. -/
 theorem IsCoordMetric.coordLaplacian_gaussian_mul (hg : IsCoordMetric g U) {σ u : (Fin n → ℝ) → ℝ}
-    (hσ : ContDiffOn ℝ ∞ σ U) (hu : ContDiffOn ℝ ∞ u U) (heik : coordGradPair g σ σ = fun y => 4 * σ y)
+    (hσ : ContDiffOn ℝ ∞ σ U) (hu : ContDiffOn ℝ ∞ u U) (heik : ∀ z ∈ U, coordGradPair g σ σ z = 4 * σ z)
     {t : ℝ} (ht : t ≠ 0) {y : Fin n → ℝ} (hy : y ∈ U) :
     coordLaplacian g (fun z => gaussFactor t (σ z) * u z) y =
       gaussFactor t (σ y) * (coordLaplacian g u y - coordLaplacian g σ y / (4 * t) * u y -
@@ -84,7 +84,7 @@ theorem IsCoordMetric.coordLaplacian_gaussian_mul (hg : IsCoordMetric g U) {σ u
   have hG : ContDiffOn ℝ ∞ (fun z => gaussFactor t (σ z)) U := (contDiff_gaussFactor t).comp_contDiffOn hσ
   rw [hg.coordLaplacian_mul hG hu hy, hg.coordLaplacian_comp hσ (contDiff_gaussFactor t) hy,
     hg.coordGradPair_comp_left hσ (contDiff_gaussFactor t) hy, deriv_deriv_gaussFactor, deriv_gaussFactor]
-  have h4 : coordGradPair g σ σ y = 4 * σ y := congrFun heik y
+  have h4 : coordGradPair g σ σ y = 4 * σ y := heik y hy
   simp only [h4]
   field_simp
   ring
@@ -121,7 +121,7 @@ theorem hasDerivAt_heatGaussian (n : ℕ) (s : ℝ) {t : ℝ} (ht : 0 < t) :
 `∂ₜu(t, y) = u'`, the eikonal equation and `t > 0`, the time derivative `D` of `(4πt)^{-n/2} e^{-σ(y)/4t} u(t, y)` satisfies
 `D + (4πt)^{-n/2} Δ(e^{-σ/4t} u)(y) = (4πt)^{-n/2} e^{-σ/4t} (u' + Δu + (g⁻¹(dσ, du)/2 - (Δσ/4 + n/2) u)/t)`. -/
 theorem heatOperator_gaussian_ansatz (hg : IsCoordMetric g U) {σ : (Fin n → ℝ) → ℝ} {u : ℝ → (Fin n → ℝ) → ℝ}
-    (hσ : ContDiffOn ℝ ∞ σ U) (hu : ∀ s, ContDiffOn ℝ ∞ (u s) U) (heik : coordGradPair g σ σ = fun y => 4 * σ y)
+    (hσ : ContDiffOn ℝ ∞ σ U) (hu : ∀ s, ContDiffOn ℝ ∞ (u s) U) (heik : ∀ z ∈ U, coordGradPair g σ σ z = 4 * σ z)
     {t : ℝ} (ht : 0 < t) {y : Fin n → ℝ} (hy : y ∈ U) {u' : ℝ} (hut : HasDerivAt (fun s => u s y) u' t) :
     ∃ D, HasDerivAt (fun s => heatGaussian n (σ y) s * u s y) D t ∧
       D + (4 * π * t) ^ (-(n : ℝ) / 2) * coordLaplacian g (fun z => gaussFactor t (σ z) * u t z) y =
