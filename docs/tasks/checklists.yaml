@@ -1943,7 +1943,7 @@ milestones:
       - id: m1
         kind: main
         text: "The Barrett–Crane intertwiner is unique (Reisenberger 1999): up to scale it is the only Spin(4)-invariant vector in the tensor product of four simple representations (j_i, j_i) satisfying the uniqueness hypotheses of Reisenberger's theorem"
-        decls: []
+        decls: [Lightlike.SpinFoam.BC.bcNode_unique]
         hint: "Missing: no uniqueness or basis-independence theorem; Lightlike.SpinFoam.BC.bcNode is only defined (docstring in BarrettCrane.lean claims uniqueness). Closest: Lightlike.SpinFoam.BC.bcNode, Lightlike.SpinFoam.BC.bcVertex_eq_sum."
       - id: p1
         kind: piece
