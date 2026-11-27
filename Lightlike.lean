@@ -369,8 +369,14 @@ import Lightlike.Geometry.HeatKernel.HeatCoeffs
 import Lightlike.Geometry.HeatKernel.HeatCoeffsTests
 import Lightlike.Geometry.HeatKernel.WorldFunctionBounds
 import Lightlike.Geometry.HeatKernel.WorldFunctionBoundsTests
+import Lightlike.Geometry.HeatKernel.WorldFunctionTaylor
+import Lightlike.Geometry.HeatKernel.WorldFunctionTaylorTests
+import Lightlike.Geometry.HeatKernel.FrozenGaussian
+import Lightlike.Geometry.HeatKernel.FrozenGaussianTests
 import Lightlike.Geometry.HeatKernel.CutoffAnsatz
 import Lightlike.Geometry.HeatKernel.CutoffAnsatzTests
+import Lightlike.Geometry.HeatKernel.ChartParametrix
+import Lightlike.Geometry.HeatKernel.ChartParametrixTests
 import Lightlike.Geometry.HeatKernel.GaussianDeriv
 import Lightlike.Geometry.HeatKernel.Potential
 import Lightlike.Geometry.HeatKernel.InducedGravity
@@ -1343,6 +1349,7 @@ import Lightlike.PonzanoRegge.TriangulationIndependence.Main
 import Lightlike.PonzanoRegge.TriangulationIndependence.StellarForward
 import Lightlike.PonzanoRegge.TriangulationIndependence.Relabel
 import Lightlike.PonzanoRegge.TriangulationIndependence.Rename
+import Lightlike.PonzanoRegge.TriangulationIndependence.LinkSplit
 import Lightlike.PonzanoRegge.TriangulationIndependence.StellarEdge
 import Lightlike.PonzanoRegge.TriangulationIndependence.NonVacuity
 import Lightlike.PonzanoRegge.TriangulationIndependence.TreeConnected
@@ -2176,6 +2183,9 @@ import Lightlike.Tests.SphereRecognition
 import Lightlike.Tests.TreeDependence
 import Lightlike.TuraevViro.FMatrix
 import Lightlike.TuraevViro.Hexagon
+import Lightlike.TuraevViro.CraneYetter
+import Lightlike.TuraevViro.CraneYetterThree
+import Lightlike.TuraevViro.CraneYetterThreeWeight
 import Lightlike.TuraevViro.LevelOne
 import Lightlike.TuraevViro.PLInvariance
 import Lightlike.TuraevViro.Model
@@ -2185,6 +2195,7 @@ import Lightlike.TuraevViro.SOrthogonal
 import Lightlike.TuraevViro.QNumber
 import Lightlike.TuraevViro.QSixJ
 import Lightlike.TuraevViro.QSixJGeneric
+import Lightlike.TuraevViro.QSixJGenericKL
 import Lightlike.TuraevViro.QSixJLimit
 import Lightlike.TuraevViro.QSixJRegular
 import Lightlike.TuraevViro.QFifteenJ
@@ -2297,6 +2308,7 @@ import Lightlike.SpinFoam.EPRLStateSum.Sphere6Sign
 import Lightlike.SpinFoam.EPRLStateSum.IntrinsicVertex
 import Lightlike.SpinFoam.EPRLStateSum.Orientation
 import Lightlike.SpinFoam.EPRLStateSum.BoneAmplitude
+import Lightlike.SpinFoam.EPRLStateSum.OrderDependence
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
@@ -2397,6 +2409,13 @@ import Lightlike.TemperleyLieb.ShiftComm
 import Lightlike.TemperleyLieb.Pentagon
 import Lightlike.TemperleyLieb.KLCoef
 import Lightlike.TemperleyLieb.TopEntry
+import Lightlike.TemperleyLieb.ThirdBlock
+import Lightlike.TemperleyLieb.OneStrand
+import Lightlike.TemperleyLieb.KLThirdBlock
+import Lightlike.TemperleyLieb.KLCertificate
+import Lightlike.TemperleyLieb.MirrorTree
+import Lightlike.TemperleyLieb.Adjoint
+import Lightlike.TemperleyLieb.Slide
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
@@ -2410,6 +2429,7 @@ import Lightlike.Dirac.SphereSpectrumBridge
 import Lightlike.Dirac.SphereSpectrumModes
 import Lightlike.Dirac.SphereSpectrumCount
 import Lightlike.Dirac.SphereSpectrum
+import Lightlike.Dirac.SphereSpectrumSections
 import Lightlike.Dirac.SphereSpectrumTests
 import Lightlike.SpinFoam.OoguriGaugeFixed.Capstone
 import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosure
@@ -2860,6 +2880,8 @@ import Lightlike.Asymptotics.AiryFunctions.Test
 import Lightlike.Asymptotics.SmoothExtension
 import Lightlike.Asymptotics.SmoothExtensionTests
 import Lightlike.Asymptotics.ExpDecay
+import Lightlike.Asymptotics.GaussianIntegralPi
+import Lightlike.Asymptotics.GaussianIntegralPiTests
 import Lightlike.Asymptotics.EulerPrimitive
 import Lightlike.Asymptotics.EulerPrimitiveTests
 import Lightlike.GFT.DualPseudoManifold.Check
