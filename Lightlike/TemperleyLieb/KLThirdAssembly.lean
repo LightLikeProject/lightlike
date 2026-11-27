@@ -146,4 +146,42 @@ lemma kl_tel_lower (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hq2 : ∀ x, 1 ≤ x �
     show ((b + c + 1 - m : ℕ) : ℤ) - 1 = ((b + c - m : ℕ) : ℤ) by omega,
     show ((a + b + c - e₀ + 1 - m : ℕ) : ℤ) - 1 = ((a + b + c - e₀ - m : ℕ) : ℤ) by omega,
     ← qb_eq_qz, ← qb_eq_qz, ← qb_eq_qz, ← qb_eq_qz, ← qb_eq_qz, ← qb_eq_qz]
+/-- The `c` term of the `g₀ = 1` recursion is present unless `d₀ = a + b - 2e₀`, and then its box is empty. -/
+lemma kl_lower_c_present {a b c e₀ d₀ m i : ℕ} (hmb : m ≤ b) (hmz : m ≤ c + 1) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + 1) - 2 * m) (hv : ValidA a b c 1 e₀ d₀ 1) (hi : e₀ + d₀ + 1 = m + i)
+    (h : ¬ (KLAdm a b (c + 1) e₀ (d₀ + 1) m i ∧ KLAdm (a + b - 2 * e₀) c 1 d₀ 1 0 (d₀ + 1))) :
+    a + 2 * b - 2 * e₀ + c - d₀ - m < b + c + 1 - m := by
+  by_contra hlt
+  apply h
+  obtain ⟨he, hd₀, hg, -⟩ := hv
+  simp only [KLAdm, le_min_iff] at he hd₀ ⊢
+  omega
+
+/-- The `h = 0` term: present, or its box is empty. -/
+lemma kl_lower_0_present {a b c e₀ d₀ m i : ℕ} (hmb : m ≤ b) (hmz : m ≤ c + 1) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + 1) - 2 * m) (hv : ValidA a b c 1 e₀ d₀ 1) (hi : e₀ + d₀ + 1 = m + i)
+    (h : ¬ (1 ≤ i ∧ KLAdm b c 1 m 0 0 m ∧ KLAdm a (b + c - 2 * m) 1 (i - 1) 1 0 i ∧ KLAdm a b c e₀ d₀ m (i - 1))) :
+    a + b + c - e₀ - m < a + b - e₀ ∨ a + b + c - e₀ - m < a + b - 2 * e₀ + c - d₀ := by
+  by_contra hlt
+  apply h
+  obtain ⟨he, hd₀, hg, -⟩ := hv
+  simp only [KLAdm, le_min_iff] at he hd₀ ⊢
+  omega
+
+/-- For `m ≥ 1` the `h = 1` term is present. -/
+lemma kl_lower_1_present {a b c e₀ d₀ m i : ℕ} (hmb : m ≤ b) (hmz : m ≤ c + 1) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + 1) - 2 * m) (hv : ValidA a b c 1 e₀ d₀ 1) (hi : e₀ + d₀ + 1 = m + i) (hm : 1 ≤ m) :
+    KLAdm b c 1 (m - 1) 1 0 m ∧ KLAdm a (b + c - 2 * (m - 1)) 1 i 1 1 i ∧ KLAdm a b c e₀ d₀ (m - 1) i := by
+  obtain ⟨he, hd₀, hg, -⟩ := hv
+  simp only [KLAdm, le_min_iff] at he hd₀ ⊢
+  omega
+
+/-- For `m = 0` the `h = 0` term forces the `c` term. -/
+lemma kl_lower_0_imp_c {a b c e₀ d₀ i : ℕ} (hia : i ≤ a) (hiz : i ≤ b + (c + 1) - 2 * 0)
+    (hv : ValidA a b c 1 e₀ d₀ 1) (hi : e₀ + d₀ + 1 = 0 + i)
+    (h0 : 1 ≤ i ∧ KLAdm b c 1 0 0 0 0 ∧ KLAdm a (b + c - 2 * 0) 1 (i - 1) 1 0 i ∧ KLAdm a b c e₀ d₀ 0 (i - 1)) :
+    KLAdm a b (c + 1) e₀ (d₀ + 1) 0 i ∧ KLAdm (a + b - 2 * e₀) c 1 d₀ 1 0 (d₀ + 1) := by
+  obtain ⟨he, hd₀, hg, -⟩ := hv
+  simp only [KLAdm, le_min_iff] at he hd₀ h0 ⊢
+  omega
 end Lightlike.TemperleyLieb
