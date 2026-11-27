@@ -433,8 +433,8 @@ milestones:
       - id: m3
         kind: main
         text: "De Sitter, anti-de Sitter and Hⁿ are maximally symmetric, with constant sectional curvature"
-        decls: []
-        hint: "Missing entirely. Close: Lightlike.SpaceForm.killing_P, Lightlike.SpaceForm.killing_R (3-dimensional Riemannian space form)."
+        decls: [Lightlike.isMaximallySymmetric_deSitterSpace, Lightlike.isMaximallySymmetric_antiDeSitterSpace, Lightlike.isMaximallySymmetric_poincareBall]
+        hint: "Whole spaces: de Sitter R x S^m (K = 1/L^2), anti-de Sitter S^1 x R^m (K = -1/L^2; the quadric, not its universal cover) and the Poincare ball (K = -1), each with the metric induced from its quadric; constant curvature for every locally smooth Levi-Civita connection (hasConstantCurvature_of_quadric) and n(n+1)/2 independent smooth Killing fields (IsMaximallySymmetric)."
       - id: p1
         kind: piece
         text: "The Lie derivative of tensor fields on a smooth manifold is defined"
@@ -443,8 +443,8 @@ milestones:
       - id: p2
         kind: piece
         text: "De Sitter, anti-de Sitter and Hⁿ are defined"
-        decls: [Lightlike.hyperbolicMetric, Lightlike.deSitterMetric, Lightlike.antiDeSitterMetric, Lightlike.isCoordMetric_hyperbolic, Lightlike.isCoordMetric_deSitter, Lightlike.isCoordMetric_antiDeSitter]
-        hint: "Missing: no definitions (only FLRW de Sitter examples)."
+        decls: [Lightlike.deSitterSpaceMetric, Lightlike.deSitterSpaceLorentzian, Lightlike.antiDeSitterSpaceMetric, Lightlike.antiDeSitterSpaceLorentzian, Lightlike.poincareBallMetric, Lightlike.poincareBallMetric_single]
+        hint: "Whole spaces with the metric induced from the quadric: de Sitter R x S^m and anti-de Sitter S^1 x R^m as Lorentzian metrics on the whole manifold, and the Poincare ball, whose coordinate components are hyperbolicMetric (poincareBallMetric_single)."
       - id: t1
         kind: trust
         text: "The n(n+1)/2 Killing fields of Minkowski space close into the Poincaré algebra"
