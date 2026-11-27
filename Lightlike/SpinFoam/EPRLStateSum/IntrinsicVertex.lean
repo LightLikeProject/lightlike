@@ -1,4 +1,5 @@
 import Lightlike.SpinFoam.EPRLStateSum.ComplexIntrinsicAmp
+import Lightlike.SpinFoam.EPRLStateSum.SignedVertex
 
 /-!
 # The intrinsic EPRL vertex is the SF6 vertex in the sorted basis of the tetrahedra
@@ -19,7 +20,7 @@ sorted basis by the change of basis between the two orthonormal intertwiner base
   `(a+1, a+2)(a+3, a+4)` to `(a+1, a+3)(a+2, a+4)`), the matrices of `fifteenJSimplex_eq_sum_ampP`;
 * `nodeT J a z i = Σ_m nodeI J a z m · nodeP J a i m`: the transition from the sorted label `z` to
   the positional label `i`;
-* `posF_eq_fifteenJ`: `posF J i = Σ_l Π_a nodeP J a (i a) (l a) · vertexF J l` is the 15j symbol
+* `posF_eq_fifteenJ`: `posF J i = Σ_l Π_a nodeP J a (i a) (l a) · vertexP J l` is the 15j symbol
   with positional labels `i`;
 * `simpEIAux_eq_sum_nodeT`: **`simpEIAux J z = Σ_i Π_a nodeT J a (z a) (i a) · posF J i`**, by
   the orthogonality of the positional matrices (`sum_nodeP_mul`) and the triangle conditions of a
@@ -41,14 +42,21 @@ noncomputable def nodeP (J : Fin 5 → Fin 5 → ℕ) (a : Fin 5) (i l : ℕ) : 
 def posBox (J : Fin 5 → Fin 5 → ℕ) : Fin 5 → Finset ℕ :=
   fun a => range (J a (a + 1) + J a (a + 2) + 1)
 
+/-- **The sign between the channel tensors of the sorted and of the cyclic leg order** at the node `a`: the intertwiners of the
+channel `(0 2 | 1 3)` with the legs read in the sorted order and in the cyclic order `a+1, …, a+4` differ by the sign
+`(-1)^(tetSignExp a t₀ t₁ t₂ t₃ m)` (`fourJ_swap₁₂`, `fourJ_swap₃₄`, `fourJ_swapPairs`), trivial at the nodes `0` and `4`. -/
+def nodeEta (J : Fin 5 → Fin 5 → ℕ) (a : Fin 5) (m : ℕ) : ℝ :=
+  (-1) ^ tetSignExp a (J a (a.succAbove 0)) (J a (a.succAbove 1)) (J a (a.succAbove 2)) (J a (a.succAbove 3)) m
+
 /-- **The transition matrix** at the node `a` from the sorted (intrinsic) label `z` to the
-positional label `i`: `Σ_m ⟨z | m⟩_sorted ⟨i | m⟩_positional` over the common pairing basis `m`. -/
+positional label `i`: `Σ_m ⟨z | m⟩_sorted η_a(m) ⟨i | m⟩_positional` over the common pairing basis `m`. It is the overlap of
+the two orthonormal bases of the invariant space of the node: the sorted-leg intertwiner and the cyclic-leg intertwiner. -/
 noncomputable def nodeT (J : Fin 5 → Fin 5 → ℕ) (a : Fin 5) (z i : ℕ) : ℝ :=
-  ∑ m ∈ simpBox J a, nodeI J a z m * nodeP J a i m
+  ∑ m ∈ simpBox J a, nodeI J a z m * nodeEta J a m * nodeP J a i m
 
 /-- The 4-simplex contraction with positional labels `i`, expanded in the Ooguri virtual spins. -/
 noncomputable def posF (J : Fin 5 → Fin 5 → ℕ) (i : Fin 5 → ℕ) : ℝ :=
-  ∑ l ∈ Fintype.piFinset (simpBox J), (∏ a, nodeP J a (i a) (l a)) * vertexF J l
+  ∑ l ∈ Fintype.piFinset (simpBox J), (∏ a, nodeP J a (i a) (l a)) * vertexP J l
 
 /-- `Tri` is symmetric in its three arguments. -/
 lemma tri_perm₁ {x y z : ℕ} (h : Tri x y z) : Tri y x z := by unfold Tri at *; omega
@@ -75,7 +83,7 @@ theorem posF_eq_fifteenJ (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J 
   refine Finset.sum_congr rfl fun l₀ _ => Finset.sum_congr rfl fun l₁ _ =>
     Finset.sum_congr rfl fun l₂ _ => Finset.sum_congr rfl fun l₃ _ =>
     Finset.sum_congr rfl fun l₄ _ => ?_
-  simp only [Fin.prod_univ_five, nodeP, vertexF]
+  simp only [Fin.prod_univ_five, nodeP, vertexP]
   have e1 : J 1 (1 + 4) = J 0 1 := hJ 1 0
   have e2 : J 2 (2 + 3) = J 0 2 := hJ 2 0
   have e3 : J 2 (2 + 4) = J 1 2 := hJ 2 1
@@ -94,10 +102,9 @@ theorem posF_eq_fifteenJ (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J 
 def AdmP (J : Fin 5 → Fin 5 → ℕ) (a : Fin 5) (m : ℕ) : Prop :=
   Tri (J a (a + 1)) (J a (a + 3)) m ∧ Tri m (J a (a + 2)) (J a (a + 4))
 
-/-- **A non-zero Ooguri vertex weight has admissible virtual spins at every node.** -/
-theorem admP_of_vertexF_ne_zero (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J q p)
-    (l : Fin 5 → ℕ) (h : vertexF J l ≠ 0) (a : Fin 5) : AdmP J a (l a) := by
-  have hA : ampP J l ≠ 0 := fun h0 => h (by rw [vertexF, h0, mul_zero])
+/-- **A non-zero Ooguri vertex amplitude has admissible virtual spins at every node.** -/
+theorem admP_of_ampP_ne_zero (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J q p)
+    (l : Fin 5 → ℕ) (hA : ampP J l ≠ 0) (a : Fin 5) : AdmP J a (l a) := by
   obtain ⟨⟨a1, a2⟩, ⟨b1, b2⟩, ⟨c1, c2⟩, ⟨d1, d2⟩, ⟨f1, f2⟩⟩ := tri_of_ampP_ne_zero hA
   have h10 := hJ 1 0
   have h20 := hJ 2 0
@@ -154,6 +161,30 @@ theorem admP_of_vertexF_ne_zero (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p
     (try simp only [h10, h20, h21, h30, h31, h32, h40, h41, h42, h43]) <;>
     exact ⟨by assumption, by assumption⟩
 
+/-- `(-1)^n * (-1)^n = 1`. -/
+lemma neg_one_pow_mul_self (n : ℕ) : ((-1 : ℝ) ^ n) * (-1) ^ n = 1 := by
+  rw [← mul_pow]; norm_num
+
+/-- **The tetrahedron signs cancel between the positional and the sorted weight**: for symmetric `J`,
+`(Π_a η_a(l_a)) · vertexP J l = vertexF J l`. -/
+theorem prod_nodeEta_mul_vertexP (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J q p) (l : Fin 5 → ℕ) :
+    (∏ a, nodeEta J a (l a)) * vertexP J l = vertexF J l := by
+  have h := recoupSign_mul_ampP_eq J hJ l
+  have hη : ∏ a, nodeEta J a (l a) =
+      (-1) ^ nodeExp J l 0 * (-1) ^ nodeExp J l 1 * (-1) ^ nodeExp J l 2 * (-1) ^ nodeExp J l 3 *
+        (-1) ^ nodeExp J l 4 := by
+    simp only [Fin.prod_univ_five, nodeEta, nodeExp]
+  have hsq : ((-1 : ℝ) ^ nodeExp J l 0 * (-1) ^ nodeExp J l 1 * (-1) ^ nodeExp J l 2 * (-1) ^ nodeExp J l 3 *
+        (-1) ^ nodeExp J l 4) * ((-1) ^ nodeExp J l 0 * (-1) ^ nodeExp J l 1 * (-1) ^ nodeExp J l 2 *
+        (-1) ^ nodeExp J l 3 * (-1) ^ nodeExp J l 4) = 1 := by
+    calc _ = ((-1 : ℝ) ^ nodeExp J l 0 * (-1) ^ nodeExp J l 0) * ((-1) ^ nodeExp J l 1 * (-1) ^ nodeExp J l 1) *
+          ((-1) ^ nodeExp J l 2 * (-1) ^ nodeExp J l 2) * ((-1) ^ nodeExp J l 3 * (-1) ^ nodeExp J l 3) *
+          ((-1) ^ nodeExp J l 4 * (-1) ^ nodeExp J l 4) := by ring
+      _ = 1 := by simp only [neg_one_pow_mul_self, mul_one]
+  unfold vertexP vertexF
+  rw [hη, h]
+  linear_combination ((-1) ^ triPart J * ampP J l) * hsq
+
 /-- **The intrinsic vertex sum in terms of the positional one.** For symmetric `J`, the intrinsic
 vertex sum `simpEIAux J z` (sorted labels `z`) is the positional expansion `posF J i` summed over
 the positional labels `i` with the transition matrices `nodeT`. -/
@@ -165,7 +196,7 @@ theorem simpEIAux_eq_sum_nodeT (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p 
   -- expand the transition matrices and the positional expansion
   have step1 : ∀ i : Fin 5 → ℕ, (∏ a, nodeT J a (z a) (i a)) * posF J i =
       ∑ m ∈ Fintype.piFinset (simpBox J), ∑ l ∈ Fintype.piFinset (simpBox J),
-        ((∏ a, nodeI J a (z a) (m a)) * vertexF J l) *
+        (((∏ a, nodeI J a (z a) (m a)) * ∏ a, nodeEta J a (m a)) * vertexP J l) *
           ∏ a, (nodeP J a (i a) (m a) * nodeP J a (i a) (l a)) := by
     intro i
     simp only [nodeT]
@@ -173,14 +204,15 @@ theorem simpEIAux_eq_sum_nodeT (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p 
     refine Finset.sum_congr rfl fun m _ => ?_
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl fun l _ => ?_
-    rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib]
+    simp only [Finset.prod_mul_distrib]
     ring
   rw [Finset.sum_congr rfl fun i _ => step1 i, Finset.sum_comm]
   -- sum the positional labels: orthogonality at each node
   have step2 : ∀ m l : Fin 5 → ℕ,
-      ∑ i ∈ Fintype.piFinset (posBox J), ((∏ a, nodeI J a (z a) (m a)) * vertexF J l) *
+      ∑ i ∈ Fintype.piFinset (posBox J),
+          (((∏ a, nodeI J a (z a) (m a)) * ∏ a, nodeEta J a (m a)) * vertexP J l) *
           ∏ a, (nodeP J a (i a) (m a) * nodeP J a (i a) (l a)) =
-        ((∏ a, nodeI J a (z a) (m a)) * vertexF J l) *
+        (((∏ a, nodeI J a (z a) (m a)) * ∏ a, nodeEta J a (m a)) * vertexP J l) *
           ∏ a, (if m a = l a ∧ AdmP J a (m a) then (1 : ℝ) else 0) := by
     intro m l
     rw [← Finset.mul_sum]
@@ -191,9 +223,11 @@ theorem simpEIAux_eq_sum_nodeT (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p 
     rw [sum_nodeP_mul]
     exact if_congr Iff.rfl rfl rfl
   have step3 : ∀ m : Fin 5 → ℕ, ∑ i ∈ Fintype.piFinset (posBox J),
-      ∑ l ∈ Fintype.piFinset (simpBox J), ((∏ a, nodeI J a (z a) (m a)) * vertexF J l) *
+      ∑ l ∈ Fintype.piFinset (simpBox J),
+        (((∏ a, nodeI J a (z a) (m a)) * ∏ a, nodeEta J a (m a)) * vertexP J l) *
           ∏ a, (nodeP J a (i a) (m a) * nodeP J a (i a) (l a)) =
-      ∑ l ∈ Fintype.piFinset (simpBox J), ((∏ a, nodeI J a (z a) (m a)) * vertexF J l) *
+      ∑ l ∈ Fintype.piFinset (simpBox J),
+        (((∏ a, nodeI J a (z a) (m a)) * ∏ a, nodeEta J a (m a)) * vertexP J l) *
           ∏ a, (if m a = l a ∧ AdmP J a (m a) then (1 : ℝ) else 0) := by
     intro m
     rw [Finset.sum_comm]
@@ -202,13 +236,18 @@ theorem simpEIAux_eq_sum_nodeT (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p 
   -- collapse the diagonal
   rw [simpEIAux_eq_sum_box]
   refine Finset.sum_congr rfl fun m hm => ?_
+  have hdiag : ((∏ a, nodeI J a (z a) (m a)) * ∏ a, nodeEta J a (m a)) * vertexP J m =
+      (∏ a, nodeI J a (z a) (m a)) * vertexF J m := by
+    rw [mul_assoc, prod_nodeEta_mul_vertexP J hJ m]
   rw [Finset.sum_eq_single_of_mem m hm]
-  · by_cases hF : vertexF J m = 0
-    · rw [hF]; simp
+  · by_cases hA : ampP J m = 0
+    · have h1 : vertexP J m = 0 := by rw [vertexP, hA, mul_zero]
+      have h2 : vertexF J m = 0 := by rw [vertexF, hA, mul_zero]
+      rw [h1, h2]; simp
     · have hprod : (∏ a, (if m a = m a ∧ AdmP J a (m a) then (1 : ℝ) else 0)) = 1 :=
         Finset.prod_eq_one fun a _ => by
-          rw [ite_eq_left_iff.mpr fun h => absurd ⟨rfl, admP_of_vertexF_ne_zero J hJ m hF a⟩ h]
-      rw [hprod, mul_one]
+          rw [ite_eq_left_iff.mpr fun h => absurd ⟨rfl, admP_of_ampP_ne_zero J hJ m hA a⟩ h]
+      rw [hprod, mul_one, hdiag]
   · intro l _ hlm
     obtain ⟨a, ha⟩ := Function.ne_iff.mp hlm
     rw [Finset.prod_eq_zero (s := univ)
@@ -386,13 +425,13 @@ theorem amplitudeI_one_eq_eprlIntrinsicAmp (K : Complex4 V) (cut : Finset V → 
   rw [Complex.ofReal_prod]
   exact Finset.prod_congr rfl fun s _ => vertexI_one K _ i s
 
-/-- **The EPRL state sum at the BF point `γ = 1` on a closed 4-complex is the Ooguri state sum up to
-the sign twist, written out.** For an incidence bijection `e` of the tetrahedra (it exists for every
+/-- **The EPRL state sum at the BF point `γ = 1` on a closed 4-complex is the Ooguri state sum with the sign
+of the link orientations.** For an incidence bijection `e` of the tetrahedra (it exists for every
 closed complex, `amplitudeI_one_closed`), `amplitudeI 1 K cut` is the sum over the triangle
 colourings `col ≤ cut` and the virtual spins `L` of the tetrahedra (in their boxes) of the
-triangle constraints, the explicit sign `eprlGlobalSign K col L e` (a triangle part and a product
-over the tetrahedra of position sign types, `ComplexSignedOoguri.lean`) and the Ooguri weight
-`Lightlike.SpinFoam.weight` of the coloured complex `(col, L)`. -/
+triangle constraints, the sign `linkSign K col = (-1)^(Σ_s triPart J_s)` (a function of the colouring
+only, `ComplexSignedOoguri.lean`) and the Ooguri weight `Lightlike.SpinFoam.weight` of the coloured
+complex `(col, L)`. -/
 theorem amplitudeI_one_eq_signed_ooguri (K : Complex4 V) (cut : Finset V → ℕ)
     (e : K.tets × Bool ≃ K.simps × Fin 5) (he : ∀ t b, incTet K (e (t, b)) = t) :
     amplitudeI 1 K cut =
@@ -413,11 +452,11 @@ theorem amplitudeI_one_eq_signed_ooguri (K : Complex4 V) (cut : Finset V → ℕ
                 (complexJ K (Lightlike.PR.extS K.tris c) (e (t, false)).1 (e (t, false)).2
                   ((e (t, false)).2.succAbove 3))
             then (1 : ℝ) else 0) *
-            (eprlGlobalSign K (Lightlike.PR.extS K.tris c) L e *
+            (linkSign K (Lightlike.PR.extS K.tris c) *
               Lightlike.SpinFoam.weight K (extL K (Lightlike.PR.extS K.tris c) L)) : ℝ) : ℂ) := by
   rw [amplitudeI_one_eq_eprlIntrinsicAmp K cut e he, eprlIntrinsicAmp_eq_signed_ooguri K cut e he]
 
-/-- On a closed 4-complex an incidence bijection exists, so the sign-twisted equality holds. -/
+/-- On a closed 4-complex an incidence bijection exists, so the equality with the Ooguri sum holds. -/
 theorem amplitudeI_one_closed (K : Complex4 V) (hK : K.IsClosed4) (cut : Finset V → ℕ) :
     ∃ e : K.tets × Bool ≃ K.simps × Fin 5, (∀ t b, incTet K (e (t, b)) = t) ∧
       amplitudeI 1 K cut = (eprlIntrinsicAmp K cut e : ℂ) := by
