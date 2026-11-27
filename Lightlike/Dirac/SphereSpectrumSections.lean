@@ -182,4 +182,49 @@ theorem north_eq_of_dirac {σ : SpinorSection sphereSpinStructure ρ} {lam : ℝ
       σ.dirac.toField.rep true (stereoN (modelEquiv2 x)) := (σ.toField_dirac hd).symm
   rw [e1, h, rep_smul _ _ hd]
 
+/-! ## The south side -/
+
+section South
+
+open CliffordAlgebra
+
+lemma rho_ι_apply (u : E 2) (v : V) : ρ (ι (Qneg 2) u) v = cliffV ρ u v := by
+  have hu : u = u 0 • e 0 + u 1 • e 1 := by
+    ext i; fin_cases i <;> simp [e]
+  conv_lhs => rw [hu]
+  simp only [map_add, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, cliffV, gam]
+
+lemma unitE_eq (y : Fin 2 → ℝ) : unitE y = (√(nsq y))⁻¹ • modelEquiv2.symm y := rfl
+
+lemma cliffV_smul_left (c : ℝ) (u : E 2) (v : V) : cliffV ρ (c • u) v = c • cliffV ρ u v := by
+  simp only [cliffV, PiLp.smul_apply, smul_eq_mul, mul_smul, smul_add]
+
+/-- The lift of the frame change acts by `|y|⁻¹ (y₀γ₀ + y₁γ₁) γ₁`. -/
+lemma rho_liftNS (y : Fin 2 → ℝ) (v : V) :
+    ρ (liftNS y) v = (√(nsq y))⁻¹ • cliffV ρ (modelEquiv2.symm y) (gam ρ 1 v) := by
+  rw [liftNS, map_mul]
+  change ρ (ι (Qneg 2) (unitE y)) (ρ (ι (Qneg 2) (e 1)) v) = _
+  rw [rho_ι_apply, unitE_eq, cliffV_smul_left]
+  rfl
+
+/-- The reflection `(y₀, y₁) ↦ (y₀, -y₁)` of the chart. -/
+def reflY (z : Fin 2 → ℝ) : Fin 2 → ℝ := ![z 0, -z 1]
+
+lemma norm_modelEquiv2_symm (y : Fin 2 → ℝ) : ‖modelEquiv2.symm y‖ = √(nsq y) := by
+  rw [← norm_sq_modelEquiv2_symm, Real.sqrt_sq (norm_nonneg _)]
+
+/-- **The transfer identity**: if `f = |y|⁻¹ c(y) γ₁ g` (the north–south relation of a section), then
+`−γ₀ g = |y|⁻¹ c(y) J f` (#950's transfer `sphereT`). -/
+lemma transfer_identity (w : E 2) (hw : w ≠ 0) (g : V) :
+    -(gam ρ 0 g) = sphereT ρ w (‖w‖⁻¹ • cliffV ρ w (gam ρ 1 g)) := by
+  have hn : ‖w‖ ≠ 0 := norm_ne_zero_iff.mpr hw
+  have hJ : Jop ρ (gam ρ 1 g) = -(gam ρ 0 g) := by
+    simp only [Jop, ContinuousLinearMap.comp_apply, gam_sq, map_neg]
+  unfold sphereT
+  have h1 : ‖w‖⁻¹ * (‖w‖⁻¹ * ‖w‖ ^ 2) = 1 := by field_simp
+  rw [map_smul, cliffV_smul, Jop_cliffV, cliffV_neg, cliffV_cliffV, hJ]
+  simp only [smul_neg, neg_smul, neg_neg, smul_smul, h1, one_smul]
+
+end South
+
 end Lightlike.Dirac
