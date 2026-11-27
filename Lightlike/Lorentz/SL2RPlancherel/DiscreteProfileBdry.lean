@@ -117,6 +117,65 @@ theorem integral_ladUp_mul_conj_of_cont (l r : ℝ) {F G Lc Rc : ℝ → ℂ} {R
   rw [this] at hFTC
   exact sub_eq_zero.1 hFTC
 
+/-- **Orthogonality of a chain of images to the family `G_k`** (boundary version, with an offset `a` of the `K`-type
+so that integral and half-integral `K`-types are treated together): if `H_{i+1} = ladUp (a+i) r H_i` on `ξ > 0` with
+every `H_i` continuous on `[0, ∞)`, `C¹` on `(0, ∞)` and vanishing for `ξ ≥ R`, and the `G_k` satisfy
+`ladDown (a+ν) r G_0 = 0`, `ladDown (a+ν+k+1) r G_{k+1} = c_k G_k`, then `∫_0^∞ H_{ν+k} conj(G_k) sinh = 0`. -/
+theorem integral_chain_mul_conj_eq_zero_off (a r : ℝ) (ν : ℕ) (hν : 1 ≤ ν) {G : ℕ → ℝ → ℂ} (c : ℕ → ℝ)
+    (hG : ∀ k, ContDiffOn ℝ 1 (G k) (Ioi 0)) (hGc : ∀ k, ContinuousOn (G k) (Ici 0))
+    (h0 : ∀ ξ : ℝ, 0 < ξ → ladDown (a + (ν : ℝ)) r (G 0) ξ = 0)
+    (hs : ∀ (k : ℕ) (ξ : ℝ), 0 < ξ →
+      ladDown (a + ((ν + k + 1 : ℕ) : ℝ)) r (G (k + 1)) ξ = (c k : ℂ) * G k ξ)
+    {H : ℕ → ℝ → ℂ}
+    (hH1 : ∀ i, ContDiffOn ℝ 1 (H i) (Ioi 0)) (hHc : ∀ i, ContinuousOn (H i) (Ici 0))
+    (hHR : ∀ i, ∃ R : ℝ, 0 < R ∧ ∀ ξ, R ≤ ξ → H i ξ = 0)
+    (hstep : ∀ (i : ℕ) (ξ : ℝ), 0 < ξ → H (i + 1) ξ = ladUp (a + (i : ℝ)) r (H i) ξ) :
+    ∀ k : ℕ, ∫ ξ in Ioi (0 : ℝ), H (ν + k) ξ * (starRingEnd ℂ) (G k ξ) * (Real.sinh ξ : ℂ) = 0 := by
+  obtain ⟨ν', rfl⟩ : ∃ ν', ν = ν' + 1 := ⟨ν - 1, by omega⟩
+  intro k
+  induction k with
+  | zero =>
+    obtain ⟨R, hR, hHR'⟩ := hHR ν'
+    have e : ∀ ξ : ℝ, 0 < ξ → ladUp (a + (ν' : ℝ)) r (H ν') ξ = H (ν' + 1 + 0) ξ :=
+      fun ξ hξ => (hstep ν' ξ hξ).symm
+    have h1 : a + (ν' : ℝ) + 1 = a + ((ν' + 1 : ℕ) : ℝ) := by push_cast; ring
+    have key := integral_ladUp_mul_conj_of_cont (a + (ν' : ℝ)) r (F := H ν') (G := G 0) (Lc := H (ν' + 1 + 0))
+      (Rc := fun _ => 0) hR (hHc ν') (hH1 ν') hHR' (hGc 0) (hG 0) (hHc _) e continuousOn_const
+      (fun ξ hξ => by rw [h1]; exact h0 ξ hξ)
+    have e2 : ∀ ξ ∈ Ioi (0 : ℝ), ladUp (a + (ν' : ℝ)) r (H ν') ξ * (starRingEnd ℂ) (G 0 ξ) * (Real.sinh ξ : ℂ) =
+        H (ν' + 1 + 0) ξ * (starRingEnd ℂ) (G 0 ξ) * (Real.sinh ξ : ℂ) := by
+      intro ξ hξ; rw [e ξ hξ]
+    have e4 : ∀ ξ ∈ Ioi (0 : ℝ), H ν' ξ * (starRingEnd ℂ) (ladDown (a + (ν' : ℝ) + 1) r (G 0) ξ) *
+        (Real.sinh ξ : ℂ) = 0 := by
+      intro ξ hξ
+      rw [h1, h0 ξ hξ]
+      simp
+    rw [← setIntegral_congr_fun measurableSet_Ioi e2, key, setIntegral_congr_fun measurableSet_Ioi e4]
+    simp
+  | succ k ih =>
+    obtain ⟨R, hR, hHR'⟩ := hHR (ν' + 1 + k)
+    have e : ∀ ξ : ℝ, 0 < ξ → ladUp (a + ((ν' + 1 + k : ℕ) : ℝ)) r (H (ν' + 1 + k)) ξ =
+        H (ν' + 1 + (k + 1)) ξ := fun ξ hξ => (hstep (ν' + 1 + k) ξ hξ).symm
+    have h2 : a + ((ν' + 1 + k : ℕ) : ℝ) + 1 = a + ((ν' + 1 + k + 1 : ℕ) : ℝ) := by push_cast; ring
+    have key := integral_ladUp_mul_conj_of_cont (a + ((ν' + 1 + k : ℕ) : ℝ)) r (F := H (ν' + 1 + k))
+      (G := G (k + 1)) (Lc := H (ν' + 1 + (k + 1))) (Rc := fun ξ => (c k : ℂ) * G k ξ) hR (hHc _) (hH1 _)
+      hHR' (hGc _) (hG _) (hHc _) e (continuousOn_const.mul (hGc k))
+      (fun ξ hξ => by rw [h2, hs k ξ hξ])
+    have e2 : ∀ ξ ∈ Ioi (0 : ℝ), ladUp (a + ((ν' + 1 + k : ℕ) : ℝ)) r (H (ν' + 1 + k)) ξ *
+        (starRingEnd ℂ) (G (k + 1) ξ) * (Real.sinh ξ : ℂ) =
+        H (ν' + 1 + (k + 1)) ξ * (starRingEnd ℂ) (G (k + 1) ξ) * (Real.sinh ξ : ℂ) := by
+      intro ξ hξ; rw [e ξ hξ]
+    rw [← setIntegral_congr_fun measurableSet_Ioi e2, key]
+    have e3 : ∀ ξ ∈ Ioi (0 : ℝ), H (ν' + 1 + k) ξ *
+        (starRingEnd ℂ) (ladDown (a + ((ν' + 1 + k : ℕ) : ℝ) + 1) r (G (k + 1)) ξ) * (Real.sinh ξ : ℂ) =
+        (c k : ℂ) * (H (ν' + 1 + k) ξ * (starRingEnd ℂ) (G k ξ) * (Real.sinh ξ : ℂ)) := by
+      intro ξ hξ
+      rw [h2, hs k ξ hξ]
+      simp only [map_mul, Complex.conj_ofReal]
+      ring
+    rw [setIntegral_congr_fun measurableSet_Ioi e3, integral_const_mul, ih]
+    simp
+
 /-- **Orthogonality of a chain of images to the family `G_k`** (boundary version): if `H_{i+1} = ladUp i r H_i` on
 `ξ > 0` with every `H_i` continuous on `[0, ∞)`, `C¹` on `(0, ∞)` and vanishing for `ξ ≥ R`, and the `G_k` satisfy
 `ladDown ν r G_0 = 0`, `ladDown (ν+k+1) r G_{k+1} = c_k G_k`, then `∫_0^∞ H_{ν+k} conj(G_k) sinh = 0`. -/
@@ -128,56 +187,8 @@ theorem integral_chain_mul_conj_eq_zero (r : ℝ) (ν : ℕ) (hν : 1 ≤ ν) {G
     (hH1 : ∀ i, ContDiffOn ℝ 1 (H i) (Ioi 0)) (hHc : ∀ i, ContinuousOn (H i) (Ici 0))
     (hHR : ∀ i, ∃ R : ℝ, 0 < R ∧ ∀ ξ, R ≤ ξ → H i ξ = 0)
     (hstep : ∀ (i : ℕ) (ξ : ℝ), 0 < ξ → H (i + 1) ξ = ladUp (i : ℝ) r (H i) ξ) :
-    ∀ k : ℕ, ∫ ξ in Ioi (0 : ℝ), H (ν + k) ξ * (starRingEnd ℂ) (G k ξ) * (Real.sinh ξ : ℂ) = 0 := by
-  obtain ⟨ν', rfl⟩ : ∃ ν', ν = ν' + 1 := ⟨ν - 1, by omega⟩
-  intro k
-  induction k with
-  | zero =>
-    obtain ⟨R, hR, hHR'⟩ := hHR ν'
-    have e : ∀ ξ : ℝ, 0 < ξ → ladUp (ν' : ℝ) r (H ν') ξ = H (ν' + 1 + 0) ξ := fun ξ hξ => (hstep ν' ξ hξ).symm
-    have key := integral_ladUp_mul_conj_of_cont (ν' : ℝ) r (F := H ν') (G := G 0) (Lc := H (ν' + 1 + 0))
-      (Rc := fun _ => 0) hR (hHc ν') (hH1 ν') hHR' (hGc 0) (hG 0) (hHc _) e continuousOn_const
-      (fun ξ hξ => by
-        have := h0 ξ hξ
-        push_cast at this ⊢
-        simpa using this)
-    have e2 : ∀ ξ ∈ Ioi (0 : ℝ), ladUp (ν' : ℝ) r (H ν') ξ * (starRingEnd ℂ) (G 0 ξ) * (Real.sinh ξ : ℂ) =
-        H (ν' + 1 + 0) ξ * (starRingEnd ℂ) (G 0 ξ) * (Real.sinh ξ : ℂ) := by
-      intro ξ hξ; rw [e ξ hξ]
-    have e4 : ∀ ξ ∈ Ioi (0 : ℝ), H ν' ξ * (starRingEnd ℂ) (ladDown ((ν' : ℝ) + 1) r (G 0) ξ) *
-        (Real.sinh ξ : ℂ) = 0 := by
-      intro ξ hξ
-      have := h0 ξ hξ
-      push_cast at this
-      simp [this]
-    rw [← setIntegral_congr_fun measurableSet_Ioi e2, key, setIntegral_congr_fun measurableSet_Ioi e4]
-    simp
-  | succ k ih =>
-    obtain ⟨R, hR, hHR'⟩ := hHR (ν' + 1 + k)
-    have e : ∀ ξ : ℝ, 0 < ξ → ladUp ((ν' + 1 + k : ℕ) : ℝ) r (H (ν' + 1 + k)) ξ = H (ν' + 1 + (k + 1)) ξ :=
-      fun ξ hξ => (hstep (ν' + 1 + k) ξ hξ).symm
-    have key := integral_ladUp_mul_conj_of_cont ((ν' + 1 + k : ℕ) : ℝ) r (F := H (ν' + 1 + k)) (G := G (k + 1))
-      (Lc := H (ν' + 1 + (k + 1))) (Rc := fun ξ => (c k : ℂ) * G k ξ) hR (hHc _) (hH1 _) hHR' (hGc _) (hG _)
-      (hHc _) e (continuousOn_const.mul (hGc k))
-      (fun ξ hξ => by
-        have h1 := hs k ξ hξ
-        have h2 : (((ν' + 1 + k : ℕ) : ℝ) + 1) = ((ν' + 1 + k + 1 : ℕ) : ℝ) := by push_cast; ring
-        rw [h2, h1])
-    have e2 : ∀ ξ ∈ Ioi (0 : ℝ), ladUp ((ν' + 1 + k : ℕ) : ℝ) r (H (ν' + 1 + k)) ξ *
-        (starRingEnd ℂ) (G (k + 1) ξ) * (Real.sinh ξ : ℂ) =
-        H (ν' + 1 + (k + 1)) ξ * (starRingEnd ℂ) (G (k + 1) ξ) * (Real.sinh ξ : ℂ) := by
-      intro ξ hξ; rw [e ξ hξ]
-    rw [← setIntegral_congr_fun measurableSet_Ioi e2, key]
-    have e3 : ∀ ξ ∈ Ioi (0 : ℝ), H (ν' + 1 + k) ξ *
-        (starRingEnd ℂ) (ladDown (((ν' + 1 + k : ℕ) : ℝ) + 1) r (G (k + 1)) ξ) * (Real.sinh ξ : ℂ) =
-        (c k : ℂ) * (H (ν' + 1 + k) ξ * (starRingEnd ℂ) (G k ξ) * (Real.sinh ξ : ℂ)) := by
-      intro ξ hξ
-      have h1 := hs k ξ hξ
-      have h2 : (((ν' + 1 + k : ℕ) : ℝ) + 1) = ((ν' + 1 + k + 1 : ℕ) : ℝ) := by push_cast; ring
-      rw [h2, h1]
-      simp only [map_mul, Complex.conj_ofReal]
-      ring
-    rw [setIntegral_congr_fun measurableSet_Ioi e3, integral_const_mul, ih]
-    simp
+    ∀ k : ℕ, ∫ ξ in Ioi (0 : ℝ), H (ν + k) ξ * (starRingEnd ℂ) (G k ξ) * (Real.sinh ξ : ℂ) = 0 :=
+  integral_chain_mul_conj_eq_zero_off 0 r ν hν c hG hGc (fun ξ hξ => by simpa using h0 ξ hξ)
+    (fun k ξ hξ => by simpa using hs k ξ hξ) hH1 hHc hHR (fun i ξ hξ => by simpa using hstep i ξ hξ)
 
 end Lightlike.Lorentz.SL2RPlancherel
