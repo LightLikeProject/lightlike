@@ -356,7 +356,7 @@ theorem Fc_one_orth [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b E : ℕ}
 theorem Fc_b_rec_two [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b e₀ d₀ g₀ : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
     (hd : ∀ x, x ≤ a + b + 1 + 1 → chebD (loopVal q) x ≠ 0)
     (hq2 : ∀ x, 1 ≤ x → x ≤ 2 * (a + b) + 4 → (q : k) ^ (2 * x) ≠ 1)
-    (heb : e₀ ≤ b) (h₀ : ValidA a b 1 1 e₀ d₀ g₀) (hed : 1 ≤ e₀ + d₀) :
+    (heb : e₀ ≤ b) (h₀ : ValidA a b 1 1 e₀ d₀ g₀) :
     Fc q b 1 1 0 1 1 0 * Fc q a (b + 1) 1 (e₀ + d₀) g₀ 1 e₀ * Fc q a b 1 e₀ d₀ 0 (e₀ + d₀) +
       Fc q b 1 1 1 0 1 0 * Fc q a (b - 1) 1 (e₀ + d₀ - 1) g₀ 0 e₀ * Fc q a b 1 e₀ d₀ 1 (e₀ + d₀ - 1) =
       Fc q (a + b - 2 * e₀) 1 1 d₀ g₀ 1 0 := by
@@ -449,4 +449,66 @@ theorem Fc_top_one_qb (q : kˣ) (hδ : loopVal q ≠ 0) {a b E : ℕ} (hEa : E �
   have hb1 : qb q (E + β + 1) ≠ 0 := qb_ne q hD _ (hq2 _ (by omega) (by omega))
   have hb2 : qb q (α + β + 1 + 1) ≠ 0 := qb_ne q hD _ (hq2 _ (by omega) (by omega))
   field_simp
+/-- The lower-left entry of the one-strand block from the orthogonality of its columns. -/
+theorem Fc_one_10_of_orth [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b E : ℕ} (hE : 1 ≤ E) (hEa : E ≤ a)
+    (hEb : E ≤ b) (hd : ∀ j, j ≤ a + b + 2 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 2 → (q : k) ^ (2 * j) ≠ 1)
+    (h11 : Fc q a b 1 (E - 1) 1 1 (E - 1) = 1)
+    (h01 : Fc q a b 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + b - 2 * E + 2))) :
+    Fc q a b 1 (E - 1) 1 0 E = qb q E / qb q (b + 1) := by
+  have hD : (q : k) - (q : k)⁻¹ ≠ 0 := by
+    have := hq2 1 le_rfl (by omega)
+    intro h; apply this
+    have hq : (q : k) ≠ 0 := q.ne_zero
+    field_simp at h
+    linear_combination h
+  have hO := Fc_one_orth q hδ hE hEa hEb hd hq2
+  rw [h11, h01, Fc_top_one_qb q hδ hEa hEb (by omega) (fun j hj => hd j (by omega))
+    (fun j h1 h2 => hq2 j h1 (by omega))] at hO
+  have hk2 : kapRec q (a + b - 2 * (E - 1)) 1 1 = chebD (loopVal q) (a + b - 2 * E + 2) /
+      chebD (loopVal q) (a + b - 2 * E + 1) := by
+    rw [show a + b - 2 * (E - 1) = a + b - 2 * E + 1 + 1 by omega, kapRec_succ_one_one q _ (hd _ (by omega))]
+  rw [hk2, kapRec_eq q E a b hEa hEb (fun j h1 h2 => hq2 j h1 (by omega)),
+    kapRec_eq q (E - 1) a b (by omega) (by omega) (fun j h1 h2 => hq2 j h1 (by omega)),
+    chebD_eq_qb q hD, chebD_eq_qb q hD] at hO
+  simp only [kapRec, mul_one] at hO
+  have hnz := qfac_ne_of_pow q (N := a + b + 2) (by omega) hq2
+  set x := Fc q a b 1 (E - 1) 1 0 E
+  obtain ⟨e, rfl⟩ : ∃ e, E = e + 1 := ⟨E - 1, by omega⟩
+  obtain ⟨α, rfl⟩ : ∃ α, a = e + 1 + α := ⟨a - (e + 1), by omega⟩
+  obtain ⟨β, rfl⟩ : ∃ β, b = e + 1 + β := ⟨b - (e + 1), by omega⟩
+  have i1 : e + 1 - 1 = e := by omega
+  have i2 : e + 1 + α + (e + 1 + β) - (e + 1) + 1 = e + α + β + 1 + 1 := by omega
+  have i3 : e + 1 + α - (e + 1) = α := by omega
+  have i4 : e + 1 + β - (e + 1) = β := by omega
+  have i5 : e + 1 + α + (e + 1 + β) - 2 * (e + 1) + 1 = α + β + 1 := by omega
+  have i6 : e + 1 + α + (e + 1 + β) - e + 1 = e + α + β + 1 + 1 + 1 := by omega
+  have i7 : e + 1 + α - e = α + 1 := by omega
+  have i8 : e + 1 + β - e = β + 1 := by omega
+  have i9 : e + 1 + α + (e + 1 + β) - 2 * e + 1 = α + β + 1 + 1 + 1 := by omega
+  have i10 : e + 1 + α + (e + 1 + β) - 2 * (e + 1) + 2 = α + β + 1 + 1 := by omega
+  have i11 : e + 1 + α + (e + 1 + β) - 2 * (e + 1) + 1 + 1 = α + β + 1 + 1 := by omega
+  have i12 : e + 1 + α + (e + 1 + β) - (e + 1) + 2 = e + α + β + 1 + 1 + 1 := by omega
+  have i13 : e + 1 + β - (e + 1) + 1 = β + 1 := by omega
+  have i14 : e + 1 + α - (e + 1) + 1 = α + 1 := by omega
+  simp only [i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14] at hO ⊢
+  rw [qfac_succ' q (e + α + β + 1 + 1), qfac_succ' q (e + α + β + 1), qfac_succ' q α, qfac_succ' q β,
+    qfac_succ' q (α + β + 1 + 1), qfac_succ' q (α + β + 1), qfac_succ' q e] at hO
+  have := hnz (e + α + β + 1) (by omega); have := hnz α (by omega); have := hnz β (by omega)
+  have := hnz (α + β + 1) (by omega); have := hnz e (by omega); have := hnz (e + 1 + α) (by omega)
+  have := hnz (e + 1 + β) (by omega)
+  have q1 : ∀ n, 1 ≤ n → n ≤ e + 1 + α + (e + 1 + β) + 2 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  have := q1 (e + α + β + 1 + 1) (by omega) (by omega); have := q1 (e + α + β + 1 + 1 + 1) (by omega) (by omega)
+  have := q1 (α + 1) (by omega) (by omega); have := q1 (β + 1) (by omega) (by omega)
+  have := q1 (α + β + 1 + 1) (by omega) (by omega); have := q1 (α + β + 1 + 1 + 1) (by omega) (by omega)
+  have := q1 (e + 1) (by omega) (by omega); have := q1 (e + 1 + β + 1) (by omega) (by omega)
+  field_simp at hO
+  rw [mul_zero] at hO
+  have hb := (mul_eq_zero.mp hO).resolve_left (by simp [*])
+  set sg : k := (-1 : k) ^ e * (-1) ^ (α + β + 1 + 1)
+  have hs : sg * sg = 1 := by
+    simp only [sg]; rw [mul_mul_mul_comm, ← pow_add, ← pow_add, ← two_mul, ← two_mul, pow_mul, pow_mul]; norm_num
+  have hB := q1 (e + 1 + β + 1) (by omega) (by omega)
+  rw [eq_div_iff hB]
+  linear_combination sg * hb - (x * qb q (e + 1 + β + 1) - qb q (e + 1)) * hs
 end Lightlike.TemperleyLieb
