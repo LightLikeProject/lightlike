@@ -2456,6 +2456,7 @@ import Lightlike.TemperleyLieb.Jones
 import Lightlike.TemperleyLieb.Natural
 import Lightlike.TemperleyLieb.Reduction
 import Lightlike.TemperleyLieb.Vertex
+import Lightlike.TemperleyLieb.Crossing
 import Lightlike.TemperleyLieb.VertexNorm
 import Lightlike.TemperleyLieb.Unique
 import Lightlike.TemperleyLieb.Mirror
