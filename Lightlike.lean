@@ -2173,6 +2173,7 @@ import Lightlike.Tests.TreeDependence
 import Lightlike.TuraevViro.FMatrix
 import Lightlike.TuraevViro.Hexagon
 import Lightlike.TuraevViro.CraneYetter
+import Lightlike.TuraevViro.CraneYetterThree
 import Lightlike.TuraevViro.LevelOne
 import Lightlike.TuraevViro.PLInvariance
 import Lightlike.TuraevViro.Model
