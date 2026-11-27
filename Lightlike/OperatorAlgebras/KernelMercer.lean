@@ -96,6 +96,77 @@ theorem hasSum_kernelToC [μ.IsOpenPosMeasure] (K : C(X × X, ℂ)) {ι : Type*}
   rw [← kernelToC_apply, kernelToC_eigen μ K (hb i)]
   simp [mul_assoc]
 
+/-- **A positive continuous kernel has a non-negative diagonal**: `0 ≤ re K(x, x)`, for a measure
+positive on open sets (test `T_K` on the indicator of a small neighbourhood). -/
+theorem re_diag_nonneg [μ.IsOpenPosMeasure] {K : C(X × X, ℂ)} (hpos : IsPositiveKernel μ K)
+    (x₀ : X) : 0 ≤ (K (x₀, x₀)).re := by
+  by_contra hneg
+  push Not at hneg
+  set c := -(K (x₀, x₀)).re / 2 with hc
+  have hc0 : 0 < c := by rw [hc]; linarith
+  -- a neighbourhood `U × U` of `(x₀, x₀)` where `re K < -c`
+  have hopen : IsOpen {p : X × X | (K p).re < -c} :=
+    isOpen_lt (Complex.continuous_re.comp K.continuous) continuous_const
+  have hmem : {p : X × X | (K p).re < -c} ∈ 𝓝 (x₀, x₀) :=
+    hopen.mem_nhds (by show (K (x₀, x₀)).re < -c; rw [hc]; linarith)
+  obtain ⟨u, v, hu, hxu, hv, hxv, hsub⟩ := mem_nhds_prod_iff'.1 hmem
+  set U := u ∩ v with hUdef
+  have hUo : IsOpen U := hu.inter hv
+  have hxU : x₀ ∈ U := ⟨hxu, hxv⟩
+  have hUU : ∀ x ∈ U, ∀ y ∈ U, (K (x, y)).re < -c := fun x hx y hy => hsub ⟨hx.1, hy.2⟩
+  have hUm : MeasurableSet U := hUo.measurableSet
+  have hμU : 0 < μ.real U :=
+    ENNReal.toReal_pos (hUo.measure_pos μ ⟨x₀, hxU⟩).ne' (measure_ne_top μ U)
+  set f : Lp ℂ 2 μ := indicatorConstLp 2 hUm (measure_ne_top μ U) (1 : ℂ) with hfdef
+  have hf : (f : X → ℂ) =ᵐ[μ] U.indicator fun _ => (1 : ℂ) := indicatorConstLp_coeFn
+  -- `(T f)(x) = ∫_U K(x, y)`
+  have hTf : ∀ x, kernelToC μ K f x = ∫ y in U, K (x, y) ∂μ := fun x => by
+    rw [kernelToC_apply, inner_kernelVecOf, ← integral_indicator hUm]
+    refine integral_congr_ae ?_
+    filter_upwards [hf] with y hy
+    rw [hy]
+    by_cases hyU : y ∈ U <;> simp [hyU]
+  have hcont : Continuous fun x => kernelToC μ K f x := (kernelToC μ K f).continuous
+  have hinner : inner ℂ (kernelOp μ K f) f =
+      ∫ x in U, (starRingEnd ℂ) (∫ y in U, K (x, y) ∂μ) ∂μ := by
+    rw [MeasureTheory.L2.inner_def, ← integral_indicator hUm]
+    refine integral_congr_ae ?_
+    have h1 := ContinuousMap.coeFn_toLp (E := ℂ) (p := 2) (μ := μ) (𝕜 := ℂ) (kernelToC μ K f)
+    filter_upwards [h1, hf] with x hx1 hx2
+    change inner ℂ ((ContinuousMap.toLp (E := ℂ) 2 μ ℂ (kernelToC μ K f)) x) (f x) = _
+    rw [hx1, hx2, RCLike.inner_apply, hTf]
+    by_cases hxU : x ∈ U <;> simp [hxU]
+  have hbound : ∀ x ∈ U, ((starRingEnd ℂ) (∫ y in U, K (x, y) ∂μ)).re ≤ -c * μ.real U := by
+    intro x hx
+    have hKx : Continuous fun y => K (x, y) := K.continuous.comp (Continuous.prodMk_right x)
+    rw [Complex.conj_re, ← RCLike.re_to_complex, ← integral_re (hKx.integrable_of_hasCompactSupport
+      (HasCompactSupport.of_compactSpace _)).integrableOn]
+    simp only [RCLike.re_to_complex]
+    calc ∫ y in U, (K (x, y)).re ∂μ ≤ ∫ y in U, -c ∂μ :=
+          setIntegral_mono_on (Complex.continuous_re.comp hKx |>.integrable_of_hasCompactSupport
+            (HasCompactSupport.of_compactSpace _)).integrableOn (integrableOn_const
+              (measure_ne_top μ U)) hUm fun y hy => (hUU x hx y hy).le
+      _ = -c * μ.real U := by rw [setIntegral_const, smul_eq_mul, mul_comm]
+  have hre : (inner ℂ (kernelOp μ K f) f).re ≤ -c * μ.real U * μ.real U := by
+    have hg : Continuous fun x => (starRingEnd ℂ) (∫ y in U, K (x, y) ∂μ) := by
+      have : (fun x => (starRingEnd ℂ) (∫ y in U, K (x, y) ∂μ)) =
+          fun x => (starRingEnd ℂ) (kernelToC μ K f x) := funext fun x => by rw [hTf]
+      rw [this]; exact Complex.continuous_conj.comp hcont
+    rw [hinner, ← RCLike.re_to_complex, ← integral_re (hg.integrable_of_hasCompactSupport
+      (HasCompactSupport.of_compactSpace _)).integrableOn]
+    simp only [RCLike.re_to_complex]
+    calc ∫ x in U, ((starRingEnd ℂ) (∫ y in U, K (x, y) ∂μ)).re ∂μ
+        ≤ ∫ x in U, -c * μ.real U ∂μ :=
+          setIntegral_mono_on (Complex.continuous_re.comp hg |>.integrable_of_hasCompactSupport
+            (HasCompactSupport.of_compactSpace _)).integrableOn
+            (integrableOn_const (measure_ne_top μ U)) hUm hbound
+      _ = -c * μ.real U * μ.real U := by rw [setIntegral_const, smul_eq_mul]; ring
+  have h0 := hpos f
+  have : -c * μ.real U * μ.real U < 0 := by
+    have := mul_pos hc0 (mul_pos hμU hμU)
+    nlinarith
+  exact absurd (h0.trans hre) (not_le.2 this)
+
 end
 
 end Lightlike.OperatorAlgebras
