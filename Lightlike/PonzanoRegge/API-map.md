@@ -38,6 +38,8 @@ The tetrahedron's squared volume, its dihedral angles and its Regge action are d
 edge lengths, and the Ponzano–Regge asymptotic formula for the 6j symbol is stated as a
 proposition {3} [12]. Its proof is not yet formalized. [TODO] A forward chain of 2-3 and 1-4 moves only enlarges the set of regularised amplitude values, so the complex obtained by a 3-2 or 4-1 move has a subset of the values [15]. If complexes related by a given relation have a common forward descendant under Pachner moves, every regularised amplitude of each is a regularised amplitude of one common complex [16].
 
+A stellar subdivision of a closed combinatorial 3-manifold at a tetrahedron is one 1-4 move, and at an interior triangle a 1-4 move followed by a 2-3 move [17]; at an edge the complex and its subdivision have a common forward descendant [18], while no edge subdivision is itself a forward descendant, since forward moves only add edges [17].
+
 ## Lean References
 
 1. Lightlike/PonzanoRegge/Amplitude.lean - `PR.Complex3`, `PR.weight`, `PR.amplitude`
@@ -63,6 +65,9 @@ proposition {3} [12]. Its proof is not yet formalized. [TODO] A forward chain of
 15. Lightlike/PonzanoRegge/TriangulationIndependence/Values.lean - `PR.ampValues_mono_forward`,
     `PR.ampValues_move32_subset`, `PR.ampValues_move41_subset`
 16. Lightlike/PonzanoRegge/TriangulationIndependence/Main.lean - `PR.triangulation_independence_of_pachner`
+17. Lightlike/PonzanoRegge/TriangulationIndependence/StellarForward.lean - `PR.ofComplex3_move14_eq_starAt`,
+    `PR.ForwardMoves.exists_starAt_triangle`, `PR.ForwardMoves.edges_subset`, `PR.not_forwardMoves_starAt_edge`
+18. Lightlike/PonzanoRegge/TriangulationIndependence/StellarEdge.lean - `PR.commonForward_starAt_edge`
 
 ## References
 

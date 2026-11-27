@@ -73,6 +73,14 @@ Verlinde formula holds for the unit-object row [34]. Discrete sine orthogonality
 sin(a pi x/r) sin(b pi x/r) = (r/2) delta_ab for 0 < a, b < r, and S^2 = 1 for the S matrix of SU(2) at
 level r - 2 [35].
 
+The Crane–Yetter state sum of a 4-complex at q = e^{iπ/r} {2} is defined: a colour on every triangle and every
+tetrahedron, the signed dimensions (-1)^n [n+1], the theta-graph factors of the tetrahedra, and for every 4-simplex the
+braided vertex given by the evaluation of the ribbon graph of Fig. 23 of {2} (a closed form with the braiding
+eigenvalue of Rbr, complex conjugated on the other orientation), times a power of N = -2r/(q - q^{-1})^2. The zero
+colouring has weight 1 on every complex, for either orientation, and the vertex of the reversed orientation is the
+complex conjugate [37]. The invariance under the 4D Pachner moves and the values on the 4-sphere and on CP² are not yet
+formalized (the closed form is checked numerically only). [TODO]
+
 ## Lean References
 
 1. Lightlike/TuraevViro/QNumber.lean - `TV.qnum`, `TV.qnum_pos`
@@ -121,8 +129,12 @@ level r - 2 [35].
     `TV.sMat_zero_zero_pos`, `TV.verlinde_zero`
 35. Lightlike/TuraevViro/SOrthogonal.lean - `TV.sum_sin_mul_sin_orth`, `TV.sMat_mul_self`
 36. Lightlike/TuraevViro/Hexagon.lean - `TV.Rbr`, `TV.sixJ_half_00`, `TV.sixJ_half_02`, `TV.sixJ_half_22`, `TV.fMat_half_00`, `TV.fMat_half_02`, `TV.fMat_half_22`, `TV.hexagon_half`
+37. Lightlike/TuraevViro/CraneYetter.lean - `TV.cyVertexLoc_zero`, `TV.cyVertexAt_neg`,
+    `TV.craneYetterWeight_zero`
 
 ## References
 
 1. V. G. Turaev, O. Y. Viro, State sum invariants of 3-manifolds and quantum 6j-symbols,
    *Topology* 31 (1992) 865.
+2. L. Crane, L. H. Kauffman, D. N. Yetter, State-sum invariants of 4-manifolds, I,
+   *J. Knot Theory Ramifications* 6 (1997) 177, arXiv:hep-th/9409167.

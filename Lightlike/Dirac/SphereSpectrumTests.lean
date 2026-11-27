@@ -1,4 +1,5 @@
 import Lightlike.Dirac.SphereSpectrum
+import Lightlike.Dirac.SphereSpectrumSections
 
 /-!
 # Non-vacuity of the Dirac spectrum of the unit 2-sphere
@@ -45,5 +46,13 @@ example (lam : ℝ) :
     ∀ (k : ℕ) {ε : ℝ}, ε * ε = 1 →
       Module.finrank ℝ (SphereEigenspace quatRep (ε * ((k + 1 : ℕ) : ℝ))) = 4 * (k + 1) :=
   sphere_spectrum quatRep Quaternion.finrank_eq_four lam
+
+/-- **Non-vacuity of `sphere_dirac_spectrum_sections`**: with the quaternions as the `Cl₂`-module, the Dirac
+spectrum on the spinor sections of the 2-sphere is `±(k+1)` with real multiplicity `4(k+1)`. -/
+example (lam : ℝ) :
+    (eigenSections quatRep lam ≠ ⊥ ↔ ∃ k : ℕ, lam = ((k + 1 : ℕ) : ℝ) ∨ lam = -((k + 1 : ℕ) : ℝ)) ∧
+    ∀ (k : ℕ) {ε : ℝ}, ε * ε = 1 →
+      Module.finrank ℝ (eigenSections quatRep (ε * ((k + 1 : ℕ) : ℝ))) = 4 * (k + 1) :=
+  sphere_dirac_spectrum_sections Quaternion.finrank_eq_four lam
 
 end Lightlike.Dirac
