@@ -30,7 +30,7 @@ theorem exists_bound_iteratedFDerivWithin {s : Set E} (hs : UniqueDiffOn ℝ s) 
     (hf : ContDiffOn ℝ ∞ f s) {K : Set E} (hK : IsCompact K) (hKs : K ⊆ s) (ℓ : ℕ) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ i ≤ ℓ, ∀ q ∈ K, ‖iteratedFDerivWithin ℝ i f s q‖ ≤ M := by
   have hc : ContinuousOn (fun q => ∑ i ∈ Finset.range (ℓ + 1), ‖iteratedFDerivWithin ℝ i f s q‖) s :=
-    continuousOn_finset_sum _ fun i _ =>
+    continuousOn_finsetSum _ fun i _ =>
       (hf.continuousOn_iteratedFDerivWithin (by exact_mod_cast le_top) hs).norm
   obtain ⟨M, hM⟩ := hK.exists_bound_of_continuousOn (hc.mono hKs)
   refine ⟨|M|, abs_nonneg _, fun i hi q hq => ?_⟩

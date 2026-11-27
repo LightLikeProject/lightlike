@@ -94,7 +94,7 @@ theorem exists_chart_parametrix_delta (hg : Upstream.GeodesicExpansion.IsRiemMet
   have hKΩ : closedBall ((x, x) : (Fin n → ℝ) × (Fin n → ℝ)) (ρΩ / 2) ⊆ Ω :=
     (closedBall_subset_ball (by linarith)).trans hρΩs
   have hcs : ContinuousOn (fun q => ∑ k ∈ Finset.range N, |u (k + 1) q|) Ω :=
-    continuousOn_finset_sum _ fun k _ => (hus (k + 1)).continuousOn.abs
+    continuousOn_finsetSum _ fun k _ => (hus (k + 1)).continuousOn.abs
   obtain ⟨M, hM⟩ := (isCompact_closedBall ((x, x) : (Fin n → ℝ) × (Fin n → ℝ)) (ρΩ / 2)).exists_bound_of_continuousOn
     (hcs.mono hKΩ)
   -- the uniform lower bound of the metric
