@@ -22,7 +22,7 @@ The proof is the Gauss formula, intrinsically on `M`. Write `D_X F` for the deri
 
 The sphere (`L` Euclidean, `c = r²`), de Sitter space (`L` Minkowski, `c = L²`), anti-de Sitter space (signature
 `(2, m)`, `c = -L²`) and the hyperboloid model of hyperbolic space (`c = -1`) are instances; the de Sitter one is
-`hasConstantCurvature_deSitterSpace` (`SpaceForms/DeSitterCurvature.lean`), the non-vacuity of this theorem.
+`hasConstantCurvature_deSitterSpace` (`Lightlike/Spacetime/SpaceForms/DeSitterCurvature.lean`), the non-vacuity of this theorem.
 
 **References.** S. M. Carroll, *Spacetime and Geometry* (Addison-Wesley, 2004), section 8.1 (maximally symmetric spaces
 as quadrics); the Gauss formula: B. O'Neill, *Semi-Riemannian Geometry* (Academic Press, 1983), ch. 4, Theorem 5.
