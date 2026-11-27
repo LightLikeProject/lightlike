@@ -2247,6 +2247,13 @@ import Lightlike.Dirac.ConnesDistance4
 import Lightlike.Dirac.ConnesDistance5
 import Lightlike.Dirac.ConnesDistance6
 import Lightlike.Dirac.ConnesDistance7
+import Lightlike.Dirac.Kelvin
+import Lightlike.Dirac.SphereTransition
+import Lightlike.Dirac.SphereSpectrumBridge
+import Lightlike.Dirac.SphereSpectrumModes
+import Lightlike.Dirac.SphereSpectrumCount
+import Lightlike.Dirac.SphereSpectrum
+import Lightlike.Dirac.SphereSpectrumTests
 import Lightlike.SpinFoam.OoguriGaugeFixed.Capstone
 import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosure
 import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosureAlgebra
