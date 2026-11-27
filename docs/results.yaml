@@ -7504,7 +7504,7 @@
   decls: [Lightlike.Dirac.SpinorSection.dirac_dirac]
   status: proven
   tier: established
-  source: exploratory
+  source: pending
   review: kernel-checked
   note: "Comparison pending (no source was read at a cited location): the formula is Lawson and Michelsohn, Spin Geometry (1989), Chapter II, Theorem 8.8, to be read before the comparison is claimed. The sections are the smooth sections (Mathlib ContMDiffSection) of the spinor bundle built from the spin structure's Spin(n) cocycle (Lightlike/Dirac/SpinorBundle.lean); D and ∇*∇ act on them; the identity is pointwise at every point of the manifold (no compactness, L² or self-adjointness statement). The spin structure is given by local orthonormal frames with Spin(n) lifts of the frame changes (atlas form); this is equivalent to the principal Spin(n)-bundle form of Lawson and Michelsohn II Def. 1.3 for every lift of the orthonormal frame bundle (SpinLift.exists_spinStructure_equiv, Lightlike/Dirac/SpinLiftSmooth.lean), so not a difference of meaning. Non-vacuity: constant sections of the Euclidean spin structure of ℝⁿ; it applies to the round 2-sphere through sphereSpinStructure."
   since: unreleased
@@ -7515,7 +7515,7 @@
   decls: [Lightlike.Dirac.sphere_dirac_spectrum_sections, Lightlike.Dirac.eigenSections, Lightlike.Dirac.mem_eigenSections, Lightlike.Dirac.sphereSpinStructure]
   status: proven
   tier: established
-  source: exploratory
+  source: pending
   review: kernel-checked
   note: "Comparison pending (no source was read at a cited location). The manifold is the library's S2 (Mathlib's unit sphere of ℝ³, model I2) with the round metric; sphereSpinStructure has two orthonormal frames from explicit stereographic projections from the north and the south pole, the frame change a rotation and its Spin(2) lift ι(y/|y|)ι(e₁) (Lightlike/Dirac/SphereSpin.lean). eigenSections ρ λ = {σ | σ.dirac = λ • σ} (mem_eigenSections). The proof identifies the eigensections with the two-chart eigenspinors of sphere_spectrum through the north chart: the spin-connection coefficients of the north frame are y_c δ_ab − y_b δ_ac (connForm_sphere_north, Koszul formula), so the Dirac operator in the north frame is the chart operator diracF ρ stereoF stereoOmega (dirac_sphere_north), and the south frame gives the transfer of the two-chart model (transfer_identity). Non-vacuity: the quaternions as the Cl₂-module (SphereSpectrumTests)."
   since: unreleased
@@ -7526,7 +7526,7 @@
   decls: [Lightlike.PR.ofComplex3_move14_eq_starAt, Lightlike.PR.ForwardMoves.exists_starAt_triangle, Lightlike.PR.ForwardMoves.edges_subset, Lightlike.PR.not_forwardMoves_starAt_edge]
   status: proven
   tier: established
-  source: exploratory
+  source: pending
   review: kernel-checked
   note: "For a complex of tetrahedra (Complex3): the stellar subdivision at a tetrahedron is exactly one 1-4 move (ofComplex3_move14_eq_starAt, in the starAt form of the library's stellar subdivisions); at a triangle shared by two tetrahedra it is a 1-4 move followed by one 2-3 move (ForwardMoves.exists_starAt_triangle); no edge subdivision is a forward descendant, because forward moves (2-3 and 1-4) only add edges (ForwardMoves.edges_subset) while the subdivision at an edge deletes it (not_forwardMoves_starAt_edge). Piece p4 of PL7a, with LL-0586 for edges. Search: Mathlib, Physlib and Tau Ceti have no Pachner moves or stellar subdivisions."
   since: unreleased
@@ -7537,7 +7537,7 @@
   decls: [Lightlike.PR.commonForward_starAt_edge]
   status: proven
   tier: established
-  source: exploratory
+  source: pending
   review: kernel-checked
   note: "At an edge of degree d >= 3 of a closed combinatorial 3-manifold, the complex and its stellar subdivision at the edge have a common forward descendant (commonForward_starAt_edge): the complex reaches it by one 1-4 move and d - 2 2-3 moves, the subdivision by one 2-3 move. With LL-0585 this is piece p4 of PL7a: an edge subdivision is not itself forward (LL-0585), so the forward route meets it at a common descendant."
   since: unreleased
