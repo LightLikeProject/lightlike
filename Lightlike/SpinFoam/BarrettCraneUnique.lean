@@ -7,7 +7,7 @@ import Lightlike.Recoupling.Span
 
 `bcNode_unique` (Reisenberger 1999, §3): a Spin(4)-invariant tensor of four simple representations
 `(j k, j k)` whose components are diagonal in the `(01)(23)` and `(02)(13)` trivalent tree bases is a
-multiple of the Barrett–Crane node `bcNode j`. `bcNode_hyp`: the node satisfies these hypotheses.
+multiple of the Barrett–Crane node `bcNode j`: the four-valent case of Reisenberger's theorem. `bcNode_hyp`: the node satisfies these hypotheses.
 
 The argument: the two diagonal matrices are related by the orthogonal recoupling matrix
 (`sum_basisB_mul_basisA`), whose column at the extreme channel is a stretched, hence nonzero,
@@ -294,8 +294,8 @@ theorem coefB_bcNodeR (j : Fin 4 → ℕ) {l₁ l₂ : ℕ} (h : l₁ ≠ l₂) 
 
 /-! ## The Barrett–Crane intertwiner is unique -/
 
-/-- **The Barrett–Crane intertwiner is unique** (Reisenberger 1999, §3, Theorem): every
-Spin(4)-invariant tensor `Φ(μ, ν)` of four simple representations `(j k, j k)` satisfying the
+/-- **The Barrett–Crane intertwiner is unique**: the four-valent case of Reisenberger's theorem
+(Reisenberger 1999, §3, Theorem). Every Spin(4)-invariant tensor `Φ(μ, ν)` of four simple representations `(j k, j k)` satisfying the
 hypotheses of Reisenberger's theorem is a multiple `c · bcNode j` (with `c = 0` allowed).
 
 Here `μ` are the projections of the self-dual and `ν` those of the anti-self-dual factor, and
