@@ -106,6 +106,7 @@ CHECKS = [
     ("scripts/spinfoam/tetra_partition_check.py", False),
     ("scripts/spinfoam/eprl_node_check.py", False), ("scripts/spinfoam/eprl_high_check.py", False), ("scripts/spinfoam/u1_bubble.py", False),
     ("scripts/spinfoam/eprl_order_check.py", False),
+    ("scripts/spinfoam/eprl_free_gluing_check.py", False),
 ]
 # Scripts that are not cross-checks (tools, the gate itself)
 NOT_CHECKS = {"scripts/ci_check.py", "scripts/prune_docs.py", "scripts/gate.py", "scripts/sixj_support.py", "scripts/tooling_selftest.py",
