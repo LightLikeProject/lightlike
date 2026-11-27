@@ -348,6 +348,7 @@ import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
 import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
+import Lightlike.FourD.ComplexProjectivePlane
 import Lightlike.Geometry.HeatKernel.ConformalCurvature
 import Lightlike.Geometry.HeatKernel.Consistency
 import Lightlike.Geometry.HeatKernel.EulerMaclaurin
