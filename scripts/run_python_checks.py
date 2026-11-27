@@ -70,6 +70,7 @@ CHECKS = [
     ("scripts/lorentz/radial_check.py", False),
     ("scripts/lorentz/sl2r_check.py", True),
     ("scripts/lorentz/spherical_check.py", False),
+    ("scripts/oscillatory/cy_moves_check.py", False),
     ("scripts/oscillatory/gauss_check.py", False),
     ("scripts/oscillatory/laplace_check.py", False),
     ("scripts/oscillatory/localisation_check.py", False),
