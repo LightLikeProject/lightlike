@@ -37,15 +37,16 @@ section Cutoff
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
 
-/-- **A smooth cutoff**: for `K` compact in an open `U` there is a smooth `χ` with support in `U`, equal to `1` on an
-open neighbourhood of `K`. -/
+/-- **A smooth cutoff**: for `K` compact in an open `U` there is a smooth `χ` with values in `[0, 1]` and support in
+`U`, equal to `1` on an open neighbourhood of `K`. -/
 theorem exists_cutoff_of_isOpen {U K : Set E} (hU : IsOpen U) (hK : IsCompact K) (hKU : K ⊆ U) :
-    ∃ χ : E → ℝ, ContDiff ℝ ∞ χ ∧ tsupport χ ⊆ U ∧ ∃ W : Set E, IsOpen W ∧ K ⊆ W ∧ ∀ x ∈ W, χ x = 1 := by
+    ∃ χ : E → ℝ, ContDiff ℝ ∞ χ ∧ tsupport χ ⊆ U ∧ ∃ W : Set E, IsOpen W ∧ K ⊆ W ∧ (∀ x ∈ W, χ x = 1) ∧
+      ∀ x, χ x ∈ Icc (0 : ℝ) 1 := by
   obtain ⟨δ, hδ, hcU⟩ := hK.exists_cthickening_subset_open hU hKU
   have hd : Disjoint (thickening (δ / 2) K)ᶜ (cthickening (δ / 4) K) := by
     rw [Set.disjoint_compl_left_iff_subset]
     exact cthickening_subset_thickening' (by linarith) (by linarith) K
-  obtain ⟨χ, hχ, -, hχ0, hχ1⟩ := exists_contDiff_zero_iff_one_iff_of_isClosed (n := ⊤)
+  obtain ⟨χ, hχ, hχr, hχ0, hχ1⟩ := exists_contDiff_zero_iff_one_iff_of_isClosed (n := ⊤)
     (isOpen_thickening.isClosed_compl) isClosed_cthickening hd
   have hsupp : tsupport χ ⊆ U := by
     have h1 : Function.support χ ⊆ thickening (δ / 2) K := by
@@ -56,7 +57,8 @@ theorem exists_cutoff_of_isOpen {U K : Set E} (hU : IsOpen U) (hK : IsCompact K)
       closure_minimal (h1.trans (thickening_subset_cthickening _ _)) isClosed_cthickening
     exact h2.trans ((cthickening_mono (by linarith) K).trans hcU)
   exact ⟨χ, hχ.of_le (by exact_mod_cast le_top), hsupp, thickening (δ / 4) K, isOpen_thickening,
-    self_subset_thickening (by linarith) K, fun x hx => (hχ1 x).1 (thickening_subset_cthickening _ _ hx)⟩
+    self_subset_thickening (by linarith) K, fun x hx => (hχ1 x).1 (thickening_subset_cthickening _ _ hx),
+    fun x => hχr (Set.mem_range_self x)⟩
 
 /-- **A cutoff times a function smooth on a neighbourhood of its support is smooth.** -/
 theorem contDiff_mul_of_tsupport_subset {χ f : E → ℝ} {U : Set E} (hU : IsOpen U) (hχ : ContDiff ℝ ∞ χ)
@@ -104,7 +106,7 @@ theorem exists_heatCoeffs (hg : IsCoordMetric g U) {x : Fin n → ℝ} (hx : x �
     have := (hfwd _ hxW).1
     rwa [hV0 x hxW] at this
   obtain ⟨r, hr, hrS⟩ := Metric.nhds_basis_closedBall.mem_iff.1 (hSo.mem_nhds hx0S)
-  obtain ⟨χ, hχ, hχS, W₁, hW₁o, hKW₁, hχ1⟩ := exists_cutoff_of_isOpen hSo (isCompact_closedBall _ _) hrS
+  obtain ⟨χ, hχ, hχS, W₁, hW₁o, hKW₁, hχ1, -⟩ := exists_cutoff_of_isOpen hSo (isCompact_closedBall _ _) hrS
   -- the order-0 data in normal coordinates
   set Ht : (Fin n → ℝ) × (Fin n → ℝ) → ℝ := fun s => χ s * h (s.1, Ex s) with hHtdef
   have hHt : ContDiff ℝ ∞ Ht := contDiff_mul_of_tsupport_subset hSo hχ (hhs.comp hFE hEW) hχS

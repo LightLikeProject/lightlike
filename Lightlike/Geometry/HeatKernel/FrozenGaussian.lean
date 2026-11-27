@@ -243,4 +243,31 @@ theorem frozenGaussian_approx {S : Set (Fin n → ℝ)} {G : (Fin n → ℝ) →
           nlinarith [mul_nonneg hB0 hA'0]
     _ = ε := by ring
 
+/-- `√u e^{-u} ≤ e^{-u/2}` for `u ≥ 0`. -/
+theorem sqrt_mul_exp_neg_le (u : ℝ) (hu : 0 ≤ u) : √u * Real.exp (-u) ≤ Real.exp (-u / 2) := by
+  have h1 : √u ≤ Real.exp (u / 2) := by
+    have h2 : √u ≤ 1 + u / 2 := by
+      nlinarith [Real.sq_sqrt hu, Real.sqrt_nonneg u, sq_nonneg (√u - 1)]
+    exact h2.trans (by have := Real.add_one_le_exp (u / 2); linarith)
+  have h3 : Real.exp (u / 2) * Real.exp (-u) = Real.exp (-u / 2) := by rw [← Real.exp_add]; ring_nf
+  calc √u * Real.exp (-u) ≤ Real.exp (u / 2) * Real.exp (-u) := by gcongr
+    _ = Real.exp (-u / 2) := h3
+
+/-- `u √u e^{-u} ≤ 8 e^{-u/2}` for `u ≥ 0`. -/
+theorem mul_sqrt_mul_exp_neg_le (u : ℝ) (hu : 0 ≤ u) : u * √u * Real.exp (-u) ≤ 8 * Real.exp (-u / 2) := by
+  have hs := Real.sqrt_nonneg u
+  have hsq := Real.sq_sqrt hu
+  have he1 : 1 ≤ Real.exp (u / 2) := Real.one_le_exp (by linarith)
+  have h1 : u * √u ≤ 8 * Real.exp (u / 2) := by
+    rcases le_total u 4 with h | h
+    · have : √u ≤ 2 := by nlinarith
+      nlinarith
+    · have h2 : 2 ≤ √u := by nlinarith
+      have h3 : √u ≤ u / 2 := by nlinarith
+      have h4 := Real.quadratic_le_exp_of_nonneg (by linarith : 0 ≤ u / 2)
+      nlinarith
+  have h3 : Real.exp (u / 2) * Real.exp (-u) = Real.exp (-u / 2) := by rw [← Real.exp_add]; ring_nf
+  calc u * √u * Real.exp (-u) ≤ 8 * Real.exp (u / 2) * Real.exp (-u) := by gcongr
+    _ = 8 * Real.exp (-u / 2) := by rw [mul_assoc, h3]
+
 end Lightlike

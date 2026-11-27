@@ -6798,7 +6798,7 @@
   tier: established
   source: pending
   review: kernel-checked
-  note: "Conditional on the Lean proposition PachnerForwardHyp Same (Same-related complexes have a common forward descendant under the 2-3 and 1-4 moves), which is not proved by this theorem or assumed true; the stellar form of Pachner's theorem for Complex3 is the theorem pachner3 (PL/PachnerMoves.lean, catalogued with milestone PL2), and whether it yields this forward form was not established here. Comparison pending: no source was read at a cited location. The cut-off is a regulator, so this is the form in which independence holds before the cut-off is removed; it is not the statement that the cut-off amplitude is a triangulation invariant."
+  note: "Conditional on the Lean proposition PachnerForwardHyp Same (Same-related complexes have a common forward descendant under the 2-3 and 1-4 moves), which is not proved by this theorem or assumed true; the stellar form of Pachner's theorem for Complex3 is the theorem pachner3 (PL/PachnerMoves.lean, catalogued with milestone PL2), and whether it yields this forward form was not established here. Comparison pending: no source was read at a cited location. The cut-off is a regulator, so this is the form in which independence holds before the cut-off is removed; it is not the statement that the cut-off amplitude is a triangulation invariant. The unconditional version, with PachnerForwardHyp proven (Adiprasito–Pak, arXiv:2404.05930), is the milestone PL7c."
   since: unreleased
 - id: LL-0523
   title: "The r = 3 Turaev–Viro state sum is the same along any chain of 3D moves: it is unchanged by the 3-2 move and by the 4-1 move (the inverses of the 2-3 and 1-4 moves), hence along any chain of moves on closed combinatorial 3-manifolds"
@@ -7592,4 +7592,15 @@
       - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
   review: kernel-checked
   note: "Comparison pending: the library's own statement of the stated dependence on the vertex order (milestone row SF6b: its stated dependence on the vertex order). The checklist item p2 words independence of the vertex order, which this entry does not claim: the dependence is stated. Numerical evidence only (scripts/spinfoam/eprl_order_check.py, docs/notes/sf6b-order-dependence.md): the pure Ooguri amplitude is 5 for the bone cutoff of every edge, the EPRL amplitude is 5 for w - u odd and -3 for w - u even; the Ooguri weights of the bone colourings other than {0, 1} are not proved in Lean."
+  since: unreleased
+- id: LL-0591
+  title: "If two complexes of tetrahedra have a common forward descendant under the 2-3 and 1-4 moves, then every regularised Ponzano–Regge amplitude value of each is a value of the descendant: ampValues K ⊆ ampValues K'' and ampValues K' ⊆ ampValues K''"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/TriangulationIndependence/Main.lean
+  decls: [Lightlike.PR.CommonForward.ampValues_subset]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a statement about this library's regularised amplitude. CommonForward K K' is an antecedent of the theorem, not an open hypothesis: the theorem says nothing about whether two triangulations of one manifold have a common forward descendant. That is the proposition PachnerForwardHyp, which the conditional entry LL-0522 assumes and which the milestone PL7c is to prove (Adiprasito–Pak, arXiv:2404.05930, common stellar subdivisions). No equality of the value sets of K and K' follows."
   since: unreleased

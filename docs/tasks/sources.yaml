@@ -16,6 +16,10 @@
 # Never add a reference or a location that has not been looked up.
 
 references:
+  adiprasito-pak-2024:
+    cite: "K. Adiprasito and I. Pak, All triangulations have a common stellar subdivision (2024)"
+    title: "All triangulations have a common stellar subdivision"
+    arxiv: "2404.05930"
   bilal-2001:
     cite: "A. Bilal, Introduction to Supersymmetry (2001)"
     title: "Introduction to Supersymmetry"
@@ -1260,6 +1264,11 @@ milestones:
     refs:
       - {ref: turaev-1994, location: "Chapter: Chapter VII. Simplicial state sums on 3-manifolds|10.1515/9783110883275-008"}
       - {ref: lickorish-1999, location: "Theorem 5.9", check: "bistellar"}
+  PL7c:
+    class: sourced
+    refs:
+      - {ref: adiprasito-pak-2024, location: "Theorem 1.1", check: "stellar"}
+      - {ref: adiprasito-pak-2024, location: "Theorem 1.3", check: "stellar"}
   SP1:
     class: sourced
     refs:
