@@ -55,19 +55,34 @@ lemma mem_relabel_faces (K : Complex4 V) (σ : V ≃ V) (k : ℕ) (f' : Finset V
       rwa [map_symm_map] at this
     · rwa [Finset.card_map] at hc
 
-/-- The position permutation: the new position `a'` of a vertex of `σ s` goes to the old position of `σ⁻¹` of it in `s`. -/
-noncomputable def posPerm (σ : V ≃ V) (s : Finset V) (hs : #s = 5) : Equiv.Perm (Fin 5) :=
-  have hs' : #(s.map σ.toEmbedding) = 5 := by rw [Finset.card_map]; exact hs
+/-- The permutation of the `n` sorted positions of an `n`-element set `s` that `σ` induces: the new position `a'` of a vertex of `σ s`
+goes to the old position of `σ⁻¹` of it in `s`. -/
+noncomputable def ordPerm (σ : V ≃ V) (s : Finset V) (n : ℕ) (hs : #s = n) : Equiv.Perm (Fin n) :=
+  have hs' : #(s.map σ.toEmbedding) = n := by rw [Finset.card_map]; exact hs
   ((s.map σ.toEmbedding).orderIsoOfFin hs').toEquiv.trans
     ((σ.symm.subtypeEquiv (p := fun v => v ∈ s.map σ.toEmbedding) (q := fun v => v ∈ s)
       (fun a => by simp)).trans (s.orderIsoOfFin hs).toEquiv.symm)
 
-lemma orderEmb_posPerm (σ : V ≃ V) (s : Finset V) (hs : #s = 5) (a' : Fin 5) :
-    s.orderEmbOfFin hs (posPerm σ s hs a') =
+lemma orderEmb_ordPerm (σ : V ≃ V) (s : Finset V) (n : ℕ) (hs : #s = n) (a' : Fin n) :
+    s.orderEmbOfFin hs (ordPerm σ s n hs a') =
       σ.symm ((s.map σ.toEmbedding).orderEmbOfFin (by rw [Finset.card_map]; exact hs) a') := by
-  unfold posPerm
+  unfold ordPerm
   simp only [Equiv.trans_apply]
   rw [← Finset.coe_orderIsoOfFin_apply s hs]
+  simp
+
+/-- The position permutation of a 4-simplex. -/
+noncomputable def posPerm (σ : V ≃ V) (s : Finset V) (hs : #s = 5) : Equiv.Perm (Fin 5) := ordPerm σ s 5 hs
+
+lemma orderEmb_posPerm (σ : V ≃ V) (s : Finset V) (hs : #s = 5) (a' : Fin 5) :
+    s.orderEmbOfFin hs (posPerm σ s hs a') =
+      σ.symm ((s.map σ.toEmbedding).orderEmbOfFin (by rw [Finset.card_map]; exact hs) a') :=
+  orderEmb_ordPerm σ s 5 hs a'
+
+lemma orderEmb_relabel_ord (σ : V ≃ V) (s : Finset V) (n : ℕ) (hs : #s = n) (a' : Fin n) :
+    (s.map σ.toEmbedding).orderEmbOfFin (by rw [Finset.card_map]; exact hs) a' =
+      σ (s.orderEmbOfFin hs (ordPerm σ s n hs a')) := by
+  rw [orderEmb_ordPerm]
   simp
 
 lemma orderEmb_relabel (σ : V ≃ V) (s : Finset V) (hs : #s = 5) (a' : Fin 5) :
