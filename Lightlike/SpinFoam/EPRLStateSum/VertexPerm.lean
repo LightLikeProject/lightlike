@@ -65,4 +65,20 @@ theorem fifteenJSimplex_eq_contract5 (j : Fin 5 → Fin 5 → ℕ) (hj : ∀ p q
   have h43 := hj 4 3
   simp [Fin.prod_univ_succ, legProj, eidx, cycT, jE, epr, mul_assoc, h10, h20, h21, h30, h31, h32, h40, h41, h42, h43]
 
+/-- **The contraction is multilinear in the node tensors**: a sum over `k` in the box of each node of the products of coefficients
+and tensors contracts to the sum over the boxes of the products of the coefficients times the contractions. -/
+theorem contract5_sum (j : Fin 5 → Fin 5 → ℕ) (B : Fin 5 → Finset ℕ) (c : Fin 5 → ℕ → ℝ)
+    (T : Fin 5 → ℕ → (Fin 5 → ℤ) → ℝ) :
+    contract5 j (fun a μ => ∑ k ∈ B a, c a k * T a k μ) =
+      ∑ i ∈ Fintype.piFinset B, (∏ a, c a (i a)) * contract5 j (fun a μ => T a (i a) μ) := by
+  unfold contract5
+  simp only [Finset.mul_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun m _ => ?_
+  rw [Finset.prod_univ_sum (t := B) (f := fun a k => c a k * T a k (legProj m a))]
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [Finset.prod_mul_distrib]
+  ring
+
 end Lightlike.SpinFoam.EPRLStateSum

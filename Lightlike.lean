@@ -2326,6 +2326,7 @@ import Lightlike.SpinFoam.EPRLStateSum.BoneColouring
 import Lightlike.SpinFoam.EPRLStateSum.BoneCollapse
 import Lightlike.SpinFoam.EPRLStateSum.BoneWeight
 import Lightlike.SpinFoam.EPRLStateSum.VertexPerm
+import Lightlike.SpinFoam.EPRLStateSum.SortedVertex
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
