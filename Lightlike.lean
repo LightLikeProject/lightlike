@@ -654,6 +654,7 @@ import Lightlike.Lorentz.SL2RPlancherel.KKChain
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalBlockRefl
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalDecay
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalCasimir
+import Lightlike.Lorentz.SL2RPlancherel.DiscreteCasimir
 import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Linearity
 import Lightlike.Lorentz.SL2RPlancherel.WeightIntegrable
