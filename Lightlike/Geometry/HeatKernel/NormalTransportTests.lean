@@ -40,4 +40,14 @@ example (y : Fin 1 → ℝ) : coordGradPair gLine σLine (fun z => z 0) y / 2 = 
 /-- `T = 2y` would give `DV T = 2y ≠ y = V(y)` at `y = 1`: the hypothesis `DV T = V` excludes it. -/
 example : (2 : ℝ) * 1 ≠ 1 := by norm_num
 
+/-- Non-vacuity of `IsCoordMetric.transport_succ_of_euler` on the line: order `1`, `H = 0`, `F = 1`. -/
+example (y : Fin 1 → ℝ) :
+    coordGradPair gLine σLine (fun z => Real.exp (eulerPrimitive (fun _ => (0 : ℝ)) (id z)) *
+        radialAverage 1 (fun w => (fun _ => (1 : ℝ)) w / Real.exp (eulerPrimitive (fun _ => (0 : ℝ)) w)) (id z)) y / 2 +
+      ((1 : ℕ) - (fun _ => (0 : ℝ)) (id y)) * (Real.exp (eulerPrimitive (fun _ => (0 : ℝ)) (id y)) *
+        radialAverage 1 (fun w => (fun _ => (1 : ℝ)) w / Real.exp (eulerPrimitive (fun _ => (0 : ℝ)) w)) (id y)) =
+      (fun _ => (1 : ℝ)) (id y) :=
+  isCoordMetric_gLine.transport_succ_of_euler (mem_univ y) (grad_σLine y) differentiableAt_id (by simp) 1 le_rfl
+    contDiff_const rfl contDiff_const
+
 end Lightlike.NormalTransportTests

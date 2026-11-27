@@ -89,4 +89,31 @@ theorem IsCoordMetric.transport_zero_of_euler (hg : IsCoordMetric g U) {y : Fin 
     ((Real.contDiff_exp.comp (contDiff_eulerPrimitive hH)).differentiable (by simp)) (V y)
   rw [hg.coordGradPair_comp_eq_euler hy hσ hVd hVT hΦ, fderiv_exp_eulerPrimitive_apply_self hH h0]
 
+/-- **The transport equation of order `k ≥ 1` in normal coordinates**: with `h = H ∘ V`, `H(0) = 0`, `f = F ∘ V`,
+`U₀ = e^K` and `u = (U₀ · W(F/U₀)) ∘ V` (`W` the radial average of order `k`),
+`g⁻¹(dσ, du)(y)/2 + (k − h(y)) u(y) = f(y)`. -/
+theorem IsCoordMetric.transport_succ_of_euler (hg : IsCoordMetric g U) {y : Fin n → ℝ} (hy : y ∈ U)
+    {σ : (Fin n → ℝ) → ℝ} {V : (Fin n → ℝ) → (Fin n → ℝ)} {T : Fin n → ℝ}
+    (hσ : ∀ i, pd i σ y = 2 * Geodesic.pairing g y T (Pi.single i 1))
+    (hVd : DifferentiableAt ℝ V y) (hVT : fderiv ℝ V y T = V y) (k : ℕ) (hk : 1 ≤ k) {H F : (Fin n → ℝ) → ℝ}
+    (hH : ContDiff ℝ ∞ H) (h0 : H 0 = 0) (hF : ContDiff ℝ ∞ F) :
+    coordGradPair g σ (fun z => Real.exp (eulerPrimitive H (V z)) *
+        radialAverage k (fun w => F w / Real.exp (eulerPrimitive H w)) (V z)) y / 2 +
+      (k - H (V y)) * (Real.exp (eulerPrimitive H (V y)) *
+        radialAverage k (fun w => F w / Real.exp (eulerPrimitive H w)) (V y)) = F (V y) := by
+  set Φ : (Fin n → ℝ) → ℝ := fun w => Real.exp (eulerPrimitive H w) *
+    radialAverage k (fun w' => F w' / Real.exp (eulerPrimitive H w')) w with hΦ
+  have hU₀ : ContDiff ℝ ∞ (fun w => Real.exp (eulerPrimitive H w)) :=
+    Real.contDiff_exp.comp (contDiff_eulerPrimitive hH)
+  have hGs : ContDiff ℝ ∞ (fun w' => F w' / Real.exp (eulerPrimitive H w')) :=
+    hF.div hU₀ fun w => (Real.exp_pos _).ne'
+  have hΦs : ContDiff ℝ ∞ Φ := hU₀.mul (contDiff_radialAverage k hGs)
+  have hΦd : DifferentiableAt ℝ Φ (V y) := (hΦs.differentiable (by simp)) (V y)
+  have h1 := hg.coordGradPair_comp_eq_euler hy hσ hVd hVT hΦd
+  have h2 := fderiv_transportSolution_apply_self k hk hH h0 hF (V y)
+  simp only at h2
+  rw [show (fun z => Real.exp (eulerPrimitive H (V z)) *
+      radialAverage k (fun w => F w / Real.exp (eulerPrimitive H w)) (V z)) = fun z => Φ (V z) from rfl, h1]
+  exact h2
+
 end Lightlike
