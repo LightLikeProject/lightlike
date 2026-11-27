@@ -308,4 +308,72 @@ theorem pentagon_klCoef (hKL : FcEqKL k) (q : kˣ) (hδ : loopVal q ≠ 0) (a b 
 
 end PentagonKL
 
+/-! ## The gauge cancels in the pentagon -/
+
+/-- The gauge cancellation over atoms. -/
+theorem gauge_alg {Pbcx Pxdj Paxi Pidt Pabi Pici Pijt Pcdj Pbjj Pajt X J1 J2 I1 I2 : ℝ}
+    (h1 : Pbcx ≠ 0) (h2 : Pxdj ≠ 0) (h3 : Paxi ≠ 0) (h4 : Pidt ≠ 0) (h5 : Pabi ≠ 0) (h6 : Pici ≠ 0)
+    (h7 : Pijt ≠ 0) (hX : X ≠ 0) (hJ1 : J1 ≠ 0) (hJ2 : J2 ≠ 0) (hI1 : I1 ≠ 0) (hI2 : I2 ≠ 0) :
+    Pcdj * Pbjj / J1 / (Pbcx * Pxdj / X) *
+        (Pxdj * Pajt / J2 / (Paxi * Pidt / I2) * (Pbcx * Paxi / X / (Pabi * Pici / I1))) =
+      Pbjj * Pajt / J2 / (Pabi * Pijt / I1) * (Pcdj * Pijt / J1 / (Pici * Pidt / I2)) := by
+  field_simp
+
+/-- **The gauge cancels in the pentagon**: the product of the three gauge ratios of the left side is
+the product of the two of the right side, for every middle colour `x`. -/
+theorem gauge_cancel (θ : ℝ) {a b c d x I1 I2 T J1 J2 : ℕ}
+    (h1 : triPi θ b c x ≠ 0) (h2 : triPi θ x d J2 ≠ 0) (h3 : triPi θ a x I2 ≠ 0)
+    (h4 : triPi θ I2 d T ≠ 0) (h5 : triPi θ a b I1 ≠ 0) (h6 : triPi θ I1 c I2 ≠ 0)
+    (h7 : triPi θ I1 J1 T ≠ 0) (hX : qfG θ (x + 1) ≠ 0) (hJ1 : qfG θ (J1 + 1) ≠ 0)
+    (hJ2 : qfG θ (J2 + 1) ≠ 0) (hI1 : qfG θ (I1 + 1) ≠ 0) (hI2 : qfG θ (I2 + 1) ≠ 0) :
+    gaugeJ θ b c d J1 J2 / gaugeI θ b c d x J2 *
+        (gaugeJ θ a x d J2 T / gaugeI θ a x d I2 T * (gaugeJ θ a b c x I2 / gaugeI θ a b c I1 I2)) =
+      gaugeJ θ a b J1 J2 T / gaugeI θ a b J1 I1 T * (gaugeJ θ I1 c d J1 T / gaugeI θ I1 c d I2 T) := by
+  unfold gaugeI gaugeJ
+  exact gauge_alg h1 h2 h3 h4 h5 h6 h7 hX hJ1 hJ2 hI1 hI2
+
+/-! ## The Kauffman–Lins products as the terms of `GenBE` -/
+
+theorem neg_one_pow_congr {m n : ℕ} (h : m % 2 = n % 2) : (-1 : ℝ) ^ m = (-1) ^ n := by
+  rw [← Nat.mod_add_div m 2, ← Nat.mod_add_div n 2, pow_add, pow_add, pow_mul, pow_mul, h]
+  norm_num
+
+/-- **The left side of the pentagon in `klK` form is the summand of `GenBE`**, times the common
+factor `(-1)^E [J₁+1] [J₂+1] Δ²(a,b,I₁) Δ²(I₁,c,I₂) Δ²(I₂,d,T)`. -/
+theorem klK_left (θ : ℝ) {a b c d x I1 I2 T J1 J2 : ℕ}
+    (hp1 : (b + c + x) % 2 = 0) (hp2 : (x + d + J2) % 2 = 0) (hp3 : (a + x + I2) % 2 = 0)
+    (hp4 : (I2 + d + T) % 2 = 0) (hp5 : (a + b + I1) % 2 = 0) (hp6 : (I1 + c + I2) % 2 = 0)
+    (hp7 : (I1 + J1 + T) % 2 = 0) :
+    klK θ b c d x J2 J1 * (klK θ a x d I2 T J2 * klK θ a b c I1 I2 x) =
+      ((-1) ^ (I1 + (a + b + I1) / 2 + (I1 + J1 + T) / 2 + (I2 + (I1 + c + I2) / 2 + (I2 + d + T) / 2)) *
+          (qnG θ (J1 + 1) * qnG θ (J2 + 1) * delta2G θ a b I1 * delta2G θ I1 c I2 * delta2G θ I2 d T)) *
+        ((-1) ^ ((b + c + d + J2 + a + I2 + J1 + T + I1 + x) / 2) * qnG θ (x + 1) *
+          (delta2G θ b c x * delta2G θ d J2 x * delta2G θ a I2 x) *
+          (racahG θ b c x d J2 J1 * racahG θ d J2 x a I2 T * racahG θ a I2 x c b I1)) := by
+  rw [racahG_symm₂ θ a x I2 d T J2, racahG_symm₃ θ a b I1 c I2 x, delta2G_swap23 θ a I2 x,
+    delta2G_swap23 θ d J2 x, delta2G_swap12 θ d x J2]
+  have hs : (-1 : ℝ) ^ (x + (b + c + x) / 2 + (x + d + J2) / 2) *
+      ((-1) ^ (I2 + (a + x + I2) / 2 + (I2 + d + T) / 2) * (-1) ^ (I1 + (a + b + I1) / 2 + (I1 + c + I2) / 2)) =
+      (-1) ^ (I1 + (a + b + I1) / 2 + (I1 + J1 + T) / 2 + (I2 + (I1 + c + I2) / 2 + (I2 + d + T) / 2)) *
+        (-1) ^ ((b + c + d + J2 + a + I2 + J1 + T + I1 + x) / 2) := by
+    rw [← pow_add, ← pow_add, ← pow_add]
+    exact neg_one_pow_congr (by omega)
+  unfold klK
+  linear_combination (qnG θ (J1 + 1) * delta2G θ b c x * delta2G θ x d J2 * racahG θ b c x d J2 J1 *
+    (qnG θ (J2 + 1) * delta2G θ a x I2 * delta2G θ I2 d T * racahG θ a x I2 d T J2) *
+    (qnG θ (x + 1) * delta2G θ a b I1 * delta2G θ I1 c I2 * racahG θ a b I1 c I2 x)) * hs
+
+/-- **The right side of the pentagon in `klK` form is the right side of `GenBE`**, times the same
+common factor. -/
+theorem klK_right (θ : ℝ) {a b c d I1 I2 T J1 J2 : ℕ} :
+    klK θ a b J1 I1 T J2 * klK θ I1 c d I2 T J1 =
+      ((-1) ^ (I1 + (a + b + I1) / 2 + (I1 + J1 + T) / 2 + (I2 + (I1 + c + I2) / 2 + (I2 + d + T) / 2)) *
+          (qnG θ (J1 + 1) * qnG θ (J2 + 1) * delta2G θ a b I1 * delta2G θ I1 c I2 * delta2G θ I2 d T)) *
+        (delta2G θ J1 T I1 * racahG θ J1 T I1 a b J2 * racahG θ J1 T I1 I2 c d) := by
+  rw [racahG_symm₄ θ a b I1 J1 T J2, racahG_symm₅ θ I1 c I2 d T J1, delta2G_swap23 θ J1 T I1,
+    delta2G_swap12 θ J1 I1 T]
+  unfold klK
+  rw [pow_add]
+  ring
+
 end Lightlike.TV
