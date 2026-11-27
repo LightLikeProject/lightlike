@@ -19,15 +19,15 @@ proves that these data are equivalent to the atlas form `SpinStructure`:
   the smooth atlas of the unit sections of its charts, and reading it back gives the frames and the
   lifts of `S` (`SpinStructure.ofSmoothAtlas_frame`, `SpinStructure.ofSmoothAtlas_lift`).
 
-## Difference from the source
+## Lifts without a smooth atlas
 
 Lawson–Michelsohn state Definition 1.3 for principal bundles without a smooth structure, and
 `Lightlike.OrthonormalFrameLift` is not smooth by definition either: its bundle is a topological
-fibre bundle and its map to frames is only required to be continuous.  The
-equivalence here is with lifts that carry a smooth atlas of local sections (the smooth-category
-form of the definition, the one in which the Dirac operator is defined).  That every lift of the
-orthonormal frame bundle of a smooth manifold admits such an atlas (by lifting smooth local frames
-through the covering `Spin(n) → SO(n)` on simply connected chart domains) is not proved here.
+fibre bundle and its map to frames is only required to be continuous.  The equivalence here is
+with lifts that carry a smooth atlas of local sections; that every lift of the orthonormal frame
+bundle of a smooth manifold has one is `SpinLift.smoothSpinAtlas` in
+`Lightlike.Dirac.SpinLiftSmooth`, so that the equivalence holds for every lift
+(`SpinLift.exists_spinStructure_equiv`).
 
 ## References
 
