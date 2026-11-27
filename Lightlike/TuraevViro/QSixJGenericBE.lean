@@ -75,4 +75,106 @@ theorem chebD_qE_ne_zero {θ : ℝ} {n : ℕ} (h1 : Real.sin θ ≠ 0) (hn : Rea
   rw [chebD_eq_qb _ (qE_sub_inv_ne_zero h1), qb_qE]
   exact mul_ne_zero (pow_ne_zero _ (by norm_num)) (ofReal_ne_zero.2 (qnG_ne_zero h1 hn))
 
+/-! ## Symmetries of the triangle coefficients and of the q-Racah sum -/
+
+theorem delta2G_swap12 (θ : ℝ) (x y z : ℕ) : delta2G θ x y z = delta2G θ y x z := by
+  unfold delta2G
+  rw [show y + x + z = x + y + z by ring]
+  ring
+
+theorem delta2G_swap23 (θ : ℝ) (x y z : ℕ) : delta2G θ x y z = delta2G θ x z y := by
+  unfold delta2G
+  rw [show x + z + y = x + y + z by ring]
+  ring
+
+/-- Two Racah sums on their supports agree when their bounds and summands agree. -/
+theorem racahSum_congr (θ : ℝ) {F₁ F₂ F₃ F₄ B₁ B₂ B₃ G₁ G₂ G₃ G₄ C₁ C₂ C₃ : ℕ}
+    (hmax : max (max G₁ G₂) (max G₃ G₄) = max (max F₁ F₂) (max F₃ F₄))
+    (hmin : min C₁ (min C₂ C₃) = min B₁ (min B₂ B₃))
+    (hterm : ∀ z, racahTermN θ G₁ G₂ G₃ G₄ C₁ C₂ C₃ z = racahTermN θ F₁ F₂ F₃ F₄ B₁ B₂ B₃ z) :
+    ∑ z ∈ Icc (max (max G₁ G₂) (max G₃ G₄)) (min C₁ (min C₂ C₃)), racahTermN θ G₁ G₂ G₃ G₄ C₁ C₂ C₃ z =
+      ∑ z ∈ Icc (max (max F₁ F₂) (max F₃ F₄)) (min B₁ (min B₂ B₃)),
+        racahTermN θ F₁ F₂ F₃ F₄ B₁ B₂ B₃ z := by
+  rw [hmax, hmin]
+  exact sum_congr rfl fun z _ => hterm z
+
+/-- A tetrahedral symmetry of the q-Racah sum (the second triangle coefficient of the pentagon). -/
+theorem racahG_symm₂ (θ : ℝ) (a x I2 d T J2 : ℕ) :
+    racahG θ d J2 x a I2 T = racahG θ a x I2 d T J2 := by
+  rw [racahG_eq_Icc, racahG_eq_Icc]
+  rw [show (d + J2 + x) / 2 = (d + x + J2) / 2 by ring_nf, show (d + I2 + T) / 2 = (d + T + I2) / 2 by ring_nf,
+    show (a + J2 + T) / 2 = (a + T + J2) / 2 by ring_nf, show (a + I2 + x) / 2 = (a + x + I2) / 2 by ring_nf,
+    show (d + J2 + a + I2) / 2 = (I2 + a + J2 + d) / 2 by ring_nf,
+    show (J2 + x + I2 + T) / 2 = (x + I2 + T + J2) / 2 by ring_nf,
+    show (x + d + T + a) / 2 = (a + x + d + T) / 2 by ring_nf]
+  generalize (a + x + I2) / 2 = A₁, (a + T + J2) / 2 = A₂, (d + x + J2) / 2 = A₃, (d + T + I2) / 2 = A₄,
+    (a + x + d + T) / 2 = B₁, (x + I2 + T + J2) / 2 = B₂, (I2 + a + J2 + d) / 2 = B₃
+  exact racahSum_congr θ (by omega) (by omega) fun z => by unfold racahTermN; ring
+
+/-- A tetrahedral symmetry of the q-Racah sum (the third triangle coefficient of the pentagon). -/
+theorem racahG_symm₃ (θ : ℝ) (a b I1 c I2 x : ℕ) :
+    racahG θ a I2 x c b I1 = racahG θ a b I1 c I2 x := by
+  rw [racahG_eq_Icc, racahG_eq_Icc]
+  rw [show (c + I2 + I1) / 2 = (c + I2 + I1) / 2 from rfl, show (c + b + x) / 2 = (c + b + x) / 2 from rfl,
+    show (a + I2 + c + b) / 2 = (a + b + c + I2) / 2 by ring_nf,
+    show (I2 + x + b + I1) / 2 = (b + I1 + I2 + x) / 2 by ring_nf,
+    show (x + a + I1 + c) / 2 = (I1 + a + x + c) / 2 by ring_nf]
+  generalize (a + b + I1) / 2 = A₁, (a + I2 + x) / 2 = A₂, (c + b + x) / 2 = A₃, (c + I2 + I1) / 2 = A₄,
+    (a + b + c + I2) / 2 = B₁, (b + I1 + I2 + x) / 2 = B₂, (I1 + a + x + c) / 2 = B₃
+  exact racahSum_congr θ (by omega) (by omega) fun z => by unfold racahTermN; ring
+
+/-- A tetrahedral symmetry of the q-Racah sum (the first coefficient of the right side). -/
+theorem racahG_symm₄ (θ : ℝ) (a b I1 J1 T J2 : ℕ) :
+    racahG θ J1 T I1 a b J2 = racahG θ a b I1 J1 T J2 := by
+  rw [racahG_eq_Icc, racahG_eq_Icc]
+  rw [show (J1 + T + a + b) / 2 = (a + b + J1 + T) / 2 by ring_nf,
+    show (T + I1 + b + J2) / 2 = (b + I1 + T + J2) / 2 by ring_nf,
+    show (I1 + J1 + J2 + a) / 2 = (I1 + a + J2 + J1) / 2 by ring_nf]
+  generalize (a + b + I1) / 2 = A₁, (a + T + J2) / 2 = A₂, (J1 + b + J2) / 2 = A₃, (J1 + T + I1) / 2 = A₄,
+    (a + b + J1 + T) / 2 = B₁, (b + I1 + T + J2) / 2 = B₂, (I1 + a + J2 + J1) / 2 = B₃
+  exact racahSum_congr θ (by omega) (by omega) fun z => by unfold racahTermN; ring
+
+/-- A tetrahedral symmetry of the q-Racah sum (the second coefficient of the right side). -/
+theorem racahG_symm₅ (θ : ℝ) (I1 c I2 d T J1 : ℕ) :
+    racahG θ J1 T I1 I2 c d = racahG θ I1 c I2 d T J1 := by
+  rw [racahG_eq_Icc, racahG_eq_Icc]
+  rw [show (J1 + T + I1) / 2 = (I1 + T + J1) / 2 by ring_nf, show (J1 + c + d) / 2 = (d + c + J1) / 2 by ring_nf,
+    show (I2 + T + d) / 2 = (d + T + I2) / 2 by ring_nf, show (I2 + c + I1) / 2 = (I1 + c + I2) / 2 by ring_nf,
+    show (J1 + T + I2 + c) / 2 = (c + I2 + T + J1) / 2 by ring_nf,
+    show (T + I1 + c + d) / 2 = (I1 + c + d + T) / 2 by ring_nf,
+    show (I1 + J1 + d + I2) / 2 = (I2 + I1 + J1 + d) / 2 by ring_nf]
+  generalize (I1 + c + I2) / 2 = A₁, (I1 + T + J1) / 2 = A₂, (d + c + J1) / 2 = A₃, (d + T + I2) / 2 = A₄,
+    (I1 + c + d + T) / 2 = B₁, (c + I2 + T + J1) / 2 = B₂, (I2 + I1 + J1 + d) / 2 = B₃
+  exact racahSum_congr θ (by omega) (by omega) fun z => by unfold racahTermN; ring
+
+/-! ## The pentagon for the Kauffman–Lins coefficients -/
+
+section PentagonKL
+
+variable {k : Type*} [Field k] [CharZero k]
+
+/-- `Fc = klCoef` given only the ranges of the second bracketing: off the ranges of the first
+bracketing both vanish. -/
+theorem Fc_eq_klCoef_of' (hKL : FcEqKL k) (q : kˣ) (hδ : loopVal q ≠ 0) {a b c e d f d' : ℕ}
+    (hN : 1 ≤ a + b + c) (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
+    (hq : ∀ n, 1 ≤ n → n ≤ a + b + c + 3 → (q : k) ^ (2 * n) ≠ 1)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
+    Fc q a b c e d f d' = klCoef q a b c e d f d' := by
+  by_cases hg : e ≤ min a b ∧ d ≤ min (a + b - 2 * e) c
+  · obtain ⟨h1, h2⟩ := hg
+    simp only [le_min_iff] at h1 h2
+    exact Fc_eq_klCoef_of hKL q hδ hN hd hq h1.1 h1.2 hfb hfc h2.2 h2.1 hda hdf
+  · have h0 : Fc q a b c e d f d' = 0 := by simp only [Fc, if_neg hg]
+    have h1 : klCoef q a b c e d f d' = 0 := by
+      unfold klCoef
+      rw [ite_eq_right fun hA => hg ⟨hA.1, hA.2.1⟩]
+    rw [h0, h1]
+
+/-- `klCoef` vanishes off the admissible indices. -/
+theorem klCoef_of_not (q : kˣ) {a b c e d f d' : ℕ} (h : ¬ KLAdm a b c e d f d') :
+    klCoef q a b c e d f d' = 0 := by
+  unfold klCoef; rw [ite_eq_right h]
+
+end PentagonKL
+
 end Lightlike.TV
