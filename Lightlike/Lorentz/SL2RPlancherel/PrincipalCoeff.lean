@@ -497,8 +497,8 @@ theorem inner_cT_eq (ν ξ t : ℝ) (m n : ℤ) :
       Complex.exp (-(2 * m * t * I)) * mcoefP ν m n ξ := by
   have hu := principalSeries_inner 0 ν (aR ξ) (principalSeries 0 ν (aR (-ξ)) (kVecL2 ν m))
     (principalSeries 0 ν (cT ξ t) (kVecL2 ν n))
-  rw [← hu, ← ContinuousLinearMap.mul_apply, ← principalSeries_mul, aR_mul_aR_neg,
-    principalSeries_one, ContinuousLinearMap.one_apply, ← ContinuousLinearMap.mul_apply,
+  rw [← hu, ← mul_apply_eq_comp, ← principalSeries_mul, aR_mul_aR_neg,
+    principalSeries_one, one_apply_eq_self, ← mul_apply_eq_comp,
     ← principalSeries_mul, aR_mul_cT]
   have h := inner_kVecL2_kak ν t ξ 0 m n
   rw [rot_zero, mul_one] at h
@@ -512,8 +512,8 @@ lemma inner_aR_neg_kVecL2 (ν ξ : ℝ) (m k : ℤ) :
     inner ℂ (principalSeries 0 ν (aR (-ξ)) (kVecL2 ν m)) (kVecL2 ν k) = mcoefP ν m k ξ := by
   have hu := principalSeries_inner 0 ν (aR ξ) (principalSeries 0 ν (aR (-ξ)) (kVecL2 ν m))
     (kVecL2 ν k)
-  rw [← hu, ← ContinuousLinearMap.mul_apply, ← principalSeries_mul, aR_mul_aR_neg,
-    principalSeries_one, ContinuousLinearMap.one_apply, mcoefP]
+  rw [← hu, ← mul_apply_eq_comp, ← principalSeries_mul, aR_mul_aR_neg,
+    principalSeries_one, one_apply_eq_self, mcoefP]
 
 /-- From `A ≥ (1 + x²)/S`: `A^{-1/2} ≤ S^{1/2} (1 + x²)^{-1/2}`. -/
 lemma rpow_neg_half_le_of_le {A S x : ℝ} (hS : 0 < S) (hA : (1 + x ^ 2) ≤ S * A) :
@@ -755,7 +755,7 @@ theorem mcoefP_rot_rel (ν ξ : ℝ) (m n : ℤ) :
   have hFm : ∀ t, AEStronglyMeasurable (F t) volume := fun t =>
     ((Complex.continuous_conj.comp_aestronglyMeasurable (Lp.aestronglyMeasurable f)).mul
       (Lp.aestronglyMeasurable (principalSeries 0 ν (cT ξ t) (kVecL2 ν n)))).congr
-      (by filter_upwards [hQae t] with x hx; simp only [hF, Pi.mul_apply, Function.comp_apply, hx])
+      (by filter_upwards [hQae t] with x hx; simp only [hF, Pi.mul_apply, hx])
   have hFi : Integrable (F 0) :=
     (integrable_conj_mul f (principalSeries 0 ν (cT ξ 0) (kVecL2 ν n))).congr
       (by filter_upwards [hQae 0] with x hx; simp only [hF, hx])
