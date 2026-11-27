@@ -653,4 +653,86 @@ theorem frameN_eq {p : S2} (h1 : pc p 2 ≠ 1) (h2 : pc p 2 ≠ -1) (a : Fin 2) 
     have := hO c; simpa [Matrix.mul_apply, Matrix.one_apply] using this
   simp only [this, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/-! ## The spin structure -/
+
+section Assembly
+
+open CliffordAlgebra
+
+/-- The inverse of a spin lift lifts the inverse frame change. -/
+lemma IsSpinLift.star_transpose {n : ℕ} {R : Matrix (Fin n) (Fin n) ℝ} {s : CliffordAlgebra (Qneg n)}
+    (h : IsSpinLift R s) (hR : Rᵀ * R = 1) : IsSpinLift Rᵀ (star s) := by
+  refine ⟨spinGroup.star_mem h.1, fun a => ?_⟩
+  have hss : star s * s = 1 := spinGroup.star_mul_self_of_mem h.1
+  have key : s * ι (Qneg n) (∑ b, Rᵀ a b • e b) * star s = ι (Qneg n) (e a) := by
+    simp only [map_sum, map_smul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, h.2,
+      Finset.smul_sum, smul_smul, Matrix.transpose_apply]
+    rw [Finset.sum_comm]
+    simp only [← Finset.sum_smul]
+    have hO : ∀ c, (∑ b, R b a * R b c) = if a = c then 1 else 0 := fun c => by
+      have := congrFun (congrFun hR a) c
+      simpa [Matrix.mul_apply, Matrix.one_apply] using this
+    simp only [hO, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  rw [star_star, ← key]
+  calc star s * (s * ι (Qneg n) (∑ b, Rᵀ a b • e b) * star s) * s
+      = (star s * s) * ι (Qneg n) (∑ b, Rᵀ a b • e b) * (star s * s) := by simp only [mul_assoc]
+    _ = ι (Qneg n) (∑ b, Rᵀ a b • e b) := by rw [hss, one_mul, mul_one]
+
+/-- The frame domains: `true` the north frame on `S2 ∖ {N}`, `false` the south frame on `S2 ∖ {S}`. -/
+def sDom : Bool → Set S2
+  | true => {p | pc p 2 ≠ 1}
+  | false => {p | pc p 2 ≠ -1}
+
+/-- The frame changes. -/
+def sRot : Bool → Bool → S2 → Matrix (Fin 2) (Fin 2) ℝ
+  | true, false => fun p => rotNS (invN p)
+  | false, true => fun p => (rotNS (invN p))ᵀ
+  | _, _ => fun _ => 1
+
+/-- The spin lifts. -/
+def sLift : Bool → Bool → S2 → CliffordAlgebra (Qneg 2)
+  | true, false => fun p => liftNS (invN p)
+  | false, true => fun p => star (liftNS (invN p))
+  | _, _ => fun _ => 1
+
+/-- The frames. -/
+def sFrame : Bool → Fin 2 → Π p : S2, TangentSpace I2 p
+  | true => frameN
+  | false => frameS
+
+lemma mem_sDom_both {p : S2} {i j : Bool} (hi : p ∈ sDom i) (hj : p ∈ sDom j) (hij : i ≠ j) :
+    pc p 2 ≠ 1 ∧ pc p 2 ≠ -1 := by
+  cases i <;> cases j <;> simp_all [sDom]
+
+lemma liftNS_mem {p : S2} (h1 : pc p 2 ≠ 1) (h2 : pc p 2 ≠ -1) : liftNS (invN p) ∈ spinGroup (Qneg 2) :=
+  (isSpinLift_liftNS (nsq_invN_ne_zero h1 h2)).1
+
+/-- The spin cocycle of the 2-sphere. -/
+noncomputable def sphereSpinCocycle : SpinCocycle 2 S2 Bool where
+  dom := sDom
+  Rot := sRot
+  lift := sLift
+  isLift i j p hi hj := by
+    cases i <;> cases j
+    · exact isSpinLift_one
+    · obtain ⟨h1, h2⟩ := mem_sDom_both hi hj (by simp)
+      exact (isSpinLift_liftNS (nsq_invN_ne_zero h1 h2)).star_transpose (rotNS_orth (nsq_invN_ne_zero h1 h2))
+    · obtain ⟨h1, h2⟩ := mem_sDom_both hi hj (by simp)
+      exact isSpinLift_liftNS (nsq_invN_ne_zero h1 h2)
+    · exact isSpinLift_one
+  rot_cocycle i j k p hi hj hk := by
+    cases i <;> cases j <;> cases k <;> simp only [sRot, Matrix.mul_one, Matrix.one_mul]
+    · obtain ⟨h1, h2⟩ := mem_sDom_both hi hj (by simp)
+      exact (rotNS_orth' (nsq_invN_ne_zero h1 h2)).symm
+    · obtain ⟨h1, h2⟩ := mem_sDom_both hi hj (by simp)
+      exact (rotNS_orth (nsq_invN_ne_zero h1 h2)).symm
+  lift_cocycle i j k p hi hj hk := by
+    cases i <;> cases j <;> cases k <;> simp only [sLift, mul_one, one_mul]
+    · obtain ⟨h1, h2⟩ := mem_sDom_both hi hj (by simp)
+      exact (spinGroup.star_mul_self_of_mem (liftNS_mem h1 h2)).symm
+    · obtain ⟨h1, h2⟩ := mem_sDom_both hi hj (by simp)
+      exact (spinGroup.mul_star_self_of_mem (liftNS_mem h1 h2)).symm
+
+end Assembly
+
 end Lightlike.Dirac
