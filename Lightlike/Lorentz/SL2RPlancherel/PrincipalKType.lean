@@ -198,6 +198,43 @@ theorem principalSeries_rot_kVecL2 (ν θ : ℝ) (k : ℤ) :
   show mult 0 ν (den (rot θ) x) * (kVecL2 ν k) (mob (rot θ) x) = _
   rw [show (kVecL2 ν k : ℝ → ℂ) (mob (rot θ) x) = kVecP ν k (mob (rot θ) x) from e2]
 
+/-- **The `K`-type vectors are orthogonal**: `⟪e_j, e_k⟫ = 0` for `j ≠ k` (unitarity of `π(k_θ)`
+with `θ = π / (2 (j - k))`). -/
+theorem inner_kVecL2_of_ne (ν : ℝ) {j k : ℤ} (h : j ≠ k) :
+    inner ℂ (kVecL2 ν j) (kVecL2 ν k) = 0 := by
+  set θ : ℝ := Real.pi / (2 * ((j : ℝ) - k)) with hθ
+  have hjk : ((j : ℝ) - k) ≠ 0 := sub_ne_zero.2 (by exact_mod_cast h)
+  have hu := principalSeries_inner 0 ν (rot θ) (kVecL2 ν j) (kVecL2 ν k)
+  rw [principalSeries_rot_kVecL2, principalSeries_rot_kVecL2, inner_smul_left, inner_smul_right,
+    ← mul_assoc, ← Complex.exp_conj, ← Complex.exp_add] at hu
+  have he : (starRingEnd ℂ) (-(2 * (j : ℂ) * (θ : ℂ) * I)) + -(2 * (k : ℂ) * (θ : ℂ) * I) =
+      Real.pi * I := by
+    simp only [map_neg, map_mul, map_ofNat, map_intCast, Complex.conj_ofReal, Complex.conj_I]
+    rw [hθ]
+    push_cast
+    have hjkC : ((j : ℂ) - k) ≠ 0 := by exact_mod_cast hjk
+    field_simp
+    ring
+  rw [he, Complex.exp_pi_mul_I] at hu
+  have : (2 : ℂ) * inner ℂ (kVecL2 ν j) (kVecL2 ν k) = 0 := by linear_combination -hu
+  simpa using this
+
+/-- `‖e_k‖² = π`. -/
+theorem norm_sq_kVecL2 (ν : ℝ) (k : ℤ) : ‖kVecL2 ν k‖ ^ 2 = Real.pi := by
+  have h : ‖kVecL2 ν k‖ ^ 2 = ∫ x, ‖kVecP ν k x‖ ^ 2 := by
+    rw [kVecL2, Lp.norm_toLp, (memLp_kVecP ν k).eLpNorm_eq_integral_rpow_norm (by norm_num)
+      (by norm_num), ENNReal.toReal_ofReal (by positivity)]
+    simp only [ENNReal.toReal_ofNat, Real.rpow_two]
+    rw [← Real.rpow_natCast, ← Real.rpow_mul (integral_nonneg fun _ => by positivity)]
+    norm_num
+  rw [h, ← integral_univ_inv_one_add_sq]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+  have hpos : (0 : ℝ) < 1 + x ^ 2 := by positivity
+  simp only
+  rw [norm_kVecP, ← Real.rpow_mul_natCast hpos.le]
+  norm_num
+  rw [Real.rpow_neg_one]
+
 /-- Non-vacuity: the hypothesis `den (k_θ) x ≠ 0` holds for `θ = 0`. -/
 example (ν : ℝ) (k : ℤ) (x : ℝ) :
     act 0 ν (rot 0) (kVecP ν k) x = Complex.exp (-(2 * k * (0 : ℝ) * I)) * kVecP ν k x :=
