@@ -383,6 +383,8 @@ import Lightlike.Geometry.HeatKernel.ChartParametrixDelta
 import Lightlike.Geometry.HeatKernel.ChartParametrixDeltaTests
 import Lightlike.Geometry.HeatKernel.GaussDerivBounds
 import Lightlike.Geometry.HeatKernel.GaussDerivBoundsTests
+import Lightlike.Geometry.HeatKernel.IsChartParametrix
+import Lightlike.Geometry.HeatKernel.IsChartParametrixTests
 import Lightlike.Geometry.HeatKernel.CutoffAnsatz
 import Lightlike.Geometry.HeatKernel.CutoffAnsatzTests
 import Lightlike.Geometry.HeatKernel.ChartParametrix
