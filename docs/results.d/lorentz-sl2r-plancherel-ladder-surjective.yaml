@@ -31,3 +31,47 @@
   review: kernel-checked
   note: "Layer 2c-v of the Plancherel formula on SL(2,R). The ladder recursion of these blocks is u -> u' + s u/(v - 1) (hLRN_eq), singular at the identity v = 1, but the images extend continuously to xi = 0 (HcN_eq_hLRN, vanishing order of (d/dv)^l ((v-1)^s G^(s)) at v = 1), so the induction of the same-sign case (norm_sq_ktype_lr) goes through with the same weights. Unlike the same-sign blocks, these images do not exhaust the block: its orthocomplement is the discrete part. Standard; no source consulted."
   since: unreleased
+- id: LL-XXXX-j
+  title: "The ladder images of an opposite-sign block of SL(2,R): for natural l, s, a smooth function H with compact support in (0, infinity) is the image of a smooth compactly supported radial generator under the l-fold chain of raising operators of type (k, -s) if and only if H is orthogonal in L2((0, infinity), sinh xi d xi) to the min(l, s) functions (cosh xi - 1)^(i+s) / sinh^(l+s) xi, l - s <= i < l"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/LadderOppositeSurjective.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.exists_hLRN_eq]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-v of the Plancherel formula on SL(2,R). In v = cosh xi the pairing with (cosh - 1)^(i+s)/sinh^(l+s) is the moment of order i of (d/dv)^l ((v-1)^s G^(s)), which is a boundary value at v = 1 (integral_pow_mul_iteratedDeriv): it vanishes for every image (integral_hLRN_mul_phiN, LadderOppositeOrth.lean), and conversely the moment conditions make the l-fold primitive vanish to order s at v = 1 (it is a polynomial there, eq_taylor_of_iteratedDeriv_eq_zero), so it is (v-1)^s times a smooth function. The min(l, s) directions span the discrete part of the block (for (1, -1): 1/(1 + cosh xi), phiN_one_one_zero); the comparison with the discrete series matrix coefficients is the other stream's layer 3. Standard; no source consulted."
+  since: unreleased
+- id: LL-XXXX-k
+  title: "The discrete part of an opposite-sign block of SL(2,R): for natural l, s, in L2(0, infinity) the closure of the vectors pi sqrt(sinh xi) h(xi), h running over the (l, -s) ladder images of the radial generators, is the orthogonal complement of the span of the min(l, s) vectors sqrt(sinh xi) (cosh xi - 1)^(i+s) / sinh^(l+s) xi, l - s <= i < l; on these images the weighted transform sqrt(rho tanh(pi rho) w_l w_s)/2 times the spherical transform is isometric"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/KTypeOppositeL2.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.closure_range_blockEN, Lightlike.Lorentz.SL2RPlancherel.norm_blockFN]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-v of the Plancherel formula on SL(2,R). The orthogonality is integral_hLRN_mul_phiN, the converse uses exists_hLRN_eq: a vector orthogonal to all images defines a functional on the test functions vanishing on the common kernel of the pairings with the discrete directions, hence a combination of them (mem_span_of_iInf_ker_le_ker), and the test functions are dense. The identification of the span with the discrete series matrix coefficients (equal spans by dimension) is the other stream's layer 3. Standard; no source consulted."
+  since: unreleased
+- id: LL-XXXX-l
+  title: "The K x K decomposition of L2(SL(2,R)): the map sending a continuous square-integrable f to its K x K-Fourier components sqrt(sinh xi) f_m(xi), m in Z^2, extends to a linear isometry from L2(SL(2,R)) to the Hilbert sum of countably many copies of L2(0, infinity), scaled by 2 pi: ||F||^2 = (2 pi)^2 sum_m ||F_m||^2, with the polarised identity"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/KKL2.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.kkL2, Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_tsum_kkL2, Lightlike.Lorentz.SL2RPlancherel.inner_eq_tsum_kkL2, Lightlike.Lorentz.SL2RPlancherel.kkL2_toLp_ae]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-v of the Plancherel formula on SL(2,R), first step of the assembly. The identity on continuous functions is lintegral_norm_sq_eq_kk (polar coordinates and Parseval on the torus of angles); the continuous square-integrable functions are dense in L2 because the Haar measure is regular (Lp.boundedContinuousFunction_dense), and LinearMap.extendOfIsometry gives the extension. Standard; no source consulted."
+  since: unreleased
+- id: LL-XXXX-m
+  title: "Plancherel formula of an opposite-sign block of SL(2,R): for natural l, s and H in L2(0, infinity), ||H||^2 = ||T(P_cont H)||^2 + ||P_disc H||^2, where P_cont is the projection onto the closure of the (l, -s) ladder images, T the isometric extension of the weighted transform sqrt(rho tanh(pi rho) w_l w_s)/2 times the spherical transform, and P_disc the projection onto the span of the min(l, s) discrete directions"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/KTypeOppositeIso.lean
+  decls: [Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_cont_add_disc, Lightlike.Lorentz.SL2RPlancherel.blockL2N]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-v of the Plancherel formula on SL(2,R). The continuous part is the orthocomplement of the discrete part (closure_range_blockEN); the extension uses the density of the images in their closure and LinearMap.extendOfIsometry. The identification of the discrete part with the discrete series matrix coefficients and their formal degrees is the other stream's layer 3. Standard; no source consulted."
+  since: unreleased
