@@ -2404,6 +2404,7 @@ import Lightlike.TemperleyLieb.KLCoef
 import Lightlike.TemperleyLieb.TopEntry
 import Lightlike.TemperleyLieb.ThirdBlock
 import Lightlike.TemperleyLieb.OneStrand
+import Lightlike.TemperleyLieb.KLThirdBlock
 import Lightlike.TemperleyLieb.MirrorTree
 import Lightlike.TemperleyLieb.Adjoint
 import Lightlike.Dirac.ConnesDistance
