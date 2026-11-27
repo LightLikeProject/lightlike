@@ -12,10 +12,13 @@ by stacking every tetrahedron through `v` with its own fresh vertex.
 * `link_stackAll_star`: after stacking the star of `v`, the link of `v` is the stacked link;
 * `flipAll K v g Ed opp`: then, for each original link edge `{x, y}` in `Ed` (with its two opposite link
   triangles `opp`), the 2-3 move on the two stacked tetrahedra `{v, x, y, a}`, `{v, x, y, b}` through it;
-  `forwardStep_flip`: flipping one more edge is one 2-3 move (`FlipData` collects the conditions).
+  `forwardStep_flip`: flipping one more edge is one 2-3 move (`FlipData` collects the conditions), and
+  `forwardMoves_flipAll`: flipping all of them is a chain of 2-3 moves;
+* `FlipData.link_flipAll`: the link of `v` after the flips is the stacked link without the two triangles
+  `e ∪ {a}`, `e ∪ {b}` of each flipped edge `e`, with the triangles `{x, a, b}`, `x ∈ e`, added.
 
-**Limits.** That the link of `v` after all flips is the link `L''` of the reduction, and the shellability of the
-pieces, are the next steps (not here).
+**Limits.** The split of the final link along a Hamiltonian cycle, and the shellability of the two pieces, are the
+next steps (not here).
 -/
 
 open Finset Lightlike.PL
@@ -671,6 +674,57 @@ theorem forwardMoves_flipAll {Ed : Finset (Finset V)} {opp : Finset V → Finset
     have he2 : #e = 2 := h.card_e (mem_insert_self e s)
     obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.1 he2
     exact (ih (h.mono (subset_insert _ s))).tail (forwardStep_flip h hes hxy)
+
+
+/-- **The link of `v` after the flips**: the stacked link without the two triangles `e ∪ {a}`, `e ∪ {b}` of each
+flipped edge `e`, with the triangles `{x, a, b}`, `x ∈ e`, added (`a`, `b` the labels of the two link triangles at
+`e`). -/
+theorem FlipData.link_flipAll {Ed : Finset (Finset V)} {opp : Finset V → Finset V × Finset V}
+    (h : FlipData K v g Ed opp) :
+    (flipAll K v g Ed opp).link v =
+      (((K.link v).biUnion fun τ => stackPieces τ (g (insert v τ))) \
+        (Ed.biUnion fun e => {insert (flipA v g opp e) e, insert (flipB v g opp e) e})) ∪
+      (Ed.biUnion fun e => e.image fun x => {x, flipA v g opp e, flipB v g opp e}) := by
+  ext σ
+  rw [Complex3.mem_link, h.mem_flipAll, ← h.stack.link_stackAll_star h.hv]
+  simp only [mem_union, mem_sdiff, mem_biUnion, mem_image, Complex3.mem_link, not_exists, not_and,
+    flipRemoved, flipAdded, mem_insert, mem_singleton]
+  constructor
+  · rintro ⟨hvσ, ⟨hS, hall⟩ | ⟨e, he, hadd⟩⟩
+    · refine .inl ⟨⟨hvσ, hS⟩, fun e he hm => ?_⟩
+      have hvA : v ∉ insert (flipA v g opp e) e := by
+        rw [mem_insert, not_or]; exact ⟨(h.ne_v_of_fresh (h.a_fresh he)).symm, h.v_notMem he⟩
+      have hvB : v ∉ insert (flipB v g opp e) e := by
+        rw [mem_insert, not_or]; exact ⟨(h.ne_v_of_fresh (h.b_fresh he)).symm, h.v_notMem he⟩
+      rcases hm with rfl | rfl
+      · exact hall e he (.inl rfl)
+      · exact hall e he (.inr rfl)
+    · refine .inr ⟨e, he, ?_⟩
+      rcases hadd with h1 | ⟨x, hx, h1⟩
+      · exfalso
+        have : v ∈ insert (flipA v g opp e) (insert (flipB v g opp e) e) := h1 ▸ mem_insert_self v σ
+        simp only [mem_insert] at this
+        rcases this with e1 | e1 | e1
+        · exact h.ne_v_of_fresh (h.a_fresh he) e1.symm
+        · exact h.ne_v_of_fresh (h.b_fresh he) e1.symm
+        · exact h.v_notMem he e1
+      · refine ⟨x, hx, ?_⟩
+        have hvx : v ∉ ({x, flipA v g opp e, flipB v g opp e} : Finset V) := by
+          simp only [mem_insert, mem_singleton, not_or]
+          exact ⟨fun e1 => h.v_notMem he (e1 ▸ hx), (h.ne_v_of_fresh (h.a_fresh he)).symm,
+            (h.ne_v_of_fresh (h.b_fresh he)).symm⟩
+        exact insert_left_inj hvx hvσ h1
+  · rintro (⟨⟨hvσ, hS⟩, hnot⟩ | ⟨e, he, x, hx, rfl⟩)
+    · refine ⟨hvσ, .inl ⟨hS, fun e he hm => ?_⟩⟩
+      rcases hm with h1 | h1
+      · exact hnot e he (.inl (insert_left_inj hvσ (by
+          rw [mem_insert, not_or]; exact ⟨(h.ne_v_of_fresh (h.a_fresh he)).symm, h.v_notMem he⟩) h1))
+      · exact hnot e he (.inr (insert_left_inj hvσ (by
+          rw [mem_insert, not_or]; exact ⟨(h.ne_v_of_fresh (h.b_fresh he)).symm, h.v_notMem he⟩) h1))
+    · refine ⟨?_, .inr ⟨e, he, .inr ⟨x, hx, rfl⟩⟩⟩
+      simp only [mem_insert, mem_singleton, not_or]
+      exact ⟨fun e1 => h.v_notMem he (e1 ▸ hx), (h.ne_v_of_fresh (h.a_fresh he)).symm,
+        (h.ne_v_of_fresh (h.b_fresh he)).symm⟩
 
 end Flip
 
