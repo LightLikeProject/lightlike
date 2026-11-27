@@ -42,6 +42,14 @@ The vertex is `eprlVertex` of `Lightlike/Spin4/Vertex.lean`, which contracts the
 along the edges of `K₅` with the orientation of ascending vertices. The orientation independence
 known for the Ooguri vertex (`vertexContr_neg`) is not claimed for it.
 
+The label `z` of the tetrahedron `s∖{s_a}` enters `eprlVertex` in the channel of the node `a` of
+`fifteenJSimplex`, whose legs are in the cyclic order `a+1, …, a+4`: a *positional* basis, which
+for a tetrahedron shared by two 4-simplices at positions of different parity is not the same basis
+on both sides (`Lightlike.SpinFoam.EPRLStateSum.positional_gluing_ne_intrinsic`). The state sum in
+the sorted basis of every tetrahedron, which glues, is
+`Lightlike.SpinFoam.EPRLStateSum.amplitudeI`; at `γ = 1` it is the Ooguri state sum up to an
+explicit sign twist (`Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_signed_ooguri`).
+
 ## References
 
 * `eprl-2008`, §III: the model, its vertex and face amplitudes.

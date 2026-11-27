@@ -120,7 +120,17 @@ coefficients of all holomorphic and antiholomorphic discrete series form an orth
 the projection onto its closed span is the sum over all series of the squared norms of the projections onto the
 isotypic subspaces, at most ‖f‖² [88]. The radial profile of `D_{2ν}⁻` of K-type (ν + k, −(ν + j)) is orthogonal to every
 image of a test function under the (ν + k)-fold raising chain [89], and also to the images that are continuous on
-the closed half-line and vanish only for large ξ [90].
+the closed half-line and vanish only for large ξ [90]; this holds for chains with an offset a ∈ {0, 1/2} of the
+K-type, i.e. for the radial profiles of `D_n⁻` for even and odd n alike [95].
+
+The radial profiles are real for a real normalisation constant, because the Taylor coefficients at 0 of a function
+holomorphic on the unit disc with h(conj w) = conj h(w) are real [93]. For s, l ≥ 1 the radial profiles of `D_{2ν}⁻`, 1 ≤ ν ≤
+min(l, s), times √(sinh ξ) form an orthogonal basis of the discrete part of the (l, −s) block of the `K × K`
+decomposition (`discSpan s l`) [94]; hence the sum over ν of the squared coefficients ⟨conj u_{(s−ν, l−ν)}, F⟩ equals
+(2π)² times the squared norm of the projection of the block F_{(2s, 2l)} onto `discSpan s l` [94], and summing over all
+blocks, the squared norms of the projections of F onto the even antiholomorphic discrete series add up to (2π)² times
+the squared norms of the projections of the blocks onto their discrete parts; the same holds for the holomorphic
+series applied to the complex conjugate of F [94].
 
 The irreducibility of the principal series is not yet formalized. [TODO]
 
@@ -365,11 +375,22 @@ non-vacuity check (stated, not proven) [41].
 90. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileBdry.lean -
     `Lorentz.SL2RPlancherel.integral_ladUp_mul_conj_of_cont`,
     `Lorentz.SL2RPlancherel.integral_chain_mul_conj_eq_zero`: the same orthogonality for chains of ladder images that
-    are continuous on [0, ∞) and vanish for large ξ but not near 0 (the images of the radial generators)
+    are continuous on [0, ∞) and vanish for large ξ but not near 0 (the images of the radial generators),
+    `Lorentz.SL2RPlancherel.integral_chain_mul_conj_eq_zero_off`: the same with an offset a of the K-type
 91. Lightlike/Lorentz/SL2RPlancherel/KKL2.lean - `Lorentz.SL2RPlancherel.kkL2`,
     `Lorentz.SL2RPlancherel.norm_sq_eq_tsum_kkL2`, `Lorentz.SL2RPlancherel.inner_eq_tsum_kkL2`
 92. Lightlike/Lorentz/SL2RPlancherel/KTypeOppositeIso.lean - `Lorentz.SL2RPlancherel.blockL2N`,
     `Lorentz.SL2RPlancherel.norm_sq_eq_cont_add_disc`
+93. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileReal.lean - `Lorentz.SL2RPlancherel.conj_discCoeff`,
+    `Lorentz.SL2RPlancherel.conj_profPoly`, `Lorentz.SL2RPlancherel.conj_profileFun`: the profile polynomials and the
+    radial profiles of the discrete series are real
+94. Lightlike/Lorentz/SL2RPlancherel/DiscreteBlock.lean - `Lorentz.SL2RPlancherel.span_psiVec_eq_discSpan`,
+    `Lorentz.SL2RPlancherel.sum_norm_sq_inner_uLpBar`, `Lorentz.SL2RPlancherel.tsum_norm_sq_discreteBar_even`,
+    `Lorentz.SL2RPlancherel.tsum_norm_sq_discrete_even`: the discrete part of the opposite-sign blocks is spanned by the
+    radial profiles of `D_{2ν}⁻`, and the even discrete series part of the Plancherel formula, block by block
+95. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileChain.lean -
+    `Lorentz.SL2RPlancherel.integral_chain_mul_profile_eq_zero`: ladder chain images with an offset a ∈ {0, 1/2} are
+    orthogonal to the radial profiles of `D_n⁻`, n = 2(a + ν)
 
 ## References
 
