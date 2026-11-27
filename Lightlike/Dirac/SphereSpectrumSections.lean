@@ -368,4 +368,65 @@ def smoothPairOf {f fS : E 2 → V} (hf : ContDiff ℝ ∞ f) (hfS : ContDiff �
 
 end Surjective
 
+section Spectrum
+
+/-- The smooth section of a two-chart eigenspinor. -/
+def sectionOf {f fS : E 2 → V} (hf : ContDiff ℝ ∞ f) (hfS : ContDiff ℝ ∞ fS)
+    (htr : ∀ y : E 2, y ≠ 0 → fS (inv2 y) = sphereT ρ y (f y)) : SpinorSection sphereSpinStructure ρ :=
+  SpinorSection.equivPair.symm (smoothPairOf hf hfS htr)
+
+lemma northMap_sectionOf {f fS : E 2 → V} (hf : ContDiff ℝ ∞ f) (hfS : ContDiff ℝ ∞ fS)
+    (htr : ∀ y : E 2, y ≠ 0 → fS (inv2 y) = sphereT ρ y (f y)) : northMap (sectionOf hf hfS htr) = f := by
+  funext x
+  have h := congrArg (fun P : sphereSpinStructure.SmoothPair ρ => P.1.1 (stereoN (modelEquiv2 x)))
+    (SpinorSection.equivPair.apply_symm_apply (smoothPairOf hf hfS htr))
+  change (sectionOf hf hfS htr).toField.rep true (stereoN (modelEquiv2 x)) = f x
+  refine h.trans ?_
+  show (pairOf (ρ := ρ) f fS).1 (stereoN (modelEquiv2 x)) = f x
+  simp only [pairOf, if_pos (pc_stereoN_ne (modelEquiv2 x)), invN_stereoN,
+    ContinuousLinearEquiv.symm_apply_apply]
+
+/-- **The eigensections** `D σ = λ σ` of the Dirac operator on the smooth sections of the spinor bundle of the
+2-sphere, as a submodule (`mem_eigenSections`). -/
+def eigenSections (ρ : CliffordRep 2 V) (lam : ℝ) : Submodule ℝ (SpinorSection sphereSpinStructure ρ) :=
+  (SphereEigenspace ρ lam).comap northMap
+
+lemma mem_eigenSections {σ : SpinorSection sphereSpinStructure ρ} {lam : ℝ} :
+    σ ∈ eigenSections ρ lam ↔ σ.dirac = lam • σ :=
+  ⟨fun h => dirac_eq_of_north σ lam h.2.1, northMap_mem⟩
+
+/-- The eigensections are the two-chart eigenspinors, through the north chart. -/
+def eigenSectionsEquiv (ρ : CliffordRep 2 V) (lam : ℝ) : eigenSections ρ lam ≃ₗ[ℝ] SphereEigenspace ρ lam :=
+  LinearEquiv.ofBijective (northMap.restrict fun _ h => h)
+    ⟨fun a b h => Subtype.ext (northMap_injective (congrArg Subtype.val h)), fun f => by
+      obtain ⟨hf, -, fS, hfS, htr⟩ := f.2
+      refine ⟨⟨sectionOf hf hfS htr, ?_⟩, Subtype.ext (northMap_sectionOf hf hfS htr)⟩
+      show northMap (sectionOf hf hfS htr) ∈ SphereEigenspace ρ lam
+      rw [northMap_sectionOf]; exact f.2⟩
+
+section Main
+
+variable [FiniteDimensional ℝ V] (hV : Module.finrank ℝ V = 4)
+include hV
+
+/-- **The Dirac spectrum of the round unit 2-sphere on the sections of its spinor bundle** (`GE5` trust check,
+for a Clifford module `V` of real dimension `4`): a smooth section `σ ≠ 0` with `D σ = λ σ` exists exactly for
+`λ = ±(k+1)`, `k ∈ ℕ`, and these eigenvalues have real multiplicity `4(k+1)` (complex multiplicity `2(k+1)`). -/
+theorem sphere_dirac_spectrum_sections (lam : ℝ) :
+    (eigenSections ρ lam ≠ ⊥ ↔ ∃ k : ℕ, lam = ((k + 1 : ℕ) : ℝ) ∨ lam = -((k + 1 : ℕ) : ℝ)) ∧
+    ∀ (k : ℕ) {ε : ℝ}, ε * ε = 1 →
+      Module.finrank ℝ (eigenSections ρ (ε * ((k + 1 : ℕ) : ℝ))) = 4 * (k + 1) := by
+  obtain ⟨h1, h2⟩ := sphere_spectrum ρ hV lam
+  refine ⟨?_, fun k ε hε => ?_⟩
+  · rw [← h1, ← Submodule.nontrivial_iff_ne_bot, ← Submodule.nontrivial_iff_ne_bot]
+    constructor
+    · intro h; exact (eigenSectionsEquiv ρ lam).symm.toEquiv.nontrivial
+    · intro h; exact (eigenSectionsEquiv ρ lam).toEquiv.nontrivial
+  · rw [(eigenSectionsEquiv ρ _).finrank_eq]
+    exact sphereEigenspace_finrank ρ hV k hε
+
+end Main
+
+end Spectrum
+
 end Lightlike.Dirac
