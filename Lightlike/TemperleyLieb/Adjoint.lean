@@ -1,5 +1,7 @@
 import Mathlib
 import Lightlike.TemperleyLieb.CupCap
+import Lightlike.TemperleyLieb.Vertex
+import Lightlike.TemperleyLieb.Reduction
 
 /-!
 # The vertical flip: the basis pairing of the model
@@ -90,5 +92,67 @@ theorem pairB_capOp (q : kˣ) (i : ℕ) (x y : ModelSpace k) :
       · have n1 : ¬ insertTwo τ i false true = σ := fun h => hr (e1.mp h).1
         have n2 : ¬ insertTwo τ i true false = σ := fun h => hr (e2.mp h).1
         simp [hr, Ne.symm hr, n1, n2]
+
+/-- The cup is adjoint to the cap, up to `-q`. -/
+theorem pairB_cupOp (q : kˣ) (i : ℕ) (x y : ModelSpace k) :
+    pairB (cupOp q i x) y = -(q : k) * pairB x (capOp q i y) := by
+  have h := pairB_capOp q i y x
+  have hq : (q : k) * ((q⁻¹ : kˣ) : k) = 1 := by simp
+  rw [pairB_comm (cupOp q i x), pairB_comm x, h]
+  linear_combination (-(pairB y (cupOp q i x))) * hq
+
+/-- A self-adjoint operator for the basis pairing. -/
+def IsSelfAdj (T : Module.End k (ModelSpace k)) : Prop := ∀ x y, pairB (T x) y = pairB x (T y)
+
+lemma IsSelfAdj.one : IsSelfAdj (1 : Module.End k (ModelSpace k)) := fun _ _ => rfl
+
+lemma IsSelfAdj.sub {S T : Module.End k (ModelSpace k)} (hS : IsSelfAdj S) (hT : IsSelfAdj T) :
+    IsSelfAdj (S - T) := by
+  intro x y
+  have hneg : ∀ z : ModelSpace k, -z = (-1 : k) • z := fun z => by simp
+  simp only [LinearMap.sub_apply, sub_eq_add_neg, hneg, pairB_add_left, pairB_add_right, pairB_smul_left,
+    pairB_smul_right, hS x y, hT x y]
+
+lemma IsSelfAdj.smul {T : Module.End k (ModelSpace k)} (c : k) (hT : IsSelfAdj T) : IsSelfAdj (c • T) := by
+  intro x y; simp only [LinearMap.smul_apply, pairB_smul_left, pairB_smul_right, hT x y]
+
+lemma IsSelfAdj.sandwich {A B : Module.End k (ModelSpace k)} (hA : IsSelfAdj A) (hB : IsSelfAdj B) :
+    IsSelfAdj (A * B * A) := by
+  intro x y; simp only [Module.End.mul_apply]; rw [hA, hB, hA]
+
+lemma IsSelfAdj.mul_comm {A B : Module.End k (ModelSpace k)} (hA : IsSelfAdj A) (hB : IsSelfAdj B)
+    (h : A * B = B * A) : IsSelfAdj (A * B) := by
+  intro x y
+  simp only [Module.End.mul_apply]
+  rw [hA, hB]
+  have := congrArg (fun T : Module.End k (ModelSpace k) => T y) h
+  simp only [Module.End.mul_apply] at this
+  rw [this]
+
+/-- The generators are self-adjoint. -/
+theorem isSelfAdj_modelE (q : kˣ) (j : ℕ) : IsSelfAdj (modelE q j : Module.End k (ModelSpace k)) := by
+  intro x y
+  rw [← cup_cap]
+  simp only [Module.End.mul_apply]
+  rw [pairB_cupOp, pairB_capOp]
+  have hq : (q : k) * ((q⁻¹ : kˣ) : k) = 1 := by simp
+  linear_combination (pairB x (cupOp q j (capOp q j y))) * hq
+
+/-- The Jones–Wenzl projectors are self-adjoint. -/
+theorem isSelfAdj_jwAt (q : kˣ) (s : ℕ) : ∀ n, IsSelfAdj (jwAt q s n : Module.End k (ModelSpace k))
+  | 0 => by simpa [jwAt, jw_zero] using IsSelfAdj.one
+  | 1 => by simpa [jwAt, jw_one] using IsSelfAdj.one
+  | n + 2 => by
+    unfold jwAt
+    rw [jw_succ_succ]
+    exact (isSelfAdj_jwAt q s (n + 1)).sub (((isSelfAdj_jwAt q s (n + 1)).sandwich (isSelfAdj_modelE q _)).smul _)
+
+/-- Nested cups are adjoint to nested caps, up to `(-q)^i`. -/
+theorem pairB_nestCup (q : kˣ) (l : ℕ) : ∀ i (x y : ModelSpace k),
+    pairB (nestCup q l i x) y = (-(q : k)) ^ i * pairB x (nestCap q l i y)
+  | 0, x, y => by simp [nestCup, nestCap]
+  | i + 1, x, y => by
+    simp only [nestCup, nestCap, Module.End.mul_apply]
+    rw [pairB_cupOp, pairB_nestCup q l i, pow_succ]; ring
 
 end Lightlike.TemperleyLieb
