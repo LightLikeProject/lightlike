@@ -100,4 +100,45 @@ theorem hLRN_zero_eq_hLR (G : ℝ → ℂ) (l : ℕ) : hLRN 0 G l = hLR 0 G l :=
   | zero => rfl
   | succ l ih => simp [hLRN, hLR, ih]
 
+/-- The function `(v - 1)^s G^{(s)}(v)` whose derivatives give the opposite-sign recursion. -/
+def oppGen (s : ℕ) (G : ℝ → ℂ) (v : ℝ) : ℂ := (((v - 1) ^ s : ℝ) : ℂ) * iteratedDeriv s G v
+
+theorem contDiff_oppGen (s : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) : ContDiff ℝ ∞ (oppGen s G) :=
+  (Complex.ofRealCLM.contDiff.comp ((contDiff_id.sub contDiff_const).pow s)).mul
+    (contDiff_iteratedDeriv_infty hG s)
+
+/-- **The opposite-sign recursion as a conjugated derivative**: on `v > 1`,
+`u_l = (v - 1)^{-s} · (d/dv)^l ((v - 1)^s G^{(s)})`. -/
+theorem uRecN_eq (s : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G) (l : ℕ) :
+    ∀ v : ℝ, 1 < v → uRecN s G l v =
+      (((v - 1) ^ (-(s : ℤ)) : ℝ) : ℂ) * iteratedDeriv l (oppGen s G) v := by
+  induction l with
+  | zero =>
+    intro v hv
+    have hv1 : v - 1 ≠ 0 := by linarith
+    simp only [uRecN, iteratedDeriv_zero, oppGen]
+    rw [← mul_assoc, ← Complex.ofReal_mul, zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ hv1),
+      Complex.ofReal_one, one_mul]
+  | succ l ih =>
+    intro v hv
+    have hv1 : v - 1 ≠ 0 := by linarith
+    have hev : uRecN s G l =ᶠ[𝓝 v] fun w =>
+        (((w - 1) ^ (-(s : ℤ)) : ℝ) : ℂ) * iteratedDeriv l (oppGen s G) w := by
+      filter_upwards [Ioi_mem_nhds hv] with w hw using ih w hw
+    have hz : HasDerivAt (fun w : ℝ => (w - 1) ^ (-(s : ℤ)))
+        ((Int.cast (-(s : ℤ)) : ℝ) * (v - 1) ^ (-(s : ℤ) - 1)) v :=
+      (hasDerivAt_zpow (-(s : ℤ)) (v - 1) (Or.inl hv1)).comp_sub_const v 1
+    have hP : HasDerivAt (iteratedDeriv l (oppGen s G)) (iteratedDeriv (l + 1) (oppGen s G) v) v := by
+      rw [iteratedDeriv_succ]
+      exact (((contDiff_iteratedDeriv_infty (contDiff_oppGen s hG) l).differentiable
+        (by simp)) v).hasDerivAt
+    have hd := hz.ofReal_comp.mul hP
+    show deriv (uRecN s G l) v + ((s / (v - 1) : ℝ) : ℂ) * uRecN s G l v = _
+    rw [hev.deriv_eq, show deriv (fun w : ℝ => (((w - 1) ^ (-(s : ℤ)) : ℝ) : ℂ) *
+      iteratedDeriv l (oppGen s G) w) v = _ from hd.deriv, ih v hv, zpow_sub_one₀ hv1]
+    have hv1C : ((v - 1 : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hv1
+    push_cast
+    field_simp
+    ring
+
 end Lightlike.Lorentz.SL2RPlancherel
