@@ -37,9 +37,6 @@ def nodeExp (J : Fin 5 → Fin 5 → ℕ) (K : Fin 5 → ℕ) (a : Fin 5) : ℕ 
   tetSignExp a (J a (a.succAbove 0)) (J a (a.succAbove 1)) (J a (a.succAbove 2))
     (J a (a.succAbove 3)) (K a)
 
-/-- The triangle part of the exponent of `recoupSign`. -/
-def triPart (J : Fin 5 → Fin 5 → ℕ) : ℕ := J 1 2 + J 1 4 + J 3 4 + J 0 2 + J 0 4 + J 2 4
-
 theorem neg_one_pow_of_eq_add {A B m : ℕ} (h : A = B + 2 * m) : ((-1 : ℝ)) ^ A = (-1) ^ B := by
   rw [h, pow_add, pow_mul]
   simp

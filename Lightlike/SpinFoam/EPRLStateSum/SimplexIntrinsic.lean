@@ -59,14 +59,21 @@ theorem recoupSign_mul_ampP (J : Fin 5 → Fin 5 → ℕ) (K : Fin 5 → ℕ) :
     fifteenJSimplex (J 0 2) (J 0 4) (J 0 1) (J 0 3) (J 2 4) (J 1 2) (J 2 3) (J 1 4)
       (J 3 4) (J 1 3) (K 0) (K 2) (K 4) (K 1) (K 3)) * h
 
-/-- The sum of `simpE_one_eq_sum_ampP` with the intrinsic node matrices `nodeI`. -/
+/-- The triangle part of the exponent of `recoupSign`: `J₁₂+J₁₄+J₃₄+J₀₂+J₀₄+J₂₄`. It depends on the triangle spins
+only (`recoupSign_eq`) and is the orientation sign of the ten links of the 4-simplex. -/
+def triPart (J : Fin 5 → Fin 5 → ℕ) : ℕ := J 1 2 + J 1 4 + J 3 4 + J 0 2 + J 0 4 + J 2 4
+
+/-- **The intrinsic vertex sum**: the Ooguri vertex amplitudes `ampP J l` (virtual spins `l` in the channel `(0 2 | 1 3)` of the
+sorted legs of each tetrahedron) with the sign `(-1)^(triPart J)` of the link orientations, in the sorted basis of each
+tetrahedron (the intrinsic matrices `nodeI`). The sorted label of a tetrahedron then labels the same basis vector from both
+adjacent 4-simplices, so that the sum over the labels is the basis-free contraction. -/
 noncomputable def simpEIAux (J : Fin 5 → Fin 5 → ℕ) (i : Fin 5 → ℕ) : ℝ :=
   ∑ l₀ ∈ range (J 0 1 + J 0 3 + 1), ∑ l₁ ∈ range (J 1 2 + J 1 4 + 1),
   ∑ l₂ ∈ range (J 2 3 + J 0 2 + 1), ∑ l₃ ∈ range (J 3 4 + J 1 3 + 1),
   ∑ l₄ ∈ range (J 0 4 + J 2 4 + 1),
     nodeI J 0 (i 0) l₀ * nodeI J 1 (i 1) l₁ * nodeI J 2 (i 2) l₂ * nodeI J 3 (i 3) l₃ *
       nodeI J 4 (i 4) l₄ *
-    (recoupSign J ![l₀, l₁, l₂, l₃, l₄] * ampP J ![l₀, l₁, l₂, l₃, l₄])
+    ((-1) ^ triPart J * ampP J ![l₀, l₁, l₂, l₃, l₄])
 
 /-- **The intrinsic EPRL vertex at `γ = 1`**: `simpEIAux` of the triangle spins and the tetrahedron
 labels of a 4-simplex, `0` if `s` is not a 4-simplex. -/

@@ -81,16 +81,6 @@ lemma col0_legs : ∀ (p p' : Fin 6) (a : Fin 5), p ≠ p' → p.succAbove a = p
     col0 (univ \ {p, p', p.succAbove (a.succAbove 3)}) = col0 (univ \ {p, p'}) := by
   unfold col0; decide +kernel
 
-/-- The sign exponents of the tetrahedra at the bone colouring are even. -/
-lemma col0_tetSignExp_even : ∀ (p p' : Fin 6) (a : Fin 5), p ≠ p' → p.succAbove a = p' →
-    Even (tetSignExp 1 (col0 (univ \ {p, p', p.succAbove (a.succAbove 0)}))
-      (col0 (univ \ {p, p', p.succAbove (a.succAbove 1)})) (col0 (univ \ {p, p', p.succAbove (a.succAbove 2)}))
-      (col0 (univ \ {p, p', p.succAbove (a.succAbove 3)})) (col0 (univ \ {p, p'}))) ∧
-    Even (tetSignExp 3 (col0 (univ \ {p, p', p.succAbove (a.succAbove 0)}))
-      (col0 (univ \ {p, p', p.succAbove (a.succAbove 1)})) (col0 (univ \ {p, p', p.succAbove (a.succAbove 2)}))
-      (col0 (univ \ {p, p', p.succAbove (a.succAbove 3)})) (col0 (univ \ {p, p'})))  := by
-  unfold col0 tetSignExp; decide +kernel
-
 /-- The triangle part of the sign of a simplex of `sphere6` at the bone colouring is even. -/
 lemma col0_triPart_even : ∀ p : Fin 6,
     Even (col0 (univ \ {p, p.succAbove 1, p.succAbove 2}) + col0 (univ \ {p, p.succAbove 1, p.succAbove 4}) +
@@ -257,29 +247,12 @@ lemma triPart_even_zero (g : Finset (Fin 6) → ℕ) (hg : ∀ f, g f = 0) (s : 
   exact ⟨0, rfl⟩
 
 
-/-- **The global sign is `1`** when the legs of every tetrahedron are `(0, 0, L, L)` and the triangle parts are even. -/
-lemma sign_eq_one (e : sphere6.tets × Bool ≃ sphere6.simps × Fin 5) (g : Finset (Fin 6) → ℕ)
-    (L : sphere6.tets → ℕ)
-    (hlegs : ∀ t, legJ e g t 0 = 0 ∧ legJ e g t 1 = 0 ∧ legJ e g t 2 = L t ∧ legJ e g t 3 = L t)
+/-- **The sign of the link orientations is `1`** when the triangle part of every simplex is even. -/
+lemma linkSign_eq_one (g : Finset (Fin 6) → ℕ)
     (htri : ∀ s : sphere6.simps, Even (triPart (complexJ sphere6 g s))) :
-    eprlGlobalSign sphere6 g L e = 1 := by
-  unfold eprlGlobalSign
-  have h1 : (-1 : ℝ) ^ (∑ s : sphere6.simps, triPart (complexJ sphere6 g s)) = 1 :=
-    Even.neg_one_pow (Finset.even_sum _ fun s _ => htri s)
-  rw [h1, one_mul]
-  refine Finset.prod_eq_one fun t _ => ?_
-  obtain ⟨h0, h1', h2, h3⟩ := hlegs t
-  have hE1 : Even (tetE1 sphere6 g L e t) := by
-    unfold tetE1
-    change Even (tetSignExp 1 (legJ e g t 0) (legJ e g t 1) (legJ e g t 2) (legJ e g t 3) (L t))
-    rw [h0, h1', h2, h3]; unfold tetSignExp; simp
-    exact ⟨L t, by omega⟩
-  have hE3 : Even (tetE3 sphere6 g L e t) := by
-    unfold tetE3
-    change Even (tetSignExp 3 (legJ e g t 0) (legJ e g t 1) (legJ e g t 2) (legJ e g t 3) (L t))
-    rw [h0, h1', h2, h3]; unfold tetSignExp; simp
-    exact ⟨L t, by omega⟩
-  exact Even.neg_one_pow ((hE1.mul_left _).add (hE3.mul_left _))
+    linkSign sphere6 g = 1 := by
+  unfold linkSign
+  exact Even.neg_one_pow (Finset.even_sum _ fun s _ => htri s)
 
 
 /-- `simpBox` only reads the entries off the diagonal. -/
@@ -358,7 +331,7 @@ lemma g_of_const (g : Finset (Fin 6) → ℕ) (hle : ∀ f, g f ≤ col0 f)
       unfold col0; rw [if_pos ⟨hs, by omega, by omega⟩]
     · rw [hnb f hs, col0_eq_zero_of_not_sub hs]
 
-/-- **The signed Ooguri sum** of `amplitudeI_one_eq_signed_ooguri`, for a weight `W` of the coloured complex. -/
+/-- **The Ooguri sum with the link signs** of `amplitudeI_one_eq_signed_ooguri`, for a weight `W` of the coloured complex. -/
 noncomputable def signedSum {V : Type*} [LinearOrder V] (K : Complex4 V) (cut : Finset V → ℕ)
     (e : K.tets × Bool ≃ K.simps × Fin 5) (W : (Finset V → ℕ) → ℝ) : ℝ :=
   ∑ c ∈ K.tris.pi (fun f => range (cut f + 1)),
@@ -378,7 +351,7 @@ noncomputable def signedSum {V : Type*} [LinearOrder V] (K : Complex4 V) (cut : 
             (complexJ K (Lightlike.PR.extS K.tris c) (e (t, false)).1 (e (t, false)).2
               ((e (t, false)).2.succAbove 3))
         then (1 : ℝ) else 0) *
-        (eprlGlobalSign K (Lightlike.PR.extS K.tris c) L e * W (extL K (Lightlike.PR.extS K.tris c) L))
+        (linkSign K (Lightlike.PR.extS K.tris c) * W (extL K (Lightlike.PR.extS K.tris c) L))
 
 /-- **`amplitudeI` at `γ = 1` is the signed Ooguri sum with the Ooguri weight.** -/
 theorem amplitudeI_one_eq_signedSum {V : Type*} [LinearOrder V] (K : Complex4 V) (cut : Finset V → ℕ)
@@ -505,8 +478,7 @@ theorem signedSum_col0 (e : sphere6.tets × Bool ≃ sphere6.simps × Fin 5)
     · intro hmem
       exact absurd (Fintype.mem_piFinset.2 fun t => mem_inter.2 ⟨zero_mem_box _ _, zero_mem_box _ _⟩) hmem
     · rw [prod_ind_eq_one e _ _ hI0,
-        sign_eq_one e _ _ (fun t => ⟨legJ_zero e _ g0 t 0, legJ_zero e _ g0 t 1, legJ_zero e _ g0 t 2,
-          legJ_zero e _ g0 t 3⟩) (triPart_even_zero _ g0), one_mul, one_mul]
+        linkSign_eq_one _ (triPart_even_zero _ g0), one_mul, one_mul]
       exact hW0 _ fun t => rfl
   · -- the bone colouring
     refine (Finset.sum_eq_single (fun t => col0 t.1) ?_ ?_).trans ?_
@@ -516,9 +488,7 @@ theorem signedSum_col0 (e : sphere6.tets × Bool ≃ sphere6.simps × Fin 5)
       exact absurd (Fintype.mem_piFinset.2 fun t => mem_inter.2
         ⟨mem_box_col0 e he _ g1 t false, mem_box_col0 e he _ g1 t true⟩) hmem
     · rw [prod_ind_eq_one e _ _ hI1,
-        sign_eq_one e _ _ (fun t => ⟨(legJ_col0 e he _ g1 t).1, (legJ_col0 e he _ g1 t).2.1,
-          (legJ_col0 e he _ g1 t).2.2.1, (legJ_col0 e he _ g1 t).2.2.2⟩) (triPart_even_col0 _ g1),
-        one_mul, one_mul]
+        linkSign_eq_one _ (triPart_even_col0 _ g1), one_mul, one_mul]
       exact hW1 _ fun t => rfl
 
 /-- **The EPRL state sum at `γ = 1` on the boundary of the 5-simplex with the bone cutoff is the signed Ooguri sum

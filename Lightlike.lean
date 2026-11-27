@@ -2315,10 +2315,6 @@ import Lightlike.SpinFoam.EPRLStateSum.SimplexBox
 import Lightlike.SpinFoam.EPRLStateSum.ComplexTetSum
 import Lightlike.SpinFoam.EPRLStateSum.ComplexLabelSum
 import Lightlike.SpinFoam.EPRLStateSum.ComplexOoguriShape
-import Lightlike.SpinFoam.EPRLStateSum.ComplexSignParity
-import Lightlike.SpinFoam.EPRLStateSum.ComplexSignTet
-import Lightlike.SpinFoam.EPRLStateSum.ComplexSignPair
-import Lightlike.SpinFoam.EPRLStateSum.ComplexSignTypes
 import Lightlike.SpinFoam.EPRLStateSum.ComplexSignedOoguri
 import Lightlike.SpinFoam.EPRLStateSum.ComplexIntrinsicAmp
 import Lightlike.SpinFoam.EPRLStateSum.TrustSphere
@@ -2326,7 +2322,6 @@ import Lightlike.SpinFoam.EPRLStateSum.Sphere6Sign
 import Lightlike.SpinFoam.EPRLStateSum.IntrinsicVertex
 import Lightlike.SpinFoam.EPRLStateSum.Orientation
 import Lightlike.SpinFoam.EPRLStateSum.BoneAmplitude
-import Lightlike.SpinFoam.EPRLStateSum.OrderDependence
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane

@@ -1,12 +1,10 @@
 import Lightlike.SpinFoam.EPRLStateSum.SignDecomp
 
 /-!
-# The intrinsic EPRL vertex as a signed Ooguri vertex, and the algebra of the tetrahedron signs
+# The algebra of the tetrahedron signs: positional against sorted node tensors
 
-* `simpEIAux_signed`: for symmetric triangle spins `J`, `simpEIAux J i` is the sum over the virtual
-  spins `l` of the five node matrices, times `(-1)^(triPart J)`, times the five tetrahedron signs
-  `(-1)^(nodeExp J l a)`, times the Ooguri vertex amplitude `ampP J l` (before the sign `ampSign`
-  inside `ampP` is removed, see `recoupSign_mul_ampP`).
+* `recoupSign_mul_ampP_eq`: for symmetric triangle spins `J`, the positional weight `recoupSign J l * ampP J l` is the sorted
+  weight `(-1)^(triPart J) * ampP J l` times the five tetrahedron signs `(-1)^(nodeExp J l a)`.
 * `tetSgn a t₀ t₁ t₂ t₃ l = (-1)^(tetSignExp a t₀ t₁ t₂ t₃ l)`: the sign of a tetrahedron at the
   position `a` of a simplex. `tetSgn_sq`: a sign squared is `1`, so a tetrahedron sitting at the same
   position in both its simplices contributes no sign (`tetSgn_mul_self_pos`); `tetSgn_two`: on
@@ -77,25 +75,15 @@ theorem neg_one_pow_sum_nodeExp (J : Fin 5 → Fin 5 → ℕ) (K : Fin 5 → ℕ
         (-1) ^ nodeExp J K 3 * (-1) ^ nodeExp J K 4 := by
   simp only [pow_add]
 
-/-- **The intrinsic EPRL vertex is a signed Ooguri vertex.** For symmetric `J`, `simpEIAux J i` is
-the sum over the virtual spins of the node matrices times
-`(-1)^(triPart J) · Π_a (-1)^(nodeExp J l a) · ampP J l`. -/
-theorem simpEIAux_signed (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J q p) (i : Fin 5 → ℕ) :
-    simpEIAux J i =
-      ∑ l₀ ∈ range (J 0 1 + J 0 3 + 1), ∑ l₁ ∈ range (J 1 2 + J 1 4 + 1),
-      ∑ l₂ ∈ range (J 2 3 + J 0 2 + 1), ∑ l₃ ∈ range (J 3 4 + J 1 3 + 1),
-      ∑ l₄ ∈ range (J 0 4 + J 2 4 + 1),
-        nodeI J 0 (i 0) l₀ * nodeI J 1 (i 1) l₁ * nodeI J 2 (i 2) l₂ * nodeI J 3 (i 3) l₃ *
-          nodeI J 4 (i 4) l₄ *
-        ((-1) ^ (triPart J) *
-          ((-1) ^ nodeExp J ![l₀, l₁, l₂, l₃, l₄] 0 * (-1) ^ nodeExp J ![l₀, l₁, l₂, l₃, l₄] 1 *
-            (-1) ^ nodeExp J ![l₀, l₁, l₂, l₃, l₄] 2 * (-1) ^ nodeExp J ![l₀, l₁, l₂, l₃, l₄] 3 *
-            (-1) ^ nodeExp J ![l₀, l₁, l₂, l₃, l₄] 4) *
-          ampP J ![l₀, l₁, l₂, l₃, l₄]) := by
-  unfold simpEIAux
-  refine Finset.sum_congr rfl fun l₀ _ => Finset.sum_congr rfl fun l₁ _ =>
-    Finset.sum_congr rfl fun l₂ _ => Finset.sum_congr rfl fun l₃ _ =>
-    Finset.sum_congr rfl fun l₄ _ => ?_
+/-- **The positional vertex weight is the sorted one times the tetrahedron signs.** For symmetric `J`,
+`recoupSign J l * ampP J l = ((-1)^(triPart J) * ampP J l) * Π_a (-1)^(nodeExp J l a)`: the positional (cyclic-order) and the
+sorted-order intertwiners of the channel `(0 2 | 1 3)` differ at the nodes `a = 1, 2, 3` by the signs `(-1)^(nodeExp J l a)`. -/
+theorem recoupSign_mul_ampP_eq (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J q p) (l : Fin 5 → ℕ) :
+    recoupSign J l * ampP J l =
+      ((-1) ^ triPart J * ampP J l) *
+        ((-1) ^ nodeExp J l 0 * (-1) ^ nodeExp J l 1 * (-1) ^ nodeExp J l 2 * (-1) ^ nodeExp J l 3 *
+          (-1) ^ nodeExp J l 4) := by
   rw [recoupSign_eq J hJ, pow_add, neg_one_pow_sum_nodeExp]
+  ring
 
 end Lightlike.SpinFoam.EPRLStateSum
