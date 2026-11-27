@@ -396,3 +396,11 @@ Proved on `oscillatory/qu1` (`Lightlike/TuraevViro/QSixJLimit.lean`): regularise
 r = 4..8, 82 pairs, 20 nonzero): `L_x + L_{2r-2-x} = 0` to 1.6e-28 with `L_x` as in the design above. Remaining for L6: the
 term-level limit `genBETerm → (k=0 value | 0 | L_x)`, the pair sum by `Finset.sum_involution`, the RHS limit, and the assembly
 `qBiedenharnElliott_of_genBE`.
+
+### L6 progress (27 Nov, resumed)
+Correction: at the pause (07e2c0d) the file did not compile (the 16 GB build guard stopped it; `racahTermG_out`,
+`racahRG_root`, `delta2Reg_above` and `SRgAt_reflect` had errors), so the "proved" above was not yet true. On
+`oscillatory/qu1` 9f4099006 the whole file compiles (47 s), with `SRgAt_reflect` and the new `limTerm_reflect`
+(`L_{2r-2-x} = -L_x` for the limit term `limTerm`, all three x-triads above the level). Cause of the blow-up: omega calls
+with many `/2` atoms and truncated subtractions in context; the cure is small arithmetic lemmas and half-sums
+generalized to variables. Remaining: the term-level limit, the pair sum, the RHS limit, the assembly.
