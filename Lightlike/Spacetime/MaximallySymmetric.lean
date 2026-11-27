@@ -57,6 +57,8 @@ def antiDeSitterMetric (m : ℕ) (L : ℝ) (x : Fin (m + 1) → ℝ) :
 theorem isOpen_hyperbolicDomain (n : ℕ) : IsOpen (hyperbolicDomain n) :=
   isOpen_lt (by fun_prop) continuous_const
 
+/-- The Poincaré-ball metric `4 δ / (1 - |x|²)²` is a coordinate metric (smooth, symmetric,
+invertible) on the open unit ball. -/
 theorem isCoordMetric_hyperbolic (n : ℕ) :
     IsCoordMetric (hyperbolicMetric n) (hyperbolicDomain n) := by
   have hne : ∀ x ∈ hyperbolicDomain n, 1 - ∑ i, x i ^ 2 ≠ 0 := fun x hx =>
@@ -66,6 +68,8 @@ theorem isCoordMetric_hyperbolic (n : ℕ) :
   · refine ContDiffOn.div contDiffOn_const (by fun_prop) fun x hx => pow_ne_zero _ (hne x hx)
   · exact div_ne_zero (by norm_num) (pow_ne_zero _ (hne x hx))
 
+/-- The de Sitter metric `(L²/η²) η_{μν}` of radius `L ≠ 0` is a coordinate metric on the
+conformal-time chart `x₀ < 0`. -/
 theorem isCoordMetric_deSitter (m : ℕ) {L : ℝ} (hL : L ≠ 0) :
     IsCoordMetric (deSitterMetric m L) (deSitterDomain m) := by
   have hne : ∀ x ∈ deSitterDomain m, x 0 ≠ 0 := fun x hx => hx.ne
@@ -76,6 +80,8 @@ theorem isCoordMetric_deSitter (m : ℕ) {L : ℝ} (hL : L ≠ 0) :
   · exact mul_ne_zero (div_ne_zero (pow_ne_zero _ hL) (pow_ne_zero _ (hne x hx)))
       (etaDiag_ne_zero i)
 
+/-- The anti-de Sitter metric `(L²/z²) η_{μν}` of radius `L ≠ 0` is a coordinate metric on the
+Poincaré patch `z > 0`. -/
 theorem isCoordMetric_antiDeSitter (m : ℕ) {L : ℝ} (hL : L ≠ 0) :
     IsCoordMetric (antiDeSitterMetric m L) (antiDeSitterDomain m) := by
   have hne : ∀ x ∈ antiDeSitterDomain m, x (Fin.last m) ≠ 0 := fun x hx => hx.ne'

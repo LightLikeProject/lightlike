@@ -105,7 +105,7 @@ as a hypothesis (conditional) [46]. The Dirac operator squares to minus the Lapl
 f) = -Δ f for a C² function with values in a Clifford module [47]. Lichnerowicz in a frame: for a frame
 connection with antisymmetric connection form and a curvature with the Riemann symmetries, D² f = −Σ
 ∇²f(eᵢ, eᵢ) + (s/4) f, given the Ricci identity for the frame Hessian (conditional) [48]. On the unit
-2-sphere the curvature term of the Lichnerowicz formula is s/4 and not s/2 [49]. For every k and sign
+2-sphere the curvature term of the Lichnerowicz formula is s/4 and not s/2 [49]. On a manifold with a spin structure (atlas form: local orthonormal frames with Spin(n) lifts of the frame changes) the spin connection, the Dirac operator and the rough Laplacian are frame independent, and for a smooth spinor field D²ψ = ∇*∇ψ + (R/4)ψ with R the scalar curvature of the Levi-Civita connection [72]. For every k and sign
 epsilon the eigenvalue epsilon (k+1) of the Dirac operator of the unit 2-sphere in the stereographic
 chart has an injective linear image of k+1 copies of the spinor module among its eigenspinors [50].
 Within the angular polynomial class, a flat eigenspinor of the Dirac operator of the unit 2-sphere in
@@ -274,6 +274,8 @@ For a tangent vector `(a, v)`, `v ⊥ ω`, the boundary metric of the image is `
 69. Lightlike/GR/AdSConformalBoundary/NullConeAction.lean - `adsNullVec_mul`
 70. Lightlike/GR/AdSConformalBoundary/NullConeConformal.lean - `adsBdyMetric_conformal`
 71. Lightlike/GR/AdSConformalBoundary/NullConeSummary.lean - `ads_isometry_conformal_boundary`
+72. Lightlike/Dirac/SpinLichnerowicz.lean - `Dirac.SpinStructure.dirac_sq_eq_rough_add_scal_div_four`,
+    `Dirac.SpinStructure.dirac_sq`
 
 ## References
 
