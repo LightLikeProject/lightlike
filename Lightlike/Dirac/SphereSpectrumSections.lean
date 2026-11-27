@@ -396,6 +396,7 @@ lemma northMap_sectionOf {f fS : E 2 → V} (hf : ContDiff ℝ ∞ f) (hfS : Con
 def eigenSections (ρ : CliffordRep 2 V) (lam : ℝ) : Submodule ℝ (SpinorSection sphereSpinStructure ρ) :=
   (SphereEigenspace ρ lam).comap northMap
 
+/-- A section is in `eigenSections ρ λ` exactly when `D σ = λ σ`. -/
 lemma mem_eigenSections {σ : SpinorSection sphereSpinStructure ρ} {lam : ℝ} :
     σ ∈ eigenSections ρ lam ↔ σ.dirac = lam • σ :=
   ⟨fun h => dirac_eq_of_north σ lam h.2.1, northMap_mem⟩
