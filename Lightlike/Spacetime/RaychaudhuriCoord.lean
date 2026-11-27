@@ -11,7 +11,7 @@ expansion, shear and rotation. Here, for a coordinate metric `g` on an open `U �
 geodesic on `U` (`vᶜ ∇_c vᵈ = 0`), with `∇_b vᵃ = ∂_b vᵃ + Γᵃ_{bc} vᶜ` (`covD`) and the expansion `Θ = ∇ₐ vᵃ`
 (`expansion`): **`vᶜ ∂_c Θ = -(∇_b vᵃ)(∇ₐ vᵇ) - R_{σν} vᵠ vᵛ`** (`raychaudhuri_coord`), in the library's `ricci`
 convention. No normalisation of `v` is used. The index computation is `Raychaudhuri.raychaudhuri_algebra`
-(fable1's, `RaychaudhuriAlgebra.lean`).
+(`RaychaudhuriAlgebra.lean`).
 -/
 
 open Filter Topology
