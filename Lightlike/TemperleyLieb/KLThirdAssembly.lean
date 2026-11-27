@@ -177,11 +177,145 @@ lemma kl_lower_1_present {a b c e₀ d₀ m i : ℕ} (hmb : m ≤ b) (hmz : m �
   omega
 
 /-- For `m = 0` the `h = 0` term forces the `c` term. -/
-lemma kl_lower_0_imp_c {a b c e₀ d₀ i : ℕ} (hia : i ≤ a) (hiz : i ≤ b + (c + 1) - 2 * 0)
-    (hv : ValidA a b c 1 e₀ d₀ 1) (hi : e₀ + d₀ + 1 = 0 + i)
-    (h0 : 1 ≤ i ∧ KLAdm b c 1 0 0 0 0 ∧ KLAdm a (b + c - 2 * 0) 1 (i - 1) 1 0 i ∧ KLAdm a b c e₀ d₀ 0 (i - 1)) :
-    KLAdm a b (c + 1) e₀ (d₀ + 1) 0 i ∧ KLAdm (a + b - 2 * e₀) c 1 d₀ 1 0 (d₀ + 1) := by
+lemma kl_lower_0_imp_c {a b c e₀ d₀ m i : ℕ} (hm0 : m = 0) (hia : i ≤ a) (hiz : i ≤ b + (c + 1) - 2 * m)
+    (hv : ValidA a b c 1 e₀ d₀ 1) (hi : e₀ + d₀ + 1 = m + i)
+    (h0 : 1 ≤ i ∧ KLAdm b c 1 m 0 0 m ∧ KLAdm a (b + c - 2 * m) 1 (i - 1) 1 0 i ∧ KLAdm a b c e₀ d₀ m (i - 1)) :
+    KLAdm a b (c + 1) e₀ (d₀ + 1) m i ∧ KLAdm (a + b - 2 * e₀) c 1 d₀ 1 0 (d₀ + 1) := by
+  subst hm0
   obtain ⟨he, hd₀, hg, -⟩ := hv
   simp only [KLAdm, le_min_iff] at he hd₀ h0 ⊢
   omega
+set_option maxHeartbeats 1000000 in
+/-- **The Kauffman–Lins third-block recursion for `g₀ = 1`**, on the two terms of the left side. -/
+theorem kl_third_lower (q : kˣ) {a b c e₀ d₀ m i : ℕ}
+    (hq2 : ∀ x, 1 ≤ x → x ≤ 2 * (a + b + c) + 6 → (q : k) ^ (2 * x) ≠ 1)
+    (hmb : m ≤ b) (hmz : m ≤ c + 1) (hia : i ≤ a) (hiz : i ≤ b + (c + 1) - 2 * m) (hv : ValidA a b c 1 e₀ d₀ 1)
+    (hi : e₀ + d₀ + 1 = m + i) :
+    klCoef q b c 1 m 0 0 m * (klCoef q a (b + c - 2 * m) 1 (i - 1) 1 0 i * klCoef q a b c e₀ d₀ m (i - 1)) +
+      klCoef q b c 1 (m - 1) 1 0 m * (klCoef q a (b + c - 2 * (m - 1)) 1 i 1 1 i * klCoef q a b c e₀ d₀ (m - 1) i) =
+      klCoef q a b (c + 1) e₀ (d₀ + 1) m i * klCoef q (a + b - 2 * e₀) c 1 d₀ 1 0 (d₀ + 1) := by
+  classical
+  have hv' := hv
+  obtain ⟨he, hd₀, hg, -⟩ := hv'
+  have he1 := he.trans (min_le_left _ _); have he2 := he.trans (min_le_right _ _)
+  have hd1 := hd₀.trans (min_le_left _ _); have hd2 := hd₀.trans (min_le_right _ _)
+  have hD : (q : k) - (q : k)⁻¹ ≠ 0 := hD_of_pow q (N := 2 * (a + b + c) + 6) (by omega) hq2
+  have hnz := qfac_ne_of_pow q (N := 2 * (a + b + c) + 6) (by omega) hq2
+  have hqb : ∀ n, 1 ≤ n → n ≤ 2 * (a + b + c) + 6 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  have hnz3 : ∀ n, n ≤ a + b + c + 3 → qfac q n ≠ 0 := fun n hn => hnz n (by omega)
+  have hqb3 : ∀ n, 1 ≤ n → n ≤ a + b + c + 3 → qb q n ≠ 0 := fun n h1 h2 => hqb n h1 (by omega)
+  set N := a + 2 * b - 2 * e₀ + c - d₀ + 1 - m + 1
+  set δθ := deltaKL q (a + b - 2 * e₀) / thetaKL q a b (a + b - 2 * e₀)
+  set Sc := ∑ z ∈ range N, tetHat q (a + b - e₀ : ℕ) (a + b - 2 * e₀ + c - d₀ : ℕ)
+        (b + c + 1 - m : ℕ) (a + b + c - m - e₀ - d₀ : ℕ) (a + 2 * b - 2 * e₀ + c - d₀ - m : ℕ)
+        (a + b + c - e₀ + 1 - m : ℕ) (a + b + c - e₀ - d₀ : ℕ) z
+  set S0 := ∑ z ∈ range N, tetHat q (a + b - e₀ : ℕ) (a + b - 2 * e₀ + c - d₀ : ℕ)
+        (b + c - m : ℕ) (a + b + c - m - e₀ - d₀ : ℕ) (a + 2 * b - 2 * e₀ + c - d₀ - m : ℕ)
+        (a + b + c - e₀ - m : ℕ) (a + b + c - e₀ - d₀ : ℕ) z
+  set S1 := ∑ z ∈ range N, tetHat q (a + b - e₀ : ℕ) (a + b - 2 * e₀ + c - d₀ : ℕ)
+        (b + c + 1 - m : ℕ) (a + b + c + 1 - m - e₀ - d₀ : ℕ) (a + 2 * b - 2 * e₀ + c - d₀ + 1 - m : ℕ)
+        (a + b + c - e₀ + 1 - m : ℕ) (a + b + c - e₀ - d₀ : ℕ) z
+  set Pcp := tetPre q a b (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ - 1) (a + b - 2 * e₀) (b + c + 1 - 2 * m) (a + b - e₀)
+        (a + b - 2 * e₀ + c - d₀) (b + c + 1 - m) (a + b + c - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ - m)
+        (a + b + c - e₀ + 1 - m) (a + b + c - e₀ - d₀) /
+        thetaKL q (a + b - 2 * e₀) (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ - 1)
+  set P0p := tetPre q a b c (a + b - 2 * e₀ + c - 2 * d₀) (a + b - 2 * e₀) (b + c - 2 * m) (a + b - e₀)
+        (a + b - 2 * e₀ + c - d₀) (b + c - m) (a + b + c - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ - m)
+        (a + b + c - e₀ - m) (a + b + c - e₀ - d₀) /
+        thetaKL q (a + b - 2 * e₀) c (a + b - 2 * e₀ + c - 2 * d₀)
+  set P1p := tetPre q a b c (a + b - 2 * e₀ + c - 2 * d₀) (a + b - 2 * e₀) (b + c + 2 - 2 * m) (a + b - e₀)
+        (a + b - 2 * e₀ + c - d₀) (b + c + 1 - m) (a + b + c + 1 - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ + 1 - m)
+        (a + b + c - e₀ + 1 - m) (a + b + c - e₀ - d₀) /
+        thetaKL q (a + b - 2 * e₀) c (a + b - 2 * e₀ + c - 2 * d₀)
+  set lc := qb q (d₀ + 1) * qb q (b + c + 2 - 2 * m)
+  set l0 := qb q (b + c - m + 2) * qb q (a - i + 1)
+  set l1 := qb q (b - e₀ + c - d₀ + 1 - m) * qb q (b + 1 - m)
+  have htel : lc * Sc - l0 * S0 - l1 * S1 = 0 := kl_tel_lower q hq2 hmb hmz hia hiz hv hi
+  -- presence
+  set Pc : Prop := KLAdm a b (c + 1) e₀ (d₀ + 1) m i ∧ KLAdm (a + b - 2 * e₀) c 1 d₀ 1 0 (d₀ + 1)
+  set P0 : Prop := 1 ≤ i ∧ KLAdm b c 1 m 0 0 m ∧ KLAdm a (b + c - 2 * m) 1 (i - 1) 1 0 i ∧ KLAdm a b c e₀ d₀ m (i - 1)
+  set A0v := qb q (b + c - m + 2) * qb q (c - m + 1) / (qb q (c + 1) * qb q (b + c - 2 * m + 2)) *
+    (qb q i / qb q (b + c - 2 * m + 1))
+  set Cc : k := if Pc then qb q (d₀ + 1) / qb q (c + 1) * Pcp else 0
+  set C0 : k := if P0 then A0v * P0p else 0
+  set C1 : k := if 1 ≤ m then qb q m / qb q (c + 1) * P1p else 0
+  -- the empty boxes
+  have hSc : ¬ Pc → Sc = 0 := fun h => by
+    have := kl_lower_c_present hmb hmz hia hiz hv hi h
+    exact sum_tetHat_eq_zero q N fun z => by omega
+  have hS0 : ¬ P0 → S0 = 0 := fun h => by
+    have := kl_lower_0_present hmb hmz hia hiz hv hi h
+    exact sum_tetHat_eq_zero q N fun z => by omega
+  have hS1 : m = 0 → S1 = 0 := fun h => sum_tetHat_eq_zero q N fun z => by omega
+  -- the three terms
+  have eC : klCoef q a b (c + 1) e₀ (d₀ + 1) m i * klCoef q (a + b - 2 * e₀) c 1 d₀ 1 0 (d₀ + 1) = Cc * (δθ * Sc) := by
+    by_cases h : Pc
+    · simp only [Cc, if_pos h]
+      rw [kl_hat_lower_c q h.1 hi, klCoef_one_10' q h.2 (fun n hn => hnz n (by omega))]
+      ring
+    · simp only [Cc, if_neg h, zero_mul]
+      by_cases h1 : KLAdm a b (c + 1) e₀ (d₀ + 1) m i
+      · rw [klCoef_eq_zero_of_not (fun h2 => h ⟨h1, h2⟩), mul_zero]
+      · rw [klCoef_eq_zero_of_not h1, zero_mul]
+  have e0 : klCoef q b c 1 m 0 0 m * (klCoef q a (b + c - 2 * m) 1 (i - 1) 1 0 i * klCoef q a b c e₀ d₀ m (i - 1)) =
+      C0 * (δθ * S0) := by
+    by_cases h : P0
+    · simp only [C0, if_pos h]
+      obtain ⟨hi1, hA, hB, hT⟩ := h
+      have hB' : KLAdm a (b + c - 2 * m) 1 (i - 1) 1 0 (i - 1 + 1) := by rwa [Nat.sub_add_cancel hi1]
+      rw [kl_hat_lower_0 q hT hi hi1, klCoef_one_00' q hA (fun n hn => hnz n (by omega)),
+        show klCoef q a (b + c - 2 * m) 1 (i - 1) 1 0 i = klCoef q a (b + c - 2 * m) 1 (i - 1) 1 0 (i - 1 + 1) by
+          rw [Nat.sub_add_cancel hi1],
+        klCoef_one_10' q hB' (fun n hn => hnz n (by omega)), Nat.sub_add_cancel hi1]
+      simp only [A0v]; ring
+    · simp only [C0, if_neg h, zero_mul]
+      by_cases hi1 : 1 ≤ i
+      · by_cases hA : KLAdm b c 1 m 0 0 m
+        · by_cases hB : KLAdm a (b + c - 2 * m) 1 (i - 1) 1 0 i
+          · rw [klCoef_eq_zero_of_not (fun hT => h ⟨hi1, hA, hB, hT⟩)]; ring
+          · rw [klCoef_eq_zero_of_not hB]; ring
+        · rw [klCoef_eq_zero_of_not hA]; ring
+      · rw [klCoef_eq_zero_of_not (a := a) (b := b + c - 2 * m) (c := 1) (e := i - 1) (d := 1) (f := 0) (d' := i)
+          (fun hk => by simp only [KLAdm, le_min_iff] at hk; omega)]; ring
+  have e1 : klCoef q b c 1 (m - 1) 1 0 m * (klCoef q a (b + c - 2 * (m - 1)) 1 i 1 1 i * klCoef q a b c e₀ d₀ (m - 1) i) =
+      C1 * (δθ * S1) := by
+    by_cases hm : 1 ≤ m
+    · simp only [C1, if_pos hm]
+      obtain ⟨hA, hB, hT⟩ := kl_lower_1_present hmb hmz hia hiz hv hi hm
+      have hA' : KLAdm b c 1 (m - 1) 1 0 (m - 1 + 1) := by rwa [Nat.sub_add_cancel hm]
+      rw [kl_hat_lower_1 q hT hi hm, klCoef_one_11' q hB (fun n hn => hnz n (by omega)),
+        show klCoef q b c 1 (m - 1) 1 0 m = klCoef q b c 1 (m - 1) 1 0 (m - 1 + 1) by rw [Nat.sub_add_cancel hm],
+        klCoef_one_10' q hA' (fun n hn => hnz n (by omega)), Nat.sub_add_cancel hm]
+      ring
+    · simp only [C1, if_neg hm, zero_mul]
+      rw [klCoef_eq_zero_of_not (a := b) (b := c) (c := 1) (e := m - 1) (d := 1) (f := 0) (d' := m)
+        (fun hk => by simp only [KLAdm, le_min_iff] at hk; omega)]; ring
+  -- the combination
+  have comb : Cc * Sc - C0 * S0 - C1 * S1 = 0 := by
+    rcases Nat.eq_zero_or_pos m with hm0 | hm
+    · have hlc : lc ≠ 0 := mul_ne_zero (hqb _ (by omega) (by omega)) (hqb _ (by omega) (by omega))
+      refine comb_of_prop (lp := lc) (Cp := Cc) hlc htel (by ring) ?_ ?_
+      · by_cases h : P0
+        · have hc := kl_lower_0_imp_c hm0 hia hiz hv hi h
+          have rel := kl_rel_lower_c0 q hnz3 hqb3 hi hia hv hc.1 hc.2 h.2.1 h.2.2.2 h.1
+          simp only [Cc, C0, if_pos h, if_pos (show Pc from hc)]
+          linear_combination (-S0) * rel
+        · rw [hS0 h]; ring
+      · rw [hS1 hm0]; ring
+    · have hm1 : 1 ≤ m := hm
+      have hl1 : l1 ≠ 0 := mul_ne_zero (hqb _ (by omega) (by omega)) (hqb _ (by omega) (by omega))
+      obtain ⟨hA1, hB1, hT1⟩ := kl_lower_1_present hmb hmz hia hiz hv hi hm1
+      refine comb_of_prop (lp := l1) (Cp := C1) hl1 htel ?_ ?_ (by ring)
+      · by_cases h : Pc
+        · have rel := kl_rel_lower_c1 q hnz3 hqb3 hi hia hv h.1 h.2 hA1 hT1 hm1
+          simp only [Cc, C1, if_pos h, if_pos hm1]
+          linear_combination Sc * rel
+        · rw [hSc h]; ring
+      · by_cases h : P0
+        · have rel := kl_rel_lower_01 q hnz3 hqb3 hi hia hv h.2.1 h.2.2.2 h.1 hA1 hT1 hm1
+          simp only [C0, C1, if_pos h, if_pos hm1]
+          linear_combination S0 * rel
+        · rw [hS0 h]; ring
+  rw [e0, e1, eC]
+  linear_combination (-δθ) * comb
 end Lightlike.TemperleyLieb
