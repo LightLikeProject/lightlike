@@ -665,6 +665,7 @@ import Lightlike.Lorentz.SL2RPlancherel.CasimirSymmetry
 import Lightlike.Lorentz.SL2RPlancherel.DiscreteOrth
 import Lightlike.Lorentz.SL2RPlancherel.DiscreteBoundary
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalDiscreteOrth
+import Lightlike.Lorentz.SL2RPlancherel.CasimirTest
 import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Linearity
 import Lightlike.Lorentz.SL2RPlancherel.WeightIntegrable
