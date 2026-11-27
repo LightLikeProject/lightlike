@@ -657,7 +657,7 @@ milestones:
       - id: m3
         kind: main
         text: "The principal series (even and odd) and the discrete series of SL(2,R) are irreducible; the statement excludes only the known reducible point, the odd principal series at rho = 0"
-        decls: []
+        decls: [Lightlike.Lorentz.SL2R.principalSeries_isIrreducible, Lightlike.Lorentz.SL2R.discreteSeries_isIrreducible, Lightlike.Lorentz.SL2R.discreteSeriesMinus_isIrreducible]
         hint: "The done-when of HA3 requires irreducibility. Not stated on main (rg irreducible in SL2R*.lean, SL2RPlancherel/*.lean finds nothing)."
       - id: p1
         kind: piece
