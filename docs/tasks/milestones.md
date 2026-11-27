@@ -285,6 +285,7 @@ it to PL topology, layer 3 to topological 3-manifolds.
 | PL6 | 3 | Moise's theorem: every topological 3-manifold has a triangulation, unique up to PL homeomorphism | R |
 | PL7a | - | Assembly up to PL homeomorphism: PL-homeomorphic closed combinatorial 3-manifolds have triangulations related by the moves on `Complex3`; consequences for the state sums | M |
 | PL7b | - | Assembly up to homeomorphism: homeomorphic closed 3-manifolds have triangulations related by the moves on `Complex3` (needs Moise's theorem, PL6); consequences for the state sums | R |
+| PL7c | - | Unconditional triangulation independence of the regularised Ponzano–Regge amplitude on the PL side | R |
 
 - **PL1, done when:** the definitions of the title (complexes in every dimension; links, stars,
   joins, cones; stellar subdivisions and welds; bistellar moves; combinatorial manifolds and PL
@@ -313,6 +314,12 @@ it to PL topology, layer 3 to topological 3-manifolds.
   invariant under the moves, is proven to be an invariant of closed 3-manifolds up to PL homeomorphism (from PL2 and PL4); and a theorem, or a docs note cited in the API map, states which PL invariance of the
   Ponzano–Regge amplitude follows from PL2 and PL4, with its cutoff and gauge-tree conditions.
 - **PL7b, done when:** the same up to homeomorphism (from PL7a and Moise's theorem, PL6).
+- **PL7c, done when:** `PachnerForwardHyp` is proven (any two triangulations of one closed combinatorial
+  3-manifold on `Complex3` have a common descendant under forward Pachner moves), so that LL-0522 holds
+  without that hypothesis; the route is Adiprasito–Pak, arXiv:2404.05930, Theorems 1.1 and 1.3 (common
+  stellar subdivisions), with PL7a's p4. Trust checks: an explicit common forward descendant of two
+  different triangulations of S³; the edge case of PL7a's p4 (an edge subdivision is not itself a forward
+  descendant).
 
 ### Quantum groups and state-sum TQFTs
 
