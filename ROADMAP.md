@@ -37,7 +37,7 @@ groups the order is alphabetical; it is not a ranking. Each area lists:
   most other areas.
 - **Open:** in the field, weak and strong cosmic censorship. In the plan: intrinsic curvature on
   smooth manifolds (GE1), global causal structure (GE2) and Penrose's singularity theorem (GE4).
-- **Milestones:** 15 · [milestones](docs/tasks/milestones.md#lorentzian-and-riemannian-geometry) · [tasks](docs/tasks/README.md#lorentzian-and-riemannian-geometry) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+geometry%22)
+- **Milestones:** 16 · [milestones](docs/tasks/milestones.md#lorentzian-and-riemannian-geometry) · [tasks](docs/tasks/README.md#lorentzian-and-riemannian-geometry) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+geometry%22)
 
 ### Cosmology
 
