@@ -158,9 +158,49 @@ theorem act_aR (ν ξ : ℝ) (f : ℝ → ℂ) (x : ℝ) :
   push_cast
   ring
 
+lemma continuous_kVecP (ν : ℝ) (k : ℤ) : Continuous (kVecP ν k) := by
+  unfold kVecP
+  refine Continuous.mul ?_ ?_
+  · refine continuous_iff_continuousAt.2 fun x => ?_
+    have hpos : (0 : ℝ) < 1 + x ^ 2 := by positivity
+    have hc : ContinuousAt (fun y : ℝ => 1 + y ^ 2) x := by fun_prop
+    exact ContinuousAt.comp (g := fun a : ℝ => (a : ℂ) ^ ((I * ν - 1) / 2))
+      (Complex.continuousAt_ofReal_cpow_const _ _ (Or.inr hpos.ne')) hc
+  · refine Continuous.zpow₀ ((Complex.continuous_ofReal.sub continuous_const).div
+      (Complex.continuous_ofReal.add continuous_const) fun x => ofReal_add_I_ne_zero x) k ?_
+    intro x
+    left
+    exact div_ne_zero (ofReal_sub_I_ne_zero x) (ofReal_add_I_ne_zero x)
+
+theorem memLp_kVecP (ν : ℝ) (k : ℤ) : MemLp (kVecP ν k) 2 volume := by
+  rw [memLp_two_iff_integrable_sq_norm (continuous_kVecP ν k).aestronglyMeasurable]
+  refine integrable_inv_one_add_sq.congr (Filter.Eventually.of_forall fun x => ?_)
+  have hpos : (0 : ℝ) < 1 + x ^ 2 := by positivity
+  simp only
+  rw [norm_kVecP, ← Real.rpow_mul_natCast hpos.le]
+  norm_num
+  rw [Real.rpow_neg_one]
+
+/-- The `K`-type vector `e_k` as a vector of `L²(ℝ)`. -/
+def kVecL2 (ν : ℝ) (k : ℤ) : L2R := (memLp_kVecP ν k).toLp (kVecP ν k)
+
+/-- **The `K`-types of the even principal series**: `π(k_θ) e_k = e^{-2ikθ} e_k` in `L²(ℝ)`. -/
+theorem principalSeries_rot_kVecL2 (ν θ : ℝ) (k : ℤ) :
+    principalSeries 0 ν (rot θ) (kVecL2 ν k) = Complex.exp (-(2 * k * θ * I)) • kVecL2 ν k := by
+  refine Lp.ext ?_
+  have h1 := coeFn_principalSeries 0 ν (rot θ) (kVecL2 ν k)
+  have h2 := ae_eq_comp_mob (rot θ) (MemLp.coeFn_toLp (memLp_kVecP ν k))
+  have h3 := Lp.coeFn_smul (Complex.exp (-(2 * k * θ * I))) (kVecL2 ν k)
+  have h4 : (kVecL2 ν k : ℝ → ℂ) =ᵐ[volume] kVecP ν k := MemLp.coeFn_toLp (memLp_kVecP ν k)
+  filter_upwards [h1, h2, h3, h4, ae_den_ne_zero (rot θ)] with x e1 e2 e3 e4 hx
+  simp only [Function.comp_apply] at e2
+  rw [e1, e3, Pi.smul_apply, e4, smul_eq_mul, ← act_rot_kVecP ν θ k x hx, act]
+  show mult 0 ν (den (rot θ) x) * (kVecL2 ν k) (mob (rot θ) x) = _
+  rw [show (kVecL2 ν k : ℝ → ℂ) (mob (rot θ) x) = kVecP ν k (mob (rot θ) x) from e2]
+
 /-- Non-vacuity: the hypothesis `den (k_θ) x ≠ 0` holds for `θ = 0`. -/
 example (ν : ℝ) (k : ℤ) (x : ℝ) :
     act 0 ν (rot 0) (kVecP ν k) x = Complex.exp (-(2 * k * (0 : ℝ) * I)) * kVecP ν k x :=
-  act_rot_kVecP ν 0 k x (by simp [den_rot])
+  act_rot_kVecP ν 0 k x (by simp)
 
 end Lightlike.Lorentz.SL2RPlancherel
