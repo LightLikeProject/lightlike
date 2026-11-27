@@ -1,6 +1,7 @@
 import Mathlib
 import Lightlike.Lorentz.SL2RPlancherel.KKParseval
 import Lightlike.Lorentz.SL2RPlancherel.SphericalL2
+import Lightlike.Lorentz.SL2RPlancherel.ParityKK
 
 /-!
 # The `K × K` decomposition of `L²(SL(2,ℝ))`
@@ -319,6 +320,25 @@ theorem inner_eq_tsum_kkL2 (G F : Lp ℂ 2 haarR) :
   rw [inner_smul_left, inner_smul_right, map_inv₀, Complex.conj_ofReal]
   have hne : ((2 * π : ℝ) : ℂ) ≠ 0 := by exact_mod_cast (by positivity : (2 * π : ℝ) ≠ 0)
   field_simp
+
+/-- Each `K × K` component is continuous in `F`. -/
+theorem continuous_kkL2_apply (m : Fin 2 → ℤ) : Continuous fun F : Lp ℂ 2 haarR => kkL2 F m := by
+  have h : (fun F : Lp ℂ 2 haarR => kkL2 F m) = fun F =>
+      (((2 * π : ℝ) : ℂ))⁻¹ • lp.evalCLM ℂ (fun _ : Fin 2 → ℤ => L2Ioi) 2 m (kkIso F) := rfl
+  rw [h]
+  exact (continuous_const (y := (((2 * π : ℝ) : ℂ))⁻¹)).smul
+    ((lp.evalCLM ℂ (fun _ : Fin 2 → ℤ => L2Ioi) 2 m).continuous.comp kkIso.continuous)
+
+/-- **The components of mixed parity vanish** for every `F ∈ L²(SL(2,ℝ))`: `F_{m,n} = 0` when
+`m - n` is odd (`kkCoeff_eq_zero_of_odd`, extended by density). -/
+theorem kkL2_eq_zero_of_odd {m n : ℤ} (h : Odd (m - n)) (F : Lp ℂ 2 haarR) : kkL2 F ![m, n] = 0 := by
+  refine denseRange_kkE.induction_on F (isClosed_eq (continuous_kkL2_apply _) continuous_const) ?_
+  intro f
+  rw [kkE_apply, kkL2_toLp f.2.1 f.2.2]
+  have hz : kkSrc f ![m, n] = 0 := by
+    funext ξ; simp [kkSrc, kkCoeff_eq_zero_of_odd f.2.1 h ξ]
+  rw [← MemLp.toLp_zero (MemLp.zero : MemLp (0 : ℝ → ℂ) 2 (volume.restrict (Ioi (0 : ℝ))))]
+  exact MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq hz)
 
 /-- Non-vacuity: Parseval for the zero class. -/
 example : ‖(0 : Lp ℂ 2 haarR)‖ ^ 2 = (2 * π) ^ 2 * ∑' m : Fin 2 → ℤ, ‖kkL2 0 m‖ ^ 2 :=
