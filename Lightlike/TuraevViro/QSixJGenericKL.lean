@@ -46,7 +46,7 @@ variable {k : Type*} [Field k]
 off the admissible totals both sides vanish. -/
 theorem Fc_eq_klCoef_of (hKL : FcEqKL k) (q : kˣ) (hδ : loopVal q ≠ 0) {a b c e d f d' : ℕ}
     (hN : 1 ≤ a + b + c) (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
-    (hq : ∀ n, 1 ≤ n → n ≤ a + b + c + 3 → (q : k) ^ (2 * n) ≠ 1)
+    (hq : ∀ n, 1 ≤ n → n ≤ 2 * (a + b + c) + 6 → (q : k) ^ (2 * n) ≠ 1)
     (hea : e ≤ a) (heb : e ≤ b) (hfb : f ≤ b) (hfc : f ≤ c) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
     (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
     Fc q a b c e d f d' = klCoef q a b c e d f d' := by

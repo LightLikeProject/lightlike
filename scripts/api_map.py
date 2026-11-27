@@ -324,6 +324,9 @@ def lint_registry(root: Path, reg: list[dict]) -> list[str]:
                 errs.append(f"{i}: a main result cites its source")
         if e.get("tier") == "exploratory" and "/Exploratory/" not in str(e.get("file")):
             errs.append(f"{i}: an exploratory result lives in an Exploratory/ folder")
+        if e.get("source") == "exploratory" and "/Exploratory/" not in str(e.get("file")):
+            errs.append(f"{i}: `source: exploratory` is only for files in an Exploratory/ folder "
+                        f"(use `source: pending` while no source is attached)")
         if st == "conditional" and not e.get("hypotheses"):
             errs.append(f"{i}: a conditional result lists its hypotheses")
         if st in ("stated", "retired") and not e.get("note"):
@@ -387,7 +390,7 @@ def counts(reg: list[dict]) -> dict:
     c["open"] = sum(e["status"] in ("conditional", "stated") for e in live)
     pend = [e for e in live if COMPARISON_PENDING in str(e.get("note", "")).lower()]
     c["pending"] = len(pend)
-    # An entry whose source is `exploratory` or `structural` cites no source: nothing is named to compare with.
+    # An entry whose source is a string (`pending`, `structural`) cites no source: nothing is named to compare with.
     c["pending_own"] = sum(isinstance(e.get("source"), str) for e in pend)
     c["pending_cited"] = c["pending"] - c["pending_own"]
     c["limits"] = sum("Limits:" in str(e.get("note", "")) for e in live)
@@ -417,7 +420,7 @@ def read_count(reg: list[dict]) -> list[str]:
            "the table below lists them with their hypotheses.",
            f"- {c['pending']} entries still have the note \"Comparison pending\": the statement was not compared with the "
            f"text of a source. {c['pending_cited']} of them cite a source whose text at the cited location was not "
-           f"read against the statement; {c['pending_own']} cite no source (their `source` is `exploratory` or "
+           f"read against the statement; {c['pending_own']} cite no source (their `source` is `pending` or "
            "`structural`: no source is named, so there was nothing to compare with; many are textbook statements for "
            "which a source still has to be chosen and read). The kernel has checked their proofs; a person has not "
            "checked that the statement says what the literature says.",
@@ -505,18 +508,23 @@ def summary(reg: list[dict]) -> str:
 
     human = ("No entry has had expert human review yet" if not h else
              f"{count(h, 'entry has', 'entries have')} had expert human review")
-    text = (f"The [catalog](docs/RESULTS.md) has {count(len(live), 'entry', 'entries')}, each citing "
-            f"the source of its statement: {count(c['proven'], 'proven result', 'proven results')}"
+    k = counts(reg)
+    # An entry whose `source` is a string (`pending`: none attached yet, `structural`) cites no source.
+    nosrc_n = sum(isinstance(e.get("source"), str) for e in live)
+    text = (f"The [catalog](docs/RESULTS.md) has {count(len(live), 'entry', 'entries')}: "
+            f"{count(c['proven'], 'proven result', 'proven results')}"
             f"{', ' if c['stated'] else ' and '}"
             f"{count(c['conditional'], 'conditional result', 'conditional results')} (proven under "
             f"hypotheses that are named Lean propositions)"
             + (f" and {count(c['stated'], 'stated target', 'stated targets')} (the statement is "
                f"defined in Lean, the proof is open)" if c['stated'] else "") +
-            f". Lean's kernel has checked every proof. Statements are "
+            f". {count(nosrc_n, 'entry does', 'entries do')} not yet cite a source for the statement; "
+            f"the other {len(live) - nosrc_n} cite one"
+            f", of which {k['pending_cited']} were not yet read against the text at the cited location. "
+            f"Lean's kernel has checked every proof. Statements are "
             f"reviewed against their sources by agents, since the kernel cannot check that a statement matches "
             f"its source. {human}, and a review of any entry is welcome "
             f"([how to report a mismatch](#review)).")
-    k = counts(reg)
     kinds = sum(k[x] for x in KINDS)
     text2 = (f"Read the count with care ([details](docs/RESULTS.md#how-to-read-the-count)): "
              f"{count(kinds, 'entry is', 'entries are')} a supporting lemma, an elementary fact or a wrapper of a "
@@ -633,6 +641,8 @@ def selftest() -> int:
         ("planted: kind without a note", "REG:tier: established", "tier: established\n  kind: supporting", True),
         ("planted: RESULTS.md out of date", "RES", "", True),
         ("main result accepted", "REG:  since:", "  main: true\n  source:\n    refs:\n      - {ref: toy-2000, location: \"Theorem 1\"}\n  since:", False),
+        ("planted: source exploratory outside an Exploratory/ folder", "REG:  since:", "  source: exploratory\n  since:", True),
+        ("source pending is accepted", "REG:  since:", "  source: pending\n  since:", False),
         ("planted: main result without a source", "REG:  since:", "  main: true\n  since:", True),
         ("planted: main result not proven", "REG:status: proven", "status: retired\n  note: gone\n  main: true\n  source:\n    refs:\n      - {ref: toy-2000, location: \"Theorem 1\"}\n", True),
         ("planted: main not true", "REG:  since:", "  main: false\n  source:\n    refs:\n      - {ref: toy-2000, location: \"Theorem 1\"}\n  since:", True),
@@ -688,6 +698,12 @@ def selftest() -> int:
     ok = bool(stability([], base)) and not stability(base, base)
     fails += not ok
     print(f"{'ok  ' if ok else 'FAIL'} planted: a removed ID is caught by --base")
+    one = yaml.safe_load(GOOD_REG)[0]
+    planted = [dict(one, source="pending"), dict(one, source="structural"), dict(one), dict(one)]
+    text = " ".join(summary(planted).split())
+    ok = "2 entries do not yet cite a source for the statement; the other 2 cite one" in text
+    fails += not ok
+    print(f"{'ok  ' if ok else 'FAIL'} planted: the README counts the entries whose source is pending or structural")
     print("selftest:", "OK" if not fails else f"FAILED ({fails})")
     return 1 if fails else 0
 

@@ -79,7 +79,7 @@ theorem exists_chart_parametrix_delta (hg : Upstream.GeodesicExpansion.IsRiemMet
         ∀ ε > 0, ∃ t₀ > 0, ∀ t ∈ Ioo (0 : ℝ) t₀, ∀ p, ‖p - x‖ < r' →
           |(∫ y, H t p y * F y) - F p / √(g p).det| ≤ ε := by
   obtain ⟨r, u, H, hr, hu0, hHd, hGa, -, ⟨Ω, θ, σ, V, hΩo, hxΩ, hmem, hΩU, hVs, hus, hVd, hσV, hθ1, hθ0, hθr,
-    -, hHc, ⟨c, hc, hσlow⟩, ⟨A, hA⟩, hH⟩, herr⟩ := exists_chart_parametrix hg hx N
+    -, -, hHc, -, ⟨c, hc, hσlow⟩, ⟨A, hA⟩, hH⟩, herr⟩ := exists_chart_parametrix hg hx N
   refine ⟨r, u, H, hr, hu0, hHd, hGa, hHc, herr, ?_⟩
   -- the Taylor bound of the world function
   obtain ⟨rT, C₁, hrT, hC₁, hT⟩ := exists_abs_pairing_sub_le hg.coord.toLightlike hΩo hVs hx hxΩ
@@ -94,7 +94,7 @@ theorem exists_chart_parametrix_delta (hg : Upstream.GeodesicExpansion.IsRiemMet
   have hKΩ : closedBall ((x, x) : (Fin n → ℝ) × (Fin n → ℝ)) (ρΩ / 2) ⊆ Ω :=
     (closedBall_subset_ball (by linarith)).trans hρΩs
   have hcs : ContinuousOn (fun q => ∑ k ∈ Finset.range N, |u (k + 1) q|) Ω :=
-    continuousOn_finset_sum _ fun k _ => (hus (k + 1)).continuousOn.abs
+    continuousOn_finsetSum _ fun k _ => (hus (k + 1)).continuousOn.abs
   obtain ⟨M, hM⟩ := (isCompact_closedBall ((x, x) : (Fin n → ℝ) × (Fin n → ℝ)) (ρΩ / 2)).exists_bound_of_continuousOn
     (hcs.mono hKΩ)
   -- the uniform lower bound of the metric

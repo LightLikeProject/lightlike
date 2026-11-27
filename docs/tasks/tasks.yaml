@@ -3,12 +3,12 @@
 # The plan only: who works on a task, and whether it is done, is on its GitHub issue.
 summary:
   tasks: 306
-  by_kind: {"milestone": 217, "proof": 66, "upstream": 23}
+  by_kind: {"milestone": 218, "proof": 65, "upstream": 23}
   by_size: {"S": 23, "M": 122, "L": 112, "R": 48}
-  by_difficulty: {"intermediate": 145, "advanced": 80, "research-level": 81}
-  by_area: {"geometry": 50, "cosmology": 29, "semiclassical": 9, "cft": 5, "dynamics": 3, "gauge-constrained": 5, "harmonic-analysis": 17, "operator-algebras": 22, "asymptotics": 5, "qft-rg": 6, "pl-topology": 13, "quantum-groups": 11, "random-geometry": 5, "asymptotic-safety": 4, "canonical-qg": 16, "causal-sets": 12, "dynamical-triangulations": 5, "gft-tensor": 8, "holography": 8, "low-dim-gravity": 7, "matrix-models": 5, "ncg": 6, "perturbative-qg": 8, "regge": 6, "spin-foams": 20, "string-theory": 11, "twistors": 6, "other": 4}
+  by_difficulty: {"intermediate": 145, "advanced": 81, "research-level": 80}
+  by_area: {"geometry": 51, "cosmology": 29, "semiclassical": 9, "cft": 5, "dynamics": 3, "gauge-constrained": 5, "harmonic-analysis": 17, "operator-algebras": 22, "asymptotics": 5, "qft-rg": 6, "pl-topology": 13, "quantum-groups": 10, "random-geometry": 5, "asymptotic-safety": 4, "canonical-qg": 16, "causal-sets": 12, "dynamical-triangulations": 5, "gft-tensor": 8, "holography": 8, "low-dim-gravity": 7, "matrix-models": 5, "ncg": 6, "perturbative-qg": 8, "regge": 6, "spin-foams": 20, "string-theory": 11, "twistors": 6, "other": 4}
   by_source_class: {"sourced": 283, "structural": 23}
-  by_priority_basis: {"canonical": 135, "highly cited": 83, "unlocks many": 5, "recent": 13, "other": 47}
+  by_priority_basis: {"canonical": 134, "highly cited": 83, "unlocks many": 5, "recent": 13, "other": 48}
 tasks:
   - id: "T-GE1"
     kind: "milestone"
@@ -903,6 +903,24 @@ tasks:
       - {"id": "t2", "kind": "trust", "text": "In two dimensions the variation of ∫√g R vanishes (Gauss-Bonnet)", "decls": ["Lightlike.isEHCritical_two_dim", "Lightlike.einsteinUp_two_dim"], "hint": "Λ = 0, coordinate ℝ²."}
       - {"id": "t3", "kind": "trust", "text": "A wrong sign of Λ gives the wrong de Sitter radius", "decls": ["Lightlike.closedDeSitter_wrong_sign", "Lightlike.closedDeSitter_einsteinEq"]}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
+  - id: "T-GE16"
+    kind: "milestone"
+    title: "Spinors on Lorentzian spacetimes: Spin(1,3) → SO⁺(1,3), spin structures on oriented, time-oriented Lorentzian 4-manifolds, the Dirac operator in signature (−+++)"
+    milestone: "GE16"
+    area: "geometry"
+    tier: "established"
+    source_class: "sourced"
+    source: "lawson-michelsohn-1989, Chapter: I. Clifford Algebras, Spin Groups and Their Representations"
+    priority: 16
+    priority_basis: "other"
+    size: "L"
+    difficulty: "advanced"
+    mode: "exclusive"
+    deps: ["T-GE1", "T-GE2", "T-GE5"]
+    checks: ["the kernel of `Spin⁺(1,3) → SO⁺(1,3)` is `{+1, −1}` and the group is `SL(2,ℂ)`", "the free Dirac equation has exactly the positive and negative energy plane waves with `E² = |p|² + m²`"]
+    release: "not-scheduled"
+    issue: 439
+    labels: ["milestone", "area: geometry", "size: L", "advanced"]
   - id: "T-CO1"
     kind: "milestone"
     title: "The FLRW spacetime on `I × Σ` with `Σ` of constant curvature `k`; perfect fluids; the Friedmann equations from the Einstein equations, for every `k`"
@@ -1855,7 +1873,7 @@ tasks:
     checklist:
       - {"id": "m1", "kind": "main", "text": "The unitary irreducible representations of SL(2,R) used by JT gravity and AdS3 (principal and discrete series) are defined and unitary", "decls": ["Lightlike.Lorentz.SL2R.principalSeries", "Lightlike.Lorentz.SL2R.principalSeries_mem_unitary", "Lightlike.Lorentz.SL2R.discreteSeries", "Lightlike.Lorentz.SL2R.discreteSeries_mem_unitary"], "hint": "Discrete series: only D_n^+ (holomorphic) on main; D_n^- not found. Irreducibility of either family is not stated (rg irreducible in SL2R*.lean, SL2RPlancherel/*.lean finds nothing)."}
       - {"id": "m2", "kind": "main", "text": "The Plancherel formula for L2(SL(2,R)): principal series with density rho tanh(pi rho), discrete series, all K-types", "decls": [], "hint": "Only the spherical (K-biinvariant) part is on main: Lightlike.Lorentz.SL2RPlancherel.sphericalL2Equiv, Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_sph. Missing: non-spherical K-types, discrete-series weights (n - 1/2), the statement tying the abstract decomposition of L2(SL(2,R)) to the density."}
-      - {"id": "m3", "kind": "main", "text": "The principal series (even and odd) and the discrete series of SL(2,R) are irreducible; the statement excludes only the known reducible point, the odd principal series at rho = 0", "decls": [], "hint": "The done-when of HA3 requires irreducibility. Not stated on main (rg irreducible in SL2R*.lean, SL2RPlancherel/*.lean finds nothing)."}
+      - {"id": "m3", "kind": "main", "text": "The principal series (even and odd) and the discrete series of SL(2,R) are irreducible; the statement excludes only the known reducible point, the odd principal series at rho = 0", "decls": ["Lightlike.Lorentz.SL2R.principalSeries_isIrreducible", "Lightlike.Lorentz.SL2R.discreteSeries_isIrreducible", "Lightlike.Lorentz.SL2R.discreteSeriesMinus_isIrreducible"], "hint": "The done-when of HA3 requires irreducibility. Not stated on main (rg irreducible in SL2R*.lean, SL2RPlancherel/*.lean finds nothing)."}
       - {"id": "p1", "kind": "piece", "text": "The principal series of SL(2,R) is a strongly continuous unitary representation", "decls": ["Lightlike.Lorentz.SL2R.principalSeries", "Lightlike.Lorentz.SL2R.principalSeries_mem_unitary", "Lightlike.Lorentz.SL2R.continuous_principalSeries_action"]}
       - {"id": "p2", "kind": "piece", "text": "The discrete series D_n^+ is a unitary representation on a non-trivial holomorphic subspace of the Bergman space", "decls": ["Lightlike.Lorentz.SL2R.discreteSeries", "Lightlike.Lorentz.SL2R.discreteSeries_mem_unitary", "Lightlike.Lorentz.SL2R.holoSubmodule_ne_bot"], "hint": "D_n^- is missing."}
       - {"id": "p3", "kind": "piece", "text": "The spherical Plancherel transform is an isometry onto its image on K-biinvariant functions", "decls": ["Lightlike.Lorentz.SL2RPlancherel.sphericalL2Equiv", "Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_sph"]}
@@ -2832,6 +2850,7 @@ tasks:
     deps: ["T-PL2", "T-PL4", "T-PL7a"]
     checks: ["an explicit common forward descendant of two different triangulations of S³", "the edge case of PL7a's p4 (an edge subdivision is not itself a forward descendant)"]
     release: "not-scheduled"
+    issue: 436
     labels: ["milestone", "area: pl-topology", "size: R", "research-level"]
   - id: "T-QU1"
     kind: "milestone"
@@ -2853,9 +2872,9 @@ tasks:
     ranking: 20
     labels: ["milestone", "area: quantum-groups", "size: L", "advanced"]
     checklist:
-      - {"id": "m1", "kind": "main", "text": "The q-Biedenharn–Elliott identity (Lightlike.TV.qBiedenharnElliott hr) holds for every level r ≥ 4, as a theorem with no hypothesis", "decls": [], "hint": "Proven only at r = 3 (Lightlike.TV.qBiedenharnElliott_three, Lightlike/TuraevViro/LevelOne.lean). At r = 4 and r = 5 it is proven in the task files Tasks/QU/T_QU1_P2.lean and T_QU1_P4.lean (Lightlike.TV.qBiedenharnElliott_four, qBiedenharnElliott_five; no sorry), which are not in the Lightlike library, so not listed. The all-r statement qBiedenharnElliott_all is a sorry stub (Tasks/QU/T_QU1_P6.lean)."}
+      - {"id": "m1", "kind": "main", "text": "The q-Biedenharn–Elliott identity (Lightlike.TV.qBiedenharnElliott hr) holds for every level r ≥ 4, as a theorem with no hypothesis", "decls": ["Lightlike.TV.qBiedenharnElliott_all"], "hint": "Lightlike.TV.qBiedenharnElliott_all (Lightlike/TuraevViro/QBiedenharnElliott.lean) proves it for every r ≥ 2: the Kauffman–Lins form of the recoupling coefficient at generic q (Fc_eq_klCoef) gives the generic identity GenBE at every angle with sin(nθ) ≠ 0, and the limit θ → π/r gives the identity at the root of unity. The r = 3, 4, 5 forms (qBiedenharnElliott_three in LevelOne.lean; _four, _five in the task files Tasks/QU/T_QU1_P2.lean and T_QU1_P4.lean) are special cases."}
       - {"id": "m2", "kind": "main", "text": "The q-orthogonality identity (Lightlike.TV.qOrthogonality hr) holds for every level r ≥ 4, as a theorem with no hypothesis", "decls": ["Lightlike.TV.Refl.qOrthogonality_proved"], "hint": "qOrthogonality_proved holds for all r ≥ 2 (hypothesis 2 ≤ r only), so it covers r ≥ 4."}
-      - {"id": "p1", "kind": "piece", "text": "The Turaev–Viro invariance theorems under the 2-3 and 1-4 moves hold for every level r ≥ 4 without q-Biedenharn–Elliott and q-orthogonality as hypotheses", "decls": [], "hint": "Close but not this: Lightlike.TV.turaevViro_move23_of_BE and Lightlike.TV.turaevViro_move14_of_BE (orthogonality discharged, still take qBiedenharnElliott hr), Lightlike.TV.turaevViro_move23 and turaevViro_move14 (conditional). Missing: the unconditional versions for r ≥ 4, which follow from m1."}
+      - {"id": "p1", "kind": "piece", "text": "The Turaev–Viro invariance theorems under the 2-3 and 1-4 moves hold for every level r ≥ 4 without q-Biedenharn–Elliott and q-orthogonality as hypotheses", "decls": ["Lightlike.TV.turaevViro_move23_all", "Lightlike.TV.turaevViro_move14_all"], "hint": "Lightlike.TV.turaevViro_move23_all and turaevViro_move14_all (Lightlike/TuraevViro/TuraevViroMoves.lean): the normalised Turaev–Viro state sum is invariant under the 2-3 and 1-4 moves at every level r ≥ 2, with no hypothesis (q-Biedenharn–Elliott is qBiedenharnElliott_all, q-orthogonality is qOrthogonality_proved)."}
       - {"id": "t1", "kind": "trust", "text": "Known q-6j values at a root of unity, and the q-Biedenharn–Elliott and q-orthogonality identities on concrete instances, agree with the Lean definitions", "decls": ["Lightlike.TV.Test.q6j4_110_110", "Lightlike.TV.Test.q6j4_112_110", "Lightlike.TV.Test.q6j4_121_121", "Lightlike.TV.Test.q6j4_000_111_sq", "Lightlike.TV.Test.tv4_orth_instance", "Lightlike.TV.Test.tv4_be_instance"], "hint": "Level r = 4 only; no check against a published table of q-6j values at other levels (q6j4_* are hand-computed values)."}
       - {"id": "t2", "kind": "trust", "text": "A wrong value of q makes one of the identities (q-Biedenharn–Elliott or q-orthogonality) fail", "decls": ["Lightlike.TV.Test.tv4_wrong_q_fails"], "hint": "Close but not this: Lightlike.TV.Test.tv4_classical_dims_fail (Lightlike/TuraevViro/Tests.lean) breaks both identities with classical dimensions, a wrong model rather than a wrong value of q. Missing: a counterexample with a different q."}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
@@ -2953,25 +2972,6 @@ tasks:
     decl: "Lightlike.TV.qOrthogonality_all"
     routes: ["The q-Racah formula and q-hypergeometric summation (Kirillov–Reshetikhin 1989).", "Representation theory of U_q(sl₂) at roots of unity (Turaev, Quantum invariants of knots and 3-manifolds, 1994).", "Kauffman–Lins recoupling theory (Temperley–Lieb recoupling theory and invariants of 3-manifolds, 1994)."]
     lock: "783f0bc350942e8f"
-    labels: ["proof-task", "area: quantum-groups", "size: L", "research-level"]
-  - id: "T-QU1-P6"
-    kind: "proof"
-    title: "q-Biedenharn–Elliott identity for every r ≥ 2"
-    milestone: "QU1"
-    area: "quantum-groups"
-    tier: "established"
-    source_class: "sourced"
-    source: "turaev-1994, Chapter VI. 6j-symbols; koekoek-swarttouw-1996, eq. (3.2.1); koekoek-swarttouw-1996, eq. (3.2.2); koekoek-swarttouw-1996, eq. (0.5.11)"
-    priority: 1
-    priority_basis: "canonical"
-    size: "L"
-    difficulty: "research-level"
-    mode: "non-exclusive"
-    deps: []
-    file: "Tasks/QU/T_QU1_P6.lean"
-    decl: "Lightlike.TV.qBiedenharnElliott_all"
-    routes: ["The q-Racah formula and q-hypergeometric identities (Kirillov–Reshetikhin 1989).", "Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).", "Kauffman–Lins recoupling theory (1994)."]
-    lock: "a6cde44e2153e022"
     labels: ["proof-task", "area: quantum-groups", "size: L", "research-level"]
   - id: "T-QU2"
     kind: "milestone"
@@ -5102,11 +5102,11 @@ tasks:
     ranking: 49
     labels: ["milestone", "area: spin-foams", "size: M", "intermediate"]
     checklist:
-      - {"id": "m1", "kind": "main", "text": "The Barrett–Crane intertwiner is unique (Reisenberger 1999): up to scale it is the only Spin(4)-invariant vector in the tensor product of four simple representations (j_i, j_i) satisfying the uniqueness hypotheses of Reisenberger's theorem", "decls": [], "hint": "Missing: no uniqueness or basis-independence theorem; Lightlike.SpinFoam.BC.bcNode is only defined (docstring in BarrettCrane.lean claims uniqueness). Closest: Lightlike.SpinFoam.BC.bcNode, Lightlike.SpinFoam.BC.bcVertex_eq_sum."}
+      - {"id": "m1", "kind": "main", "text": "The Barrett–Crane intertwiner is unique (Reisenberger 1999): up to scale it is the only Spin(4)-invariant vector in the tensor product of four simple representations (j_i, j_i) satisfying the uniqueness hypotheses of Reisenberger's theorem", "decls": ["Lightlike.SpinFoam.BC.bcNode_unique"], "hint": "Missing: no uniqueness or basis-independence theorem; Lightlike.SpinFoam.BC.bcNode is only defined (docstring in BarrettCrane.lean claims uniqueness). Closest: Lightlike.SpinFoam.BC.bcNode, Lightlike.SpinFoam.BC.bcVertex_eq_sum."}
       - {"id": "p1", "kind": "piece", "text": "The Barrett–Crane intertwiner and the Barrett–Crane vertex (contraction of five Barrett–Crane intertwiners along K5) are defined from the simple representations j₊ = j₋ of Spin(4)", "decls": ["Lightlike.SpinFoam.BC.bcNode", "Lightlike.SpinFoam.BC.bcVertex", "Lightlike.SpinFoam.BC.bcVertex_eq_sum"]}
       - {"id": "p2", "kind": "piece", "text": "A Spin(4) representation (n, m) with n + m > 0 satisfies the weak simplicity constraint exactly when n = m", "decls": ["Lightlike.SpinFoam.BC.simple_iff"]}
       - {"id": "p3", "kind": "piece", "text": "Basic properties of the Barrett–Crane vertex: it is real and nonnegative", "decls": ["Lightlike.SpinFoam.BC.bcVertex_im", "Lightlike.SpinFoam.BC.bcVertex_nonneg"]}
-      - {"id": "t1", "kind": "trust", "text": "The Barrett–Crane vertex reproduces published 10j values", "decls": [], "hint": "Only hand-computed values exist: Lightlike.SpinFoam.BC.Tests.bcVertex_zero, Lightlike.SpinFoam.BC.Tests.bcVertex_cyc, Lightlike.SpinFoam.BC.Tests.bcVertex_triangle, Lightlike.SpinFoam.BC.Tests.bcVertexBC_triangle_one. docs/results.yaml LL-0052 says no published table was found; the sign link of bcVertexBC to Baez–Christensen is not proven."}
+      - {"id": "t1", "kind": "trust", "text": "The Barrett–Crane vertex reproduces published 10j values", "decls": ["Lightlike.SpinFoam.BC.bcVertex_eq_vertexQ", "Lightlike.SpinFoam.BC.Tests.bcVertex_half", "Lightlike.SpinFoam.BC.Tests.bcVertex_one"], "hint": "Only hand-computed values exist: Lightlike.SpinFoam.BC.Tests.bcVertex_zero, Lightlike.SpinFoam.BC.Tests.bcVertex_cyc, Lightlike.SpinFoam.BC.Tests.bcVertex_triangle, Lightlike.SpinFoam.BC.Tests.bcVertexBC_triangle_one. docs/results.yaml LL-0052 says no published table was found; the sign link of bcVertexBC to Baez–Christensen is not proven."}
       - {"id": "t2", "kind": "trust", "text": "A non-simple representation is shown to violate the simplicity constraint", "decls": ["Lightlike.SpinFoam.BC.Tests.not_simple_half_zero", "Lightlike.SpinFoam.BC.Tests.simple_half_half"]}
       - {"id": "c1", "kind": "catalogue", "text": "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map", "decls": []}
   - id: "T-SF2"

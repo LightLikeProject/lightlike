@@ -76,6 +76,14 @@ Baez–Christensen vertex `bcVertexBC` is `(-1)^(Σ_e j_e)` times ours, with `j_
 non-positive when they sum to a half-integer [14]. The vertex is 1 at spin 0, `1/(j + 1)²` on the
 closed loop of spin `j/2`, which sums to an integer, and `1/(j + 1)` on the triangle of spin
 `j/2`, whose spins sum to `3j/2`; so at spin `1/2` the two conventions give `1/2` and `-1/2` [15].
+The intertwiner is unique: a Spin(4)-invariant tensor of four simple representations whose
+components are diagonal in the `(01)(23)` and the `(02)(13)` tree bases is a multiple of
+`Σ_i ι_i ⊗ ι_i`. This is Reisenberger's theorem for four legs, assuming two of his three pairings;
+the proof uses a stretched 6j symbol, which is nonzero [41].
+The vertex is an exact rational number for all spins, because the square of each 15j symbol is
+rational [42]. It reproduces the published Riemannian 10j values of Christensen and Egan: `7/18` at
+ten spins `½`, `307/1500` at ten spins `1`, and `-163/1728`, with the Baez–Christensen sign, at
+spins `1` and `½` on the two 5-cycles of `K₅` [42].
 
 Whether the Ponzano–Regge cutoff can be removed is a cohomological question {7}. A flat `SU(2)`
 connection on a finite 2-complex, with the adjoint representation on `su(2) ≅ ℝ³`, has a twisted
@@ -136,13 +144,18 @@ The EPRL state sum is formalized in the sorted basis of the tetrahedra, in which
 4-simplices carries one and the same basis. The intrinsic vertex is the vertex of the 4-simplex with every virtual spin
 rewritten by the transition matrix between the positional and the sorted channel, the exact overlap of the two orthonormal
 bases of the invariant space of the tetrahedron, and at the BF point γ = 1 on a closed 4-complex the state sum is the sum
-over the triangle colourings and the virtual spins of the triangle constraints times the sign of the link orientations
-(a function of the colouring only) times the Ooguri weight [37]. Exchanging the two factors of Spin(4), the opposite
-orientation of ℝ⁴ (γ ↦ -γ), leaves the vertex and the state sum unchanged [38]. On the boundary of the 5-simplex with the
-cutoff of the bone colouring of the edge {0, 1} the γ = 1 state sum is 1 + 4 = 5, and with the face amplitude (J + 1)² in
-place of J + 1 the same sum is 65 [39]. Independence of the vertex order is not proved yet: the numerical check of the
-basis-free gluing on the boundary of the 5-simplex gives the same value for every relabelling of the vertices, and the
-bone cutoff of every edge gives 5; this is numerical evidence only.
+over the triangle colourings and the virtual spins of the triangle constraints times the Ooguri weight: the state sum of a
+closed 4-complex equals the Ooguri state sum [46]. The corrected intrinsic vertex is the basis-free contraction of the
+intertwiners of the sorted legs of its five tetrahedra along the ten links of `K₅` [43], and on a closed complex the
+sum over the labels of the tetrahedra is a network of these projectors [44]. Relabelling the vertices by a permutation
+`σ` reverses the orientation of the links of the pairs of vertices that `σ` inverts, and the sign `(-1)` to the number of
+reversed links is even on a closed complex because the sum of the colours of the link of an edge is even [45]; so the
+state sum is the same for every order of the vertices, also with the tetrahedra glued through `ε` [47]. Exchanging the
+two factors of Spin(4), the opposite orientation of ℝ⁴ (γ ↦ -γ), leaves the vertex and the state sum unchanged [38]. On
+the boundary of the 5-simplex with the cutoff of the bone colouring of any edge the γ = 1 state sum is 1 + 4 = 5, and
+with the face amplitude (J + 1)² in place of J + 1 the same sum is 65 [39], [40]. The source (arXiv:0711.0146) fixes no
+order or sign convention: "matches the source" means that the amplitude is the basis-free contraction of the definition
+in the source.
 
 ## Lean References
 
@@ -272,6 +285,25 @@ bone cutoff of every edge gives 5; this is numerical evidence only.
     `SpinFoam.EPRLStateSum.amplitudeI_neg`
 39. Lightlike/SpinFoam/EPRLStateSum/BoneAmplitude.lean -
     `SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_low_spin`, `SpinFoam.EPRLStateSum.Trust.amplitudeI_wrong_face`
+40. Lightlike/SpinFoam/EPRLStateSum/BoneColouring.lean, BoneCollapse.lean, BoneWeight.lean -
+    `SpinFoam.EPRLStateSum.Trust.weight_bone`, `SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_bone`,
+    `SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_relabel`
+41. Lightlike/SpinFoam/BarrettCraneUnique.lean - `SpinFoam.BC.bcNode_unique`, `SpinFoam.BC.bcNode_hyp`,
+    `SpinFoam.BC.sixJSym_extreme_ne_zero`, `SpinFoam.BC.coefA_bcNodeR_half`
+42. Lightlike/SpinFoam/BarrettCraneValues.lean - `SpinFoam.BC.bcVertex_eq_vertexQ`, `SpinFoam.BC.fifteenJ_sq`,
+    `SpinFoam.BC.Tests.bcVertex_half`, `SpinFoam.BC.Tests.bcVertex_one`, `SpinFoam.BC.Tests.bcVertexBC_mixed`
+43. Lightlike/SpinFoam/EPRLStateSum/VertexPerm.lean, SortedVertex.lean, ContractPerm.lean -
+    `SpinFoam.EPRLStateSum.fifteenJSimplex_eq_contract5`, `SpinFoam.EPRLStateSum.simpEIAux_eq_contract5`,
+    `SpinFoam.EPRLStateSum.contract5_perm`
+44. Lightlike/SpinFoam/EPRLStateSum/ComplexNetwork.lean - `SpinFoam.EPRLStateSum.tetSum_network`
+45. Lightlike/SpinFoam/EPRLStateSum/RelabelComplex.lean, NetworkCovariance.lean, LinkParity.lean, InversionParity.lean -
+    `SpinFoam.EPRLStateSum.relabelComplex`, `SpinFoam.EPRLStateSum.Znet_relabel`,
+    `SpinFoam.EPRLStateSum.link_sum_even`, `SpinFoam.EPRLStateSum.invSum_total_even`,
+    `SpinFoam.EPRLStateSum.Znet_eq_zero`
+46. Lightlike/SpinFoam/EPRLStateSum/LinkSignEven.lean - `SpinFoam.EPRLStateSum.linkSign_of_tetPar`,
+    `SpinFoam.EPRLStateSum.amplitudeI_one_eq_ooguriSum`
+47. Lightlike/SpinFoam/EPRLStateSum/RelabelAmplitude.lean - `SpinFoam.EPRLStateSum.Znet_relabel_eq`,
+    `SpinFoam.EPRLStateSum.amplitudeI_one_relabel`, `SpinFoam.EPRLStateSum.amplitudeIeps_relabel`
 
 ## References
 

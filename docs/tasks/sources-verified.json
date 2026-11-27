@@ -3456,7 +3456,7 @@
   "citations_via": "OpenAlex"
  },
  "kitaev-2017": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-27",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Notes on $\\widetilde{\\mathrm{SL}}(2,\\mathbb{R})$ representations",
@@ -3465,10 +3465,15 @@
     "verified": true,
     "snippet": "4 Fourier transform on G e and the Plancherel measure 8 4.1 Fourier transform on a",
     "why": null
+   },
+   "eq. (15)": {
+    "verified": true,
+    "snippet": "(15). The isomorphisms in 1 and 2 can be obtained in a unified fashion using the intertwiners Ξµ± µ µ λ : F1−λ → Fλ , Ξµ± ± λ f1−λ,m = bλ,m fλ,m for m ∈ µ + Z, (19) where Γ(λ + m) Γ(λ − m) b+ λ,m = if λ + m ∈ / Z, b− λ,m",
+    "why": null
    }
   },
-  "citations": 46,
-  "citations_via": "Semantic Scholar"
+  "citations": 124,
+  "citations_via": "OpenAlex"
  },
  "klazar-2026": {
   "checked": "2026-11-16",

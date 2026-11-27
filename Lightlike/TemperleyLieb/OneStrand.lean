@@ -90,7 +90,8 @@ lemma qfac_ne_of_pow (q : kˣ) {N : ℕ} (hN : 1 ≤ N) (hq2 : ∀ j, 1 ≤ j �
     linear_combination h
   exact qfac_ne q N fun j h1 h2 => qb_ne q hD j (hq2 j h1 h2)
 
-lemma thetaKL_ne (q : kˣ) {a b c : ℕ} (hnz : ∀ n, n ≤ a + b + c + 1 → qfac q n ≠ 0) :
+lemma thetaKL_ne (q : kˣ) {a b c N : ℕ} (hs : (a + b + c) / 2 + 1 ≤ N) (ha : a ≤ N) (hb : b ≤ N) (hc : c ≤ N)
+    (hnz : ∀ n, n ≤ N → qfac q n ≠ 0) :
     thetaKL q a b c ≠ 0 := by
   unfold thetaKL
   refine div_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero (pow_ne_zero _ (by norm_num))
@@ -100,11 +101,12 @@ lemma thetaKL_ne (q : kˣ) {a b c : ℕ} (hnz : ∀ n, n ≤ a + b + c + 1 → q
 /-- **`Fc = klCoef` with an empty third block** (the base `c = 0` of the identification). -/
 theorem Fc_eq_klCoef_zero_third (q : kˣ) (hδ : loopVal q ≠ 0) {a b e d' : ℕ} (he : e ≤ min a b)
     (hd' : d' ≤ min a b) (hN : 1 ≤ a + b) (hd : ∀ j, j ≤ a + b → chebD (loopVal q) j ≠ 0)
-    (hq2 : ∀ j, 1 ≤ j → j ≤ 2 * (a + b) + 2 → (q : k) ^ (2 * j) ≠ 1) :
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 1 → (q : k) ^ (2 * j) ≠ 1) :
     Fc q a b 0 e 0 0 d' = klCoef q a b 0 e 0 0 d' := by
-  have hnz := qfac_ne_of_pow q (N := 2 * (a + b) + 2) (by omega) hq2
+  have hnz := qfac_ne_of_pow q (N := a + b + 1) (by omega) hq2
   rw [Fc_zero_third q hδ a b e d' he hd' hN hd (fun j h1 h2 => hq2 j h1 (by omega)),
-    klCoef_zero_third q he (fun n hn => hnz n (by omega)) (thetaKL_ne q fun n hn => hnz n (by omega))]
+    klCoef_zero_third q he (fun n hn => hnz n (by omega))
+      (thetaKL_ne q (N := a + b + 1) (by omega) (by omega) (by omega) (by omega) hnz)]
 
 /-- The Gram product of the lower cup entry: `U_L'(n+1,1,1;1,0) U_R(n+1,1,1;1,0) = p_{n+1}`. -/
 theorem ULd_mul_UR_cup_low (q : kˣ) (n : ℕ) (hd : ∀ j, j ≤ n + 2 → chebD (loopVal q) j ≠ 0) :
@@ -206,7 +208,7 @@ theorem Fc_cup_high (q : kˣ) (hδ : loopVal q ≠ 0) (n : ℕ) (hd : ∀ j, j �
 `j = 1`, `m = 0`, `i = e₀`; its right side has the empty block `(a, b, 0)`). -/
 theorem Fc_b_rec [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b e₀ d₀ g₀ : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
     (hd : ∀ x, x ≤ a + b + 1 + 1 → chebD (loopVal q) x ≠ 0)
-    (hq2 : ∀ x, 1 ≤ x → x ≤ 2 * (a + b) + 4 → (q : k) ^ (2 * x) ≠ 1)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + 3 → (q : k) ^ (2 * x) ≠ 1)
     (heb : e₀ ≤ b) (h₀ : ValidA a b 1 1 e₀ d₀ g₀) :
     ∑ f ∈ range (b + 1), ∑ h ∈ range (1 + 1), ∑ d' ∈ range (a + 1),
         Fc q b 1 1 f h 1 0 * (Fc q a (b + 1 - 2 * f) 1 d' g₀ h e₀ * Fc q a b 1 e₀ d₀ f d') =
@@ -362,7 +364,7 @@ theorem Fc_one_orth [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b E : ℕ}
 `f = 1, h = 0`. -/
 theorem Fc_b_rec_two [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b e₀ d₀ g₀ : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
     (hd : ∀ x, x ≤ a + b + 1 + 1 → chebD (loopVal q) x ≠ 0)
-    (hq2 : ∀ x, 1 ≤ x → x ≤ 2 * (a + b) + 4 → (q : k) ^ (2 * x) ≠ 1)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ a + b + 3 → (q : k) ^ (2 * x) ≠ 1)
     (heb : e₀ ≤ b) (h₀ : ValidA a b 1 1 e₀ d₀ g₀) :
     Fc q b 1 1 0 1 1 0 * Fc q a (b + 1) 1 (e₀ + d₀) g₀ 1 e₀ * Fc q a b 1 e₀ d₀ 0 (e₀ + d₀) +
       Fc q b 1 1 1 0 1 0 * Fc q a (b - 1) 1 (e₀ + d₀ - 1) g₀ 0 e₀ * Fc q a b 1 e₀ d₀ 1 (e₀ + d₀ - 1) =
@@ -543,12 +545,12 @@ lemma solve_one {x T C : k} (hT : T ≠ 0) (h : 1 * x * T + C = 1) (hk : T + C =
 /-- The step for `F11` (the upper-right entry of the one-strand block is `1`), from the recursion in `b`. -/
 theorem Fc_one_11_step [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a L E : ℕ} (ha : 1 ≤ a) (hL : 1 ≤ L)
     (hE : 1 ≤ E) (hEa : E ≤ a + 1) (hEb : E ≤ L + 1)
-    (hd : ∀ j, j ≤ 2 * (a + L) + 6 → chebD (loopVal q) j ≠ 0)
-    (hq2 : ∀ j, 1 ≤ j → j ≤ 2 * (a + L) + 6 → (q : k) ^ (2 * j) ≠ 1)
+    (hd : ∀ j, j ≤ a + L + 3 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + L + 4 → (q : k) ^ (2 * j) ≠ 1)
     (h10 : 2 ≤ E → Fc q a (L - 1) 1 (E - 1 - 1) 1 0 (E - 1) = qb q (E - 1) / qb q (L - 1 + 1))
     (h01 : 2 ≤ E → Fc q a L 1 (E - 1) 0 1 (E - 1 - 1) = -(qb q (a - (E - 1) + 1) / qb q (a + L - 2 * (E - 1) + 2))) :
     Fc q a (L + 1) 1 (E - 1) 1 1 (E - 1) = 1 := by
-  have hD := hD_of_pow q (N := 2 * (a + L) + 6) (by omega) hq2
+  have hD := hD_of_pow q (N := a + L + 4) (by omega) hq2
   have hrec := Fc_b_rec_two q hδ a L (E - 1) 0 1 ha hL (fun x hx => hd x (by omega))
     (fun x h1 h2 => hq2 x h1 (by omega)) (by omega) ⟨by omega, by simp, by omega, le_rfl⟩
   obtain ⟨L, rfl⟩ : ∃ L', L = L' + 1 := ⟨L - 1, by omega⟩
@@ -559,7 +561,7 @@ theorem Fc_one_11_step [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a L E : �
       (fun j h1 h2 => hq2 j h1 (by omega))] at hrec
   show Fc q a (L + 2) 1 (E - 1) 1 1 (E - 1) = 1
   set x := Fc q a (L + 2) 1 (E - 1) 1 1 (E - 1)
-  have hq1 : ∀ n, 1 ≤ n → n ≤ 2 * (a + (L + 1)) + 6 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  have hq1 : ∀ n, 1 ≤ n → n ≤ a + (L + 1) + 4 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
   rcases Nat.lt_or_ge E 2 with hE2 | hE2
   · -- E = 1: the second term vanishes
     obtain rfl : E = 1 := by omega
@@ -599,13 +601,13 @@ lemma solve_eq {x y T C R : k} (hT : T ≠ 0) (h : 1 * x * T + C = R) (hk : y * 
 /-- The step for the upper-right entry `F01` of the one-strand block, from the recursion in `b`. -/
 theorem Fc_one_01_step [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a L E : ℕ} (ha : 1 ≤ a) (hL : 1 ≤ L)
     (hE : 1 ≤ E) (hEa : E ≤ a) (hEb : E ≤ L + 1)
-    (hd : ∀ j, j ≤ 2 * (a + L) + 6 → chebD (loopVal q) j ≠ 0)
-    (hq2 : ∀ j, 1 ≤ j → j ≤ 2 * (a + L) + 6 → (q : k) ^ (2 * j) ≠ 1)
+    (hd : ∀ j, j ≤ a + L + 3 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + L + 4 → (q : k) ^ (2 * j) ≠ 1)
     (h10 : Fc q a L 1 (E - 1) 1 0 E = qb q E / qb q (L + 1))
     (h11 : E ≤ L → Fc q a L 1 (E - 1) 1 1 (E - 1) = 1) :
     Fc q a (L + 1) 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + (L + 1) - 2 * E + 2)) := by
-  have hD := hD_of_pow q (N := 2 * (a + L) + 6) (by omega) hq2
-  have hq1 : ∀ n, 1 ≤ n → n ≤ 2 * (a + L) + 6 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  have hD := hD_of_pow q (N := a + L + 4) (by omega) hq2
+  have hq1 : ∀ n, 1 ≤ n → n ≤ a + L + 4 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
   have hrec := Fc_b_rec_two q hδ a L (E - 1) 1 0 ha hL (fun x hx => hd x (by omega))
     (fun x h1 h2 => hq2 x h1 (by omega)) (by omega) ⟨by omega, by omega, Nat.zero_le _, Nat.zero_le _⟩
   simp only [show E - 1 + 1 = E by omega] at hrec
@@ -651,8 +653,8 @@ theorem Fc_one_01_step [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a L E : �
 /-- **The one-strand block of `Fc` in closed form**: for the blocks `(a, b, 1)` and every total channel, the entries
 are `F01 = -[a-E+1]/[a+b-2E+2]`, `F11 = 1`, `F10 = [E]/[b+1]` (and `F00` is `Fc_top_one_qb`). -/
 theorem Fc_one_block [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) : ∀ b a, 1 ≤ a →
-    (∀ j, j ≤ 2 * (a + b) + 6 → chebD (loopVal q) j ≠ 0) →
-    (∀ j, 1 ≤ j → j ≤ 2 * (a + b) + 6 → (q : k) ^ (2 * j) ≠ 1) →
+    (∀ j, j ≤ a + b + 3 → chebD (loopVal q) j ≠ 0) →
+    (∀ j, 1 ≤ j → j ≤ a + b + 4 → (q : k) ^ (2 * j) ≠ 1) →
     (∀ E, 1 ≤ E → E ≤ a → E ≤ b → Fc q a b 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + b - 2 * E + 2))) ∧
     (∀ E, 1 ≤ E → E ≤ a + 1 → E ≤ b → Fc q a b 1 (E - 1) 1 1 (E - 1) = 1) ∧
     (∀ E, 1 ≤ E → E ≤ a → E ≤ b + 1 → Fc q a b 1 (E - 1) 1 0 E = qb q E / qb q (b + 1)) := by
@@ -660,8 +662,8 @@ theorem Fc_one_block [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) : ∀ b a, 1
   induction b using Nat.strong_induction_on with
   | _ b ih =>
   intro a ha hd hq2
-  have hD := hD_of_pow q (N := 2 * (a + b) + 6) (by omega) hq2
-  have hq1 : ∀ n, 1 ≤ n → n ≤ 2 * (a + b) + 6 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  have hD := hD_of_pow q (N := a + b + 4) (by omega) hq2
+  have hq1 : ∀ n, 1 ≤ n → n ≤ a + b + 4 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
   match b, ih, hd, hq2, hD, hq1 with
   | 0, _, hd, hq2, hD, hq1 =>
     refine ⟨fun E h1 _ h3 => absurd h3 (by omega), fun E h1 _ h3 => absurd h3 (by omega), fun E h1 h2 h3 => ?_⟩

@@ -113,8 +113,8 @@ lemma comb_of_prop {Cc C₀ C₁ Sc S₀ S₁ lc l₀ l₁ Cp lp : k} (hlp : lp 
 
 set_option maxHeartbeats 1000000 in
 /-- **The coefficient relation for `g₀ = 1`**: the raised third block against the term `h = 1`, `C_x λ_p = C_p λ_x`. -/
-theorem kl_rel_lower_c1 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n ≤ 2 * (a + b + c) + 6 → qfac q n ≠ 0)
-    (hqb : ∀ n, 1 ≤ n → n ≤ 2 * (a + b + c) + 6 → qb q n ≠ 0) (hi : e₀ + d₀ + 1 = m + i) (hia : i ≤ a)
+theorem kl_rel_lower_c1 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n ≤ a + b + c + 3 → qfac q n ≠ 0)
+    (hqb : ∀ n, 1 ≤ n → n ≤ a + b + c + 3 → qb q n ≠ 0) (hi : e₀ + d₀ + 1 = m + i) (hia : i ≤ a)
     (hv : ValidA a b c 1 e₀ d₀ 1) (hc : KLAdm a b (c + 1) e₀ (d₀ + 1) m i) (hcY : KLAdm (a + b - 2 * e₀) c 1 d₀ 1 0 (d₀ + 1)) (h1A : KLAdm b c 1 (m - 1) 1 0 m) (h1T : KLAdm a b c e₀ d₀ (m - 1) i) (hm : 1 ≤ m) :
     (qb q (d₀ + 1) / qb q (c + 1)) * (tetPre q (a) (b) (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ - 1) (a + b - 2 * e₀) (b + c + 1 - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀) (b + c + 1 - m) (a + b + c - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ - m) (a + b + c - e₀ + 1 - m) (a + b + c - e₀ - d₀) / thetaKL q (a + b - 2 * e₀) (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ - 1)) * (qb q (b - e₀ + c - d₀ + 1 - m) * qb q (b + 1 - m)) =
       (qb q m / qb q (c + 1)) * (tetPre q (a) (b) (c) (a + b - 2 * e₀ + c - 2 * d₀) (a + b - 2 * e₀) (b + c + 2 - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀) (b + c + 1 - m) (a + b + c + 1 - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ + 1 - m) (a + b + c - e₀ + 1 - m) (a + b + c - e₀ - d₀) / thetaKL q (a + b - 2 * e₀) (c) (a + b - 2 * e₀ + c - 2 * d₀)) * (qb q (d₀ + 1) * qb q (b + c + 2 - 2 * m)) := by
@@ -146,8 +146,8 @@ theorem kl_rel_lower_c1 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n �
 
 set_option maxHeartbeats 500000 in
 /-- **The coefficient relation for `g₀ = 1`**: the term `h = 0` against the term `h = 1`, `C_x λ_p = C_p λ_x`. -/
-theorem kl_rel_lower_01 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n ≤ 2 * (a + b + c) + 6 → qfac q n ≠ 0)
-    (hqb : ∀ n, 1 ≤ n → n ≤ 2 * (a + b + c) + 6 → qb q n ≠ 0) (hi : e₀ + d₀ + 1 = m + i) (hia : i ≤ a)
+theorem kl_rel_lower_01 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n ≤ a + b + c + 3 → qfac q n ≠ 0)
+    (hqb : ∀ n, 1 ≤ n → n ≤ a + b + c + 3 → qb q n ≠ 0) (hi : e₀ + d₀ + 1 = m + i) (hia : i ≤ a)
     (hv : ValidA a b c 1 e₀ d₀ 1) (h0A : KLAdm b c 1 m 0 0 m) (h0T : KLAdm a b c e₀ d₀ m (i - 1)) (hi1 : 1 ≤ i) (h1A : KLAdm b c 1 (m - 1) 1 0 m) (h1T : KLAdm a b c e₀ d₀ (m - 1) i) (hm : 1 ≤ m) :
     (qb q (b + c - m + 2) * qb q (c - m + 1) / (qb q (c + 1) * qb q (b + c - 2 * m + 2)) * (qb q i / qb q (b + c - 2 * m + 1))) * (tetPre q (a) (b) (c) (a + b - 2 * e₀ + c - 2 * d₀) (a + b - 2 * e₀) (b + c - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀) (b + c - m) (a + b + c - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ - m) (a + b + c - e₀ - m) (a + b + c - e₀ - d₀) / thetaKL q (a + b - 2 * e₀) (c) (a + b - 2 * e₀ + c - 2 * d₀)) * (qb q (b - e₀ + c - d₀ + 1 - m) * qb q (b + 1 - m)) =
       (qb q m / qb q (c + 1)) * (tetPre q (a) (b) (c) (a + b - 2 * e₀ + c - 2 * d₀) (a + b - 2 * e₀) (b + c + 2 - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀) (b + c + 1 - m) (a + b + c + 1 - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ + 1 - m) (a + b + c - e₀ + 1 - m) (a + b + c - e₀ - d₀) / thetaKL q (a + b - 2 * e₀) (c) (a + b - 2 * e₀ + c - 2 * d₀)) * (qb q (b + c - m + 2) * qb q (a - i + 1)) := by
@@ -189,8 +189,8 @@ theorem kl_rel_lower_01 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n �
 
 set_option maxHeartbeats 1500000 in
 /-- **The coefficient relation for `g₀ = 1`**: the raised third block against the term `h = 0`, `C_x λ_p = C_p λ_x`. -/
-theorem kl_rel_lower_c0 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n ≤ 2 * (a + b + c) + 6 → qfac q n ≠ 0)
-    (hqb : ∀ n, 1 ≤ n → n ≤ 2 * (a + b + c) + 6 → qb q n ≠ 0) (hi : e₀ + d₀ + 1 = m + i) (hia : i ≤ a)
+theorem kl_rel_lower_c0 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n ≤ a + b + c + 3 → qfac q n ≠ 0)
+    (hqb : ∀ n, 1 ≤ n → n ≤ a + b + c + 3 → qb q n ≠ 0) (hi : e₀ + d₀ + 1 = m + i) (hia : i ≤ a)
     (hv : ValidA a b c 1 e₀ d₀ 1) (hc : KLAdm a b (c + 1) e₀ (d₀ + 1) m i) (hcY : KLAdm (a + b - 2 * e₀) c 1 d₀ 1 0 (d₀ + 1)) (h0A : KLAdm b c 1 m 0 0 m) (h0T : KLAdm a b c e₀ d₀ m (i - 1)) (hi1 : 1 ≤ i) :
     (qb q (d₀ + 1) / qb q (c + 1)) * (tetPre q (a) (b) (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ - 1) (a + b - 2 * e₀) (b + c + 1 - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀) (b + c + 1 - m) (a + b + c - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ - m) (a + b + c - e₀ + 1 - m) (a + b + c - e₀ - d₀) / thetaKL q (a + b - 2 * e₀) (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ - 1)) * (qb q (b + c - m + 2) * qb q (a - i + 1)) =
       (qb q (b + c - m + 2) * qb q (c - m + 1) / (qb q (c + 1) * qb q (b + c - 2 * m + 2)) * (qb q i / qb q (b + c - 2 * m + 1))) * (tetPre q (a) (b) (c) (a + b - 2 * e₀ + c - 2 * d₀) (a + b - 2 * e₀) (b + c - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀) (b + c - m) (a + b + c - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ - m) (a + b + c - e₀ - m) (a + b + c - e₀ - d₀) / thetaKL q (a + b - 2 * e₀) (c) (a + b - 2 * e₀ + c - 2 * d₀)) * (qb q (d₀ + 1) * qb q (b + c + 2 - 2 * m)) := by
@@ -225,8 +225,8 @@ theorem kl_rel_lower_c0 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n �
 
 set_option maxHeartbeats 4300000 in
 /-- **The coefficient relation for `g₀ = 0`**: the term `h = 0` against the raised third block, `C_x λ_p = C_p λ_x`. -/
-theorem kl_rel_upper_0c (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n ≤ 2 * (a + b + c) + 6 → qfac q n ≠ 0)
-    (hqb : ∀ n, 1 ≤ n → n ≤ 2 * (a + b + c) + 6 → qb q n ≠ 0) (hi : e₀ + d₀ = m + i) (hia : i ≤ a)
+theorem kl_rel_upper_0c (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n ≤ a + b + c + 3 → qfac q n ≠ 0)
+    (hqb : ∀ n, 1 ≤ n → n ≤ a + b + c + 3 → qb q n ≠ 0) (hi : e₀ + d₀ = m + i) (hia : i ≤ a)
     (hv : ValidA a b c 1 e₀ d₀ 0) (h0A : KLAdm b c 1 m 0 0 m) (h0T : KLAdm a b c e₀ d₀ m i) (hc : KLAdm a b (c + 1) e₀ d₀ m i) (hcY : KLAdm (a + b - 2 * e₀) c 1 d₀ 0 0 d₀) :
     (qb q (b + c - m + 2) * qb q (c - m + 1) / (qb q (c + 1) * qb q (b + c + 2 - 2 * m)) * (qb q (a + b + c - 2 * m - i + 2) * qb q (b + c - 2 * m - i + 1) / (qb q (b + c + 1 - 2 * m) * qb q (a + b + c - 2 * m - 2 * i + 2)))) * (tetPre q (a) (b) (c) (a + b - 2 * e₀ + c - 2 * d₀) (a + b - 2 * e₀) (b + c - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀) (b + c - m) (a + b + c - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ - m) (a + b + c - e₀ - m) (a + b + c - e₀ - d₀) / thetaKL q (a + b - 2 * e₀) (c) (a + b - 2 * e₀ + c - 2 * d₀)) * (qb q (c - d₀ + 1) * qb q (b + c + 2 - 2 * m)) =
       (qb q (a + b - 2 * e₀ + c - d₀ + 2) * qb q (c - d₀ + 1) / (qb q (c + 1) * qb q (a + b - 2 * e₀ + c - 2 * d₀ + 2))) * (tetPre q (a) (b) (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ + 1) (a + b - 2 * e₀) (b + c + 1 - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀ + 1) (b + c + 1 - m) (a + b + c + 1 - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m) (a + b + c + 1 - e₀ - m) (a + b + c + 1 - e₀ - d₀) / thetaKL q (a + b - 2 * e₀) (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ + 1)) * (-(qb q (b + c - m + 2) * qb q (a + b + c - 2 * m - i + 2))) := by
@@ -263,8 +263,8 @@ theorem kl_rel_upper_0c (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n �
 
 set_option maxHeartbeats 1500000 in
 /-- **The coefficient relation for `g₀ = 0`**: the term `h = 1` against the raised third block, `C_x λ_p = C_p λ_x`. -/
-theorem kl_rel_upper_1c (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n ≤ 2 * (a + b + c) + 6 → qfac q n ≠ 0)
-    (hqb : ∀ n, 1 ≤ n → n ≤ 2 * (a + b + c) + 6 → qb q n ≠ 0) (hi : e₀ + d₀ = m + i) (_hia : i ≤ a)
+theorem kl_rel_upper_1c (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hnz : ∀ n, n ≤ a + b + c + 3 → qfac q n ≠ 0)
+    (hqb : ∀ n, 1 ≤ n → n ≤ a + b + c + 3 → qb q n ≠ 0) (hi : e₀ + d₀ = m + i) (_hia : i ≤ a)
     (hv : ValidA a b c 1 e₀ d₀ 0) (h1A : KLAdm b c 1 (m - 1) 1 0 m) (h1T : KLAdm a b c e₀ d₀ (m - 1) (i + 1)) (hm : 1 ≤ m) (hc : KLAdm a b (c + 1) e₀ d₀ m i) (hcY : KLAdm (a + b - 2 * e₀) c 1 d₀ 0 0 d₀) :
     (qb q m / qb q (c + 1) * -(qb q (a - i) / qb q (a + b + c + 2 - 2 * m - 2 * i))) * (tetPre q (a) (b) (c) (a + b - 2 * e₀ + c - 2 * d₀) (a + b - 2 * e₀) (b + c + 2 - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀) (b + c + 1 - m) (a + b + c + 1 - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m) (a + b + c + 1 - e₀ - m) (a + b + c - e₀ - d₀) / thetaKL q (a + b - 2 * e₀) (c) (a + b - 2 * e₀ + c - 2 * d₀)) * (qb q (c - d₀ + 1) * qb q (b + c + 2 - 2 * m)) =
       (qb q (a + b - 2 * e₀ + c - d₀ + 2) * qb q (c - d₀ + 1) / (qb q (c + 1) * qb q (a + b - 2 * e₀ + c - 2 * d₀ + 2))) * (tetPre q (a) (b) (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ + 1) (a + b - 2 * e₀) (b + c + 1 - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀ + 1) (b + c + 1 - m) (a + b + c + 1 - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m) (a + b + c + 1 - e₀ - m) (a + b + c + 1 - e₀ - d₀) / thetaKL q (a + b - 2 * e₀) (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ + 1)) * (qb q (b + 1 - m) * qb q (i + 1)) := by

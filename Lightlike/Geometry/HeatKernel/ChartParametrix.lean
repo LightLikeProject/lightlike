@@ -129,37 +129,56 @@ theorem chart_far_bound {G e θv tN L Ut Lθ P Q t A1 A2 A3 A4 A5 A6 C1 : ℝ} (
     _ ≤ G * (C1 * (tN * t)) * (M / t) := by gcongr
     _ = G * (M * C1) * tN := by field_simp
 
-set_option maxHeartbeats 1000000 in
-/-- **The parametrix in a chart and its heat error.** For a Riemannian coordinate metric on `U`, `x ∈ U` and an order
-`N`, there are `r > 0`, coefficients `u_k(p, y)` with `u₀(p, p) = 1`, and a cut-off parametrix
-`H(t, p, y) = θ(y − p) (4πt)^{-n/2} e^{-σ(p, y)/4t} Σ_{k≤N} tᵏ u_k(p, y)` with the diagonal
-`H(t, p, p) = (4πt)^{-n/2} Σ_{k≤N} tᵏ u_k(p, p)`, whose heat error in the second variable is `O(t^{N − n/2})` uniformly
-for `t ∈ (0, 1]`, `‖p − x‖ < r` and all `y`. -/
-theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)}
-    (hg : Upstream.GeodesicExpansion.IsRiemMetric g U) {x : Fin n → ℝ} (hx : x ∈ U) (N : ℕ) :
-    ∃ (r : ℝ) (u : ℕ → (Fin n → ℝ) × (Fin n → ℝ) → ℝ) (H : ℝ → (Fin n → ℝ) → (Fin n → ℝ) → ℝ), 0 < r ∧
-      (∀ p, ‖p - x‖ < r → u 0 (p, p) = 1) ∧
-      (∀ t > 0, ∀ p, ‖p - x‖ < r →
-        H t p p = (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * ∑ k ∈ Finset.range (N + 1), t ^ k * u k (p, p)) ∧
-      (∃ C a : ℝ, 0 < a ∧ ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y,
-        |H t p y| ≤ C * t ^ (-(n : ℝ) / 2) * Real.exp (-a * (∑ i, (y i - p i) ^ 2) / t)) ∧
-      (∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∫ y, |H t p y| ≤ C) ∧
-      -- the structure of `H`, for the delta property
-      (∃ (Ω : Set ((Fin n → ℝ) × (Fin n → ℝ))) (θ : (Fin n → ℝ) → ℝ)
-          (σ : (Fin n → ℝ) × (Fin n → ℝ) → ℝ) (V : (Fin n → ℝ) × (Fin n → ℝ) → (Fin n → ℝ)),
-        IsOpen Ω ∧ (x, x) ∈ Ω ∧ (∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → (p, y) ∈ Ω) ∧
-        (∀ q ∈ Ω, q.2 ∈ U) ∧ ContDiffOn ℝ ∞ V Ω ∧ (∀ k, ContDiffOn ℝ ∞ (u k) Ω) ∧
-        (∀ p, (p, p) ∈ Ω → V (p, p) = 0 ∧
-          HasFDerivAt (fun y => V (p, y)) (ContinuousLinearMap.id ℝ (Fin n → ℝ)) p) ∧
-        (∀ q ∈ Ω, σ q = Geodesic.pairing g q.1 (V q) (V q)) ∧
-        (∀ z, ‖z‖ < r / 2 → θ z = 1) ∧ (∀ z, r ≤ ‖z‖ → θ z = 0) ∧ (∀ z, θ z ∈ Icc (0 : ℝ) 1) ∧
-        Continuous θ ∧ (∀ t p, ‖p - x‖ < r → Continuous (H t p)) ∧
-        (∃ c : ℝ, 0 < c ∧ ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → c * ‖y - p‖ ^ 2 ≤ σ (p, y)) ∧
-        (∃ A : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r →
-          |truncAnsatz (fun k y => u k (p, y)) N t y| ≤ A) ∧
-        ∀ t p y, H t p y = θ (y - p) * (heatGaussian n (σ (p, y)) t * truncAnsatz (fun k y => u k (p, y)) N t y)) ∧
-      ∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y, ∃ D, HasDerivAt (fun s => H s p y) D t ∧
-        |D + coordLaplacian g (H t p) y| ≤ C * t ^ ((N : ℝ) - n / 2) := by
+/-- **The properties of the parametrix of order `N` in a chart**, near `x`. -/
+structure IsChartParametrix (g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ) (U : Set (Fin n → ℝ))
+    (x : Fin n → ℝ) (N : ℕ) (r : ℝ) (u : ℕ → (Fin n → ℝ) × (Fin n → ℝ) → ℝ)
+    (H : ℝ → (Fin n → ℝ) → (Fin n → ℝ) → ℝ) (Ω : Set ((Fin n → ℝ) × (Fin n → ℝ))) (θ : (Fin n → ℝ) → ℝ)
+    (σ : (Fin n → ℝ) × (Fin n → ℝ) → ℝ) (V : (Fin n → ℝ) × (Fin n → ℝ) → (Fin n → ℝ)) : Prop where
+  r_pos : 0 < r
+  u_zero_diag : ∀ p, ‖p - x‖ < r → u 0 (p, p) = 1
+  diag_eq : ∀ t > 0, ∀ p, ‖p - x‖ < r →
+    H t p p = (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * ∑ k ∈ Finset.range (N + 1), t ^ k * u k (p, p)
+  gauss_le : ∃ C a : ℝ, 0 < a ∧ ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y,
+    |H t p y| ≤ C * t ^ (-(n : ℝ) / 2) * Real.exp (-a * (∑ i, (y i - p i) ^ 2) / t)
+  integral_abs_le : ∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∫ y, |H t p y| ≤ C
+  isOpen : IsOpen Ω
+  center_mem : (x, x) ∈ Ω
+  mem_of_lt : ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → (p, y) ∈ Ω
+  snd_mem : ∀ q ∈ Ω, q.2 ∈ U
+  V_smooth : ContDiffOn ℝ ∞ V Ω
+  u_smooth : ∀ k, ContDiffOn ℝ ∞ (u k) Ω
+  V_diag : ∀ p, (p, p) ∈ Ω → V (p, p) = 0 ∧
+    HasFDerivAt (fun y => V (p, y)) (ContinuousLinearMap.id ℝ (Fin n → ℝ)) p
+  σ_eq : ∀ q ∈ Ω, σ q = Geodesic.pairing g q.1 (V q) (V q)
+  θ_one : ∀ z, ‖z‖ < r / 2 → θ z = 1
+  θ_zero : ∀ z, r ≤ ‖z‖ → θ z = 0
+  θ_mem : ∀ z, θ z ∈ Icc (0 : ℝ) 1
+  θ_smooth : ContDiff ℝ ∞ θ
+  θ_tsupport : tsupport θ ⊆ ball 0 r
+  θ_eventually_one : ∀ z, ‖z‖ < r / 2 → θ =ᶠ[𝓝 z] fun _ => 1
+  H_cont : ∀ t p, ‖p - x‖ < r → Continuous (H t p)
+  heatError_eq : ∀ t > 0, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → ∃ D, HasDerivAt (fun s => H s p y) D t ∧
+    D + coordLaplacian g (H t p) y =
+      θ (y - p) * (heatGaussian n (σ (p, y)) t * (t ^ N * coordLaplacian g (fun z => u N (p, z)) y)) +
+        (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * (gaussFactor t (σ (p, y)) * truncAnsatz (fun k y => u k (p, y)) N t y *
+          coordLaplacian g (fun z => θ (z - p)) y - 2 * (gaussFactor t (σ (p, y)) *
+            ((∑ k ∈ Finset.range (N + 1), t ^ k * coordGradPair g (fun z => θ (z - p)) (fun z => u k (p, z)) y) -
+              truncAnsatz (fun k y => u k (p, y)) N t y *
+                coordGradPair g (fun z => θ (z - p)) (fun z => σ (p, z)) y / (4 * t))))
+  σ_lower : ∃ c : ℝ, 0 < c ∧ ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → c * ‖y - p‖ ^ 2 ≤ σ (p, y)
+  ansatz_le : ∃ A : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r →
+    |truncAnsatz (fun k y => u k (p, y)) N t y| ≤ A
+  H_eq : ∀ t p y, H t p y = θ (y - p) * (heatGaussian n (σ (p, y)) t * truncAnsatz (fun k y => u k (p, y)) N t y)
+  heatError_le : ∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y, ∃ D, HasDerivAt (fun s => H s p y) D t ∧
+    |D + coordLaplacian g (H t p) y| ≤ C * t ^ ((N : ℝ) - n / 2)
+
+set_option maxHeartbeats 1200000 in
+/-- **The parametrix in a chart, at every order with the same coefficients**: near `x` there are `r > 0`, coefficients
+`u_k(p, y)`, a domain `Ω`, a cutoff `θ`, the world function `σ = g_p(V, V)`, and for every order `N` a cut-off
+parametrix `H` with all the properties of `Lightlike.IsChartParametrix`. Only `H` depends on `N`. -/
+theorem exists_chart_parametrix_uniform {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)}
+    (hg : Upstream.GeodesicExpansion.IsRiemMetric g U) {x : Fin n → ℝ} (hx : x ∈ U) :
+    ∃ r u Ω θ σ V, ∀ N : ℕ, ∃ H, IsChartParametrix g U x N r u H Ω θ σ V := by
   have hg' : IsCoordMetric g U := hg.coord.toLightlike
   obtain ⟨Ω, σ, u, hΩo, hxΩ, hΩU, hσs, hus, heik, ⟨V, hVs, hVd, hσV⟩, hdiag, htr⟩ := exists_heatCoeffs hg' hx
   obtain ⟨r₀, c, hr₀, hc, hlow⟩ := exists_pairing_lower hg hΩo hVs hx hxΩ (fun p hp => (hVd p hp).1)
@@ -173,6 +192,7 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
   obtain ⟨θ, hθ, hθs, W₀, hW₀o, hKW₀, hθ1, hθr⟩ := exists_cutoff_of_isOpen (E := Fin n → ℝ)
     (isOpen_ball (x := (0 : Fin n → ℝ)) (ε := r)) (isCompact_closedBall (0 : Fin n → ℝ) (r / 2))
     (closedBall_subset_ball (by linarith : r / 2 < r))
+  refine ⟨r, u, Ω, θ, σ, V, fun N => ?_⟩
   set H : ℝ → (Fin n → ℝ) → (Fin n → ℝ) → ℝ := fun t p y =>
     θ (y - p) * (heatGaussian n (σ (p, y)) t * truncAnsatz (fun k y => u k (p, y)) N t y) with hHdef
   -- the compact set of the estimates
@@ -298,19 +318,61 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
           show θ (z - p) * _ = 0
           rw [show θ (z - p) = 0 from hz, zero_mul]
       exact continuousAt_const.congr (h1.mono fun z hz => hz.symm)
-  refine ⟨r, u, H, hr, fun p hp => (hdiag p ?_).2, fun t ht p hp => ?_,
+  -- the heat error, expanded
+  have hform : ∀ t > 0, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → ∃ D, HasDerivAt (fun s => H s p y) D t ∧
+      D + coordLaplacian g (H t p) y =
+        θ (y - p) * (heatGaussian n (σ (p, y)) t * (t ^ N * coordLaplacian g (fun z => u N (p, z)) y)) +
+            (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * (gaussFactor t (σ (p, y)) * truncAnsatz (fun k y => u k (p, y)) N t y *
+              coordLaplacian g (fun z => θ (z - p)) y - 2 * (gaussFactor t (σ (p, y)) *
+                ((∑ k ∈ Finset.range (N + 1), t ^ k * coordGradPair g (fun z => θ (z - p)) (fun z => u k (p, z)) y) -
+                  truncAnsatz (fun k y => u k (p, y)) N t y *
+                    coordGradPair g (fun z => θ (z - p)) (fun z => σ (p, z)) y / (4 * t)))) := by
+    intro t ht0 p y hp hyp
+    have hqΩ := hKcΩ (hmemK p y hp hyp)
+    set U' := {z | (p, z) ∈ Ω} with hU'
+    have hU'o : IsOpen U' := isOpen_slice hΩo p
+    have hgU' : IsCoordMetric g U' := hg'.mono hU'o fun z hz => hΩU _ hz
+    have hσp : ContDiffOn ℝ ∞ (fun z => σ (p, z)) U' :=
+      hσs.comp (contDiffOn_const.prodMk contDiffOn_id) fun z hz => hz
+    have hup : ∀ k, ContDiffOn ℝ ∞ (fun z => u k (p, z)) U' := fun k =>
+      (hus k).comp (contDiffOn_const.prodMk contDiffOn_id) fun z hz => hz
+    have heikp : ∀ z ∈ U', coordGradPair g (fun z => σ (p, z)) (fun z => σ (p, z)) z = 4 * σ (p, z) :=
+      fun z hz => heik (p, z) hz
+    have hθp' : ContDiff ℝ ∞ (fun z => θ (z - p)) := hθ.comp (contDiff_id.sub contDiff_const)
+    obtain ⟨D, hD, hDeq⟩ := heatOperator_cutoff_ansatz hgU' hσp hup heikp (htr p N) hθp' ht0 hqΩ
+    refine ⟨D, hD, ?_⟩
+    have hΦ : ContDiffOn ℝ ∞ (fun z => θ (z - p) * (gaussFactor t (σ (p, z)) *
+        truncAnsatz (fun k y => u k (p, y)) N t z)) U' :=
+      hθp'.contDiffOn.mul (((contDiff_gaussFactor t).comp_contDiffOn hσp).mul
+        (ContDiffOn.sum fun k _ => contDiffOn_const.mul (hup k)))
+    have hHt : H t p = fun z => (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * (θ (z - p) * (gaussFactor t (σ (p, z)) *
+        truncAnsatz (fun k y => u k (p, y)) N t z)) := by
+      funext z; simp only [hHdef, heatGaussian]; ring
+    rw [hHt, hgU'.coordLaplacian_const_mul _ hΦ hqΩ, hDeq]
+    have hσd : DifferentiableAt ℝ (fun z => σ (p, z)) y :=
+      (hσp.contDiffAt (hU'o.mem_nhds hqΩ)).differentiableAt (by simp)
+    have hUd : DifferentiableAt ℝ (fun z => truncAnsatz (fun k y => u k (p, y)) N t z) y :=
+      ((ContDiffOn.sum fun k _ => contDiffOn_const.mul (hup k)).contDiffAt
+        (hU'o.mem_nhds hqΩ)).differentiableAt (by simp)
+    have hgpU : coordGradPair g (fun z => θ (z - p)) (fun z => truncAnsatz (fun k y => u k (p, y)) N t z) y =
+        ∑ k ∈ Finset.range (N + 1), t ^ k * coordGradPair g (fun z => θ (z - p)) (fun z => u k (p, z)) y :=
+      hgU'.coordGradPair_sum_smul_right _ (fun k => t ^ k) hup hqΩ
+    rw [coordGradPair_gauss_mul hσd hUd t, hgpU]
+  refine ⟨H, ⟨hr, fun p hp => (hdiag p ?_).2, fun t ht p hp => ?_,
     ⟨CG, a, hapos, hGauss⟩, ⟨CG * (Real.pi / a) ^ ((n : ℝ) / 2), fun t ht p hp => ?_⟩,
-    ⟨Ω, θ, σ, V, hΩo, hxΩ, fun p y hp hy => hKcΩ (hmemK p y hp hy), hΩU, hVs, hus, hVd, hσV,
-      fun z hz => hθ1 z (hKW₀ (by rw [mem_closedBall, dist_zero_right]; exact hz.le)),
-      fun z hz => image_eq_zero_of_notMem_tsupport fun h => by
-        have := hθs h; rw [mem_ball, dist_zero_right] at this; linarith,
-      hθr, hθ.continuous, hHc, ⟨c, hc, fun p y hp hy => hσnn (p, y) (hmemK p y hp hy)⟩,
-      ⟨|A2|, fun t ht p y hp hy => by
-        have := hA2 _ (hmemK p y hp hy)
-        rw [Real.norm_eq_abs, abs_of_nonneg (Finset.sum_nonneg fun k _ => abs_nonneg _)] at this
-        exact (abs_sum_pow_mul_le ht.1.le ht.2 N _).trans (this.trans (le_abs_self _))⟩,
-      fun t p y => rfl⟩, C,
-    fun t ht p hp y => ?_⟩
+    hΩo, hxΩ, fun p y hp hy => hKcΩ (hmemK p y hp hy), hΩU, hVs, hus, hVd, hσV,
+    fun z hz => hθ1 z (hKW₀ (by rw [mem_closedBall, dist_zero_right]; exact hz.le)),
+    fun z hz => image_eq_zero_of_notMem_tsupport fun h => by
+      have := hθs h; rw [mem_ball, dist_zero_right] at this; linarith,
+    hθr, hθ, hθs, fun z hz => by
+      have hev : ∀ᶠ w in 𝓝 z, ‖w‖ < r / 2 := (isOpen_lt continuous_norm continuous_const).mem_nhds hz
+      filter_upwards [hev] with w hw using hθ1 w (hKW₀ (by rw [mem_closedBall, dist_zero_right]; exact hw.le)),
+    hHc, hform, ⟨c, hc, fun p y hp hy => hσnn (p, y) (hmemK p y hp hy)⟩,
+    ⟨|A2|, fun t ht p y hp hy => by
+      have := hA2 _ (hmemK p y hp hy)
+      rw [Real.norm_eq_abs, abs_of_nonneg (Finset.sum_nonneg fun k _ => abs_nonneg _)] at this
+      exact (abs_sum_pow_mul_le ht.1.le ht.2 N _).trans (this.trans (le_abs_self _))⟩,
+    fun t p y => rfl, ⟨C, fun t ht p hp y => ?_⟩⟩⟩
   · exact hKcΩ (hmemK p p hp (by simpa using hr))
   · have hpp := hKcΩ (hmemK p p hp (by simpa using hr))
     simp only [hHdef, sub_self, hθ1 0 (hKW₀ (mem_closedBall_self (by linarith))), one_mul, heatGaussian,
@@ -477,5 +539,50 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
           simp [pd_congr (hflux _), pd_const]
         rw [hL, zero_add, abs_zero]
         exact mul_nonneg hCnn hpow_nn
+
+/-- **The parametrix in a chart and its heat error.** For a Riemannian coordinate metric on `U`, `x ∈ U` and an order
+`N`, there are `r > 0`, coefficients `u_k(p, y)` with `u₀(p, p) = 1`, and a cut-off parametrix
+`H(t, p, y) = θ(y − p) (4πt)^{-n/2} e^{-σ(p, y)/4t} Σ_{k≤N} tᵏ u_k(p, y)` with the diagonal
+`H(t, p, p) = (4πt)^{-n/2} Σ_{k≤N} tᵏ u_k(p, p)`, whose heat error in the second variable is `O(t^{N − n/2})` uniformly
+for `t ∈ (0, 1]`, `‖p − x‖ < r` and all `y`. -/
+theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) ℝ} {U : Set (Fin n → ℝ)}
+    (hg : Upstream.GeodesicExpansion.IsRiemMetric g U) {x : Fin n → ℝ} (hx : x ∈ U) (N : ℕ) :
+    ∃ (r : ℝ) (u : ℕ → (Fin n → ℝ) × (Fin n → ℝ) → ℝ) (H : ℝ → (Fin n → ℝ) → (Fin n → ℝ) → ℝ), 0 < r ∧
+      (∀ p, ‖p - x‖ < r → u 0 (p, p) = 1) ∧
+      (∀ t > 0, ∀ p, ‖p - x‖ < r →
+        H t p p = (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * ∑ k ∈ Finset.range (N + 1), t ^ k * u k (p, p)) ∧
+      (∃ C a : ℝ, 0 < a ∧ ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y,
+        |H t p y| ≤ C * t ^ (-(n : ℝ) / 2) * Real.exp (-a * (∑ i, (y i - p i) ^ 2) / t)) ∧
+      (∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∫ y, |H t p y| ≤ C) ∧
+      -- the structure of `H`, for the delta property
+      (∃ (Ω : Set ((Fin n → ℝ) × (Fin n → ℝ))) (θ : (Fin n → ℝ) → ℝ)
+          (σ : (Fin n → ℝ) × (Fin n → ℝ) → ℝ) (V : (Fin n → ℝ) × (Fin n → ℝ) → (Fin n → ℝ)),
+        IsOpen Ω ∧ (x, x) ∈ Ω ∧ (∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → (p, y) ∈ Ω) ∧
+        (∀ q ∈ Ω, q.2 ∈ U) ∧ ContDiffOn ℝ ∞ V Ω ∧ (∀ k, ContDiffOn ℝ ∞ (u k) Ω) ∧
+        (∀ p, (p, p) ∈ Ω → V (p, p) = 0 ∧
+          HasFDerivAt (fun y => V (p, y)) (ContinuousLinearMap.id ℝ (Fin n → ℝ)) p) ∧
+        (∀ q ∈ Ω, σ q = Geodesic.pairing g q.1 (V q) (V q)) ∧
+        (∀ z, ‖z‖ < r / 2 → θ z = 1) ∧ (∀ z, r ≤ ‖z‖ → θ z = 0) ∧ (∀ z, θ z ∈ Icc (0 : ℝ) 1) ∧
+        ContDiff ℝ ∞ θ ∧ tsupport θ ⊆ ball 0 r ∧ (∀ t p, ‖p - x‖ < r → Continuous (H t p)) ∧
+        (∀ t > 0, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → ∃ D, HasDerivAt (fun s => H s p y) D t ∧
+          D + coordLaplacian g (H t p) y =
+            θ (y - p) * (heatGaussian n (σ (p, y)) t * (t ^ N * coordLaplacian g (fun z => u N (p, z)) y)) +
+            (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * (gaussFactor t (σ (p, y)) * truncAnsatz (fun k y => u k (p, y)) N t y *
+              coordLaplacian g (fun z => θ (z - p)) y - 2 * (gaussFactor t (σ (p, y)) *
+                ((∑ k ∈ Finset.range (N + 1), t ^ k * coordGradPair g (fun z => θ (z - p)) (fun z => u k (p, z)) y) -
+                  truncAnsatz (fun k y => u k (p, y)) N t y *
+                    coordGradPair g (fun z => θ (z - p)) (fun z => σ (p, z)) y / (4 * t))))) ∧
+        (∃ c : ℝ, 0 < c ∧ ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → c * ‖y - p‖ ^ 2 ≤ σ (p, y)) ∧
+        (∃ A : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r →
+          |truncAnsatz (fun k y => u k (p, y)) N t y| ≤ A) ∧
+        ∀ t p y, H t p y = θ (y - p) * (heatGaussian n (σ (p, y)) t * truncAnsatz (fun k y => u k (p, y)) N t y)) ∧
+      ∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y, ∃ D, HasDerivAt (fun s => H s p y) D t ∧
+        |D + coordLaplacian g (H t p) y| ≤ C * t ^ ((N : ℝ) - n / 2) := by
+  obtain ⟨r, u, Ω, θ, σ, V, h⟩ := exists_chart_parametrix_uniform hg hx
+  obtain ⟨H, hH⟩ := h N
+  exact ⟨r, u, H, hH.r_pos, hH.u_zero_diag, hH.diag_eq, hH.gauss_le, hH.integral_abs_le,
+    ⟨Ω, θ, σ, V, hH.isOpen, hH.center_mem, hH.mem_of_lt, hH.snd_mem, hH.V_smooth, hH.u_smooth, hH.V_diag,
+      hH.σ_eq, hH.θ_one, hH.θ_zero, hH.θ_mem, hH.θ_smooth, hH.θ_tsupport, hH.H_cont, hH.heatError_eq,
+      hH.σ_lower, hH.ansatz_le, hH.H_eq⟩, hH.heatError_le⟩
 
 end Lightlike
