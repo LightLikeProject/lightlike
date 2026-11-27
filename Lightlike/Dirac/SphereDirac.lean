@@ -96,4 +96,54 @@ lemma lieBracket_frameFlat (a b : Fin 2) (y : Fin 2 → ℝ) :
   ext i
   fin_cases a <;> fin_cases b <;> fin_cases i <;> simp [frameFlat, nsq] <;> ring
 
+/-! ## The bracket of the north frame on the sphere -/
+
+lemma pc_stereoN_ne (y : Fin 2 → ℝ) : pc (stereoN y) 2 ≠ 1 := by
+  rw [(pc_stereoN y).2.2]
+  have hq := nsq_nonneg y
+  intro h
+  rw [div_eq_one_iff_eq (by positivity)] at h
+  linarith
+
+lemma frameN_stereoN (a : Fin 2) (y : Fin 2 → ℝ) :
+    (frameN a (stereoN y) : Fin 2 → ℝ) = dStereoN y (frameFlat a y) := by
+  change fN a (invN (stereoN y)) = _
+  rw [invN_stereoN]
+  unfold fN frameFlat
+  rw [map_smul, dStereoN_apply]
+  rfl
+
+/-- **The bracket of the north frame**: `[Fₐ, F_b] = yₐ F_b − y_b Fₐ` at `stereoN y`. -/
+theorem mlieBracket_frameN (a b : Fin 2) (y : Fin 2 → ℝ) :
+    (mlieBracket I2 (frameN a) (frameN b) (stereoN y) : Fin 2 → ℝ) =
+      y a • (frameN b (stereoN y) : Fin 2 → ℝ) - y b • (frameN a (stereoN y) : Fin 2 → ℝ) := by
+  have hV := (frameN_smooth a (pc_stereoN_ne y)).mdifferentiableAt (by simp)
+  have hW := (frameN_smooth b (pc_stereoN_ne y)).mdifferentiableAt (by simp)
+  have h := mpullback_mlieBracket (f := stereoN) (x₀ := y) hV hW (contMDiff_stereoN y) (by simp)
+  have hpb : ∀ c, mpullback 𝓘(ℝ, Fin 2 → ℝ) I2 stereoN (frameN c) =
+      fun z => (frameFlat c z : TangentSpace 𝓘(ℝ, Fin 2 → ℝ) z) := fun c => funext (mpullback_frameN c)
+  have hfl : mlieBracket 𝓘(ℝ, Fin 2 → ℝ) (fun z => (frameFlat a z : TangentSpace 𝓘(ℝ, Fin 2 → ℝ) z))
+      (fun z => (frameFlat b z : TangentSpace 𝓘(ℝ, Fin 2 → ℝ) z)) y =
+      lieBracket ℝ (frameFlat a) (frameFlat b) y := by
+    have := congrFun (mlieBracketWithin_eq_lieBracketWithin (𝕜 := ℝ)
+      (V := fun z => (frameFlat a z : TangentSpace 𝓘(ℝ, Fin 2 → ℝ) z))
+      (W := fun z => (frameFlat b z : TangentSpace 𝓘(ℝ, Fin 2 → ℝ) z)) (s := Set.univ)) y
+    rw [← lieBracketWithin_univ]
+    exact this
+  rw [hpb, hpb, hfl] at h
+  have hflat := lieBracket_frameFlat a b y
+  have hd : mfderiv 𝓘(ℝ, Fin 2 → ℝ) I2 stereoN y = (dStereoN y : (Fin 2 → ℝ) →L[ℝ] (Fin 2 → ℝ)) :=
+    ContinuousLinearMap.ext fun v => (dStereoN_apply y v).symm
+  unfold mpullback at h
+  rw [hd] at h
+  erw [ContinuousLinearMap.inverse_equiv] at h
+  have h2 := congrArg (dStereoN y) h
+  have h3 : (mlieBracket I2 (frameN a) (frameN b) (stereoN y) : Fin 2 → ℝ) =
+      dStereoN y (lieBracket ℝ (frameFlat a) (frameFlat b) y) := by
+    rw [← h2]; exact ((dStereoN y).apply_symm_apply _).symm
+  rw [h3, frameN_stereoN, frameN_stereoN]
+  change dStereoN y (lieBracket ℝ (frameFlat a) (frameFlat b) y) = _
+  rw [hflat, map_sub, map_smul, map_smul]
+  rfl
+
 end Lightlike.Dirac
