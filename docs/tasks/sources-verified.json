@@ -674,7 +674,7 @@
   "citations_via": "OpenAlex"
  },
  "bdfhp-2010": {
-  "checked": "2026-11-16",
+  "checked": "2026-11-27",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Lorentzian spin foam amplitudes: graphical calculus and asymptotics",
@@ -724,6 +724,11 @@
     "snippet": "(61) Where i, j = 1, 2, 3 and we have used the critical and stationary point equations. H zz is a 20 × 20 matrix. The derivatives are with respect to the spinor variables zab on each of the ten edges ab of the amplitude.",
     "why": null
    },
+   "§4.2.1": {
+    "verified": true,
+    "snippet": "4.2.1 Condition on the real part of the action The real part of the action X |hZab , ξab i|2 |hJξba , Zba i|2 Re S = kab",
+    "why": null
+   },
    "§4.2.2": {
     "verified": true,
     "snippet": "4.2.2 Stationary and critical points We now compute the critical points of the action by evaluating the first derivative of the action of the configurations satisfying the condition (18). The action (17) is a function",
@@ -750,8 +755,8 @@
     "why": null
    }
   },
-  "citations": 279,
-  "citations_via": "OpenAlex"
+  "citations": 254,
+  "citations_via": "Semantic Scholar"
  },
  "bekaert-boulanger-sundell-2010": {
   "checked": "2026-11-08",
@@ -1199,7 +1204,7 @@
   "citations_via": "OpenAlex"
  },
  "brewin-2009": {
-  "checked": "2026-11-08",
+  "checked": "2026-11-27",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "Riemann Normal Coordinate expansions using Cadabra",
@@ -1207,6 +1212,11 @@
    "Section 9": {
     "verified": true,
     "snippet": "9 These equations can be used to construct the series expansion for g ab (x), which to 3rd-order is 1 1",
+    "why": null
+   },
+   "eq. (11.21)": {
+    "verified": true,
+    "snippet": "(11.21) 0 ∆ = gab Dxa Dxb (11.21a) 2 3∆ = −xa xb Dxc Dxd Racbd (11.21b) 3 12∆ = −xa xb Dxc Dxd Dxe ∇c Radbe − 2xa xb xc Dxd Dxe ∇a Rbdce (11.21c) 4 360∆ = xa xb Dxc Dxd Dxe Dxf −8g gh Racdg Rbef h − 6∇cd Raebf \u0001 + xa xb",
     "why": null
    }
   },
@@ -3363,11 +3373,16 @@
   "citations_via": "Semantic Scholar"
  },
  "kar-sengupta-2007": {
-  "checked": "2026-11-19",
+  "checked": "2026-11-27",
   "exists": true,
   "via": "arXiv API",
   "fetched_title": "The Raychaudhuri equations: a brief review",
   "locations": {
+   "Section D": {
+    "verified": true,
+    "snippet": "D. Null geodesic congruences The Raychaudhuri equations for null geodesic congruences were first derived by Sachs [9] in 1961. Let us briefly recall the salient features of these equations. It must be mention",
+    "why": null
+   },
    "eq. (12)": {
     "verified": true,
     "snippet": "(12) dλ 3 10 dσab 2 1 \u0010 \u0011 = − Θσab − σac σ cb − ωac ω cb + hab σ 2 − ω 2 dλ 3 3 1 +Ccbad v c v d + R̃ab (13) 2 dωab 2 = − Θωab − 2σ c[b ωa]c (14) dλ 3 where σ 2 = σab σ ab , ω 2 = ωab ω ab , Ccbad is the Weyl tensor and",
@@ -3384,7 +3399,7 @@
     "why": null
    }
   },
-  "citations": 187,
+  "citations": 188,
   "citations_via": "Semantic Scholar"
  },
  "kazarian-lando-2007": {
