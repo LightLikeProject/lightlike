@@ -153,6 +153,7 @@ section PentagonKL
 
 variable {k : Type*} [Field k] [CharZero k]
 
+omit [CharZero k] in
 /-- `Fc = klCoef` given only the ranges of the second bracketing: off the ranges of the first
 bracketing both vanish. -/
 theorem Fc_eq_klCoef_of' (hKL : FcEqKL k) (q : kˣ) (hδ : loopVal q ≠ 0) {a b c e d f d' : ℕ}
@@ -164,16 +165,95 @@ theorem Fc_eq_klCoef_of' (hKL : FcEqKL k) (q : kˣ) (hδ : loopVal q ≠ 0) {a b
   · obtain ⟨h1, h2⟩ := hg
     simp only [le_min_iff] at h1 h2
     exact Fc_eq_klCoef_of hKL q hδ hN hd hq h1.1 h1.2 hfb hfc h2.2 h2.1 hda hdf
-  · have h0 : Fc q a b c e d f d' = 0 := by simp only [Fc, if_neg hg]
+  · have h0 : Fc q a b c e d f d' = 0 := by
+      unfold Fc; exact ite_eq_right hg
     have h1 : klCoef q a b c e d f d' = 0 := by
       unfold klCoef
       rw [ite_eq_right fun hA => hg ⟨hA.1, hA.2.1⟩]
     rw [h0, h1]
 
+omit [CharZero k] in
 /-- `klCoef` vanishes off the admissible indices. -/
 theorem klCoef_of_not (q : kˣ) {a b c e d f d' : ℕ} (h : ¬ KLAdm a b c e d f d') :
     klCoef q a b c e d f d' = 0 := by
   unfold klCoef; rw [ite_eq_right h]
+
+/-- **The pentagon, term by term**: each product of three `Fc` of the left side of the pentagon is
+the product of the three `klCoef`. -/
+theorem pentagon_term_eq (hKL : FcEqKL k) (q : kˣ) (hδ : loopVal q ≠ 0)
+    {a b c d j m i f h d' e₀ d₀ g₀ : ℕ} (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq : ∀ n, 1 ≤ n → n ≤ a + b + c + d + 3 → (q : k) ^ (2 * n) ≠ 1)
+    (hjc : j ≤ c) (hjd : j ≤ d) (hmb : m ≤ b) (hmz : m ≤ c + d - 2 * j) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + d - 2 * j) - 2 * m) :
+    Fc q b c d f h j m * (Fc q a (b + c - 2 * f) d d' g₀ h i * Fc q a b c e₀ d₀ f d') =
+      klCoef q b c d f h j m * (klCoef q a (b + c - 2 * f) d d' g₀ h i * klCoef q a b c e₀ d₀ f d') := by
+  have e1 : Fc q b c d f h j m = klCoef q b c d f h j m :=
+    Fc_eq_klCoef_of' hKL q hδ (by omega) (fun x hx => hd x (by omega))
+      (fun n h1 h2 => hq n h1 (by omega)) hjc hjd hmb hmz
+  rw [e1]
+  by_cases g1 : KLAdm b c d f h j m
+  · obtain ⟨g11, g12, -, -, g15⟩ := g1
+    simp only [le_min_iff] at g11 g12
+    by_cases g2 : d' ≤ min a (b + c - 2 * f) ∧ g₀ ≤ min (a + (b + c - 2 * f) - 2 * d') d
+    · obtain ⟨g21, g22⟩ := g2
+      simp only [le_min_iff] at g21 g22
+      have e2 : Fc q a (b + c - 2 * f) d d' g₀ h i = klCoef q a (b + c - 2 * f) d d' g₀ h i :=
+        Fc_eq_klCoef_of' hKL q hδ (by omega) (fun x hx => hd x (by omega))
+          (fun n h1 h2 => hq n h1 (by omega)) g12.1 g12.2 hia (by omega)
+      have e3 : Fc q a b c e₀ d₀ f d' = klCoef q a b c e₀ d₀ f d' :=
+        Fc_eq_klCoef_of' hKL q hδ (by omega) (fun x hx => hd x (by omega))
+          (fun n h1 h2 => hq n h1 (by omega)) g11.1 g11.2 g21.1 g21.2
+      rw [e2, e3]
+    · have h0 : Fc q a (b + c - 2 * f) d d' g₀ h i = 0 := by
+        unfold Fc; exact ite_eq_right g2
+      have h1 : klCoef q a (b + c - 2 * f) d d' g₀ h i = 0 :=
+        klCoef_of_not q fun hA => g2 ⟨hA.1, hA.2.1⟩
+      rw [h0, h1, zero_mul, zero_mul]
+  · rw [klCoef_of_not q g1, zero_mul, zero_mul]
+
+omit [CharZero k] in
+/-- **The inner sums of the left side collapse**: for fixed `f`, only `h = (x + d - J₂)/2` and
+`d' = (a + x - I₂)/2` contribute (`x = b + c - 2f`), by the admissibility of the outer factors. -/
+theorem pentagon_inner_collapse (q : kˣ) (a b c d j m f e₀ d₀ g₀ i : ℕ) :
+    ∑ h ∈ range (d + 1), ∑ d' ∈ range (a + 1),
+        klCoef q b c d f h j m * (klCoef q a (b + c - 2 * f) d d' g₀ h i * klCoef q a b c e₀ d₀ f d') =
+      klCoef q b c d f ((b + c - 2 * f + d - (b + (c + d - 2 * j) - 2 * m)) / 2) j m *
+        (klCoef q a (b + c - 2 * f) d ((a + (b + c - 2 * f) - (a + b - 2 * e₀ + c - 2 * d₀)) / 2) g₀
+            ((b + c - 2 * f + d - (b + (c + d - 2 * j) - 2 * m)) / 2) i *
+          klCoef q a b c e₀ d₀ f ((a + (b + c - 2 * f) - (a + b - 2 * e₀ + c - 2 * d₀)) / 2)) := by
+  set hF := (b + c - 2 * f + d - (b + (c + d - 2 * j) - 2 * m)) / 2
+  set dF := (a + (b + c - 2 * f) - (a + b - 2 * e₀ + c - 2 * d₀)) / 2
+  -- the `h`-sum
+  have hk1 : ∀ h, h ≠ hF → klCoef q b c d f h j m = 0 := fun h hh =>
+    klCoef_of_not q fun hA => hh (by obtain ⟨-, h2, -, -, h5⟩ := hA; simp only [le_min_iff] at h2; omega)
+  have hk3 : ∀ d', d' ≠ dF → klCoef q a b c e₀ d₀ f d' = 0 := fun d' hd =>
+    klCoef_of_not q fun hA => hd (by obtain ⟨-, -, -, h4, h5⟩ := hA; simp only [le_min_iff] at h4; omega)
+  rw [sum_eq_single hF (fun h _ hh => by simp [hk1 h hh]) (fun hm => by
+    have : klCoef q b c d f hF j m = 0 := klCoef_of_not q fun hA => hm (by
+      obtain ⟨-, h2, -, -, -⟩ := hA; simp only [le_min_iff] at h2; simp only [mem_range]; omega)
+    simp [this])]
+  rw [sum_eq_single dF (fun d' _ hd => by simp [hk3 d' hd]) (fun hm => by
+    have : klCoef q a b c e₀ d₀ f dF = 0 := klCoef_of_not q fun hA => hm (by
+      obtain ⟨-, -, -, h4, -⟩ := hA; simp only [le_min_iff] at h4; simp only [mem_range]; omega)
+    simp [this])]
+
+omit [CharZero k] in
+/-- **The right side collapses**: only `g' = (I₁ + J₁ - T)/2` contributes, `T = a + J₂ - 2i`. -/
+theorem pentagon_right_collapse (q : kˣ) (a b c d j m e₀ d₀ g₀ i : ℕ) :
+    ∑ g' ∈ range (c + d - 2 * j + 1),
+        klCoef q a b (c + d - 2 * j) e₀ g' m i * klCoef q (a + b - 2 * e₀) c d d₀ g₀ j g' =
+      klCoef q a b (c + d - 2 * j) e₀
+          ((a + b - 2 * e₀ + (c + d - 2 * j) - (a + (b + (c + d - 2 * j) - 2 * m) - 2 * i)) / 2) m i *
+        klCoef q (a + b - 2 * e₀) c d d₀ g₀ j
+          ((a + b - 2 * e₀ + (c + d - 2 * j) - (a + (b + (c + d - 2 * j) - 2 * m) - 2 * i)) / 2) := by
+  set gF := (a + b - 2 * e₀ + (c + d - 2 * j) - (a + (b + (c + d - 2 * j) - 2 * m) - 2 * i)) / 2
+  have hk4 : ∀ g', g' ≠ gF → klCoef q a b (c + d - 2 * j) e₀ g' m i = 0 := fun g' hg =>
+    klCoef_of_not q fun hA => hg (by obtain ⟨h1, h2, -, -, h5⟩ := hA; simp only [le_min_iff] at h1 h2; omega)
+  rw [sum_eq_single gF (fun g' _ hg => by simp [hk4 g' hg]) (fun hm => by
+    have : klCoef q a b (c + d - 2 * j) e₀ gF m i = 0 := klCoef_of_not q fun hA => hm (by
+      obtain ⟨-, h2, -, -, -⟩ := hA; simp only [le_min_iff] at h2; simp only [mem_range]; omega)
+    simp [this])]
 
 end PentagonKL
 
