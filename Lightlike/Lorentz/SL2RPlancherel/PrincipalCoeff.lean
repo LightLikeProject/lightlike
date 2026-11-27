@@ -515,4 +515,73 @@ lemma inner_aR_neg_kVecL2 (ν ξ : ℝ) (m k : ℤ) :
   rw [← hu, ← ContinuousLinearMap.mul_apply, ← principalSeries_mul, aR_mul_aR_neg,
     principalSeries_one, ContinuousLinearMap.one_apply, mcoefP]
 
+/-- From `A ≥ (1 + x²)/S`: `A^{-1/2} ≤ S^{1/2} (1 + x²)^{-1/2}`. -/
+lemma rpow_neg_half_le_of_le {A S x : ℝ} (hS : 0 < S) (hA : (1 + x ^ 2) ≤ S * A) :
+    A ^ (-(1 : ℝ) / 2) ≤ S ^ ((1 : ℝ) / 2) * (1 + x ^ 2) ^ (-(1 : ℝ) / 2) := by
+  have hx : (0 : ℝ) < 1 + x ^ 2 := by positivity
+  have hA0 : 0 < A := by
+    by_contra h; push Not at h; nlinarith
+  have h1 : (1 + x ^ 2) * S⁻¹ ≤ A := by
+    rw [mul_comm, ← div_eq_inv_mul, div_le_iff₀ hS]; linarith
+  calc A ^ (-(1 : ℝ) / 2) ≤ ((1 + x ^ 2) * S⁻¹) ^ (-(1 : ℝ) / 2) :=
+        Real.rpow_le_rpow_of_nonpos (by positivity) h1 (by norm_num)
+    _ = S ^ ((1 : ℝ) / 2) * (1 + x ^ 2) ^ (-(1 : ℝ) / 2) := by
+        rw [Real.mul_rpow hx.le (by positivity), Real.inv_rpow hS.le, ← Real.rpow_neg hS.le]
+        ring_nf
+
+/-- **The size of `π(g) e_n`**: `‖Q(num g x, den g x)‖ ≤ (Σ g_ij²)^{1/2} (1 + x²)^{-1/2}`. -/
+lemma norm_qForm_le (ν : ℝ) (n : ℤ) (g : SL2R) (x : ℝ) :
+    ‖qForm ν n (num g x) (den g x)‖ ≤
+      (g 0 0 ^ 2 + g 0 1 ^ 2 + g 1 0 ^ 2 + g 1 1 ^ 2) ^ ((1 : ℝ) / 2) * (1 + x ^ 2) ^ (-(1 : ℝ) / 2) := by
+  have hpos := num_sq_add_den_sq_pos g x
+  have hS : 0 < g 0 0 ^ 2 + g 0 1 ^ 2 + g 1 0 ^ 2 + g 1 1 ^ 2 := by
+    by_contra h; push Not at h
+    have := one_add_sq_le_num_den g x
+    nlinarith [sq_nonneg x]
+  rw [norm_qForm ν n hpos]
+  exact rpow_neg_half_le_of_le hS (one_add_sq_le_num_den g x)
+
+lemma cT_entries (ξ t : ℝ) :
+    (cT ξ t) 0 0 = Real.cos t ∧ (cT ξ t) 0 1 = Real.exp (-ξ) * Real.sin t ∧
+      (cT ξ t) 1 0 = -(Real.exp ξ * Real.sin t) ∧ (cT ξ t) 1 1 = Real.cos t := by
+  have h00 := num_cT ξ t 0
+  have h01 := den_cT ξ t 1
+  have h10 := num_cT ξ t 1
+  have h11 := den_cT ξ t 0
+  simp only [num, den, mul_zero, zero_add, mul_one] at h00 h01 h10 h11
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> linarith
+
+/-- The squared entries of `c(t)` are bounded uniformly in `t`. -/
+lemma cT_sq_le (ξ t : ℝ) :
+    (cT ξ t) 0 0 ^ 2 + (cT ξ t) 0 1 ^ 2 + (cT ξ t) 1 0 ^ 2 + (cT ξ t) 1 1 ^ 2 ≤
+      2 + Real.exp ξ ^ 2 + Real.exp (-ξ) ^ 2 := by
+  obtain ⟨h1, h2, h3, h4⟩ := cT_entries ξ t
+  rw [h1, h2, h3, h4]
+  have hs := Real.sin_sq_le_one t
+  have hc := Real.cos_sq_le_one t
+  nlinarith [sq_nonneg (Real.exp ξ), sq_nonneg (Real.exp (-ξ)), sq_nonneg (Real.sin t),
+    mul_le_mul_of_nonneg_left hs (sq_nonneg (Real.exp ξ)),
+    mul_le_mul_of_nonneg_left hs (sq_nonneg (Real.exp (-ξ)))]
+
+/-- The function `(1 + x²)^{-1/2}` as a vector of `L²(ℝ)`. -/
+lemma memLp_rpow_neg_half : MemLp (fun x : ℝ => (((1 + x ^ 2) ^ (-(1 : ℝ) / 2) : ℝ) : ℂ)) 2 volume := by
+  have hc : Continuous fun x : ℝ => (((1 + x ^ 2) ^ (-(1 : ℝ) / 2) : ℝ) : ℂ) :=
+    Complex.continuous_ofReal.comp ((continuous_const.add (continuous_id.pow 2)).rpow_const
+      fun x => Or.inl (by have : (0 : ℝ) < 1 + x ^ 2 := by positivity
+                          exact this.ne'))
+  rw [memLp_two_iff_integrable_sq_norm hc.aestronglyMeasurable]
+  refine integrable_inv_one_add_sq.congr (Filter.Eventually.of_forall fun x => ?_)
+  have hpos : (0 : ℝ) < 1 + x ^ 2 := by positivity
+  simp only [Complex.norm_real, Real.norm_eq_abs, sq_abs]
+  rw [← Real.rpow_mul_natCast hpos.le]
+  norm_num
+  rw [Real.rpow_neg_one]
+
+/-- `conj(f x) g x` is integrable for `f, g ∈ L²(ℝ)`. -/
+lemma integrable_conj_mul (f g : L2R) :
+    Integrable (fun x => (starRingEnd ℂ) (f x) * g x) := by
+  have h := MeasureTheory.L2.integrable_inner (𝕜 := ℂ) f g
+  refine h.congr (Filter.Eventually.of_forall fun x => ?_)
+  simp only [RCLike.inner_apply', mul_comm]
+
 end Lightlike.Lorentz.SL2RPlancherel
