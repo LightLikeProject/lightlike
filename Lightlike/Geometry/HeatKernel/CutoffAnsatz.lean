@@ -59,4 +59,27 @@ theorem cutoff_terms_eq_zero_of_eventuallyEq_one {θ Φ : (Fin n → ℝ) → �
     simp [pd_congr (hflux _), pd_const]
   · simp [coordGradPair, hpd]
 
+/-- **The cross term of the cutoff, expanded**: `g⁻¹(dθ, d(e^{-σ/4t} U)) = e^{-σ/4t} (g⁻¹(dθ, dU) − U g⁻¹(dθ, dσ)/4t)`. -/
+theorem coordGradPair_gauss_mul {θ σ V : (Fin n → ℝ) → ℝ} {y : Fin n → ℝ} (hσ : DifferentiableAt ℝ σ y)
+    (hV : DifferentiableAt ℝ V y) (t : ℝ) :
+    coordGradPair g θ (fun z => gaussFactor t (σ z) * V z) y =
+      gaussFactor t (σ y) * (coordGradPair g θ V y - V y * coordGradPair g θ σ y / (4 * t)) := by
+  have he : DifferentiableAt ℝ (fun z => gaussFactor t (σ z)) y :=
+    ((contDiff_gaussFactor t).differentiable (by simp) _).comp y hσ
+  have hpe : ∀ j, pd j (fun z => gaussFactor t (σ z)) y = -(gaussFactor t (σ y)) / (4 * t) * pd j σ y := by
+    intro j
+    have h := (hasDerivAt_gaussFactor t (σ y)).comp_hasFDerivAt y hσ.hasFDerivAt
+    unfold pd
+    show fderiv ℝ (gaussFactor t ∘ σ) y _ = _
+    rw [h.fderiv]
+    simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  have hpd : ∀ j, pd j (fun z => gaussFactor t (σ z) * V z) y =
+      -(gaussFactor t (σ y)) / (4 * t) * pd j σ y * V y + gaussFactor t (σ y) * pd j V y := by
+    intro j
+    rw [pd_mul (f₁ := fun z => gaussFactor t (σ z)) (f₂ := V) he hV, hpe]
+  unfold coordGradPair
+  simp only [hpd, Finset.mul_sum, Finset.sum_div, mul_sub, ← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+  ring
+
 end Lightlike
