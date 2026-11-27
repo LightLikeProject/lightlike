@@ -431,3 +431,23 @@ generic Racah sum (`racahG θ`), `Δ² = delta2G θ`, `s(x,y,z) = (x+y+z)/2`.
 5. Not covered by `pentagon` (it needs `1 ≤ a, b, c`): tuples with `e' = 0`, `a' = 0` or `b' = 0`; these need a separate
    argument (a zero colour collapses the sums to one term) or a symmetry of `GenBE` moving the zero to an unrestricted slot.
 
+## L2: the one-strand block in closed form (27 Nov, oscillatory; MEASURED, partly proved)
+
+For the blocks `(a, b, 1)` and total `D`, `E = (a+b+1-D)/2`, `X = a+b-2E` (q = e^{iθ}, `[n] = sin nθ / sin θ`):
+`F00 = Fc(a,b,1;E,0;0,E) = [a+b-E+2][b-E+1]/([b+1][X+2])` (= `κ(a,b+1,E)/κ(a,b,E)`, `Fc_top`),
+`F01 = Fc(a,b,1;E,0;1,E-1) = -[a-E+1]/[X+2]`, `F10 = Fc(a,b,1;E-1,1;0,E) = [E]/[b+1]`, `F11 = Fc(a,b,1;E-1,1;1,E-1) = 1`.
+MEASURED with the Kauffman–Lins coefficient (mpmath 40 digits, `a, b ≤ 5`): `F10`, `F11` to 3e-41; `F01` found by a
+search over ratios of products of quantum integers with small linear arguments. At `b = 1` they agree with the
+proved cup entries (`Fc_cup_low = d_{n}/d_{n+1} = -[n+1]/[n+2]`, `Fc_cup_high = 1`). Also MEASURED: the mirror inverse
+`Σ_i F^{cba}[j', i] F^{abc}[i, j] = δ_{j' j}` (421 checks, `a, b, c ≤ 3`, 9e-41). Scripts: `~/lightlike-ops/state/notes/`.
+Route (proved pieces in `OneStrand.lean`, `ThirdBlock.lean`, `MirrorTree.lean`): the pentagon recursion in `b`
+(`Fc_b_rec`) gives two relations per level among `F01, F10, F11`, the mirror inverse a third; the remaining
+input is the mirror of the tree vectors (caps and cups done: `reflect_capOp`, `reflect_cupOp`).
+Proved since (oscillatory/qu1-l2): `reflect_UR`, `reflect_UL`, `Fc_mirror_inv` (`F^{cba} F^{abc} = I`, MirrorTree.lean).
+Finding (on paper): the recursion in `b` determines `F11` and `F01` level by level but never `F10`, and the mirror
+inverse adds no equation (the top entry of `F^{1ba}` exists only for `E ≤ 1`). The missing relation is the vertical
+flip: for the basis pairing `B(x, y) = Σ_σ x_σ y_σ`, `B(cap_i x, y) = -q⁻¹ B(x, cup_i y)` and `modelE` is self-adjoint
+(checked on basis words), so `U_L'(i) U_R(j)` and `U_R'(j) U_L(i)` have the same scalar (the powers `(-q)^{e+d}` and
+`(-q)^{f+d'}` agree since `e + d = f + d'`), i.e. `F^{abc}(i,j) κ_L(i) = κ_R(j) F^{cba}(j,i)`; with the mirror inverse this
+is the orthogonality that fixes the one-strand block up to signs, which the recursion in `b` fixes.
+
