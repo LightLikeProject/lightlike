@@ -227,4 +227,70 @@ lemma transfer_identity (w : E 2) (hw : w ≠ 0) (g : V) :
 
 end South
 
+section Membership
+
+lemma pc_stereoN_ne_south {y : Fin 2 → ℝ} (hy : y ≠ 0) : pc (stereoN y) 2 ≠ -1 := by
+  rw [(pc_stereoN y).2.2]
+  have hq : 0 < nsq y := by
+    unfold nsq
+    by_contra h
+    push_neg at h
+    have h0 : y 0 = 0 := by nlinarith [sq_nonneg (y 0), sq_nonneg (y 1)]
+    have h1 : y 1 = 0 := by nlinarith [sq_nonneg (y 0), sq_nonneg (y 1)]
+    exact hy (funext fun i => by fin_cases i <;> simp [h0, h1])
+  intro h
+  rw [div_eq_iff (by positivity)] at h
+  linarith
+
+lemma reflY_inv2 (w : E 2) : reflY (modelEquiv2 (inv2 w)) = tau (modelEquiv2 w) := by
+  have hn : ‖w‖ ^ 2 = nsq (modelEquiv2 w) := by
+    rw [← norm_sq_modelEquiv2_symm, ContinuousLinearEquiv.symm_apply_apply]
+  ext i
+  fin_cases i <;> simp [reflY, tau, inv2, hn, modelEquiv2_symm_apply] <;> ring
+
+lemma stereoS_tau {y : Fin 2 → ℝ} (hy : y ≠ 0) : stereoS (tau y) = stereoN y := by
+  have h1 := stereoN_mem_dom y
+  have h2 := pc_stereoN_ne_south hy
+  have h3 : invS (stereoN y) = tau y := by rw [invS_eq_tau h1 h2, invN_stereoN]
+  rw [← h3, stereoS_invS h2]
+
+/-- The south chart function of a section in #950's convention: `fS(w) = −γ₀ f_S(stereoS (R w))`. -/
+def southRep (σ : SpinorSection sphereSpinStructure ρ) (w : E 2) : V :=
+  -(gam ρ 0 (σ.toField.rep false (stereoS (reflY (modelEquiv2 w)))))
+
+lemma contDiff_southRep (σ : SpinorSection sphereSpinStructure ρ) : ContDiff ℝ ∞ (southRep σ) := by
+  have hR : ContDiff ℝ ∞ (fun w : E 2 => reflY (modelEquiv2 w)) := by
+    set L : (Fin 2 → ℝ) →L[ℝ] (Fin 2 → ℝ) := ContinuousLinearMap.pi fun i =>
+      if i = 0 then ContinuousLinearMap.proj 0 else -ContinuousLinearMap.proj 1
+    have hL : (fun w : E 2 => reflY (modelEquiv2 w)) = L.comp (modelEquiv2 : E 2 →L[ℝ] Fin 2 → ℝ) := by
+      funext w; ext i; fin_cases i <;> simp [reflY, L]
+    rw [hL]; exact (L.comp _).contDiff
+  rw [← contMDiff_iff_contDiff]
+  intro w
+  have h1 := σ.toField_isSmooth false (stereoS (reflY (modelEquiv2 w))) (pc_stereoS_ne_south _)
+  have h2 : ContMDiffAt 𝓘(ℝ, E 2) I2 ∞ (fun w : E 2 => stereoS (reflY (modelEquiv2 w))) w :=
+    (contMDiff_stereoS _).comp w (hR.contMDiff.contMDiffAt)
+  exact ((gam ρ 0).contDiff.contMDiff.contMDiffAt.comp w (h1.comp w h2)).neg
+
+/-- **The north representation of an eigensection is a two-chart eigenspinor** (`SphereEigenspace`). -/
+theorem northMap_mem {σ : SpinorSection sphereSpinStructure ρ} {lam : ℝ} (h : σ.dirac = lam • σ) :
+    northMap σ ∈ SphereEigenspace ρ lam := by
+  refine ⟨contDiff_northRep σ, north_eq_of_dirac h, southRep σ, contDiff_southRep σ, fun w hw => ?_⟩
+  set y := modelEquiv2 w
+  have hy : y ≠ 0 := fun h0 => hw (by simpa [y] using congrArg modelEquiv2.symm h0)
+  have hN := stereoN_mem_dom y
+  have hS : stereoN y ∈ sphereSpinStructure.dom false := pc_stereoN_ne_south hy
+  unfold southRep
+  rw [reflY_inv2, stereoS_tau hy]
+  have htr := σ.toField.transform true false (stereoN y) hN hS
+  change northRep σ w = _ at htr
+  simp only [northMap, LinearMap.coe_mk, AddHom.coe_mk]
+  rw [htr]
+  change _ = sphereT ρ w (ρ (liftNS (invN (stereoN y))) _)
+  rw [invN_stereoN, rho_liftNS, show modelEquiv2.symm y = w by simp [y],
+    show √(nsq y) = ‖w‖ by rw [← norm_modelEquiv2_symm]; simp [y]]
+  exact transfer_identity w hw _
+
+end Membership
+
 end Lightlike.Dirac
