@@ -162,7 +162,7 @@ omit [CharZero k] in
 bracketing both vanish. -/
 theorem Fc_eq_klCoef_of' (hKL : FcEqKL k) (q : kˣ) (hδ : loopVal q ≠ 0) {a b c e d f d' : ℕ}
     (hN : 1 ≤ a + b + c) (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0)
-    (hq : ∀ n, 1 ≤ n → n ≤ a + b + c + 3 → (q : k) ^ (2 * n) ≠ 1)
+    (hq : ∀ n, 1 ≤ n → n ≤ 2 * (a + b + c) + 6 → (q : k) ^ (2 * n) ≠ 1)
     (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f) :
     Fc q a b c e d f d' = klCoef q a b c e d f d' := by
   by_cases hg : e ≤ min a b ∧ d ≤ min (a + b - 2 * e) c
@@ -188,7 +188,7 @@ the product of the three `klCoef`. -/
 theorem pentagon_term_eq (hKL : FcEqKL k) (q : kˣ) (hδ : loopVal q ≠ 0)
     {a b c d j m i f h d' e₀ d₀ g₀ : ℕ} (ha : 1 ≤ a) (hb : 1 ≤ b)
     (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
-    (hq : ∀ n, 1 ≤ n → n ≤ a + b + c + d + 3 → (q : k) ^ (2 * n) ≠ 1)
+    (hq : ∀ n, 1 ≤ n → n ≤ 2 * (a + b + c + d) + 6 → (q : k) ^ (2 * n) ≠ 1)
     (hjc : j ≤ c) (hjd : j ≤ d) (hmb : m ≤ b) (hmz : m ≤ c + d - 2 * j) (hia : i ≤ a)
     (hiz : i ≤ b + (c + d - 2 * j) - 2 * m) :
     Fc q b c d f h j m * (Fc q a (b + c - 2 * f) d d' g₀ h i * Fc q a b c e₀ d₀ f d') =
@@ -266,7 +266,7 @@ of the two of the right side (with `g'` fixed). -/
 theorem pentagon_klCoef (hKL : FcEqKL k) (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e₀ d₀ g₀ j m i : ℕ)
     (ha : 1 ≤ a) (hb : 1 ≤ b) (hc : 1 ≤ c)
     (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
-    (hq : ∀ n, 1 ≤ n → n ≤ a + b + c + d + 3 → (q : k) ^ (2 * n) ≠ 1)
+    (hq : ∀ n, 1 ≤ n → n ≤ 2 * (a + b + c + d) + 6 → (q : k) ^ (2 * n) ≠ 1)
     (hjc : j ≤ c) (hjd : j ≤ d) (hmb : m ≤ b) (hmz : m ≤ c + d - 2 * j) (hia : i ≤ a)
     (hiz : i ≤ b + (c + d - 2 * j) - 2 * m) (h₀ : ValidA a b c d e₀ d₀ g₀) :
     ∑ f ∈ range (b + 1),
