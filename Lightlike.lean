@@ -2647,6 +2647,7 @@ import Lightlike.Spacetime.ImmersionSection
 import Lightlike.Spacetime.QuadricCurvature
 import Lightlike.Spacetime.SpaceForms.AntiDeSitter
 import Lightlike.Spacetime.SpaceForms.AntiDeSitterKilling
+import Lightlike.Spacetime.SpaceForms.AntiDeSitterCurvature
 import Lightlike.Spacetime.SpaceForms.DeSitter
 import Lightlike.Spacetime.SpaceForms.DeSitterKilling
 import Lightlike.Spacetime.SpaceForms.DeSitterCurvature
