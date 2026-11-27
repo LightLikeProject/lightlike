@@ -668,6 +668,7 @@ import Lightlike.Lorentz.SL2RPlancherel.PrincipalDiscreteOrth
 import Lightlike.Lorentz.SL2RPlancherel.CasimirTest
 import Lightlike.Lorentz.SL2RPlancherel.OppositeTransform
 import Lightlike.Lorentz.SL2RPlancherel.OppositeIdent
+import Lightlike.Lorentz.SL2RPlancherel.OppositeL2
 import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Linearity
 import Lightlike.Lorentz.SL2RPlancherel.WeightIntegrable
