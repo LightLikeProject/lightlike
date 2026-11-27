@@ -687,4 +687,132 @@ lemma norm_rotLogDeriv_le (ν : ℝ) (n : ℤ) (ξ t x : ℝ) :
     _ ≤ ‖wP ν‖ * (16 * E ^ 2 * S) + |(n : ℝ)| * (16 * E ^ 2 * S) := add_le_add t1 t2
     _ = _ := by ring
 
+/-- `π(g) e_n` agrees almost everywhere with its smooth form. -/
+lemma coeFn_principalSeries_kVecL2 (ν : ℝ) (n : ℤ) (g : SL2R) :
+    (principalSeries 0 ν g (kVecL2 ν n) : ℝ → ℂ) =ᵐ[volume]
+      fun x => qForm ν n (num g x) (den g x) := by
+  have h2 := coeFn_principalSeries 0 ν g (kVecL2 ν n)
+  have h3 := ae_eq_comp_mob g (MemLp.coeFn_toLp (memLp_kVecP ν n))
+  filter_upwards [h2, h3, ae_den_ne_zero g] with x e2 e3 hx
+  simp only [Function.comp_apply] at e3
+  rw [e2]
+  have := act_kVecP_eq ν n g x hx
+  rw [act] at this
+  rw [show (kVecL2 ν n : ℝ → ℂ) (mob g x) = kVecP ν n (mob g x) from e3, this, qForm]
+
+/-- `∫ conj(f x) e_k(x) dx = ⟪f, e_k⟫`. -/
+lemma integral_conj_mul_kVecP (ν : ℝ) (k : ℤ) (f : L2R) :
+    ∫ x, (starRingEnd ℂ) (f x) * kVecP ν k x = inner ℂ f (kVecL2 ν k) := by
+  rw [MeasureTheory.L2.inner_def]
+  refine integral_congr_ae ?_
+  filter_upwards [MemLp.coeFn_toLp (memLp_kVecP ν k)] with x hx
+  rw [RCLike.inner_apply', kVecL2, hx]
+
+/-- **The rotation relation of the matrix coefficients**:
+`2 (n cosh ξ - m) Φ_{m,n}(ξ) = -sinh ξ ((w - n) Φ_{m,n+1}(ξ) - (w + n) Φ_{m,n-1}(ξ))`. -/
+theorem mcoefP_rot_rel (ν ξ : ℝ) (m n : ℤ) :
+    2 * ((n : ℂ) * Real.cosh ξ - m) * mcoefP ν m n ξ =
+      -(Real.sinh ξ : ℂ) * ((wP ν - n) * mcoefP ν m (n + 1) ξ - (wP ν + n) * mcoefP ν m (n - 1) ξ) := by
+  set f : L2R := principalSeries 0 ν (aR (-ξ)) (kVecL2 ν m) with hf
+  set Q : ℝ → ℝ → ℂ := fun t x => qForm ν n (num (cT ξ t) x) (den (cT ξ t) x) with hQ
+  set F : ℝ → ℝ → ℂ := fun t x => (starRingEnd ℂ) (f x) * Q t x with hF
+  set F' : ℝ → ℝ → ℂ := fun t x => (starRingEnd ℂ) (f x) * (Q t x * rotLogDeriv ν n ξ t x) with hF'
+  set K : ℝ → ℂ := fun x => -(2 * I * n * Real.cosh ξ) * kVecP ν n x -
+      I * Real.sinh ξ * (wP ν - n) * kVecP ν (n + 1) x + I * Real.sinh ξ * (wP ν + n) * kVecP ν (n - 1) x
+    with hK
+  set S : ℝ := 2 + Real.exp ξ ^ 2 + Real.exp (-ξ) ^ 2 with hS
+  set M : ℝ := 16 * (‖wP ν‖ + |(n : ℝ)|) * (1 + Real.exp ξ + Real.exp (-ξ)) ^ 2 * S with hM
+  have hQd : ∀ t x, HasDerivAt (fun t => Q t x) (Q t x * rotLogDeriv ν n ξ t x) t := fun t x =>
+    hasDerivAt_qForm_comp ν n (hasDerivAt_num_cT ξ x t) (hasDerivAt_den_cT ξ x t)
+      (num_sq_add_den_sq_pos _ _)
+  -- at `t = 0` the derivative is the `K`-type expression
+  have hK0 : ∀ x, Q 0 x * rotLogDeriv ν n ξ 0 x = K x := fun x =>
+    (hQd 0 x).unique (hasDerivAt_qForm_cT_zero ν n ξ x)
+  have hQae : ∀ t, (principalSeries 0 ν (cT ξ t) (kVecL2 ν n) : ℝ → ℂ) =ᵐ[volume] Q t := fun t =>
+    coeFn_principalSeries_kVecL2 ν n (cT ξ t)
+  -- the bound
+  set r : L2R := memLp_rpow_neg_half.toLp _ with hr
+  have hrae : (r : ℝ → ℂ) =ᵐ[volume] fun x => (((1 + x ^ 2) ^ (-(1 : ℝ) / 2) : ℝ) : ℂ) :=
+    MemLp.coeFn_toLp _
+  set bound : ℝ → ℝ := fun x => S ^ ((1 : ℝ) / 2) * M * ‖(starRingEnd ℂ) (f x) * r x‖ with hbound
+  have hbi : Integrable bound := (integrable_conj_mul f r).norm.const_mul _
+  have hb : ∀ᵐ x ∂(volume : Measure ℝ), ∀ t ∈ Metric.ball (0 : ℝ) 1, ‖F' t x‖ ≤ bound x := by
+    filter_upwards [hrae] with x hx t _
+    have hq := norm_qForm_le ν n (cT ξ t) x
+    have hsq : ((cT ξ t) 0 0 ^ 2 + (cT ξ t) 0 1 ^ 2 + (cT ξ t) 1 0 ^ 2 + (cT ξ t) 1 1 ^ 2) ^ ((1 : ℝ) / 2) ≤
+        S ^ ((1 : ℝ) / 2) :=
+      Real.rpow_le_rpow (by positivity) (cT_sq_le ξ t) (by norm_num)
+    have hR := norm_rotLogDeriv_le ν n ξ t x
+    have hrx : ‖r x‖ = (1 + x ^ 2) ^ (-(1 : ℝ) / 2) := by
+      rw [hx, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+    simp only [hF', hbound, norm_mul, Complex.norm_conj, hrx]
+    have h1 : ‖Q t x‖ ≤ S ^ ((1 : ℝ) / 2) * (1 + x ^ 2) ^ (-(1 : ℝ) / 2) :=
+      hq.trans (mul_le_mul_of_nonneg_right hsq (by positivity))
+    calc ‖f x‖ * (‖Q t x‖ * ‖rotLogDeriv ν n ξ t x‖)
+        ≤ ‖f x‖ * ((S ^ ((1 : ℝ) / 2) * (1 + x ^ 2) ^ (-(1 : ℝ) / 2)) * M) := by
+          gcongr
+      _ = S ^ ((1 : ℝ) / 2) * M * (‖f x‖ * (1 + x ^ 2) ^ (-(1 : ℝ) / 2)) := by ring
+  have hFm : ∀ t, AEStronglyMeasurable (F t) volume := fun t =>
+    ((Complex.continuous_conj.comp_aestronglyMeasurable (Lp.aestronglyMeasurable f)).mul
+      (Lp.aestronglyMeasurable (principalSeries 0 ν (cT ξ t) (kVecL2 ν n)))).congr
+      (by filter_upwards [hQae t] with x hx; simp only [hF, Pi.mul_apply, Function.comp_apply, hx])
+  have hFi : Integrable (F 0) :=
+    (integrable_conj_mul f (principalSeries 0 ν (cT ξ 0) (kVecL2 ν n))).congr
+      (by filter_upwards [hQae 0] with x hx; simp only [hF, hx])
+  have hF'0 : F' 0 = fun x => (starRingEnd ℂ) (f x) * K x := by
+    funext x; simp only [hF', hK0]
+  have hKc : Continuous K := by
+    simp only [hK]
+    exact (((continuous_const.mul (continuous_kVecP ν n)).sub
+      (continuous_const.mul (continuous_kVecP ν (n + 1)))).add
+      (continuous_const.mul (continuous_kVecP ν (n - 1))))
+  have hF'm : AEStronglyMeasurable (F' 0) volume := by
+    rw [hF'0]
+    exact (Complex.continuous_conj.comp_aestronglyMeasurable (Lp.aestronglyMeasurable f)).mul
+      hKc.aestronglyMeasurable
+  have h := hasDerivAt_integral_of_dominated_loc_of_deriv_le (F := F) (F' := F') (x₀ := 0)
+    (bound := bound) (Metric.ball_mem_nhds 0 one_pos) (Filter.Eventually.of_forall hFm) hFi hF'm
+    hb hbi (Filter.Eventually.of_forall fun x t _ => (hQd t x).const_mul _)
+  -- the same function is `t ↦ e^{-2imt} Φ`
+  have hfun : (fun t : ℝ => ∫ x, F t x) = fun t : ℝ => Complex.exp (-(2 * m * t * I)) * mcoefP ν m n ξ := by
+    funext t
+    rw [← inner_cT_eq ν ξ t m n, inner_principalSeries_kVecL2]
+  have hexp : HasDerivAt (fun t : ℝ => Complex.exp (-(2 * m * t * I)) * mcoefP ν m n ξ)
+      (-(2 * m * I) * mcoefP ν m n ξ) 0 := by
+    have h1 : HasDerivAt (fun t : ℝ => -(2 * (m : ℂ) * t * I)) (-(2 * m * I)) 0 := by
+      have := ((hasDerivAt_id (0 : ℝ)).ofReal_comp.const_mul (-(2 * (m : ℂ) * I)))
+      convert this using 1
+      · funext t; simp; ring
+      · simp
+    have := h1.cexp.mul_const (mcoefP ν m n ξ)
+    convert this using 1
+    simp
+  rw [hfun] at h
+  have huniq := h.2.unique hexp
+  rw [hF'0] at huniq
+  -- evaluate the integral of `conj f · K`
+  have hint : ∀ k : ℤ, Integrable (fun x => (starRingEnd ℂ) (f x) * kVecP ν k x) := fun k =>
+    (integrable_conj_mul f (kVecL2 ν k)).congr
+      (by filter_upwards [MemLp.coeFn_toLp (memLp_kVecP ν k)] with x hx
+          simp only [kVecL2] at hx ⊢; rw [hx])
+  have hev : ∀ k : ℤ, ∫ x, (starRingEnd ℂ) (f x) * kVecP ν k x = mcoefP ν m k ξ := fun k => by
+    rw [integral_conj_mul_kVecP, hf, inner_aR_neg_kVecL2]
+  have hsplit : ∫ x, (starRingEnd ℂ) (f x) * K x =
+      -(2 * I * n * Real.cosh ξ) * mcoefP ν m n ξ - I * Real.sinh ξ * (wP ν - n) * mcoefP ν m (n + 1) ξ +
+        I * Real.sinh ξ * (wP ν + n) * mcoefP ν m (n - 1) ξ := by
+    have e : (fun x => (starRingEnd ℂ) (f x) * K x) = fun x =>
+        (-(2 * I * n * Real.cosh ξ) * ((starRingEnd ℂ) (f x) * kVecP ν n x) -
+          I * Real.sinh ξ * (wP ν - n) * ((starRingEnd ℂ) (f x) * kVecP ν (n + 1) x)) +
+        I * Real.sinh ξ * (wP ν + n) * ((starRingEnd ℂ) (f x) * kVecP ν (n - 1) x) := by
+      funext x; simp only [hK]; ring
+    rw [e, integral_add, integral_sub, integral_const_mul, integral_const_mul, integral_const_mul,
+      hev, hev, hev]
+    all_goals first
+      | exact ((hint n).const_mul _).sub ((hint (n + 1)).const_mul _)
+      | exact (hint _).const_mul _
+  rw [hsplit] at huniq
+  linear_combination I * huniq - (-2 * (n : ℂ) * Real.cosh ξ * mcoefP ν m n ξ -
+    Real.sinh ξ * (wP ν - n) * mcoefP ν m (n + 1) ξ + Real.sinh ξ * (wP ν + n) * mcoefP ν m (n - 1) ξ +
+    2 * m * mcoefP ν m n ξ) * Complex.I_sq
+
 end Lightlike.Lorentz.SL2RPlancherel
