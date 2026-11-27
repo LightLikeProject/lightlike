@@ -25,7 +25,11 @@ root-of-unity one in the same way.
 ## Main results
 
 * `Decomp`, `Decomp.tendsto_eq`, `Decomp.tendsto_zero`: the bookkeeping of powers of `η`.
-* `qBiedenharnElliott_of_genBE`: the limit theorem.
+* `SRgAt_reflect`, `limTerm_reflect`: the reflection `x ↦ 2r - 2 - x` of the limit terms above the level.
+* `tendsto_genBETerm`: the limit of one summand (`termLim`).
+* `sum_pairPart`, `tendsto_genBE_lhs`, `tendsto_genBE_rhs`: the limits of both sides.
+* `qBiedenharnElliott_of_genBE`: the limit theorem. It is conditional on `GenBE θ` near `π/r`, which is not
+  proved in this file.
 -/
 
 open Real Finset Filter Topology Lightlike.Pentagon
@@ -923,5 +927,169 @@ theorem tendsto_genBE_rhs (hr : 2 ≤ r) {a b c d e f p q r' : ℕ}
     have m1 : r ≤ (p + q + r') / 2 + 1 := by omega
     simp only [w1, m1, ↓reduceIte] at H
     exact H.tendsto_zero hr (by norm_num)
+
+/-! ## The root-of-unity identity -/
+
+lemma qDelta_rot (r a b c : ℕ) : qDelta r c a b = qDelta r a b c := by
+  unfold qDelta; rw [show c + a + b = a + b + c by ring]; congr 1; ring
+
+lemma qDelta_perm13 (r a b c : ℕ) : qDelta r c b a = qDelta r a b c := by
+  unfold qDelta; rw [show c + b + a = a + b + c by ring]; congr 1; ring
+
+lemma qDelta_pos (hr : 2 ≤ r) {a b c : ℕ} (h : qAdm r a b c) : 0 < qDelta r a b c := by
+  unfold qAdm Tri at h
+  unfold qDelta
+  refine Real.sqrt_pos.2 (div_pos (mul_pos (mul_pos ?_ ?_) ?_) ?_) <;> exact qfact_pos hr (by omega)
+
+/-- If `(j₁, j₂, j₃)` is not a triangle while the three other triads through `j₃`, `j₅`, `j₆` are, the summation
+box of the q-Racah sum is empty. -/
+lemma qRacahSum_eq_zero_of_not_tri {j₁ j₂ j₃ j₄ j₅ j₆ : ℕ} (t2 : Tri j₁ j₅ j₆) (t3 : Tri j₄ j₂ j₆)
+    (t4 : Tri j₄ j₅ j₃) (hn : ¬ Tri j₁ j₂ j₃) : qRacahSum r j₁ j₂ j₃ j₄ j₅ j₆ = 0 := by
+  unfold qRacahSum
+  refine sum_eq_zero fun z _ => ?_
+  unfold qRacahTerm
+  obtain ⟨p2, -, -, -⟩ := t2
+  obtain ⟨p3, -, -, -⟩ := t3
+  obtain ⟨p4, -, -, -⟩ := t4
+  have hn' : j₁ + j₂ < j₃ ∨ j₂ + j₃ < j₁ ∨ j₁ + j₃ < j₂ := by unfold Tri at hn; omega
+  rcases hn' with h | h | h
+  · by_cases hz : (z : ℤ) < (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ)
+    · rw [Refl.invQFact_neg (show (z : ℤ) - (((j₄ + j₅ + j₃) / 2 : ℕ) : ℤ) < 0 by omega)]; ring
+    · rw [Refl.invQFact_neg (show (((j₁ + j₂ + j₄ + j₅) / 2 : ℕ) : ℤ) - z < 0 by omega)]; ring
+  · by_cases hz : (z : ℤ) < (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ)
+    · rw [Refl.invQFact_neg (show (z : ℤ) - (((j₁ + j₅ + j₆) / 2 : ℕ) : ℤ) < 0 by omega)]; ring
+    · rw [Refl.invQFact_neg (show (((j₂ + j₃ + j₅ + j₆) / 2 : ℕ) : ℤ) - z < 0 by omega)]; ring
+  · by_cases hz : (z : ℤ) < (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ)
+    · rw [Refl.invQFact_neg (show (z : ℤ) - (((j₄ + j₂ + j₆) / 2 : ℕ) : ℤ) < 0 by omega)]; ring
+    · rw [Refl.invQFact_neg (show (((j₃ + j₁ + j₆ + j₄) / 2 : ℕ) : ℤ) - z < 0 by omega)]; ring
+
+/-- The product of the six triangle coefficients that do not contain the middle colour. -/
+noncomputable def P6 (r a b c d e f p q r' : ℕ) : ℝ :=
+  qDelta r a d p * qDelta r c b p * qDelta r c f q * qDelta r e d q * qDelta r e a r' * qDelta r b f r'
+
+lemma rootPart_eq_zero {a b c d e f p q r' x : ℕ} (hx : a + b + 1 ≤ x ∨ r - 1 ≤ x) :
+    rootPart r a b c d e f p q r' x = 0 := by
+  unfold rootPart
+  rw [if_neg]
+  rintro ⟨⟨-, h1, -, -⟩, -, -, h, -, -⟩
+  omega
+
+/-- The root-of-unity summand is `P6` times `rootPart`. -/
+lemma root_term_eq (hr : 2 ≤ r) {a b c d e f p q r' : ℕ}
+    (q1 : qAdm r a d p) (q2 : qAdm r c b p) (q3 : qAdm r c f q) (q4 : qAdm r e d q) (q5 : qAdm r e a r')
+    (q6 : qAdm r b f r') (x : ℕ) :
+    (-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + x) / 2) * qnum r (x + 1) *
+        (qSixJ r a b x c d p * qSixJ r c d x e f q * qSixJ r e f x b a r') =
+      P6 r a b c d e f p q r' * rootPart r a b c d e f p q r' x := by
+  classical
+  by_cases hab : qAdm r a b x
+  · by_cases hcd : qAdm r c d x
+    · by_cases hef : qAdm r e f x
+      · have hx : Tri a b x ∧ Tri c d x ∧ Tri e f x ∧
+            ((a + b + x) / 2 + 2 ≤ r ∧ (c + d + x) / 2 + 2 ≤ r ∧ (e + f + x) / 2 + 2 ≤ r) := by
+          refine ⟨hab.1, hcd.1, hef.1, ?_, ?_, ?_⟩
+          · have := hab.2; omega
+          · have := hcd.2; omega
+          · have := hef.2; omega
+        simp only [qSixJ, rootPart, P6]
+        rw [if_pos ⟨hab, q1, q2, hcd⟩, if_pos ⟨hcd, q3, q4, hef⟩, if_pos ⟨hef, q5, q6, qAdm_swap12 hab⟩,
+          if_pos hx, qDelta_swap12 r a b x]
+        ring
+      · have h0 : qSixJ r c d x e f q = 0 := by rw [qSixJ, if_neg fun h => hef h.2.2.2]
+        have h1 : rootPart r a b c d e f p q r' x = 0 := by
+          unfold rootPart; rw [if_neg]; rintro ⟨-, -, t, -, -, w⟩
+          exact hef ⟨t, by have := t.1; omega⟩
+        rw [h0, h1]; ring
+    · have h0 : qSixJ r a b x c d p = 0 := by rw [qSixJ, if_neg fun h => hcd h.2.2.2]
+      have h1 : rootPart r a b c d e f p q r' x = 0 := by
+        unfold rootPart; rw [if_neg]; rintro ⟨-, t, -, -, w, -⟩
+        exact hcd ⟨t, by have := t.1; omega⟩
+      rw [h0, h1]; ring
+  · have h0 : qSixJ r a b x c d p = 0 := by rw [qSixJ, if_neg fun h => hab h.1]
+    have h1 : rootPart r a b c d e f p q r' x = 0 := by
+      unfold rootPart; rw [if_neg]; rintro ⟨t, -, -, w, -, -⟩
+      exact hab ⟨t, by have := t.1; omega⟩
+    rw [h0, h1]; ring
+
+/-- The root-of-unity left side is `P6` times the limit of the generic left side. -/
+lemma root_lhs_eq (hr : 2 ≤ r) {a b c d e f p q r' : ℕ}
+    (q1 : qAdm r a d p) (q2 : qAdm r c b p) (q3 : qAdm r c f q) (q4 : qAdm r e d q) (q5 : qAdm r e a r')
+    (q6 : qAdm r b f r') :
+    ∑ x ∈ range (r - 1), (-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + x) / 2) * qnum r (x + 1) *
+        (qSixJ r a b x c d p * qSixJ r c d x e f q * qSixJ r e f x b a r') =
+      P6 r a b c d e f p q r' * ∑ x ∈ range (a + b + 1), rootPart r a b c d e f p q r' x := by
+  rw [sum_congr rfl fun x _ => root_term_eq hr q1 q2 q3 q4 q5 q6 x, ← mul_sum]
+  congr 1
+  rcases le_total (r - 1) (a + b + 1) with h | h
+  · exact sum_subset (range_subset_range.2 h) fun x _ hx => rootPart_eq_zero (Or.inr (by
+      rw [mem_range] at hx; omega))
+  · exact (sum_subset (range_subset_range.2 h) fun x _ hx => rootPart_eq_zero (Or.inl (by
+      rw [mem_range] at hx; omega))).symm
+
+/-- The root-of-unity right side is `P6` times the limit of the generic right side. -/
+lemma root_rhs_eq (hr : 2 ≤ r) {a b c d e f p q r' : ℕ}
+    (q1 : qAdm r a d p) (q2 : qAdm r c b p) (q3 : qAdm r c f q) (q4 : qAdm r e d q) (q5 : qAdm r e a r')
+    (q6 : qAdm r b f r') :
+    qSixJ r p q r' e a d * qSixJ r p q r' f b c =
+      P6 r a b c d e f p q r' * (if (p + q + r') / 2 + 2 ≤ r then
+        qDelta r p q r' ^ 2 * qRacahSum r p q r' e a d * qRacahSum r p q r' f b c else 0) := by
+  have e1 : qAdm r p a d := by unfold qAdm Tri at q1 ⊢; omega
+  have e2 : qAdm r e q d := by unfold qAdm Tri at q4 ⊢; omega
+  have e3 : qAdm r p b c := by unfold qAdm Tri at q2 ⊢; omega
+  have e4 : qAdm r f q c := by unfold qAdm Tri at q3 ⊢; omega
+  have e5 : qAdm r f b r' := by unfold qAdm Tri at q6 ⊢; omega
+  by_cases h0 : (p + q + r') / 2 + 2 ≤ r
+  · rw [if_pos h0]
+    by_cases ht : Tri p q r'
+    · have hpq : qAdm r p q r' := ⟨ht, by have := ht.1; omega⟩
+      simp only [qSixJ]
+      rw [if_pos ⟨hpq, e1, e2, q5⟩, if_pos ⟨hpq, e3, e4, e5⟩, qDelta_rot r a d p, qDelta_swap23 r e d q,
+        qDelta_perm13 r c b p, ← qDelta_rot r f q c, qDelta_swap12 r b f r']
+      unfold P6; ring
+    · have z1 : qSixJ r p q r' e a d = 0 := by rw [qSixJ, if_neg fun h => ht h.1.1]
+      rw [z1, qRacahSum_eq_zero_of_not_tri e1.1 e2.1 q5.1 ht]; ring
+  · rw [if_neg h0]
+    have z1 : qSixJ r p q r' e a d = 0 := by
+      rw [qSixJ, if_neg fun h => h0 (by have := h.1.2; have := h.1.1.1; omega)]
+    rw [z1]; ring
+
+/-- **The q-Biedenharn–Elliott identity at `q = e^{iπ/r}` from the generic one**: if `GenBE θ` holds for every
+tuple of colours and every `θ ≠ π/r` close enough to `π/r`, then `qBiedenharnElliott` holds. -/
+theorem qBiedenharnElliott_of_genBE (hr : 2 ≤ r)
+    (h : ∀ a b c d e f p q r' : ℕ, ∀ᶠ θ in 𝓝[≠] (π / r), GenBE θ a b c d e f p q r') :
+    qBiedenharnElliott hr := by
+  classical
+  intro a b c d e f p q r'
+  show ∑ x ∈ range (r - 1), (-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + x) / 2) * qnum r (x + 1) *
+      (qSixJ r a b x c d p * qSixJ r c d x e f q * qSixJ r e f x b a r') =
+    qSixJ r p q r' e a d * qSixJ r p q r' f b c
+  by_cases h6 : qAdm r a d p ∧ qAdm r c b p ∧ qAdm r c f q ∧ qAdm r e d q ∧ qAdm r e a r' ∧ qAdm r b f r'
+  · obtain ⟨q1, q2, q3, q4, q5, q6⟩ := h6
+    have hL := tendsto_genBE_lhs hr q1 q2 q3 q4 q5 q6
+    have hR := tendsto_genBE_rhs hr q1 q2 q3 q4 q5 q6
+    have heq : (fun θ => ∑ x ∈ range (a + b + 1), genBETerm θ a b c d e f p q r' x) =ᶠ[𝓝[≠] (π / r)]
+        fun θ => delta2G θ p q r' * racahG θ p q r' e a d * racahG θ p q r' f b c := by
+      filter_upwards [h a b c d e f p q r'] with θ hθ using hθ q1.1 q2.1 q3.1 q4.1 q5.1 q6.1
+    have hlim := tendsto_nhds_unique (hL.congr' heq) hR
+    rw [root_lhs_eq hr q1 q2 q3 q4 q5 q6, root_rhs_eq hr q1 q2 q3 q4 q5 q6, hlim]
+  · have s1 : ¬ (qAdm r a d p ∧ qAdm r c b p) → ∀ x, qSixJ r a b x c d p = 0 :=
+      fun hn x => by rw [qSixJ, if_neg fun h => hn ⟨h.2.1, h.2.2.1⟩]
+    have s2 : ¬ (qAdm r c f q ∧ qAdm r e d q) → ∀ x, qSixJ r c d x e f q = 0 :=
+      fun hn x => by rw [qSixJ, if_neg fun h => hn ⟨h.2.1, h.2.2.1⟩]
+    have s3 : ¬ (qAdm r e a r' ∧ qAdm r b f r') → ∀ x, qSixJ r e f x b a r' = 0 :=
+      fun hn x => by rw [qSixJ, if_neg fun h => hn ⟨h.2.1, h.2.2.1⟩]
+    have t1 : ¬ (qAdm r a d p ∧ qAdm r e d q ∧ qAdm r e a r') → qSixJ r p q r' e a d = 0 := fun hn => by
+      rw [qSixJ, if_neg fun h => hn ⟨by unfold qAdm Tri at h ⊢; omega, by unfold qAdm Tri at h ⊢; omega, h.2.2.2⟩]
+    have t2 : ¬ (qAdm r c b p ∧ qAdm r c f q ∧ qAdm r b f r') → qSixJ r p q r' f b c = 0 := fun hn => by
+      rw [qSixJ, if_neg fun h => hn ⟨by unfold qAdm Tri at h ⊢; omega, by unfold qAdm Tri at h ⊢; omega,
+        by unfold qAdm Tri at h ⊢; omega⟩]
+    simp only [not_and_or] at h6
+    rcases h6 with n | n | n | n | n | n
+    · rw [sum_eq_zero fun x _ => by rw [s1 (by tauto) x]; ring, t1 (by tauto)]; ring
+    · rw [sum_eq_zero fun x _ => by rw [s1 (by tauto) x]; ring, t2 (by tauto)]; ring
+    · rw [sum_eq_zero fun x _ => by rw [s2 (by tauto) x]; ring, t2 (by tauto)]; ring
+    · rw [sum_eq_zero fun x _ => by rw [s2 (by tauto) x]; ring, t1 (by tauto)]; ring
+    · rw [sum_eq_zero fun x _ => by rw [s3 (by tauto) x]; ring, t1 (by tauto)]; ring
+    · rw [sum_eq_zero fun x _ => by rw [s3 (by tauto) x]; ring, t2 (by tauto)]; ring
 
 end Lightlike.TV
