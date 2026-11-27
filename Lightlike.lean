@@ -2384,6 +2384,7 @@ import Lightlike.TemperleyLieb.KLThirdBlock
 import Lightlike.TemperleyLieb.KLCertificate
 import Lightlike.TemperleyLieb.KLTelescoping
 import Lightlike.TemperleyLieb.KLThirdRec
+import Lightlike.TemperleyLieb.KLThirdAssembly
 import Lightlike.TemperleyLieb.MirrorTree
 import Lightlike.TemperleyLieb.Adjoint
 import Lightlike.TemperleyLieb.Slide
