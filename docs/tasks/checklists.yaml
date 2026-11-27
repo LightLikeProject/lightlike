@@ -1065,8 +1065,8 @@ milestones:
       - id: t2
         kind: trust
         text: "The method gives the right asymptotics for a sum whose asymptotics are known independently"
-        decls: []
-        hint: "Missing: a second, independent sum with known asymptotics. Close: Lightlike.Asymptotics.racahSumAsymptotics_regular (regular tetrahedron only). Attempt 1 (Lean, done): the exactly solvable zero-spin sum is not in the theorem's range: Lightlike.Asymptotics.not_isEuclid_toReal_zero_spin. Kummer's sum (Lightlike.Asymptotics.RacahSaddles.KnownSum) is not of the Racah shape."
+        decls: [Lightlike.Asymptotics.kummerSum_saddle_matches_closed_form, Lightlike.Asymptotics.kummerSum_saddle_bound, Lightlike.Asymptotics.tendsto_kummerSum_div_kummerLead, Lightlike.Asymptotics.tendsto_centralBinom_div_kummerLead]
+        hint: "Kummer's sum Σ_t (−1)^t C(m,t)² run through the contour method (Lightlike/Asymptotics/KummerSum/): contour identity, complex Stirling, the saddle α₀ = (1+i)/2 of its own phase with ψ''(α₀) = −4, Laplace's method; the leading term L(2n) = 2^{2n+1}(−1)^n √(π/(2(2n+1)))/π is computed without the value of the sum and agrees with the asymptotics of the closed form (−1)^n C(2n,n) from the real Stirling formula. The Racah phase is not shape-generic (Fin 4/Fin 3 Gamma pattern), so the run reuses only the generic pieces (exists_primitive_im_sub, Stirling.lean, laplace_ray_uniform). Attempt 1: the zero-spin sum is outside the Racah theorem (Lightlike.Asymptotics.not_isEuclid_toReal_zero_spin)."
       - id: t3
         kind: trust
         text: "The formula with only one of the two complex-conjugate saddles fails"
