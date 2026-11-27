@@ -2383,6 +2383,7 @@ import Lightlike.TemperleyLieb.OneStrand
 import Lightlike.TemperleyLieb.KLThirdBlock
 import Lightlike.TemperleyLieb.KLCertificate
 import Lightlike.TemperleyLieb.KLTelescoping
+import Lightlike.TemperleyLieb.KLThirdRec
 import Lightlike.TemperleyLieb.MirrorTree
 import Lightlike.TemperleyLieb.Adjoint
 import Lightlike.Dirac.ConnesDistance
