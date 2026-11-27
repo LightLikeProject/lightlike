@@ -64,7 +64,7 @@ theorem tri_of_kladm {a b c d e f p r' e₀ d₀ j m fi h dd : ℕ}
   unfold Tri
   refine ⟨⟨?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_, ?_⟩⟩ <;> omega
 
-theorem tri_swap {x y z : ℕ} (h : Tri x y z) : Tri y x z := by unfold Tri at *; omega
+theorem tri_swap₁₂ {x y z : ℕ} (h : Tri x y z) : Tri y x z := by unfold Tri at *; omega
 
 theorem tri_rot {x y z : ℕ} (h : Tri x y z) : Tri y z x := by unfold Tri at *; omega
 
@@ -248,9 +248,9 @@ theorem genBE_of_pos (hKL : FcEqKL ℂ) (θ : ℝ) {a b c d e f p q r' : ℕ}
   intro t1 t2 t3 t4 t5 t6
   obtain ⟨h1, h1a, h1b⟩ := tri_halves t5
   obtain ⟨h2, h2a, h2b⟩ := tri_halves (tri_rot (tri_rot t6))
-  obtain ⟨h3, h3a, h3b⟩ := tri_halves (tri_swap t3)
-  obtain ⟨h4, h4a, h4b⟩ := tri_halves (tri_swap t2)
-  obtain ⟨h5, h5a, h5b⟩ := tri_halves (tri_swap (tri_rot (tri_rot t1)))
+  obtain ⟨h3, h3a, h3b⟩ := tri_halves (tri_swap₁₂ t3)
+  obtain ⟨h4, h4a, h4b⟩ := tri_halves (tri_swap₁₂ t2)
+  obtain ⟨h5, h5a, h5b⟩ := tri_halves (tri_swap₁₂ (tri_rot (tri_rot t1)))
   obtain ⟨h6, h6a, h6b⟩ := tri_halves t4
   clear t1 t2 t3 t4 t5 t6
   set e₀ := (e + a - r') / 2
