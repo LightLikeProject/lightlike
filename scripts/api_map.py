@@ -58,6 +58,17 @@ TIER_TEXT = (
     "only after publication). Every result is about the mathematics of a model, not a claim that "
     "the model describes nature.")
 
+# The kind of an entry that is not a result in the sense of a paper's theorem. An entry without `kind`
+# is a result. The count of entries is read with these kinds taken out (docs/RESULTS.md, "How to
+# read the count").
+KINDS = {
+    "supporting": "a supporting lemma of another entry; under the rule that an entry is a result a "
+                  "paper or book would state as a theorem it would get no entry today",
+    "elementary": "an elementary fact with a short standard proof",
+    "wrapper": "a restatement of a result that Mathlib or Physlib already proves; the proof is theirs",
+}
+COMPARISON_PENDING = "comparison pending"
+
 # A main result: the main theorem of a cited paper or book, or a named theorem.
 MAIN_TEXT = (
     "The main theorem of a cited paper or book, or a named theorem (`main: true` in "
@@ -298,6 +309,11 @@ def lint_registry(root: Path, reg: list[dict]) -> list[str]:
         errs += review_errors(str(i), e.get("review"), e.get("review_ref"), root)
         if "tier" in e and e["tier"] not in TIERS:
             errs.append(f"{i}: tier must be one of {list(TIERS)}")
+        if "kind" in e:
+            if e["kind"] not in KINDS:
+                errs.append(f"{i}: kind must be one of {sorted(KINDS)} or absent")
+            elif not e.get("note"):
+                errs.append(f"{i}: an entry of kind {e['kind']} needs a note saying why")
         if "main" in e:
             src = e.get("source")
             if e["main"] is not True:
@@ -362,6 +378,71 @@ def notes(rows: list[dict]) -> list[str]:
     return ["Notes:", "", *ns, ""] if ns else []
 
 
+def counts(reg: list[dict]) -> dict:
+    """The honest breakdown of the catalog: kinds, conditional and stated, comparison pending."""
+    live = [e for e in reg if e["status"] != "retired"]
+    c = {k: sum(e.get("kind") == k for e in live) for k in KINDS}
+    c["entries"] = len(live)
+    c["results"] = len(live) - sum(c[k] for k in KINDS)
+    c["open"] = sum(e["status"] in ("conditional", "stated") for e in live)
+    pend = [e for e in live if COMPARISON_PENDING in str(e.get("note", "")).lower()]
+    c["pending"] = len(pend)
+    # An entry whose source is `exploratory` or `structural` cites no source: nothing is named to compare with.
+    c["pending_own"] = sum(isinstance(e.get("source"), str) for e in pend)
+    c["pending_cited"] = c["pending"] - c["pending_own"]
+    c["limits"] = sum("Limits:" in str(e.get("note", "")) for e in live)
+    return c
+
+
+def limit_of(e: dict) -> str:
+    """The sentence after `Limits:` in the note of an entry, shortened."""
+    note = " ".join(str(e.get("note", "")).split())
+    if "Limits:" not in note:
+        return ""
+    text = note.split("Limits:", 1)[1].split(" Check:", 1)[0].strip()
+    if len(text) > 240:
+        text = text[:240].rsplit(" ", 1)[0] + " …"
+    return text.replace("|", "\\|")
+
+
+def read_count(reg: list[dict]) -> list[str]:
+    """The section of RESULTS.md that says what the number of entries counts."""
+    live = [e for e in reg if e["status"] != "retired"]
+    c = counts(reg)
+    out = ["## How to read the count", "",
+           f"The catalog has {c['entries']} entries. They are not {c['entries']} theorems of equal weight:", "",
+           f"- {c['results']} are results in the sense of a paper's theorem (no `kind`).",
+           *[f"- {c[k]} {'is' if c[k] == 1 else 'are'} of kind `{k}`: {t}." for k, t in KINDS.items()],
+           f"- {c['open']} of the entries are conditional (proven under hypotheses) or stated targets (proof open): "
+           "the table below lists them with their hypotheses.",
+           f"- {c['pending']} entries still have the note \"Comparison pending\": the statement was not compared with the "
+           f"text of a source. {c['pending_cited']} of them cite a source whose text at the cited location was not "
+           f"read against the statement; {c['pending_own']} cite no source (their `source` is `exploratory` or "
+           "`structural`: no source is named, so there was nothing to compare with; many are textbook statements for "
+           "which a source still has to be chosen and read). The kernel has checked their proofs; a person has not "
+           "checked that the statement says what the literature says.",
+           f"- {c['limits']} entries state a limit (`Limits:`): the statement is narrower than the "
+           "source (one chart, finitely many modes, a special family, and so on). The last table lists them.", "",
+           "### Conditional and stated results", "",
+           "| ID | Result | Status | Tier | Hypotheses |", "|---|---|---|---|---|"]
+    for e in live:
+        if e["status"] in ("conditional", "stated"):
+            hyp = ", ".join(f"`{h}`" for h in e.get("hypotheses", [])) or "the proof is open"
+            out.append(f"| {e['id']} | {e['title']} | {STATUS_TEXT[e['status']]} | {e['tier']} | {hyp} |")
+    out += ["", f"### Entries of another kind", "",
+            "| ID | Kind | Result |", "|---|---|---|"]
+    for e in live:
+        if e.get("kind"):
+            out.append(f"| {e['id']} | {e['kind']} | {e['title']} |")
+    out += ["", "### Limits stated by the entries", "",
+            "Quoted from the `Limits:` sentence of the note of each entry.", "",
+            "| ID | Tier | Limit |", "|---|---|---|"]
+    for e in live:
+        if limit_of(e):
+            out.append(f"| {e['id']} | {e['tier']} | {limit_of(e)} |")
+    return out + [""]
+
+
 def render(reg: list[dict], root: Path) -> str:
     n = {s: sum(e["status"] == s for e in reg) for s in STATUSES}
     targets = [e for e in reg if e["status"] == "stated"]
@@ -374,7 +455,7 @@ def render(reg: list[dict], root: Path) -> str:
            ". An ID is never reused; a withdrawn "
            "result is kept as `retired`. Every declaration of the library, and so every proven result, "
            "depends only on the axioms `propext`, `Classical.choice` and `Quot.sound`.", "",
-           TIER_TEXT, "", REVIEW_TEXT, ""]
+           TIER_TEXT, "", REVIEW_TEXT, "", *read_count(reg)]
     mains = [e for e in reg if e.get("main") is True and e["status"] == "proven"]
     if mains:
         out += ["## Main results", "", MAIN_TEXT, "",
@@ -432,10 +513,20 @@ def summary(reg: list[dict]) -> str:
             + (f" and {count(c['stated'], 'stated target', 'stated targets')} (the statement is "
                f"defined in Lean, the proof is open)" if c['stated'] else "") +
             f". Lean's kernel has checked every proof. Statements are "
-            f"reviewed against their sources, since the kernel cannot check that a statement matches "
+            f"reviewed against their sources by agents, since the kernel cannot check that a statement matches "
             f"its source. {human}, and a review of any entry is welcome "
             f"([how to report a mismatch](#review)).")
-    return textwrap.fill(text, 100, break_on_hyphens=False)
+    k = counts(reg)
+    kinds = sum(k[x] for x in KINDS)
+    text2 = (f"Read the count with care ([details](docs/RESULTS.md#how-to-read-the-count)): "
+             f"{count(kinds, 'entry is', 'entries are')} a supporting lemma, an elementary fact or a wrapper of a "
+             f"Mathlib or Physlib result, so {k['results']} are results in the sense of a paper's theorem; "
+             f"{count(k['open'], 'entry is', 'entries are')} conditional or a stated target; "
+             f"{count(k['pending'], 'entry has', 'entries have')} a statement that was not yet compared with "
+             f"the text of a source ({k['pending_cited']} cite one, {k['pending_own']} cite none); {count(k['limits'], 'entry states', 'entries state')} a limit (the "
+             f"statement is narrower than the source).")
+    return (textwrap.fill(text, 100, break_on_hyphens=False) + "\n\n"
+            + textwrap.fill(text2, 100, break_on_hyphens=False))
 
 
 def readme_summary(text: str, reg: list[dict]) -> str:
@@ -537,6 +628,9 @@ def selftest() -> int:
         ("planted: a draft ID in docs/results.yaml", "REG:LL-0001", "LL-XXXX", True),
         ("planted: the same draft in two files of docs/results.d", "TWO:LL-0001", "LL-XXXX", True),
         ("planted: unknown tier", "REG:tier: established", "tier: central", True),
+        ("kind with a note accepted", "REG:tier: established", "tier: established\n  kind: supporting\n  note: supports LL-0002", False),
+        ("planted: unknown kind", "REG:tier: established", "tier: established\n  kind: minor\n  note: x", True),
+        ("planted: kind without a note", "REG:tier: established", "tier: established\n  kind: supporting", True),
         ("planted: RESULTS.md out of date", "RES", "", True),
         ("main result accepted", "REG:  since:", "  main: true\n  source:\n    refs:\n      - {ref: toy-2000, location: \"Theorem 1\"}\n  since:", False),
         ("planted: main result without a source", "REG:  since:", "  main: true\n  since:", True),
