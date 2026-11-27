@@ -2408,6 +2408,7 @@ import Lightlike.TemperleyLieb.KLThirdBlock
 import Lightlike.TemperleyLieb.KLCertificate
 import Lightlike.TemperleyLieb.MirrorTree
 import Lightlike.TemperleyLieb.Adjoint
+import Lightlike.TemperleyLieb.Slide
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
