@@ -1,0 +1,24 @@
+- id: LL-XXXX-c
+  title: Killing fields of an induced metric from the skew linear fields of the ambient space
+  area: Spacetime
+  file: Lightlike/Spacetime/InducedKilling.lean
+  decls: [Lightlike.dι_mlieBracket_of_related, Lightlike.lieDerivMetric_eq_zero_of_related, Lightlike.isKillingAt_of_related, Lightlike.isKillingAt_minkowski_boost]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "On a manifold with corners modelled on a finite-dimensional space, let the metric be induced by a smooth map iota into a finite-dimensional space V with a symmetric bilinear form L, g(u, v) = L(d iota u, d iota v), and let A be L-skew, L(A u, v) + L(u, A v) = 0. A field X with d iota (X q) = A (iota q) at every point satisfies d iota [X, Y] = X(d iota Y) - A(d iota Y) (dι_mlieBracket_of_related, from the commutator formula mfderiv_mlieBracketW tested against every linear functional of V), hence L_X g = 0 at every point where X is differentiable (lieDerivMetric_eq_zero_of_related), and is a Killing field of every Levi-Civita connection of g (isKillingAt_of_related). For de Sitter and anti-de Sitter space as quadrics this gives the Killing fields as restrictions of the generators x_a d_b - x_b d_a of the ambient pseudo-orthogonal algebra. Non-vacuity: the boost field of 1+1 Minkowski space (iota the identity, L the Minkowski form) is a nonzero Killing field of the Levi-Civita connection at every point. Comparison with the cited section (Carroll, chapter 8, maximally symmetric spaces as quadrics) pending: no source was read at the location."
+  since: unreleased
+- id: LL-XXXX-d
+  title: A vector field is smooth where its image under an immersion is smooth
+  area: Spacetime
+  file: Lightlike/Spacetime/ImmersionSection.lean
+  decls: [Lightlike.inTangentCoordinates_dι, Lightlike.inTangentCoordinates_dι_hat, Lightlike.contMDiffAt_section_of_immersion, Lightlike.contMDiff_linearField]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Infrastructure for the whole-space de Sitter and anti-de Sitter manifolds. On a manifold with corners modelled on a finite-dimensional space, for a smooth map iota into a finite-dimensional normed space V with injective derivative at p, a vector field X is smooth at p when q -> d iota_q (X q) is smooth at p (contMDiffAt_section_of_immersion): in the trivialization of the tangent bundle at p, the components of X are (P D_q)^(-1) P (d iota X), with D_q the derivative of iota in that trivialization (inTangentCoordinates_dι_hat) and P a fixed linear left inverse of D_p, and the inverse is smooth near p (Ring.inverse at the unit 1). This makes the restrictions of ambient linear fields to a quadric smooth vector fields. Non-vacuity: contMDiff_linearField, a linear field of V with iota the identity."
+  since: unreleased
