@@ -8,7 +8,14 @@ to split into two tree-shellable disks. The reduction that makes the link of `v`
 by stacking every tetrahedron through `v` with its own fresh vertex.
 
 * `stackAll K S g`: every tetrahedron `t ∈ S` of `K` replaced by the four cones from the fresh
-  vertex `g t` on the faces of `t`; `forwardMoves_stackAll`: it is reached by 1-4 moves.
+  vertex `g t` on the faces of `t`; `forwardMoves_stackAll`: it is reached by 1-4 moves;
+* `link_stackAll_star`: after stacking the star of `v`, the link of `v` is the stacked link;
+* `flipAll K v g Ed opp`: then, for each original link edge `{x, y}` in `Ed` (with its two opposite link
+  triangles `opp`), the 2-3 move on the two stacked tetrahedra `{v, x, y, a}`, `{v, x, y, b}` through it;
+  `forwardStep_flip`: flipping one more edge is one 2-3 move (`FlipData` collects the conditions).
+
+**Limits.** That the link of `v` after all flips is the link `L''` of the reduction, and the shellability of the
+pieces, are the next steps (not here).
 -/
 
 open Finset Lightlike.PL
@@ -41,14 +48,17 @@ structure StackData (K : Complex3 V) (S : Finset (Finset V)) (g : Finset V → V
   fresh : ∀ t ∈ S, g t ∉ K.verts
   inj : ∀ s ∈ S, ∀ t ∈ S, g s = g t → s = t
 
+/-- Stacking data restrict to a subset of the tetrahedra. -/
 lemma StackData.mono {K : Complex3 V} {S S' : Finset (Finset V)} {g : Finset V → V}
     (h : StackData K S g) (hS : S' ⊆ S) : StackData K S' g :=
   ⟨hS.trans h.sub, fun t ht => h.fresh t (hS ht), fun s hs t ht => h.inj s (hS hs) t (hS ht)⟩
 
+/-- The pieces of a stacked tetrahedron `t` with apex `e` are the faces of `t` joined to `e`. -/
 lemma mem_stackPieces {t : Finset V} {e : V} {s : Finset V} :
     s ∈ stackPieces t e ↔ ∃ x ∈ t, insert e (t.erase x) = s := by
   simp [stackPieces]
 
+/-- A piece of a stacked tetrahedron has four vertices. -/
 lemma card_stackPiece {K : Complex3 V} {t : Finset V} (ht : t ∈ K.tets) {e : V}
     (he : e ∉ K.verts) {x : V} (hx : x ∈ t) : #(insert e (t.erase x)) = 4 := by
   have het : e ∉ t := fun h => he (mem_biUnion.2 ⟨t, ht, h⟩)
@@ -68,6 +78,7 @@ lemma StackData.mem_stackAll {K : Complex3 V} {S : Finset (Finset V)} {g : Finse
     · exact ⟨.inl h1, K.card_eq s h1.1⟩
     · exact ⟨.inr ⟨t, ht, x, hx, rfl⟩, card_stackPiece (h.sub ht) (h.fresh t ht) hx⟩
 
+/-- Two complexes with the same tetrahedra are equal. -/
 lemma complex3_eq' {K L : Complex3 V} (h : ∀ t, t ∈ K.tets ↔ t ∈ L.tets) : K = L := by
   cases K; cases L; congr; ext t; exact h t
 
@@ -239,6 +250,7 @@ lemma edge_eq_of_inter {τ τ' e e' : Finset V} (h3 : #τ = 3) (h3' : #τ' = 3) 
   have x2 := eq_of_subset_of_card_le he' (by omega)
   rw [x1, x2]
 
+/-- Flip data restrict to a subset of the edges. -/
 lemma FlipData.mono {Ed Ed' : Finset (Finset V)} {opp : Finset V → Finset V × Finset V}
     (h : FlipData K v g Ed opp) (hE : Ed' ⊆ Ed) : FlipData K v g Ed' opp :=
   ⟨h.stack, h.hv, h.closed, fun e he => h.edge e (hE he), fun e he => h.fst e (hE he),
@@ -251,32 +263,41 @@ variable (h : FlipData K v g Ed opp)
 include h
 
 omit h in
+/-- A triangle of the link of `v` joined to `v` is a tetrahedron of the star of `v`. -/
 lemma mem_starTets_of_link {τ : Finset V} (hτ : τ ∈ K.link v) : insert v τ ∈ starTets K v :=
   mem_filter.2 ⟨(Complex3.mem_link.1 hτ).2, mem_insert_self v τ⟩
 
+/-- The first label of a flipped edge is a fresh vertex. -/
 lemma a_fresh {e : Finset V} (he : e ∈ Ed) : flipA v g opp e ∉ K.verts :=
   h.stack.fresh _ (mem_starTets_of_link (h.fst e he).1)
 
+/-- The second label of a flipped edge is a fresh vertex. -/
 lemma b_fresh {e : Finset V} (he : e ∈ Ed) : flipB v g opp e ∉ K.verts :=
   h.stack.fresh _ (mem_starTets_of_link (h.snd e he).1)
 
+/-- The two labels of a flipped edge are different. -/
 lemma a_ne_b {e : Finset V} (he : e ∈ Ed) : flipA v g opp e ≠ flipB v g opp e := fun hab => by
   have := h.stack.inj _ (mem_starTets_of_link (h.fst e he).1) _ (mem_starTets_of_link (h.snd e he).1) hab
   exact h.ne e he (insert_left_inj (Complex3.mem_link.1 (h.fst e he).1).1
     (Complex3.mem_link.1 (h.snd e he).1).1 this)
 
+/-- A fresh vertex is not on a flipped edge. -/
 lemma notMem_of_fresh {x : V} (hx : x ∉ K.verts) {e : Finset V} (he : e ∈ Ed) : x ∉ e := fun hxe =>
   hx (mem_biUnion.2 ⟨_, (Complex3.mem_link.1 (h.fst e he).1).2,
     mem_insert_of_mem ((h.fst e he).2 hxe)⟩)
 
+/-- The vertex `v` is not on a flipped edge. -/
 lemma v_notMem {e : Finset V} (he : e ∈ Ed) : v ∉ e := fun hve =>
   (Complex3.mem_link.1 (h.fst e he).1).1 ((h.fst e he).2 hve)
 
+/-- A fresh vertex is not `v`. -/
 lemma ne_v_of_fresh {x : V} (hx : x ∉ K.verts) : x ≠ v := fun e => hx (e ▸ h.hv)
 
+/-- A flipped edge has two vertices. -/
 lemma card_e {e : Finset V} (he : e ∈ Ed) : #e = 2 := (mem_edges2.1 (h.edge e he)).choose_spec.2.2
 
 
+/-- The vertices of a flipped edge are vertices of the complex. -/
 lemma x_verts {e : Finset V} (he : e ∈ Ed) {x : V} (hx : x ∈ e) : x ∈ K.verts :=
   mem_biUnion.2 ⟨_, (Complex3.mem_link.1 (h.fst e he).1).2,
     mem_insert_of_mem ((h.fst e he).2 hx)⟩
@@ -602,9 +623,35 @@ theorem forwardStep_flip {Ed : Finset (Finset V)} {opp : Finset V → Finset V �
   refine complex3_eq' fun t => ?_
   rw [h.mem_flipAll]
   simp only [move23, mem_union, mem_insert, mem_singleton, mem_erase, h0.mem_flipAll,
-    forall_mem_insert, exists_mem_insert, flipRemoved, flipAdded, ha_def, hb_def, mem_image,
-    he_def]
-  sorry
+    flipRemoved, flipAdded, mem_image, he_def]
+  simp only [forall_eq_or_imp, exists_eq_or_imp]
+  rw [show flipA v g opp {x, y} = a from ha_def, show flipB v g opp {x, y} = b from hb_def]
+  have ea : insert v (insert a ({x, y} : Finset V)) = {v, x, y, a} := by rw [insert_comm a x, pair_comm a y]
+  have eb : insert v (insert b ({x, y} : Finset V)) = {v, x, y, b} := by rw [insert_comm b x, pair_comm b y]
+  have eab : insert a (insert b ({x, y} : Finset V)) = {x, y, a, b} := by rw [he_def] at q1; exact q1
+  have eyv : ({v, y, a, b} : Finset V) = {y, v, a, b} := insert_comm v y _
+  constructor
+  · rintro ((h1 | h1 | h1) | ⟨hb', ha', (⟨hS, hall⟩ | hadd)⟩)
+    · exact .inr (.inl (.inr ⟨x, by simp, h1.symm⟩))
+    · exact .inr (.inl (.inl (by rw [eab]; exact h1)))
+    · exact .inr (.inl (.inr ⟨y, by simp, by rw [h1]; exact eyv⟩))
+    · refine .inl ⟨hS, ?_, hall⟩
+      rintro (h2 | h2)
+      · exact ha' (h2.trans ea)
+      · exact hb' (h2.trans eb)
+    · exact .inr (.inr hadd)
+  · rintro (⟨hS, hn', hall⟩ | (h1 | ⟨w, hw, h1⟩) | ⟨e', he', hadd'⟩)
+    · exact .inr ⟨fun h2 => hn' (.inr (h2.trans eb.symm)), fun h2 => hn' (.inl (h2.trans ea.symm)),
+        .inl ⟨hS, hall⟩⟩
+    · exact .inl (.inr (.inl (by rw [h1, eab])))
+    · simp only [mem_insert, mem_singleton] at hw
+      rcases hw with hw | hw <;> subst hw
+      · exact .inl (.inl h1.symm)
+      · exact .inl (.inr (.inr (by rw [← h1]; exact eyv)))
+    · have hnot := addNoVXY e' (mem_insert_of_mem he') t (by
+        simp only [flipAdded, mem_insert, mem_image]; exact hadd')
+      exact .inr ⟨fun h2 => hnot (by rw [h2]; simp), fun h2 => hnot (by rw [h2]; simp),
+        .inr ⟨e', he', hadd'⟩⟩
 
 end Flip
 
