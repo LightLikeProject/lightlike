@@ -654,6 +654,11 @@ milestones:
         text: "The Plancherel formula for L2(SL(2,R)): principal series with density rho tanh(pi rho), discrete series, all K-types"
         decls: []
         hint: "Only the spherical (K-biinvariant) part is on main: Lightlike.Lorentz.SL2RPlancherel.sphericalL2Equiv, Lightlike.Lorentz.SL2RPlancherel.norm_sq_eq_sph. Missing: non-spherical K-types, discrete-series weights (n - 1/2), the statement tying the abstract decomposition of L2(SL(2,R)) to the density."
+      - id: m3
+        kind: main
+        text: "The principal series (even and odd) and the discrete series of SL(2,R) are irreducible; the statement excludes only the known reducible point, the odd principal series at rho = 0"
+        decls: []
+        hint: "The done-when of HA3 requires irreducibility. Not stated on main (rg irreducible in SL2R*.lean, SL2RPlancherel/*.lean finds nothing)."
       - id: p1
         kind: piece
         text: "The principal series of SL(2,R) is a strongly continuous unitary representation"
@@ -1287,8 +1292,8 @@ milestones:
       - id: m2
         kind: main
         text: "For the Ponzano–Regge amplitude, the invariance up to PL homeomorphism that follows is stated exactly, given the cutoff and gauge-tree conditions: if triangulations of one manifold have a common forward descendant under Pachner moves, then every gauge-fixed amplitude of each is a gauge-fixed amplitude of the descendant at some tree and cutoff"
-        decls: [Lightlike.PR.triangulation_independence_of_pachner, Lightlike.PR.ampValues_mono_forward, Lightlike.PR.ampValues_move32_subset, Lightlike.PR.ampValues_move41_subset]
-        hint: "Conditional: triangulation_independence_of_pachner takes Lightlike.PR.PachnerForwardHyp as a hypothesis, whose truth is open; nothing is unconditional for Ponzano–Regge."
+        decls: [Lightlike.PR.CommonForward.ampValues_subset, Lightlike.PR.ampValues_mono_forward, Lightlike.PR.ampValues_move32_subset, Lightlike.PR.ampValues_move41_subset]
+        hint: "The statement is CommonForward.ampValues_subset: it has the common forward descendant as an antecedent, so it is proven without any open hypothesis. That any two triangulations of one manifold have such a descendant (PachnerForwardHyp, used by the conditional triangulation_independence_of_pachner, LL-0522) is the milestone PL7c."
       - id: p1
         kind: piece
         text: "The r = 3 state sum is the same along chains of 3D moves and under renaming of vertices"
@@ -1300,22 +1305,12 @@ milestones:
       - id: r1
         kind: review
         text: "The statement of the Ponzano–Regge invariance (docs/notes/pl7a-ponzano-regge.md and the PLInvariance docstring) says exactly which invariance up to PL homeomorphism follows, and matches the declarations of m2; the prose is not a Lean theorem, so a reviewer checks it"
-        review_evidence: null
-      - id: p3
-        kind: piece
-        text: "Any two triangulations of one PL polyhedron have a common stellar subdivision, and two PL homeomorphic simplicial complexes have combinatorially isomorphic stellar subdivisions (Adiprasito-Pak 2024, arXiv:2404.05930, Theorems 1.1 and 1.3)"
-        decls: []
-        hint: "Search: Mathlib and Physlib have no stellar subdivisions or PL topology; the library has StellarStep and StellarEquiv (welds allowed), Newman's theorem (SComplex.StellarEquiv.of_plHomeomorphic), common subdivisions of geometric complexes (IsGeom.exists_common_subdivision, not stellar) and barycentric subdivision, all reused."
+        review_evidence: "Compared docs/notes/pl7a-ponzano-regge.md (read in full, 50 lines) and the module docstrings of Lightlike/TuraevViro/PLInvariance.lean and Lightlike/PonzanoRegge/TriangulationIndependence/Main.lean with the Lean statements on main (dd1c19ca3): triangulation_independence_of_pachner (hypothesis PachnerForwardHyp Same; Same K K' gives K'' with ampValues K ⊆ ampValues K'' and ampValues K' ⊆ ampValues K''), ampValues_mono_forward (ForwardMoves K K' gives ampValues K ⊆ ampValues K'), ampValues_move32_subset and ampValues_move41_subset (the smaller complex has the smaller value set), and CommonForward.ampValues_subset, whose statement is the text of m2 and which the first theorem applies. Result: the note says that no equality and no unconditional invariance follows, only the inclusion along forward moves under PachnerForwardHyp; the PLInvariance docstring says the same ('Nothing here concerns the Ponzano–Regge amplitude: its regularised values are only included in one another along forward moves'); both match the declarations. Two differences found and recorded: (1) the decls of m2 name triangulation_independence_of_pachner, the hypothesis form, while the item text is the statement of CommonForward.ampValues_subset, which is unconditional and not listed; (2) the note's backlog called PachnerForwardHyp an open question; after the maintainers' decision of 27 Nov it points to the milestone PL7c, which carries the unconditional version. Not checked here: the comparison of turaevViro3_plHomeomorphic with Turaev, Chapter VII, which the PLInvariance docstring states as pending."
       - id: p4
         kind: piece
         text: "A stellar subdivision of a closed combinatorial 3-manifold at a tetrahedron or a triangle is a sequence of forward Pachner moves (2-3 and 1-4 only); at an edge the complex and its subdivision have a common forward descendant, and no edge subdivision is itself a forward descendant"
         decls: [Lightlike.PR.ofComplex3_move14_eq_starAt, Lightlike.PR.ForwardMoves.exists_starAt_triangle, Lightlike.PR.commonForward_starAt_edge, Lightlike.PR.not_forwardMoves_starAt_edge]
         hint: "Edge subdivisions are not forward: forward moves only add edges (Lightlike.PR.ForwardMoves.edges_subset) and the subdivision at an edge deletes it (Lightlike.PR.not_forwardMoves_starAt_edge, proved). Search: Mathlib, Physlib and Tau Ceti have no Pachner moves or stellar subdivisions; reused move14, move23, edges_move23, edges_move14, CommonForward and SComplex.starAt from the library."
-      - id: p5
-        kind: piece
-        text: "PachnerForwardHyp is proven: any two triangulations of one PL manifold have a common forward descendant under forward-only moves (stellar-subdivision route), so the triangulation independence of the regularised Ponzano-Regge amplitude is unconditional on the PL side"
-        decls: []
-        hint: "Needs, besides p3 and p4, that CommonForward is invariant under relabelling and transitive (local confluence of forward moves); forward moves only add edges, so a common descendant holds the edges of both. Search: Main.lean states PachnerForwardHyp as a hypothesis, NonVacuity.lean shows it satisfiable, mapComplex3 relabels; nothing in Mathlib, Physlib or Tau Ceti."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"

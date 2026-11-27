@@ -99,6 +99,26 @@
   "citations": 117,
   "citations_via": "OpenAlex"
  },
+ "adiprasito-pak-2024": {
+  "checked": "2026-11-27",
+  "exists": true,
+  "via": "arXiv API",
+  "fetched_title": "All triangulations have a common stellar subdivision",
+  "locations": {
+   "Theorem 1.1": {
+    "verified": true,
+    "snippet": "Theorem 1.1 (weighted strong factorization theorem). Every two triangulations A, B of a geometric complex in Rd , have a common stellar subdivision. Moreover, if both A and B have coordinates in a field extension K over",
+    "why": null
+   },
+   "Theorem 1.3": {
+    "verified": true,
+    "snippet": "Theorem 1.3 (former Alexander’s conjecture). Every two PL homeomorphic simplicial complexes have combinatorially isomorphic stellar subdivisions. Alexander [Ale30] was interested in PL homeomorphisms of polyhedral spaces",
+    "why": null
+   }
+  },
+  "citations": 5,
+  "citations_via": "Semantic Scholar"
+ },
  "adj-1997": {
   "checked": "2026-11-08",
   "exists": true,
