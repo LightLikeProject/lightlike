@@ -2211,6 +2211,7 @@ import Lightlike.Tests.TreeDependence
 import Lightlike.TuraevViro.FMatrix
 import Lightlike.TuraevViro.Hexagon
 import Lightlike.TuraevViro.CraneYetter
+import Lightlike.TuraevViro.CraneYetterBridge
 import Lightlike.TuraevViro.CraneYetterThree
 import Lightlike.TuraevViro.CraneYetterThreeWeight
 import Lightlike.TuraevViro.CraneYetterSphere
