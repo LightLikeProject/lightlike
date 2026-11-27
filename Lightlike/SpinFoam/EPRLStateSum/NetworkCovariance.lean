@@ -395,4 +395,71 @@ theorem netTerm_relabel (hK : K.IsClosed4) (col : Finset V → ℕ) (M : K.simps
       exact (isInv_fourJP (legSpins K col x) (legPerm K σ x) k).eq_zero (i := i) hbad
     rw [h0, h1, mul_zero]
 
+lemma projRelabel_mem (col : Finset V → ℕ) {M : K.simps → Fin 10 → ℤ}
+    (hM : M ∈ Fintype.piFinset (fun s : K.simps => projBox K col s)) :
+    projRelabel K σ M ∈ Fintype.piFinset
+      (fun s' : (relabelComplex K σ).simps => projBox (relabelComplex K σ) (relabelCol σ col) s') := by
+  refine Fintype.mem_piFinset.2 fun s' => ?_
+  obtain ⟨s, rfl⟩ : ∃ s, s' = fwd K σ s := ⟨bwd K σ s', (fwd_bwd K σ s').symm⟩
+  rw [projRelabel_fwd]
+  have hMs := Fintype.mem_piFinset.1 hM s
+  have hsymm : ∀ p q, complexJ K col s p q = complexJ K col s q p := simplexJ_symm s.1 (K.card_eq _ s.2) col
+  refine Fintype.mem_piFinset.2 fun e => ?_
+  have h := legProj_mem (complexJ K col s) hsymm (M s) hMs (phi K σ s (epr e).1) (phi K σ s (epr e).2)
+  have hJ := complexJ_relabel K σ col s (fwd K σ s) rfl (epr e).1 (epr e).2
+  unfold jE
+  rw [hJ]
+  exact h
+
+lemma projRelabel_symm_mem (col : Finset V → ℕ) {M' : (relabelComplex K σ).simps → Fin 10 → ℤ}
+    (hM : M' ∈ Fintype.piFinset
+      (fun s' : (relabelComplex K σ).simps => projBox (relabelComplex K σ) (relabelCol σ col) s')) :
+    (fun s : K.simps => permProj (phi K σ s).symm (M' (fwd K σ s))) ∈
+      Fintype.piFinset (fun s : K.simps => projBox K col s) := by
+  refine Fintype.mem_piFinset.2 fun s => ?_
+  have hMs := Fintype.mem_piFinset.1 hM (fwd K σ s)
+  have hsymm : ∀ p q, complexJ (relabelComplex K σ) (relabelCol σ col) (fwd K σ s) p q =
+      complexJ (relabelComplex K σ) (relabelCol σ col) (fwd K σ s) q p :=
+    simplexJ_symm _ ((relabelComplex K σ).card_eq _ (fwd K σ s).2) _
+  refine Fintype.mem_piFinset.2 fun e => ?_
+  have h := legProj_mem _ hsymm (M' (fwd K σ s)) hMs ((phi K σ s).symm (epr e).1) ((phi K σ s).symm (epr e).2)
+  have hJ : complexJ (relabelComplex K σ) (relabelCol σ col) (fwd K σ s) ((phi K σ s).symm (epr e).1)
+      ((phi K σ s).symm (epr e).2) =
+      complexJ K col s (phi K σ s ((phi K σ s).symm (epr e).1)) (phi K σ s ((phi K σ s).symm (epr e).2)) :=
+    complexJ_relabel K σ col s (fwd K σ s) rfl _ _
+  rw [hJ, Equiv.apply_symm_apply, Equiv.apply_symm_apply] at h
+  exact h
+
+/-- **The network of a relabelled closed complex**: the sign `(-1)^(number of reversed links)` times the network of `K`. -/
+theorem Znet_relabel (hK : K.IsClosed4) (col : Finset V → ℕ) :
+    Znet (relabelComplex K σ) (relabelCol σ col) =
+      (-1 : ℝ) ^ (∑ s : K.simps, invSum (complexJ K col s) (phi K σ s)) * Znet K col := by
+  unfold Znet
+  rw [Finset.mul_sum]
+  refine Finset.sum_nbij' (fun M' s => permProj (phi K σ s).symm (M' (fwd K σ s))) (projRelabel K σ)
+    ?_ ?_ ?_ ?_ ?_
+  · intro M' hM'
+    exact projRelabel_symm_mem K σ col hM'
+  · intro M hM
+    exact projRelabel_mem K σ col hM
+  · intro M' _
+    funext s'
+    obtain ⟨s, rfl⟩ : ∃ s, s' = fwd K σ s := ⟨bwd K σ s', (fwd_bwd K σ s').symm⟩
+    rw [projRelabel_fwd]
+    simp only [permProj_permProj_symm]
+  · intro M _
+    funext s
+    rw [show M s = M s from rfl]
+    simp only [projRelabel_fwd, permProj_symm_permProj]
+  · intro M' hM'
+    have hM := projRelabel_symm_mem K σ col hM'
+    have h := netTerm_relabel K σ hK col (fun s => permProj (phi K σ s).symm (M' (fwd K σ s)))
+    have hM'eq : projRelabel K σ (fun s => permProj (phi K σ s).symm (M' (fwd K σ s))) = M' := by
+      funext s'
+      obtain ⟨s, rfl⟩ : ∃ s, s' = fwd K σ s := ⟨bwd K σ s', (fwd_bwd K σ s').symm⟩
+      rw [projRelabel_fwd]
+      simp only [permProj_permProj_symm]
+    rw [hM'eq] at h
+    exact h
+
 end Lightlike.SpinFoam.EPRLStateSum
