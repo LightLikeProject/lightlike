@@ -76,55 +76,62 @@ lemma SpinStructure.g_pos {x : M} (v : TangentSpace I x) (hv : v ≠ 0) : 0 < g.
   rw [S.frame_expand hx v]
   simp [h0]
 
-/-- The coordinates `v ↦ (g(v, Fₐ))ₐ` in the frame chosen at `x`, a linear map. -/
-noncomputable def SpinStructure.coordMap (x : M) : TangentSpace I x →ₗ[ℝ] (Fin n → ℝ) where
-  toFun v a := g.g x v (S.frame (S.idx x) a x)
-  map_add' v w := by funext a; simp
-  map_smul' c v := by funext a; simp
+/-- A positive definite symmetric form on `ℝⁿ` is bounded below by a multiple of the square of
+the norm: `c ‖v‖² ≤ B v v` for some `c > 0` (compactness of the unit sphere). -/
+lemma exists_pos_mul_norm_sq_le {B : (Fin n → ℝ) →L[ℝ] (Fin n → ℝ) →L[ℝ] ℝ}
+    (hpos : ∀ v, v ≠ 0 → 0 < B v v) : ∃ c > 0, ∀ v, c * ‖v‖ ^ 2 ≤ B v v := by
+  rcases isEmpty_or_nonempty (Fin n) with hn | hn
+  · refine ⟨1, one_pos, fun v => ?_⟩
+    have : v = 0 := Subsingleton.elim _ _
+    simp [this]
+  have hcont : Continuous fun v : Fin n → ℝ => B v v := B.continuous.clm_apply continuous_id
+  have hsph : IsCompact (Metric.sphere (0 : Fin n → ℝ) 1) := isCompact_sphere 0 1
+  have hne : (Metric.sphere (0 : Fin n → ℝ) 1).Nonempty := by
+    obtain ⟨a⟩ := hn
+    exact ⟨Pi.single a 1, by simp [Metric.mem_sphere, dist_zero_right, Pi.norm_single]⟩
+  obtain ⟨u, hu, hmin⟩ := hsph.exists_isMinOn hne hcont.continuousOn
+  have hu0 : u ≠ 0 := by
+    intro h; rw [h, Metric.mem_sphere, dist_self] at hu; norm_num at hu
+  refine ⟨B u u, hpos u hu0, fun v => ?_⟩
+  by_cases hv : v = 0
+  · simp [hv]
+  have hnv : 0 < ‖v‖ := norm_pos_iff.mpr hv
+  set w := ‖v‖⁻¹ • v
+  have hw : w ∈ Metric.sphere (0 : Fin n → ℝ) 1 := by
+    simp [w, Metric.mem_sphere, dist_zero_right, norm_smul, inv_mul_cancel₀ hnv.ne']
+  have h1 : B u u ≤ B w w := hmin hw
+  have hBw : B w w = ‖v‖⁻¹ ^ 2 * B v v := by
+    simp only [w, map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring
+  rw [hBw] at h1
+  calc B u u * ‖v‖ ^ 2 ≤ ‖v‖⁻¹ ^ 2 * B v v * ‖v‖ ^ 2 :=
+        mul_le_mul_of_nonneg_right h1 (sq_nonneg _)
+    _ = B v v := by field_simp
 
-lemma SpinStructure.coordMap_injective (x : M) : Function.Injective (S.coordMap x) := by
-  rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-  intro v hv
-  rw [S.frame_expand (S.mem_idx x) v]
-  have h : ∀ a, g.g x v (S.frame (S.idx x) a x) = 0 := fun a => congrFun hv a
-  simp [h]
-
-/-- **The Riemannian metric of a spin structure**: `g`, positive definite because it has an
-orthonormal frame at every point. -/
-noncomputable def SpinStructure.riemannianMetric :
+/-- **The Riemannian metric of a positive definite metric**, in Mathlib's sense. -/
+noncomputable def _root_.Lightlike.NondegMetric.riemannianMetricOfPos (g : NondegMetric I M)
+    (hpos : ∀ x (v : TangentSpace I x), v ≠ 0 → 0 < g.g x v v) :
     RiemannianMetric (fun x : M => TangentSpace I x) where
   inner x := g.g x
   symm x v w := g.symm x v w
-  pos x v hv := SpinStructure.g_pos S v hv
+  pos x v hv := hpos x v hv
   continuousAt x := by
     change ContinuousAt (fun v : Fin n → ℝ => g.g x v v) 0
     exact ((g.g x).continuous.clm_apply continuous_id).continuousAt
   isVonNBounded x := by
-    -- the set is the preimage of the open unit ball of `ℓ²` under the injective coordinate map
-    have hfin : FiniteDimensional ℝ (TangentSpace I x) := by
-      change FiniteDimensional ℝ (Fin n → ℝ); infer_instance
-    set L := S.coordMap x
-    have hLinv : ∃ T : (Fin n → ℝ) →ₗ[ℝ] TangentSpace I x, ∀ v, T (L v) = v := by
-      obtain ⟨T, hT⟩ := L.exists_leftInverse_of_injective
-        (LinearMap.ker_eq_bot.mpr (S.coordMap_injective x))
-      exact ⟨T, fun v => by simpa using LinearMap.congr_fun hT v⟩
-    obtain ⟨T, hT⟩ := hLinv
-    let Tc : (Fin n → ℝ) →L[ℝ] TangentSpace I x := LinearMap.toContinuousLinearMap T
-    have hball : Bornology.IsVonNBounded ℝ (Metric.ball (0 : Fin n → ℝ) 1) :=
-      NormedSpace.isVonNBounded_ball ℝ _ 1
-    refine (hball.image Tc).subset ?_
-    intro v hv
-    refine ⟨L v, ?_, by simp [Tc, hT]⟩
-    rw [Metric.mem_ball, dist_zero_right, pi_norm_lt_iff (by norm_num)]
-    intro a
-    have hv' : g.g x v v < 1 := hv
-    rw [S.g_self_eq_sum (S.mem_idx x)] at hv'
-    have hsq : (L v a) ^ 2 < 1 := by
-      refine lt_of_le_of_lt ?_ hv'
-      exact Finset.single_le_sum (f := fun b => g.g x v (S.frame (S.idx x) b x) ^ 2)
-        (fun b _ => sq_nonneg _) (Finset.mem_univ a)
-    rw [Real.norm_eq_abs]
-    nlinarith [abs_mul_abs_self (L v a), abs_nonneg (L v a), sq_abs (L v a)]
+    change Bornology.IsVonNBounded ℝ {v : Fin n → ℝ | g.g x v v < 1}
+    obtain ⟨c, hc, hle⟩ := exists_pos_mul_norm_sq_le (B := g.g x) (hpos x)
+    rw [NormedSpace.isVonNBounded_iff]
+    refine (Metric.isBounded_iff_subset_closedBall 0).mpr ⟨Real.sqrt (1 / c), fun v hv => ?_⟩
+    rw [Metric.mem_closedBall, dist_zero_right]
+    have h1 : c * ‖v‖ ^ 2 < 1 := lt_of_le_of_lt (hle v) hv
+    rw [Real.le_sqrt (norm_nonneg _) (by positivity), le_div_iff₀ hc]
+    nlinarith
+
+/-- **The Riemannian metric of a spin structure**: `g`, positive definite because it has an
+orthonormal frame at every point. -/
+noncomputable def SpinStructure.riemannianMetric :
+    RiemannianMetric (fun x : M => TangentSpace I x) :=
+  g.riemannianMetricOfPos fun _ v hv => SpinStructure.g_pos S v hv
 
 /-- The tangent bundle of a manifold with a spin structure as a Riemannian bundle. Not a global
 instance; statements install it with `letI`. -/

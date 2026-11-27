@@ -365,4 +365,83 @@ lemma SpinorSection.toField_roughLaplacian (σ : SpinorSection S ρ) {i : ι} {x
         σ.toField_isSmooth.funDiffAt_nabla).rep i x :=
   SpinorSection.toField_ofField_rep _ _ hx
 
+/-! ## Two frames: a smooth spinor is a pair of representations -/
+
+section TwoFrames
+
+variable {S₂ : SpinStructure g Bool}
+
+/-- The lift from a frame to itself is `1` on its domain. -/
+lemma SpinStructure.lift_self {T : SpinStructure g ι} {i : ι} {x : M} (hx : x ∈ T.dom i) :
+    T.lift i i x = 1 := by
+  have h := T.lift_cocycle i i i x hx hx hx
+  have hu : T.lift i i x * star (T.lift i i x) = 1 :=
+    spinGroup.mul_star_self_of_mem (T.lift_mem hx hx)
+  calc T.lift i i x = T.lift i i x * (T.lift i i x * star (T.lift i i x)) := by rw [hu, mul_one]
+    _ = T.lift i i x * T.lift i i x * star (T.lift i i x) := by rw [mul_assoc]
+    _ = 1 := by rw [← h, hu]
+
+/-- The smooth pairs of a two-frame spin structure: a representation in each frame, smooth on its
+domain and `0` off it, related on the overlap by `f_true = ρ(lift true false) f_false`. -/
+abbrev SpinStructure.SmoothPair (S₂ : SpinStructure g Bool) (ρ : CliffordRep n V) : Type _ :=
+  {f : (M → V) × (M → V) //
+    (∀ x, x ∈ S₂.dom true → ContMDiffAt I 𝓘(ℝ, V) ∞ f.1 x) ∧
+    (∀ x, x ∈ S₂.dom false → ContMDiffAt I 𝓘(ℝ, V) ∞ f.2 x) ∧
+    (∀ x, x ∉ S₂.dom true → f.1 x = 0) ∧ (∀ x, x ∉ S₂.dom false → f.2 x = 0) ∧
+    ∀ x, x ∈ S₂.dom true → x ∈ S₂.dom false → f.1 x = ρ (S₂.lift true false x) (f.2 x)}
+
+/-- The spinor field of a smooth pair. -/
+noncomputable def SpinStructure.SmoothPair.toField (f : S₂.SmoothPair ρ) : SpinorField S₂ ρ where
+  rep b := if b then f.1.1 else f.1.2
+  transform i j x hi hj := by
+    have hrel := f.2.2.2.2.2 
+    cases i <;> cases j
+    · simp [S₂.lift_self hi]
+    · -- `f_false = ρ(lift false true) f_true`
+      simp only [Bool.false_eq_true, ite_false, ite_true]
+      rw [hrel x hj hi, ← ContinuousLinearMap.mul_apply, ← map_mul,
+        ← S₂.lift_cocycle false true false x hi hj hi, S₂.lift_self hi, map_one]
+      rfl
+    · simp only [ite_true, Bool.false_eq_true, ite_false]
+      exact hrel x hi hj
+    · simp [S₂.lift_self hi]
+
+/-- **A smooth spinor of a two-frame spin structure is a smooth pair** of representations
+`(f_true, f_false)`, related by `f_true = ρ(lift true false) f_false` on the overlap. -/
+noncomputable def SpinorSection.equivPair : SpinorSection S₂ ρ ≃ S₂.SmoothPair ρ where
+  toFun σ := ⟨(σ.toField.rep true, σ.toField.rep false),
+    fun x hx => σ.toField_isSmooth true x hx, fun x hx => σ.toField_isSmooth false x hx,
+    fun x hx => σ.toField_isNormalized true x hx, fun x hx => σ.toField_isNormalized false x hx,
+    fun x ht hf => σ.toField.transform true false x ht hf⟩
+  invFun f := SpinorSection.ofField f.toField (by
+    intro b x hx
+    cases b
+    · exact f.2.2.1 x hx
+    · exact f.2.1 x hx)
+  left_inv σ := by
+    ext x
+    have h : (SpinorSection.ofField σ.toField σ.toField_isSmooth) x = σ x :=
+      congrArg (fun τ : SpinorSection S₂ ρ => τ x) (SpinorSection.ofField_toField σ)
+    rw [← h]
+    change (SpinStructure.SmoothPair.toField _).rep ((S₂.spinorCore ρ).indexAt x) x =
+      σ.toField.rep ((S₂.spinorCore ρ).indexAt x) x
+    cases (S₂.spinorCore ρ).indexAt x <;> rfl
+  right_inv f := by
+    apply Subtype.ext
+    apply Prod.ext
+    · funext x
+      change (SpinorSection.ofField f.toField _).toField.rep true x = f.1.1 x
+      by_cases hx : x ∈ S₂.dom true
+      · exact SpinorSection.toField_ofField_rep _ _ hx
+      · exact ((SpinorSection.ofField f.toField _).toField_isNormalized true x hx).trans
+          (f.2.2.2.1 x hx).symm
+    · funext x
+      change (SpinorSection.ofField f.toField _).toField.rep false x = f.1.2 x
+      by_cases hx : x ∈ S₂.dom false
+      · exact SpinorSection.toField_ofField_rep _ _ hx
+      · exact ((SpinorSection.ofField f.toField _).toField_isNormalized false x hx).trans
+          (f.2.2.2.2.1 x hx).symm
+
+end TwoFrames
+
 end Lightlike.Dirac
