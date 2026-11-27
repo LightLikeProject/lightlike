@@ -1,5 +1,6 @@
 import Mathlib
 import Lightlike.Lorentz.SL2RPrincipal
+import Lightlike.Lorentz.SL2RPlancherel.PolarIntegral
 
 /-!
 # The `K`-type vectors of the even principal series of `SL(2,ℝ)`
@@ -130,6 +131,31 @@ theorem act_rot_kVecP (ν θ : ℝ) (k : ℤ) (x : ℝ) (hx : den (rot θ) x ≠
   rw [he]
   field_simp
   rw [hw]
+  ring
+
+lemma den_aR (ξ x : ℝ) : den (aR ξ) x = (Real.exp (ξ / 2))⁻¹ := by
+  simp [den, aR, diagSL]
+
+lemma mob_aR (ξ x : ℝ) : mob (aR ξ) x = Real.exp ξ * x := by
+  have h : Real.exp ξ = Real.exp (ξ / 2) * Real.exp (ξ / 2) := by
+    rw [← Real.exp_add]; ring_nf
+  simp only [mob, num, den, aR, diagSL]
+  simp
+  rw [h]
+  field_simp
+
+/-- **The action of `a(ξ)`**: `(π(a(ξ)) f)(x) = e^{-(iν - 1) ξ / 2} f(e^ξ x)` (even principal
+series). -/
+theorem act_aR (ν ξ : ℝ) (f : ℝ → ℂ) (x : ℝ) :
+    act 0 ν (aR ξ) f x = Complex.exp (-((I * ν - 1) * ξ / 2)) * f (Real.exp ξ * x) := by
+  rw [act, den_aR, mob_aR, mult, zpow_zero, mul_one]
+  congr 1
+  have habs : |(Real.exp (ξ / 2))⁻¹| = Real.exp (-(ξ / 2)) := by
+    rw [abs_of_pos (inv_pos.2 (Real.exp_pos _)), Real.exp_neg]
+  rw [habs, Complex.ofReal_exp, Complex.cpow_def_of_ne_zero (Complex.exp_ne_zero _),
+    Complex.log_exp (by simp [Real.pi_pos]) (by simp [Real.pi_pos.le])]
+  congr 1
+  push_cast
   ring
 
 /-- Non-vacuity: the hypothesis `den (k_θ) x ≠ 0` holds for `θ = 0`. -/
