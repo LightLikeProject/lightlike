@@ -392,6 +392,8 @@ import Lightlike.Geometry.HeatKernel.ChartHeatErrorDeriv
 import Lightlike.Geometry.HeatKernel.ChartHeatErrorDerivTests
 import Lightlike.Geometry.HeatKernel.ChartBaseDelta
 import Lightlike.Geometry.HeatKernel.ChartBaseDeltaTests
+import Lightlike.Geometry.HeatKernel.ChartParametrixSmooth
+import Lightlike.Geometry.HeatKernel.ChartParametrixSmoothTests
 import Lightlike.Geometry.HeatKernel.CutoffAnsatz
 import Lightlike.Geometry.HeatKernel.CutoffAnsatzTests
 import Lightlike.Geometry.HeatKernel.ChartParametrix
