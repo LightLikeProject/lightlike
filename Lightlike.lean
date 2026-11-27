@@ -1832,6 +1832,13 @@ import Lightlike.Spacetime.ChartTransition
 import Lightlike.Spacetime.VolumeMeasure
 import Lightlike.Spacetime.VolumeMeasureFinite
 import Lightlike.Spacetime.VolumeMeasureFiniteTests
+import Lightlike.Spacetime.LaplaceBeltrami.Pairing
+import Lightlike.Spacetime.LaplaceBeltrami.Smooth
+import Lightlike.Spacetime.LaplaceBeltrami.Coord
+import Lightlike.Spacetime.LaplaceBeltrami.Weak
+import Lightlike.Spacetime.LaplaceBeltrami.Green
+import Lightlike.Spacetime.LaplaceBeltrami.Riemannian
+import Lightlike.Spacetime.LaplaceBeltrami.Tests
 import Lightlike.Spacetime.CausalLadder.FullSupportMeasure
 import Lightlike.Spacetime.CausalLadder.NullBoundary
 import Lightlike.Spacetime.CausalLadder.NullBoundaryManifold
