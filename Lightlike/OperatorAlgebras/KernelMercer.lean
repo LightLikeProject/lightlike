@@ -371,6 +371,56 @@ lemma summable_rowTerm (x : X) : Summable (rowTerm μ K b lam x) := by
 
 end Expansion
 
+section Diagonal
+
+variable [μ.IsOpenPosMeasure] [SecondCountableTopology X] (K : C(X × X, ℂ))
+  (hK : ∀ x y, K (y, x) = starRingEnd ℂ (K (x, y))) {ι : Type*}
+  (b : HilbertBasis ι ℂ (Lp ℂ 2 μ)) (lam : ι → ℝ)
+  (hb : ∀ i, kernelOp μ K (b i) = (lam i : ℂ) • b i) (hpos : IsPositiveKernel μ K)
+include hK hb hpos
+
+/-- **Mercer's expansion on the diagonal**: `K(x, x) = Σ_i λ_i |φ_i(x)|²`. -/
+theorem hasSum_diag (x : X) :
+    HasSum (fun i => ((lam i * ‖eigenFun μ K (b i) (lam i) x‖ ^ 2 : ℝ) : ℂ)) (K (x, x)) := by
+  set G := ∑' i, rowTerm μ K b lam x i with hGdef
+  have hG : HasSum (rowTerm μ K b lam x) G :=
+    (summable_rowTerm μ K hK b lam hb hpos x).hasSum
+  -- pairing with every `f` identifies `conj G` with `conj K(x, ·)`
+  have hΛ : ∀ f : Lp ℂ 2 μ, inner ℂ (ContinuousMap.toLp (E := ℂ) 2 μ ℂ (star G)) f =
+      kernelToC μ K f x := by
+    intro f
+    let A : C(X, ℂ) →+ ℂ :=
+      { toFun := fun g => inner ℂ (ContinuousMap.toLp (E := ℂ) 2 μ ℂ (star g)) f
+        map_zero' := by simp
+        map_add' := fun g h => by simp [star_add, inner_add_left] }
+    have hAc : Continuous A :=
+      ((ContinuousMap.toLp (E := ℂ) 2 μ ℂ).continuous.comp continuous_star).inner continuous_const
+    have h1 := hG.map A hAc
+    have h2 := hasSum_kernelToC μ K b lam hb f x
+    refine h1.unique (h2.congr_fun fun i => ?_)
+    show inner ℂ (ContinuousMap.toLp (E := ℂ) 2 μ ℂ (star (rowTerm μ K b lam x i))) f = _
+    simp only [rowTerm, star_smul, star_star, map_smul, inner_smul_left]
+    by_cases hl : lam i = 0
+    · simp [hl]
+    · rw [toLp_eigenFun μ K hl (hb i)]
+      simp only [RCLike.star_def, Complex.conj_conj]
+  have hstar : ContinuousMap.toLp (E := ℂ) 2 μ ℂ (star G) = kernelVecOf μ K x :=
+    ext_inner_right ℂ fun f => by rw [hΛ, kernelToC_apply]
+  have hGK : star G = kernelCurry K x := ContinuousMap.toLp_injective μ hstar
+  have hval : G x = K (x, x) := by
+    have h := congrArg (fun g : C(X, ℂ) => g x) hGK
+    simp only [ContinuousMap.star_apply, kernelCurry_apply] at h
+    have := congrArg (starRingEnd ℂ) h
+    simpa using this
+  have hev := hG.map (ContinuousMap.evalCLM ℂ x) (ContinuousMap.evalCLM ℂ x).continuous
+  rw [← hval]
+  refine hev.congr_fun fun i => ?_
+  simp only [Function.comp_apply, ContinuousMap.evalCLM_apply, rowTerm, ContinuousMap.smul_apply,
+    ContinuousMap.star_apply, smul_eq_mul]
+  rw [mul_assoc, RCLike.star_def, Complex.mul_conj', ← Complex.ofReal_pow, ← Complex.ofReal_mul]
+
+end Diagonal
+
 end
 
 end Lightlike.OperatorAlgebras
