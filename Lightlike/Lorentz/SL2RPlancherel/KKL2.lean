@@ -265,6 +265,7 @@ theorem denseRange_kkE : DenseRange kkE := by
 def kkIso : Lp ℂ 2 haarR →ₗᵢ[ℂ] KKSpace :=
   LinearMap.extendOfIsometry kkF denseRange_kkE norm_kkF
 
+/-- On continuous square-integrable functions, `kkIso` is the block map. -/
 theorem kkIso_apply (f : contL2) : kkIso (kkE f) = kkF f :=
   LinearMap.extendOfIsometry_eq kkF denseRange_kkE norm_kkF f
 
@@ -286,6 +287,8 @@ theorem kkL2_toLp {f : SL2R → ℂ} (hfc : Continuous f) (hf : MemLp f 2 haarR)
   rw [kkVecFun, smul_smul, inv_mul_cancel₀ (by exact_mod_cast (by positivity : (2 * π : ℝ) ≠ 0)),
     one_smul]
 
+/-- **Agreement**, almost everywhere: `kkL2 (toLp f) m = √(sinh ξ) f_m(ξ)` for almost every
+`ξ > 0`. -/
 theorem kkL2_toLp_ae {f : SL2R → ℂ} (hfc : Continuous f) (hf : MemLp f 2 haarR) (m : Fin 2 → ℤ) :
     (kkL2 (hf.toLp f) m : ℝ → ℂ) =ᵐ[volume.restrict (Ioi (0 : ℝ))] kkSrc f m := by
   rw [kkL2_toLp hfc hf m]
