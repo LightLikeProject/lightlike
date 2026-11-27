@@ -132,7 +132,7 @@ Each foundation is cut to what the areas that use it need, so that no area build
 - **Open:** in the plan, the classification of surfaces up to bistellar moves (PL3), Newman's and
   Moise's theorems, and their assembly: homeomorphic closed 3-manifolds have triangulations related
   by Pachner moves.
-- **Milestones:** 8 · [milestones](docs/tasks/milestones.md#pl-topology) · [tasks](docs/tasks/README.md#pl-topology) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+pl-topology%22)
+- **Milestones:** 9 · [milestones](docs/tasks/milestones.md#pl-topology) · [tasks](docs/tasks/README.md#pl-topology) · [done](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+is%3Aclosed+reason%3Acompleted+label%3Amilestone+label%3A%22area%3A+pl-topology%22)
 
 ### Quantum groups and state-sum TQFTs
 

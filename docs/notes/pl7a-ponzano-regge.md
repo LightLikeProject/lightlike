@@ -37,14 +37,15 @@ a set inclusion along forward moves, and only under a hypothesis.
 - **Full:** the `r = 3` Turaev–Viro state sum is a PL-homeomorphism invariant of closed
   combinatorial 3-manifolds (nonempty).
 - **Not claimed:** any invariance of Ponzano–Regge up to PL homeomorphism; only the conditional
-  inclusion above (QU5, `Main.lean`).
+  inclusion above (QU5, `Main.lean`). The unconditional version, with `PachnerForwardHyp` proven, is
+  the milestone PL7c.
 
 ## Limitations / backlog
 
 - The `r ≥ 4` Turaev–Viro statement needs `qBiedenharnElliott` (G3-196, parked: numeric certificate for
   Watson's transformation exists, closed form not found).
-- Open question raised: is the forward form `PachnerForwardHyp` true? Pachner's theorem gives a chain
-  with both directions; a forward-only chain after lifting extra vertices is plausible (one can often
-  postpone the inverse moves) but not proved here.
+- The forward form `PachnerForwardHyp` is the milestone PL7c (route: Adiprasito–Pak, arXiv:2404.05930,
+  Theorems 1.1 and 1.3, common stellar subdivisions; with the edge case of p4 above). PL7a uses it only
+  as a hypothesis.
 - Comparison of `turaevViro3_plHomeomorphic` with Turaev, Chapter VII, is pending (not read at the
   location).

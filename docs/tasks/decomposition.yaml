@@ -47,6 +47,7 @@ needs:
   PL6: [PL5]
   PL7a: [PL2, PL4]
   PL7b: [PL7a, PL6]
+  PL7c: [PL2, PL4, PL7a]
 
 # Milestones whose statements are all among the proof tasks below. Once those are locked, the
 # milestones that need one of them can start, before its proofs are done.

@@ -20,6 +20,9 @@ an abstract relation `Same` ("the two complexes triangulate the same manifold").
 What is not claimed: that two move-connected complexes have equal sets of values. The inverse moves
 (3-2, 4-1) need cut-off inequalities on the new edges, so only the forward direction simulates a
 general state; see `Values.lean`.
+
+The unconditional version, with `PachnerForwardHyp` proven (Adiprasito–Pak, arXiv:2404.05930), is
+the milestone PL7c; here it stays a hypothesis.
 -/
 
 @[expose] public section
@@ -72,7 +75,7 @@ theorem PachnerForwardHyp.pachnerHyp {Same : Complex3 V → Complex3 V → Prop}
 `Same K K'` and Pachner's theorem holds in its forward form, then every gauge-fixed amplitude of `K`
 and every one of `K'` is a gauge-fixed amplitude, at some maximal tree and cut-off, of one common
 complex `K''`. The cut-off is a regulator, so this is the form in which independence holds before
-the cut-off is removed. -/
+the cut-off is removed. The hypothesis is removed by the milestone PL7c. -/
 theorem triangulation_independence_of_pachner {Same : Complex3 V → Complex3 V → Prop}
     (hP : PachnerForwardHyp Same) {K K' : Complex3 V} (hs : Same K K') :
     ∃ K'' : Complex3 V, ampValues K ⊆ ampValues K'' ∧ ampValues K' ⊆ ampValues K'' :=
