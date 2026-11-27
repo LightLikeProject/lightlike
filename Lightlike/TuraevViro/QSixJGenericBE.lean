@@ -255,6 +255,57 @@ theorem pentagon_right_collapse (q : kˣ) (a b c d j m e₀ d₀ g₀ i : ℕ) :
       obtain ⟨-, h2, -, -, -⟩ := hA; simp only [le_min_iff] at h2; simp only [mem_range]; omega)
     simp [this])]
 
+/-- **The pentagon for `klCoef`, collapsed**: from `TemperleyLieb.pentagon` and `FcEqKL`, the sum over
+`f` of the three Kauffman–Lins coefficients (with `h`, `d'` fixed by admissibility) equals the product
+of the two of the right side (with `g'` fixed). -/
+theorem pentagon_klCoef (hKL : FcEqKL k) (q : kˣ) (hδ : loopVal q ≠ 0) (a b c d e₀ d₀ g₀ j m i : ℕ)
+    (ha : 1 ≤ a) (hb : 1 ≤ b) (hc : 1 ≤ c)
+    (hd : ∀ x, x ≤ a + b + c + d → chebD (loopVal q) x ≠ 0)
+    (hq : ∀ n, 1 ≤ n → n ≤ a + b + c + d + 3 → (q : k) ^ (2 * n) ≠ 1)
+    (hjc : j ≤ c) (hjd : j ≤ d) (hmb : m ≤ b) (hmz : m ≤ c + d - 2 * j) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + d - 2 * j) - 2 * m) (h₀ : ValidA a b c d e₀ d₀ g₀) :
+    ∑ f ∈ range (b + 1),
+        klCoef q b c d f ((b + c - 2 * f + d - (b + (c + d - 2 * j) - 2 * m)) / 2) j m *
+          (klCoef q a (b + c - 2 * f) d ((a + (b + c - 2 * f) - (a + b - 2 * e₀ + c - 2 * d₀)) / 2) g₀
+              ((b + c - 2 * f + d - (b + (c + d - 2 * j) - 2 * m)) / 2) i *
+            klCoef q a b c e₀ d₀ f ((a + (b + c - 2 * f) - (a + b - 2 * e₀ + c - 2 * d₀)) / 2)) =
+      klCoef q a b (c + d - 2 * j) e₀
+          ((a + b - 2 * e₀ + (c + d - 2 * j) - (a + (b + (c + d - 2 * j) - 2 * m) - 2 * i)) / 2) m i *
+        klCoef q (a + b - 2 * e₀) c d d₀ g₀ j
+          ((a + b - 2 * e₀ + (c + d - 2 * j) - (a + (b + (c + d - 2 * j) - 2 * m) - 2 * i)) / 2) := by
+  have hq2 : ∀ x, 1 ≤ x → x ≤ a + b + c + d + 1 → (q : k) ^ (2 * x) ≠ 1 :=
+    fun x h1 h2 => hq x h1 (by omega)
+  have P := pentagon q hδ a b c d e₀ d₀ g₀ j m i ha hb hc hd hq2 hjc hjd hmb hmz hia hiz h₀
+  -- left side: `Fc` to `klCoef`, then collapse
+  have hL : ∀ f ∈ range (b + 1), ∑ h ∈ range (d + 1), ∑ d' ∈ range (a + 1),
+      Fc q b c d f h j m * (Fc q a (b + c - 2 * f) d d' g₀ h i * Fc q a b c e₀ d₀ f d') =
+      ∑ h ∈ range (d + 1), ∑ d' ∈ range (a + 1),
+        klCoef q b c d f h j m * (klCoef q a (b + c - 2 * f) d d' g₀ h i * klCoef q a b c e₀ d₀ f d') :=
+    fun f _ => sum_congr rfl fun h _ => sum_congr rfl fun d' _ =>
+      pentagon_term_eq hKL q hδ ha hb hd hq hjc hjd hmb hmz hia hiz
+  rw [sum_congr rfl hL] at P
+  simp_rw [pentagon_inner_collapse] at P
+  -- right side
+  have hR : ∀ g' ∈ range (c + d - 2 * j + 1),
+      Fc q a b (c + d - 2 * j) e₀ g' m i * Fc q (a + b - 2 * e₀) c d d₀ g₀ j g' =
+      klCoef q a b (c + d - 2 * j) e₀ g' m i * klCoef q (a + b - 2 * e₀) c d d₀ g₀ j g' := by
+    intro g' hg'
+    rw [mem_range] at hg'
+    have e4 : Fc q a b (c + d - 2 * j) e₀ g' m i = klCoef q a b (c + d - 2 * j) e₀ g' m i :=
+      Fc_eq_klCoef_of' hKL q hδ (by omega) (fun x hx => hd x (by omega))
+        (fun n h1 h2 => hq n h1 (by omega)) hmb hmz hia hiz
+    rw [e4]
+    obtain ⟨h01, h02, -, -⟩ := h₀
+    simp only [le_min_iff] at h01 h02
+    by_cases hg : g' ≤ a + b - 2 * e₀
+    · rw [Fc_eq_klCoef_of' hKL q hδ (by omega) (fun x hx => hd x (by omega))
+        (fun n h1 h2 => hq n h1 (by omega)) hjc hjd hg (by omega)]
+    · have h4 : klCoef q a b (c + d - 2 * j) e₀ g' m i = 0 :=
+        klCoef_of_not q fun hA => hg (by obtain ⟨-, h2, -, -, -⟩ := hA; simp only [le_min_iff] at h2; omega)
+      rw [h4, zero_mul, zero_mul]
+  rw [sum_congr rfl hR, pentagon_right_collapse] at P
+  exact P
+
 end PentagonKL
 
 end Lightlike.TV
