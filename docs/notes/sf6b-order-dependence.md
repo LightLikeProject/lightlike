@@ -1,5 +1,10 @@
 # SF6b: the EPRL state sum at gamma = 1 depends on the vertex order through the sign twist
 
+> **Superseded.** The dependence measured here is a defect of the node basis change `nodeT` of the sorted-basis vertex (it omitted the
+> sign between the channel tensors of the sorted and the cyclic leg order), not a property of the EPRL amplitude; with the exact basis
+> change the state sum is independent of the vertex order on the numerical checks (`sf6b-basis-free-gluing.md`). The statements about
+> `eprlGlobalSign` below describe the definition before that change.
+
 Milestone: SF6b, item p2 (the stated dependence of the state sum on the vertex order).
 
 ## Question

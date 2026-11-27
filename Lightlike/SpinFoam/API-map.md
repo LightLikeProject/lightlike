@@ -134,16 +134,15 @@ proved).
 
 The EPRL state sum is formalized in the sorted basis of the tetrahedra, in which a tetrahedron shared by two
 4-simplices carries one and the same basis. The intrinsic vertex is the vertex of the 4-simplex with every virtual spin
-rewritten by the orthogonal transition matrix between the positional and the sorted channel, and at the BF point
-γ = 1 on a closed 4-complex the state sum is the sum over the triangle colourings and the virtual spins of the triangle
-constraints times an explicit sign twist times the Ooguri weight, so it equals the Ooguri amplitude only up to the sign
-twist [37]. Exchanging the two factors of Spin(4), the opposite orientation of ℝ⁴ (γ ↦ -γ), leaves the vertex and the
-state sum unchanged [38]. On the boundary of the 5-simplex with the cutoff of the bone colouring of the edge {0, 1} the
-γ = 1 state sum is 1 + 4 = 5, and with the face amplitude (J + 1)² in place of J + 1 the same sum is 65 [39]. The sign
-twist depends on the order of the vertices: the bone colouring of the edge {u, w} is admitted by the triangle
-constraints and has the sign (-1)^(w - u - 1), so the state sum is not independent of the order of the vertices; this
-dependence is stated, not removed [40]. Independence of the vertex order is not claimed, and the order check of the
-Ooguri amplitude and of the EPRL amplitude on the boundary of the 5-simplex is numerical evidence only.
+rewritten by the transition matrix between the positional and the sorted channel, the exact overlap of the two orthonormal
+bases of the invariant space of the tetrahedron, and at the BF point γ = 1 on a closed 4-complex the state sum is the sum
+over the triangle colourings and the virtual spins of the triangle constraints times the sign of the link orientations
+(a function of the colouring only) times the Ooguri weight [37]. Exchanging the two factors of Spin(4), the opposite
+orientation of ℝ⁴ (γ ↦ -γ), leaves the vertex and the state sum unchanged [38]. On the boundary of the 5-simplex with the
+cutoff of the bone colouring of the edge {0, 1} the γ = 1 state sum is 1 + 4 = 5, and with the face amplitude (J + 1)² in
+place of J + 1 the same sum is 65 [39]. Independence of the vertex order is not proved yet: the numerical check of the
+basis-free gluing on the boundary of the 5-simplex gives the same value for every relabelling of the vertices, and the
+bone cutoff of every edge gives 5; this is numerical evidence only.
 
 ## Lean References
 
@@ -273,8 +272,6 @@ Ooguri amplitude and of the EPRL amplitude on the boundary of the 5-simplex is n
     `SpinFoam.EPRLStateSum.amplitudeI_neg`
 39. Lightlike/SpinFoam/EPRLStateSum/BoneAmplitude.lean -
     `SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_low_spin`, `SpinFoam.EPRLStateSum.Trust.amplitudeI_wrong_face`
-40. Lightlike/SpinFoam/EPRLStateSum/OrderDependence.lean - `SpinFoam.EPRLStateSum.Trust.eprlGlobalSign_bone`,
-    `SpinFoam.EPRLStateSum.Trust.bone_admitted`
 
 ## References
 

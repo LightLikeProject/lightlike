@@ -7542,7 +7542,7 @@
   note: "At an edge of degree d >= 3 of a closed combinatorial 3-manifold, the complex and its stellar subdivision at the edge have a common forward descendant (commonForward_starAt_edge): the complex reaches it by one 1-4 move and d - 2 2-3 moves, the subdivision by one 2-3 move. With LL-0585 this is piece p4 of PL7a: an edge subdivision is not itself forward (LL-0585), so the forward route meets it at a common descendant."
   since: unreleased
 - id: LL-0587
-  title: "The intrinsic EPRL vertex is the vertex of the 4-simplex with the virtual spins rewritten by the transition matrices between the positional and the sorted channel, and at γ = 1 the EPRL state sum on a closed 4-complex is the sum over the triangle colourings and the virtual spins of the triangle constraints times the explicit sign twist times the Ooguri weight, i.e. the Ooguri amplitude up to the sign twist"
+  title: "The intrinsic EPRL vertex is the vertex of the 4-simplex with the virtual spins rewritten by the transition matrices between the positional and the sorted channel, and at γ = 1 the EPRL state sum on a closed 4-complex is the sum over the triangle colourings and the virtual spins of the triangle constraints times the sign of the link orientations (a function of the colouring) times the Ooguri weight, i.e. the Ooguri amplitude with the link signs"
   area: SpinFoam
   file: Lightlike/SpinFoam/EPRLStateSum/IntrinsicVertex.lean
   decls: [Lightlike.SpinFoam.EPRLStateSum.simpEI_eq_sum_simpE, Lightlike.SpinFoam.EPRLStateSum.simpEIAux_eq_sum_nodeT, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_signed_ooguri, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_closed]
@@ -7552,7 +7552,7 @@
     refs:
       - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
   review: kernel-checked
-  note: "Comparison pending: the equality of the state sum with the Ooguri amplitude up to an explicit sign twist is the library's own statement, not a theorem of Engle, Pereira, Rovelli and Livine (2008). Difference from the Ooguri amplitude: the explicit sign eprlGlobalSign, which depends on the order of the vertices (see the entry on the swap phase)."
+  note: "Comparison pending: the equality of the state sum with the Ooguri amplitude with the sign of the link orientations is the library's own statement, not a theorem of Engle, Pereira, Rovelli and Livine (2008), which fixes no order or sign convention. Difference from the Ooguri amplitude: the sign linkSign = (-1)^(sum over the 4-simplices of triPart), a function of the colouring only; the node basis change nodeT is the exact overlap of the sorted-leg and the cyclic-leg intertwiners."
   since: unreleased
 - id: LL-0588
   title: "The EPRL vertex is unchanged by the exchange of the two factors of Spin(4), (n, m) to (m, n), and the EPRL state sum is unchanged by gamma to -gamma, the opposite orientation of R^4"
@@ -7579,19 +7579,6 @@
       - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
   review: kernel-checked
   note: "Comparison pending: a trust check of the library's own statement. The cutoff gives doubled spin at most 1 to the four triangles through the edge {0, 1}; only the zero colouring (weight 1) and the bone colouring (weight 4, weight_col0) survive the triangle constraints, both with the sign +1, so the check does not test the sign twist."
-  since: unreleased
-- id: LL-0590
-  title: "On the boundary of the 5-simplex the bone colouring of the edge {u, w} is admitted by the triangle constraints and carries the sign (-1)^(w - u - 1) in the signed Ooguri sum of the EPRL state sum at γ = 1: the state sum depends on the order of the vertices through the sign twist"
-  area: SpinFoam
-  file: Lightlike/SpinFoam/EPRLStateSum/OrderDependence.lean
-  decls: [Lightlike.SpinFoam.EPRLStateSum.Trust.eprlGlobalSign_bone, Lightlike.SpinFoam.EPRLStateSum.Trust.bone_admitted]
-  status: proven
-  tier: frontier
-  source:
-    refs:
-      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
-  review: kernel-checked
-  note: "Comparison pending: the library's own statement of the stated dependence on the vertex order (milestone row SF6b: its stated dependence on the vertex order). The checklist item p2 words independence of the vertex order, which this entry does not claim: the dependence is stated. Numerical evidence only (scripts/spinfoam/eprl_order_check.py, docs/notes/sf6b-order-dependence.md): the pure Ooguri amplitude is 5 for the bone cutoff of every edge, the EPRL amplitude is 5 for w - u odd and -3 for w - u even; the Ooguri weights of the bone colourings other than {0, 1} are not proved in Lean."
   since: unreleased
 - id: LL-0591
   title: "If two complexes of tetrahedra have a common forward descendant under the 2-3 and 1-4 moves, then every regularised Ponzano–Regge amplitude value of each is a value of the descendant: ampValues K ⊆ ampValues K'' and ampValues K' ⊆ ampValues K''"
