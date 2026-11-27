@@ -604,10 +604,11 @@ def cmd_check():
     results = api_map.load(ROOT)
     for e in results:
         src, rid = e.get("source"), e.get("id")
-        if src in ("structural", "exploratory"):
+        if src in ("structural", "pending") or (src == "exploratory" and "/Exploratory/" in str(e.get("file"))):
             continue
         if not isinstance(src, dict) or not src.get("refs"):
-            errs.append(f"result {rid}: needs `source: {{refs: [...]}}` or `source: structural|exploratory`")
+            errs.append(f"result {rid}: needs `source: {{refs: [...]}}` or `source: structural|pending` "
+                        f"(`exploratory` only in an Exploratory/ folder)")
             continue
         for r in src["refs"]:
             if r.get("ref") not in refs:

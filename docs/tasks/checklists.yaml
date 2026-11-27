@@ -34,6 +34,8 @@ v1.0:
   areas: [geometry, harmonic-analysis, operator-algebras, asymptotics, pl-topology, quantum-groups, regge, spin-foams]
   sizes: [S, M, L]
   count: 55
+  # Milestones in these areas and sizes that are scheduled after v1.0, not part of it (owner, 27 Nov 2026).
+  later: [GE16]
 
 milestones:
   GE1:
