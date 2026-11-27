@@ -592,6 +592,10 @@ import Lightlike.Lorentz.SL2R
 import Lightlike.Lorentz.SL2RBergman
 import Lightlike.Lorentz.SL2RCasimir
 import Lightlike.Lorentz.SL2RDiscrete
+import Lightlike.Lorentz.SL2RIrreducible.Criterion
+import Lightlike.Lorentz.SL2RIrreducible.Discrete
+import Lightlike.Lorentz.SL2RIrreducible.PrincipalLadder
+import Lightlike.Lorentz.SL2RIrreducible.PrincipalWeights
 import Lightlike.Lorentz.SL2RPlancherel.AbelHalfIntegral
 import Lightlike.Lorentz.SL2RPlancherel.AbelKernel
 import Lightlike.Lorentz.SL2RPlancherel.AbelKernelTanh
