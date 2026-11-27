@@ -64,4 +64,89 @@ theorem mcoefP_zero_zero (ν ξ : ℝ) :
   push_cast
   ring
 
+lemma sphU_eq (ξ x : ℝ) : sphU ξ x = Real.exp ξ - 2 * Real.sinh ξ / (1 + x ^ 2) := by
+  have h1 : (0 : ℝ) < 1 + x ^ 2 := by positivity
+  rw [sphU, Real.sinh_eq, Real.exp_neg]
+  field_simp
+  ring
+
+lemma sphU_neg (ξ x : ℝ) : sphU ξ (-x) = sphU ξ x := by
+  simp only [sphU, neg_sq]
+
+lemma continuous_sphU (ξ : ℝ) : Continuous (sphU ξ) :=
+  (continuous_const.add (continuous_const.mul (continuous_pow 2))).div
+    (continuous_const.add (continuous_pow 2)) fun x => by positivity
+
+/-- The derivative of `t = log u_ξ(x)`: `4 sinh ξ x/((e^{-ξ} + e^ξ x²)(1 + x²))`. -/
+def mehlerDeriv (ξ x : ℝ) : ℝ :=
+  4 * Real.sinh ξ * x / ((Real.exp (-ξ) + Real.exp ξ * x ^ 2) * (1 + x ^ 2))
+
+lemma hasDerivAt_log_sphU (ξ x : ℝ) :
+    HasDerivAt (fun x => Real.log (sphU ξ x)) (mehlerDeriv ξ x) x := by
+  have h1 : (0 : ℝ) < 1 + x ^ 2 := by positivity
+  have h3 : (0 : ℝ) < Real.exp (-ξ) + Real.exp ξ * x ^ 2 := by positivity
+  have hp : HasDerivAt (fun x : ℝ => x ^ 2) (2 * x) x := by simpa using hasDerivAt_pow 2 x
+  have hA := (hp.const_mul (Real.exp ξ)).const_add (Real.exp (-ξ))
+  have hB := hp.const_add 1
+  have e : (fun x => Real.log (sphU ξ x)) =
+      fun y => Real.log ((Real.exp (-ξ) + Real.exp ξ * y ^ 2) / (1 + y ^ 2)) := rfl
+  rw [e]
+  have h := (hA.div hB h1.ne').log (div_pos h3 h1).ne'
+  convert h using 1
+  simp only [Pi.div_apply]
+  have h3' : (0 : ℝ) < (Real.exp ξ)⁻¹ + Real.exp ξ * x ^ 2 := by positivity
+  rw [mehlerDeriv, Real.sinh_eq, Real.exp_neg]
+  field_simp
+  ring
+
+lemma sphU_lt_sphU {ξ : ℝ} (hξ : 0 < ξ) {x y : ℝ} (hx : 0 ≤ x) (hxy : x < y) :
+    sphU ξ x < sphU ξ y := by
+  have hs := Real.sinh_pos_iff.2 hξ
+  rw [sphU_eq, sphU_eq]
+  have : 2 * Real.sinh ξ / (1 + y ^ 2) < 2 * Real.sinh ξ / (1 + x ^ 2) :=
+    div_lt_div_of_pos_left (by linarith) (by positivity) (by nlinarith)
+  linarith
+
+lemma strictMonoOn_log_sphU {ξ : ℝ} (hξ : 0 < ξ) :
+    StrictMonoOn (fun x => Real.log (sphU ξ x)) (Ioi 0) := fun x hx _ _ hxy =>
+  Real.log_lt_log (sphU_pos ξ x) (sphU_lt_sphU hξ (le_of_lt hx) hxy)
+
+/-- `t = log u_ξ(x)` maps `(0, ∞)` onto `(-ξ, ξ)`. -/
+lemma image_log_sphU {ξ : ℝ} (hξ : 0 < ξ) :
+    (fun x => Real.log (sphU ξ x)) '' Ioi 0 = Ioo (-ξ) ξ := by
+  have hs := Real.sinh_pos_iff.2 hξ
+  have hE : Real.exp (-ξ) < Real.exp ξ := Real.exp_lt_exp.2 (by linarith)
+  ext t
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    have hx' : (0 : ℝ) < x := hx
+    have h1 : (1 : ℝ) < 1 + x ^ 2 := by nlinarith
+    have hq : 2 * Real.sinh ξ / (1 + x ^ 2) < 2 * Real.sinh ξ :=
+      div_lt_self (by linarith) h1
+    have hq0 : 0 < 2 * Real.sinh ξ / (1 + x ^ 2) := by positivity
+    have hEs : Real.exp (-ξ) = Real.exp ξ - 2 * Real.sinh ξ := by rw [Real.sinh_eq]; ring
+    constructor
+    · rw [Real.lt_log_iff_exp_lt (sphU_pos ξ x), sphU_eq, hEs]; linarith
+    · rw [Real.log_lt_iff_lt_exp (sphU_pos ξ x), sphU_eq]; linarith
+  · rintro ⟨h1, h2⟩
+    have ha : Real.exp (-ξ) < Real.exp t := Real.exp_lt_exp.2 h1
+    have hb : Real.exp t < Real.exp ξ := Real.exp_lt_exp.2 h2
+    have hr : 0 < (Real.exp t - Real.exp (-ξ)) / (Real.exp ξ - Real.exp t) :=
+      div_pos (by linarith) (by linarith)
+    refine ⟨Real.sqrt ((Real.exp t - Real.exp (-ξ)) / (Real.exp ξ - Real.exp t)),
+      Real.sqrt_pos.2 hr, ?_⟩
+    have hsq := Real.sq_sqrt hr.le
+    have hu : sphU ξ (Real.sqrt ((Real.exp t - Real.exp (-ξ)) / (Real.exp ξ - Real.exp t))) =
+        Real.exp t := by
+      rw [sphU, hsq]
+      have hne : Real.exp ξ - Real.exp t ≠ 0 := by linarith
+      have hne2 : Real.exp ξ - Real.exp (-ξ) ≠ 0 := by linarith
+      have hden : 1 + (Real.exp t - Real.exp (-ξ)) / (Real.exp ξ - Real.exp t) =
+          (Real.exp ξ - Real.exp (-ξ)) / (Real.exp ξ - Real.exp t) := by
+        field_simp; ring
+      rw [hden, div_eq_iff (div_ne_zero hne2 hne)]
+      field_simp
+      ring
+    simp only [hu, Real.log_exp]
+
 end Lightlike.Lorentz.SL2RPlancherel
