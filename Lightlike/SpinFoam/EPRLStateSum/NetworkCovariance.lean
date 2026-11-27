@@ -462,4 +462,31 @@ theorem Znet_relabel (hK : K.IsClosed4) (col : Finset V → ℕ) :
     rw [hM'eq] at h
     exact h
 
+/-- The inversion exponent counted on the old positions: the pairs `q < p` of old positions whose new order is `q` after `p`. -/
+lemma invSum_eq (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J q p) (π : Equiv.Perm (Fin 5)) :
+    invSum J π = ∑ e : Fin 10, if π.symm (epr e).2 < π.symm (epr e).1 then jE J e else 0 := by
+  unfold invSum
+  rw [← Equiv.sum_comp (Equiv.ofBijective (edgeMap π) (edgeMap_injective π).bijective_of_finite)
+    (fun e => if π.symm (epr e).2 < π.symm (epr e).1 then jE J e else 0)]
+  refine Finset.sum_congr rfl fun e' _ => ?_
+  have hr := epr_edgeMap π e'
+  have hlt := epr_lt e'
+  have hne : π (epr e').1 ≠ π (epr e').2 := fun h => by
+    have := π.injective h
+    simp_all
+  show _ = if π.symm (epr (edgeMap π e')).2 < π.symm (epr (edgeMap π e')).1 then jE J (edgeMap π e') else 0
+  by_cases hc : π (epr e').1 < π (epr e').2
+  · simp only [hc, if_true] at hr
+    rw [hr]
+    simp only [Equiv.symm_apply_apply]
+    rw [if_neg (not_lt_of_gt hlt), if_neg (not_lt_of_gt hc)]
+  · have hc' : π (epr e').2 < π (epr e').1 := lt_of_le_of_ne (not_lt.1 hc) (Ne.symm hne)
+    simp only [hc, if_false] at hr
+    rw [hr]
+    simp only [Equiv.symm_apply_apply]
+    rw [if_pos hlt, if_pos hc']
+    unfold jE
+    rw [hr]
+    exact hJ _ _
+
 end Lightlike.SpinFoam.EPRLStateSum
