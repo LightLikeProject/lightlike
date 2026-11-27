@@ -431,3 +431,16 @@ generic Racah sum (`racahG θ`), `Δ² = delta2G θ`, `s(x,y,z) = (x+y+z)/2`.
 5. Not covered by `pentagon` (it needs `1 ≤ a, b, c`): tuples with `e' = 0`, `a' = 0` or `b' = 0`; these need a separate
    argument (a zero colour collapses the sums to one term) or a symmetry of `GenBE` moving the zero to an unrestricted slot.
 
+## L2: the one-strand block in closed form (27 Nov, oscillatory; MEASURED, partly proved)
+
+For the blocks `(a, b, 1)` and total `D`, `E = (a+b+1-D)/2`, `X = a+b-2E` (q = e^{iθ}, `[n] = sin nθ / sin θ`):
+`F00 = Fc(a,b,1;E,0;0,E) = [a+b-E+2][b-E+1]/([b+1][X+2])` (= `κ(a,b+1,E)/κ(a,b,E)`, `Fc_top`),
+`F01 = Fc(a,b,1;E,0;1,E-1) = -[a-E+1]/[X+2]`, `F10 = Fc(a,b,1;E-1,1;0,E) = [E]/[b+1]`, `F11 = Fc(a,b,1;E-1,1;1,E-1) = 1`.
+MEASURED with the Kauffman–Lins coefficient (mpmath 40 digits, `a, b ≤ 5`): `F10`, `F11` to 3e-41; `F01` found by a
+search over ratios of products of quantum integers with small linear arguments. At `b = 1` they agree with the
+proved cup entries (`Fc_cup_low = d_{n}/d_{n+1} = -[n+1]/[n+2]`, `Fc_cup_high = 1`). Also MEASURED: the mirror inverse
+`Σ_i F^{cba}[j', i] F^{abc}[i, j] = δ_{j' j}` (421 checks, `a, b, c ≤ 3`, 9e-41). Scripts: `~/lightlike-ops/state/notes/`.
+Route (proved pieces in `OneStrand.lean`, `ThirdBlock.lean`, `MirrorTree.lean`): the pentagon recursion in `b`
+(`Fc_b_rec`) gives two relations per level among `F01, F10, F11`, the mirror inverse a third; the remaining
+input is the mirror of the tree vectors (caps and cups done: `reflect_capOp`, `reflect_cupOp`).
+
