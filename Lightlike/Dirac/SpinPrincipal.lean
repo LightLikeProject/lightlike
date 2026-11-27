@@ -133,11 +133,20 @@ noncomputable def SpinStructure.riemannianMetric :
     RiemannianMetric (fun x : M => TangentSpace I x) :=
   g.riemannianMetricOfPos fun _ v hv => SpinStructure.g_pos S v hv
 
-/-- The tangent bundle of a manifold with a spin structure as a Riemannian bundle. Not a global
-instance; statements install it with `letI`. -/
+/-- The Riemannian bundle of a positive definite metric. Not a global instance; statements install
+it with `letI`. -/
+@[instance_reducible]
+noncomputable def _root_.Lightlike.NondegMetric.riemannianBundleOfPos (g : NondegMetric I M)
+    (hpos : ∀ x (v : TangentSpace I x), v ≠ 0 → 0 < g.g x v v) :
+    RiemannianBundle (fun x : M => TangentSpace I x) :=
+  ⟨g.riemannianMetricOfPos hpos⟩
+
+/-- The tangent bundle of a manifold with a spin structure as a Riemannian bundle: the one of the
+positive definite metric `g`, so that it is the same instance for every proof of positivity. Not a
+global instance; statements install it with `letI`. -/
 @[instance_reducible]
 noncomputable def SpinStructure.riemannianBundle : RiemannianBundle (fun x : M => TangentSpace I x) :=
-  ⟨S.riemannianMetric⟩
+  g.riemannianBundleOfPos fun _ v hv => SpinStructure.g_pos S v hv
 
 /-! ## Frames as isometries -/
 

@@ -200,11 +200,16 @@ import Lightlike.Bundles.Analysis.CStarAlgebra.Basic
 import Lightlike.Bundles.FiberBundle.GroupCocycle
 import Lightlike.Bundles.FiberBundle.Proper
 import Lightlike.Bundles.FiberBundle.TrivializationExtra
+import Lightlike.Bundles.Manifold.VectorBundle.GramSchmidt
+import Lightlike.Bundles.Manifold.VectorBundle.Scalar
+import Lightlike.Bundles.Manifold.VectorBundle.SectionAlongMap.Regularity
 import Lightlike.Bundles.Maps.IsEmpty
 import Lightlike.Bundles.Principal.Basic
 import Lightlike.Bundles.Principal.Equiv
 import Lightlike.Bundles.Pullback
 import Lightlike.Bundles.SpinGroup
+import Lightlike.Bundles.SpinKernel
+import Lightlike.Bundles.SpinLocalSection
 import Lightlike.Bundles.TotalSpaceAction
 import Lightlike.Bundles.VectorBundle.GramSchmidt
 import Lightlike.Bundles.VectorBundle.OrthonormalFrame.Basic
@@ -214,6 +219,8 @@ import Lightlike.Bundles.VectorBundle.OrthonormalFrame.Pullback
 import Lightlike.Bundles.VectorBundle.Pullback
 import Lightlike.Bundles.VectorBundle.Riemannian.Basic
 import Lightlike.Bundles.VectorBundle.Riemannian.Hermitian
+import Lightlike.Bundles.VectorBundle.Smul
+import Lightlike.Bundles.VectorBundle.TrivializationExtra
 import Lightlike.Canonical.ADM
 import Lightlike.Canonical.CurvatureCovariance
 import Lightlike.Canonical.CurvatureJet
@@ -324,6 +331,8 @@ import Lightlike.Cosmology.ScalarFieldFLRW.ScalarChecks
 import Lightlike.Cosmology.SachsWolfeEffect.SachsWolfe
 import Lightlike.Cosmology.ConformalVacuumFLRW.Modes
 import Lightlike.Dirac.SpinPrincipal
+import Lightlike.Dirac.SpinPrincipalEquiv
+import Lightlike.Dirac.SpinLiftSmooth
 import Lightlike.Dirac.SpinorBundle
 import Lightlike.Dirac.SpinorLichnerowicz
 import Lightlike.FourD.Boundary
