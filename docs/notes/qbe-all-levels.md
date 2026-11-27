@@ -335,3 +335,72 @@ where the first term is `κ(a, b-1, 1)` because `p_c` absorbs `p_{c-1} ⊗ 1` (s
 Smallest next step (not proved, not measured): a rotation lemma, `p_k` with its last strand bent round to the front, between a cup and a cap and `p_c`, is a scalar times `p_c` (the scalar being a ratio of `d_j`, as for `cap_jwAt_cup`); with it, `λ_{a,b}` becomes a product of known partial-trace ratios and the recursion above closes to `κ(a, b, 1) = θ(a, b, a + b - 2) / Δ_{a+b-2}` in the form of Kauffman–Lins, by induction on `b`. Then the general `i` follows by induction on `i` with the same two steps, and layers (2) to (4) of the plan above are still not started. The alternative to the rotation lemma is the θ-recursion: compute the trace of `p_c · vertex · vertex'` as a closed network, reduce it by bubble removal, and read `κ` as `θ / d_c`; that needs a trace functional on the model, which the library does not have.
 
 Status: the closed forms above (`VertexNorm.lean`) are special cases of `vertex_norm_value` and are redundant once `Kappa.lean` is on `main`. What remains of layer (1) is F4 of `docs/notes/g3-196-route-f.md`: the identification of the recoupling coefficients with `qSixJ` and the truncation at level `r`; QU1's items m1 and p1 stay open.
+
+## Route C, step F4: measured dictionary, recursion scheme and truncation (26 Nov 2026)
+
+All MEASURED with a numerical model of the library's operators (`modelE`, `capOp`, `cupOp`, `jwAt`, `Vop`, `Wop`, `UL`,
+`ULd`, `UR`, `sh` re-implemented on bit strings, random complex `q`), exact rational arithmetic at `q = 3/2`, or mpmath at
+40 digits. Scripts are local (not in the repository).
+
+1. `kapRec q a b i = θ(a, b, a+b-2i) / Δ_{a+b-2i}` (Kauffman–Lins signs), already proved as `kapRec_eq` in `QNumbers.lean`.
+2. **`Fc` is the Kauffman–Lins recoupling coefficient**: with `i = a+b-2e`, `D = i+c-2d`, `j = b+c-2f`,
+   `Fc q a b c e d f d' = Tet(a,b,c,D,i,j) · Δ_i / (θ(a,b,i) θ(i,c,D))`, where `Tet` has the faces `(a,b,i), (i,c,D), (b,c,j),
+   (a,j,D)` and the opposite pairs `(a,c), (b,D), (i,j)`; 342 cases with `a, b, c ≤ 3`, error at most `1.2e-15`, signs included.
+3. **Recursion in the third block.** `pentagon` with a fourth block of one strand and `j = 0` collapses (the total-channel
+   constraints leave one term on the right and two on the left) to
+   `Fc(a,b,c+1,e₀,d₀+g₀,m,i) · Fc(X,c,1,d₀,g₀,0,d₀+g₀) = Σ_{f ∈ {m, m-1}} Fc(b,c,1,f,m-f,0,m) · Fc(a,b+c-2f,1,d',g₀,m-f,i) · Fc(a,b,c,e₀,d₀,f,d')`,
+   `X = a+b-2e₀`. The pivot `Fc(X,c,1,d₀,g₀,0,d₀+g₀)` can be chosen nonzero for every target (all `X, c ≤ 6`). The
+   Kauffman–Lins coefficient satisfies it exactly (711 of 711 instances in exact arithmetic). It is **not** a termwise
+   identity of the `Tet` sums in about a third of the instances; the partial sums divided by a term are products of
+   cyclotomic factors (an instance with a four-term sum, checked with SymPy), so a q-Gosper certificate exists. The
+   certificate in closed form (variables `q^label`, `Z = q^z`, as in `RacahCert*`) is the next measurement.
+4. **The family with a third block of one strand.** In each `2 × 2` block (fixed total `D`): the entry with both channels
+   maximal is a vertex-norm ratio, `Fc(a,b,c,e,0,0,e) = κ(a,b+c,e)/κ(a,b,e)` (from `vertex_norm_value`, for every `c`); the
+   pentagon with blocks `(a, b', 1, 1)` and `j = 1` gives the column of the lower channel of `(b'+1, 1)` from the blocks at
+   `b'` and `b'-1`; the left–right mirror (`reflectOp`, which fixes cups, caps and projectors) turns the expansion of `UR` in
+   `UL` for `(a,b,c)` into the expansion of `UL` in `UR` for `(c,b,a)`, so `Fc(a,b,c)` and `Fc(c,b,a)` are inverse matrices,
+   which gives the last entry. Not yet proved in Lean.
+5. **Truncation at `q = e^{iπ/r}`.** In the generic identity (all middle colours allowed by the triangle conditions), the
+   terms with a colour above the level do **not** vanish one by one as `θ → π/r`: they cancel in pairs `x ↔ 2r−2−x`, and the
+   term at `x = r−1` vanishes alone (r = 5 to 8, 41 tuples each; the sum of the bad terms is `O(θ − π/r)`). The root-of-unity
+   statement therefore needs a pairing lemma for the regularised limits (only `[r]` vanishes among `[n]`, `n < 2r`).
+
+Plan of the layers (stored in the QU1 plan): Kauffman–Lins coefficient and base entries, third-block recursion with its
+certificate, `Fc = klCoef` by induction, the pentagon rewritten as `Model.BE` at generic `q = e^{iθ}`, and the limit
+`θ → π/r` with the pairing.
+
+## L6 design: the limit θ → π/r (27 Nov 2026, oscillatory; derived on paper, ASSUMPTION until proved)
+
+Fix a tuple. If one of the six triads without `x` — `(a,d,p), (c,b,p), (c,f,q), (e,d,q), (e,a,r'), (b,f,r')` — is not
+`qAdm r`, both sides of `Model.BE` vanish (each such triad occurs in a factor of every LHS term and of the RHS). Otherwise all
+nine colours are `≤ r-2`, so every quantum integer in the generic identity has argument `< 2r`, and `[r]_θ = η(θ)` is the only
+one tending to `0`. "Above the level" for a triad means `s = (u+v+w)/2 ≥ r-1`.
+
+* `delta2G θ u v w` is continuous at `π/r` (value `qDelta r u v w ^ 2`) within the level, and `η⁻¹ · (continuous)` above it.
+* `racahG θ …` is continuous at `π/r` always (denominator arguments are edge lengths `≤ r-2`); if one of its four α-triads is
+  above the level, every term has `z+1 ≥ r`, so `racahG = η · racahRG` with `racahRG → Refl.SRg` (regularised sum).
+* In the term of `x`, the x-triads are `(a,b,x)` (in R1 and R3), `(c,d,x)` (R1, R2), `(e,f,x)` (R2, R3). With `k` of them above:
+  `k = 0` continuous, limit = BE term divided by the product `P6` of the six fixed `qDelta`; `k = 1`: `η^{2-1}`; `k = 2`:
+  `η^{3-2}`; both → 0; `k = 3`: finite limit.
+* Every `x ≥ r-1` has `k = 3` (`s ≥ x`). `x = r-1` carries `[x+1] = [r] = η` → 0. For the others, `x ↦ x' = 2r-2-x` is an
+  involution of `{x : the three x-triads are triangles above the level}`: `(u,v,x')` is above iff `x ≤ u+v`, a triangle iff
+  `(u,v,x)` is above (and `max(u,v) ≤ r-1`), same parity. `[x'+1] = -[x+1]`. The pair cancellation `L_x + L_{x'} = 0` is the
+  algebraic core: `SRg_reflect` (QSixJRegular) for the three regularised sums, the regularised `Δ²` and the sign.
+* RHS: `(p,q,r')` within the level gives the BE RHS / `P6`; above the level `η^{-1+1+1} → 0` (BE RHS is `0`); not a triangle: `0`.
+Then the limits of both sides of `GenBE` (which holds eventually) agree, and multiplying by `P6 ≠ 0` gives the BE instance.
+
+### L6 progress (27 Nov, paused by owner order for GE5)
+Proved on `oscillatory/qu1` (`Lightlike/TuraevViro/QSixJLimit.lean`): regularised factorials near `π/r`, `decomp_delta2G`,
+`decomp_racahG` (value `SRg` above the level, `qRacahSum` within), `decomp_qnG`, the reflection factor `E3` with
+`delta2Reg_above`, `E3_reflect` and `SRgAt_reflect` (the three ingredients of `L_{x'} = -L_x`). MEASURED (mpmath 30 digits,
+r = 4..8, 82 pairs, 20 nonzero): `L_x + L_{2r-2-x} = 0` to 1.6e-28 with `L_x` as in the design above. Remaining for L6: the
+term-level limit `genBETerm → (k=0 value | 0 | L_x)`, the pair sum by `Finset.sum_involution`, the RHS limit, and the assembly
+`qBiedenharnElliott_of_genBE`.
+
+### L6 progress (27 Nov, resumed)
+Correction: at the pause (07e2c0d) the file did not compile (the 16 GB build guard stopped it; `racahTermG_out`,
+`racahRG_root`, `delta2Reg_above` and `SRgAt_reflect` had errors), so the "proved" above was not yet true. On
+`oscillatory/qu1` 9f4099006 the whole file compiles (47 s), with `SRgAt_reflect` and the new `limTerm_reflect`
+(`L_{2r-2-x} = -L_x` for the limit term `limTerm`, all three x-triads above the level). Cause of the blow-up: omega calls
+with many `/2` atoms and truncated subtractions in context; the cure is small arithmetic lemmas and half-sums
+generalized to variables. Remaining: the term-level limit, the pair sum, the RHS limit, the assembly.
