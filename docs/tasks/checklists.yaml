@@ -149,7 +149,7 @@ milestones:
       - id: m1
         kind: main
         text: "On a spin manifold the Dirac operator satisfies D² = ∇*∇ + R/4"
-        decls: []
+        decls: [Lightlike.Dirac.SpinorSection.dirac_dirac]
         hint: "Missing: spin structure, global Dirac operator and ∇*∇ on a manifold. Close: Lightlike.Dirac.lichnerowicz_frame_general (local frame form), Lightlike.Dirac.lichnerowicz_general, Lightlike.Dirac.stereo_lichnerowicz_two (S² chart)."
       - id: p1
         kind: piece
@@ -167,12 +167,12 @@ milestones:
       - id: p4
         kind: piece
         text: "The Dirac operator on a spin manifold is defined, with the rough Laplacian ∇*∇ on spinors"
-        decls: []
+        decls: [Lightlike.Dirac.SpinorSection.dirac, Lightlike.Dirac.SpinorSection.roughLaplacian]
         hint: "Missing. Close: Lightlike.Dirac.diracF, Lightlike.Dirac.diracConn (frame/chart operators)."
       - id: t1
         kind: trust
         text: "The Dirac spectrum on the unit 2-sphere is ±(k+1) with multiplicity 2(k+1)"
-        decls: []
+        decls: [Lightlike.Dirac.sphere_spectrum, Lightlike.Dirac.SphereEigenspace, Lightlike.Dirac.sphereEigenspace_finrank, Lightlike.Dirac.sphereEigenspace_eq_bot]
         hint: "Partial only: Lightlike.Dirac.sphere_dirac_lower_bound (eigenvalue k+1 with 2(k+1) multiplicity lower bound), Lightlike.Dirac.angular_class_complete_bounded (completeness inside an angular class, chart only). Missing: no other eigenvalues, smooth sections on S²."
       - id: t2
         kind: trust
@@ -636,7 +636,7 @@ milestones:
       - id: r1
         kind: review
         text: "The Plancherel normalisation is compared with Perez-Rovelli (A11)/(A16); the factor 4 is either explained (a convention, stated in the docstring) or corrected"
-        review_evidence: null
+        review_evidence: "Compared plancherel_trace_perezRovelli (Lightlike/Lorentz/Plancherel.lean, constant 1/(32 pi^4), n in Z, sigma in R) with Perez-Rovelli gr-qc/0011037v1 App. A, arXiv PDF pp. 13-14: (A6), (A7), (A8), (A10), (A11), (A12), (A16), and with Simao arXiv:2405.01360 App. B.3 and (B.3.1) (Ruhl's formula as quoted, 1/2 and (2 pi)^-4 haarC, i.e. 1/(32 pi^4)). The objects agree: (A8) is haarC with (i/2)(d beta ^ d beta-bar) = d Re beta d Im beta, (A6) with mu = i sigma is pi_{n,sigma/2}. Independent numerical derivation for K-biinvariant f = exp(-a |g|^2) (n = 0 sector; no use of the Lean polar form or plancherel_check.py): the Bruhat-chart integral of (A8) gives the polar constant 4 pi^3 (ratio 1.00001); the spherical function from (A6) is sin(sigma r/2)/((sigma/2) sinh r) to 8 digits; with F(1) = exp(-2a) the constant 1/(32 pi^4) on sigma in R gives 1.000000 F(1), the printed 1/(8 pi^4) gives 4.000000 F(1) (sigma in R) and 2.000000 F(1) (sigma >= 0 only). Result: the factor 4 is a misprint in (A11) and (A16), not a convention (the range of sigma explains at most 2, the (i/2)^3 reading gives 8); the library statement stays, and the difference is named in the Plancherel.lean docstring and the note of LL-0134. Limits: the weight n^2 + sigma^2 for n != 0 was not re-derived (proved in Lean, checked by plancherel_check.py); Ruhl's book not read; PR's paper does not derive (A11), so the origin of 1/(8 pi^4) is not located. Details: docs/notes/ha2-factor-four.md, section Independent review."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
@@ -1065,8 +1065,8 @@ milestones:
       - id: t2
         kind: trust
         text: "The method gives the right asymptotics for a sum whose asymptotics are known independently"
-        decls: []
-        hint: "Missing: a second, independent sum with known asymptotics. Close: Lightlike.Asymptotics.racahSumAsymptotics_regular (regular tetrahedron only). Attempt 1 (Lean, done): the exactly solvable zero-spin sum is not in the theorem's range: Lightlike.Asymptotics.not_isEuclid_toReal_zero_spin. Kummer's sum (Lightlike.Asymptotics.RacahSaddles.KnownSum) is not of the Racah shape."
+        decls: [Lightlike.Asymptotics.kummerSum_saddle_matches_closed_form, Lightlike.Asymptotics.kummerSum_saddle_bound, Lightlike.Asymptotics.tendsto_kummerSum_div_kummerLead, Lightlike.Asymptotics.tendsto_centralBinom_div_kummerLead]
+        hint: "Kummer's sum Σ_t (−1)^t C(m,t)² run through the contour method (Lightlike/Asymptotics/KummerSum/): contour identity, complex Stirling, the saddle α₀ = (1+i)/2 of its own phase with ψ''(α₀) = −4, Laplace's method; the leading term L(2n) = 2^{2n+1}(−1)^n √(π/(2(2n+1)))/π is computed without the value of the sum and agrees with the asymptotics of the closed form (−1)^n C(2n,n) from the real Stirling formula. The Racah phase is not shape-generic (Fin 4/Fin 3 Gamma pattern), so the run reuses only the generic pieces (exists_primitive_im_sub, Stirling.lean, laplace_ray_uniform). Attempt 1: the zero-spin sum is outside the Racah theorem (Lightlike.Asymptotics.not_isEuclid_toReal_zero_spin)."
       - id: t3
         kind: trust
         text: "The formula with only one of the two complex-conjugate saddles fails"
@@ -1301,6 +1301,21 @@ milestones:
         kind: review
         text: "The statement of the Ponzano–Regge invariance (docs/notes/pl7a-ponzano-regge.md and the PLInvariance docstring) says exactly which invariance up to PL homeomorphism follows, and matches the declarations of m2; the prose is not a Lean theorem, so a reviewer checks it"
         review_evidence: null
+      - id: p3
+        kind: piece
+        text: "Any two triangulations of one PL polyhedron have a common stellar subdivision, and two PL homeomorphic simplicial complexes have combinatorially isomorphic stellar subdivisions (Adiprasito-Pak 2024, arXiv:2404.05930, Theorems 1.1 and 1.3)"
+        decls: []
+        hint: "Search: Mathlib and Physlib have no stellar subdivisions or PL topology; the library has StellarStep and StellarEquiv (welds allowed), Newman's theorem (SComplex.StellarEquiv.of_plHomeomorphic), common subdivisions of geometric complexes (IsGeom.exists_common_subdivision, not stellar) and barycentric subdivision, all reused."
+      - id: p4
+        kind: piece
+        text: "A stellar subdivision of a closed combinatorial 3-manifold at a tetrahedron or a triangle is a sequence of forward Pachner moves (2-3 and 1-4 only); at an edge the complex and its subdivision have a common forward descendant, and no edge subdivision is itself a forward descendant"
+        decls: [Lightlike.PR.ofComplex3_move14_eq_starAt, Lightlike.PR.ForwardMoves.exists_starAt_triangle, Lightlike.PR.commonForward_starAt_edge, Lightlike.PR.not_forwardMoves_starAt_edge]
+        hint: "Edge subdivisions are not forward: forward moves only add edges (Lightlike.PR.ForwardMoves.edges_subset) and the subdivision at an edge deletes it (Lightlike.PR.not_forwardMoves_starAt_edge, proved). Search: Mathlib, Physlib and Tau Ceti have no Pachner moves or stellar subdivisions; reused move14, move23, edges_move23, edges_move14, CommonForward and SComplex.starAt from the library."
+      - id: p5
+        kind: piece
+        text: "PachnerForwardHyp is proven: any two triangulations of one PL manifold have a common forward descendant under forward-only moves (stellar-subdivision route), so the triangulation independence of the regularised Ponzano-Regge amplitude is unconditional on the PL side"
+        decls: []
+        hint: "Needs, besides p3 and p4, that CommonForward is invariant under relabelling and transitive (local confluence of forward moves); forward moves only add edges, so a common descendant holds the edges of both. Search: Main.lean states PachnerForwardHyp as a hypothesis, NonVacuity.lean shows it satisfiable, mapComplex3 relabels; nothing in Mathlib, Physlib or Tau Ceti."
       - id: c1
         kind: catalogue
         text: "The theorems of the main theorem and the pieces are entries of docs/results.yaml with status proven, and are cited in the API map"
@@ -1870,7 +1885,7 @@ milestones:
       - id: m1
         kind: main
         text: "At the BF point (γ = 1) the EPRL state sum on a closed 4-complex equals the Ooguri amplitude on the same complex and cutoffs"
-        decls: []
+        decls: [Lightlike.SpinFoam.EPRLStateSum.amplitudeI, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_signed_ooguri, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_closed, Lightlike.SpinFoam.EPRLStateSum.simpEI_eq_sum_simpE, Lightlike.SpinFoam.EPRLStateSum.simpEIAux_eq_sum_nodeT]
         hint: "Missing. Only Lightlike.SpinFoam.EPRL.amplitude_one_zero (cutoff 0, trivial: both sides 1) and Lightlike.SpinFoam.EPRL.amplitude_zero. Lightlike.SpinFoam.EPRLStateSum.weightE_one_eq_prod_vertexCombo (per vertex only) and Lightlike.SpinFoam.EPRLStateSum.eprlIntrinsicAmp_eq_signed_ooguri (a separately defined amplitude with a sign twist) are not the statement."
       - id: p1
         kind: piece
@@ -1884,17 +1899,17 @@ milestones:
       - id: p3
         kind: piece
         text: "The EPRL state sum is independent of the orientation"
-        decls: []
+        decls: [Lightlike.SpinFoam.EPRLStateSum.eprlVertex_swap, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_neg, Lightlike.SpinFoam.EPRLStateSum.vertexI_neg, Lightlike.SpinFoam.EPRLStateSum.nodeFusionNineJ_swap]
         hint: "EPRL.lean says orientation independence is not claimed."
       - id: t1
         kind: trust
         text: "On a small closed 4-complex at low spins, the EPRL state sum computed in Lean equals the Ooguri amplitude at the BF point"
-        decls: []
+        decls: [Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_low_spin, Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_eq_weights, Lightlike.SpinFoam.EPRLStateSum.Trust.signedSum_col0]
         hint: "Missing. Only the cutoff-0 case Lightlike.SpinFoam.EPRL.amplitude_one_zero and single-simplex checks Lightlike.SpinFoam.EPRL.Tests.simpE_colA, Lightlike.SpinFoam.EPRL.Tests.weightE_colA (γ = 1/3)."
       - id: t2
         kind: trust
         text: "A wrong face amplitude is shown to break that equality"
-        decls: []
+        decls: [Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_wrong_face]
         hint: "Lightlike.SpinFoam.EPRL.faceAmp_one_ne_sq only shows (J+1)² ≠ J+1; it breaks nothing while the equality is not proven."
       - id: c1
         kind: catalogue

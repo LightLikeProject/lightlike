@@ -822,6 +822,19 @@ with tempfile.TemporaryDirectory() as _d:
     expect("comparator: the config names the standard three axioms and the declaration",
            cr.config("Lightlike.A")["permitted_axioms"] == ["propext", "Quot.sound", "Classical.choice"]
            and cr.config("Lightlike.A")["theorem_names"] == ["Lightlike.A"])
+    # a statement corrected while the task was open (statement-fix): the proof is judged against it
+    (_r / "Tasks/C.lean").write_text("theorem C (h : True) : True := by\n  sorry\n")
+    _g("add", "-A"); _g("commit", "-q", "-m", "statement fix"); _fixed = _g("rev-parse", "HEAD")
+    (_r / "Tasks/C.lean").write_text("theorem C (h : True) : True := h\n")
+    _g("add", "-A"); _g("commit", "-q", "-m", "proof"); _proved = _g("rev-parse", "HEAD")
+    _ch2 = cr.select(_fixed, _proved, root=_r)[0]
+    expect("comparator: after a statement fix the challenge is the corrected statement, not the first one",
+           [c[0] for c in _ch2] == ["Tasks/C.lean"] and "(h : True)" in _ch2[0][2] and cr.has_sorry(_ch2[0][2]))
+    (_r / "Tasks/B.lean").write_text("theorem B (x : Nat) : True := trivial\n")
+    _g("add", "-A"); _g("commit", "-q", "-m", "statement change with proof"); _both = _g("rev-parse", "HEAD")
+    _ch3 = cr.select(_proved, _both, root=_r)[0]
+    expect("comparator planted: a statement changed together with its proof is compared with the base version",
+           [c[0] for c in _ch3] == ["Tasks/B.lean"] and "(x : Nat)" not in _ch3[0][2] and "(x : Nat)" in _ch3[0][3])
 
 # Shared slots of the Python checks (LL_CHECK_SLOTS): at most n scripts at a time over all runs
 import tempfile as _tf, os

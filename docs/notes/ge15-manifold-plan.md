@@ -1,6 +1,6 @@
 # GE15 on a manifold: sources read and plan
 
-Stream fable2, branch `fable2/ge15-manifold` (from `regge/ge15` 44bc02e), started 19 November 2026.
+Started 19 November 2026.
 regge proved the first variation of the Einstein–Hilbert action in coordinates on `ℝⁿ`
 (`eh_first_variation`, `isEHCritical_iff`); this branch is to state and prove it on a manifold.
 
