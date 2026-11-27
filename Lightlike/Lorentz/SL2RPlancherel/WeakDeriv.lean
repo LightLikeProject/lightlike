@@ -169,6 +169,49 @@ lemma continuous_smul_of_tsupport_subset {U : Set ℝ} (hU : IsOpen U) {g : ℝ 
       simp [hy]
     exact continuousAt_const.congr hev.symm
 
+/-- **Integration by parts against a test function**: if `H` has derivative `h` on an open set `U`
+and `h` is continuous on `U`, then `∫ g' H = -∫ g h` for every smooth `g` with compact support in
+`U`. -/
+lemma integral_deriv_smul_eq_neg {U : Set ℝ} (hU : IsOpen U) {H h : ℝ → ℂ}
+    (hHd : ∀ x ∈ U, HasDerivAt H (h x) x) (hh : ContinuousOn h U) {g : ℝ → ℝ}
+    (hg : ContDiff ℝ ∞ g) (hgc : HasCompactSupport g) (hgsub : tsupport g ⊆ U) :
+    ∫ x, deriv g x • H x = -∫ x, g x • h x := by
+  have hHc : ContinuousOn H U := fun x hx => (hHd x hx).continuousAt.continuousWithinAt
+  have hgd : ∀ x, HasDerivAt g (deriv g x) x := fun x =>
+    ((hg.differentiable (by simp)) x).hasDerivAt
+  have hdc : Continuous (deriv g) := hg.continuous_deriv (by simp)
+  have hdsub : tsupport (deriv g) ⊆ U :=
+    (closure_minimal (support_deriv_subset (f := g)) (isClosed_tsupport g)).trans hgsub
+  have hc1 : Continuous (fun x => deriv g x • H x) :=
+    continuous_smul_of_tsupport_subset hU hdc hdsub hHc
+  have hc2 : Continuous (fun x => g x • h x) :=
+    continuous_smul_of_tsupport_subset hU hg.continuous hgsub hh
+  have hi1 : Integrable (fun x => deriv g x • H x) :=
+    hc1.integrable_of_hasCompactSupport (hgc.deriv.smul_right)
+  have hi2 : Integrable (fun x => g x • h x) :=
+    hc2.integrable_of_hasCompactSupport hgc.smul_right
+  -- the product `g H` has derivative `g' H + g h` everywhere
+  have hprod : ∀ x, HasDerivAt (fun y => g y • H y) (deriv g x • H x + g x • h x) x := by
+    intro x
+    by_cases hx : x ∈ tsupport g
+    · exact ((hgd x).smul (hHd x (hgsub hx))).congr_deriv (add_comm _ _)
+    · have hev : (fun y => g y • H y) =ᶠ[𝓝 x] fun _ => (0 : ℂ) := by
+        filter_upwards [notMem_tsupport_iff_eventuallyEq.mp hx] with y hy
+        simp [hy]
+      have hg0 : g x = 0 := image_eq_zero_of_notMem_tsupport hx
+      have hd0 : deriv g x = 0 := by
+        by_contra hne
+        exact hx (support_deriv_subset hne)
+      simp only [hg0, hd0, zero_smul, add_zero]
+      exact (hasDerivAt_const x (0 : ℂ)).congr_of_eventuallyEq hev
+  have hsum : Integrable (fun x => deriv g x • H x + g x • h x) := hi1.add hi2
+  have hgHi : Integrable (fun y => g y • H y) :=
+    (continuous_smul_of_tsupport_subset hU hg.continuous hgsub hHc).integrable_of_hasCompactSupport
+      hgc.smul_right
+  have h0 := integral_eq_zero_of_hasDerivAt_of_integrable hprod hsum hgHi
+  rw [integral_add hi1 hi2] at h0
+  exact eq_neg_of_add_eq_zero_left h0
+
 /-- **A weak solution of `ψ' = h` is a primitive of `h`**: if `ψ` is locally integrable on an open
 interval `U`, `h` is continuous on `U`, and `∫ g' ψ = -∫ g h` for every smooth `g` with compact
 support in `U`, then for any `x₀ ∈ U` there is a constant `c` with `ψ x = c + ∫_{x₀}^x h` for almost
@@ -186,44 +229,9 @@ theorem exists_ae_eq_primitive_of_weak_deriv {U : Set ℝ} (hU : IsOpen U) (hUc 
       (hh.stronglyMeasurableAtFilter hU x hx)
       (hh.continuousAt (hU.mem_nhds hx))
   have hHc : ContinuousOn H U := fun x hx => (hHd x hx).continuousAt.continuousWithinAt
-  -- `∫ g' H = -∫ g h` by integration by parts
   have hibp : ∀ g : ℝ → ℝ, ContDiff ℝ ∞ g → HasCompactSupport g → tsupport g ⊆ U →
-      ∫ x, deriv g x • H x = -∫ x, g x • h x := by
-    intro g hg hgc hgsub
-    have hgd : ∀ x, HasDerivAt g (deriv g x) x := fun x =>
-      ((hg.differentiable (by simp)) x).hasDerivAt
-    have hdc : Continuous (deriv g) := hg.continuous_deriv (by simp)
-    have hdsub : tsupport (deriv g) ⊆ U :=
-      (closure_minimal (support_deriv_subset (f := g)) (isClosed_tsupport g)).trans hgsub
-    have hc1 : Continuous (fun x => deriv g x • H x) :=
-      continuous_smul_of_tsupport_subset hU hdc hdsub hHc
-    have hc2 : Continuous (fun x => g x • h x) :=
-      continuous_smul_of_tsupport_subset hU hg.continuous hgsub hh
-    have hi1 : Integrable (fun x => deriv g x • H x) :=
-      hc1.integrable_of_hasCompactSupport (hgc.deriv.smul_right)
-    have hi2 : Integrable (fun x => g x • h x) :=
-      hc2.integrable_of_hasCompactSupport hgc.smul_right
-    -- the product `g H` has derivative `g' H + g h` everywhere
-    have hprod : ∀ x, HasDerivAt (fun y => g y • H y) (deriv g x • H x + g x • h x) x := by
-      intro x
-      by_cases hx : x ∈ tsupport g
-      · exact ((hgd x).smul (hHd x (hgsub hx))).congr_deriv (add_comm _ _)
-      · have hev : (fun y => g y • H y) =ᶠ[𝓝 x] fun _ => (0 : ℂ) := by
-          filter_upwards [notMem_tsupport_iff_eventuallyEq.mp hx] with y hy
-          simp [hy]
-        have hg0 : g x = 0 := image_eq_zero_of_notMem_tsupport hx
-        have hd0 : deriv g x = 0 := by
-          by_contra hne
-          exact hx (support_deriv_subset hne)
-        simp only [hg0, hd0, zero_smul, add_zero]
-        exact (hasDerivAt_const x (0 : ℂ)).congr_of_eventuallyEq hev
-    have hsum : Integrable (fun x => deriv g x • H x + g x • h x) := hi1.add hi2
-    have hgHi : Integrable (fun y => g y • H y) :=
-      (continuous_smul_of_tsupport_subset hU hg.continuous hgsub hHc).integrable_of_hasCompactSupport
-        hgc.smul_right
-    have h0 := integral_eq_zero_of_hasDerivAt_of_integrable hprod hsum hgHi
-    rw [integral_add hi1 hi2] at h0
-    exact eq_neg_of_add_eq_zero_left h0
+      ∫ x, deriv g x • H x = -∫ x, g x • h x := fun g hg hgc hgsub =>
+    integral_deriv_smul_eq_neg hU hHd hh hg hgc hgsub
   have hf : LocallyIntegrableOn (fun x => ψ x - H x) U :=
     hψ.sub (hHc.locallyIntegrableOn hU.measurableSet)
   have hzero : ∀ g : ℝ → ℝ, ContDiff ℝ ∞ g → HasCompactSupport g → tsupport g ⊆ U →
@@ -243,5 +251,55 @@ theorem exists_ae_eq_primitive_of_weak_deriv {U : Set ℝ} (hU : IsOpen U) (hUc 
   filter_upwards [hc] with x hx hmem
   rw [← hx hmem]
   ring
+
+/-- **Lemma of du Bois-Reymond for linear functionals**: a functional `Λ`, linear on the smooth
+functions with compact support in an open interval `U`, that vanishes on their derivatives is a
+multiple of the integral: `Λ h = c ∫ h` for every such `h`.  (A distribution on `U` with zero
+derivative is a constant.) -/
+theorem exists_eq_const_mul_integral_of_deriv_eq_zero {U : Set ℝ} (hU : IsOpen U)
+    (hUc : U.OrdConnected) (hUne : U.Nonempty) (Λ : (ℝ → ℝ) → ℂ)
+    (hlin : ∀ g h : ℝ → ℝ, ContDiff ℝ ∞ g → HasCompactSupport g → tsupport g ⊆ U →
+      ContDiff ℝ ∞ h → HasCompactSupport h → tsupport h ⊆ U → ∀ a : ℝ,
+        Λ (fun x => g x - a * h x) = Λ g - a * Λ h)
+    (hd : ∀ g : ℝ → ℝ, ContDiff ℝ ∞ g → HasCompactSupport g → tsupport g ⊆ U → Λ (deriv g) = 0) :
+    ∃ c : ℂ, ∀ h : ℝ → ℝ, ContDiff ℝ ∞ h → HasCompactSupport h → tsupport h ⊆ U →
+      Λ h = c * ((∫ x, h x : ℝ) : ℂ) := by
+  obtain ⟨m, hm⟩ := hUne
+  obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp hU m hm
+  let β : ContDiffBump m := ⟨ε / 4, ε / 2, by linarith, by linarith⟩
+  set g₀ : ℝ → ℝ := β.normed volume with hg₀
+  have hg₀s : ContDiff ℝ ∞ g₀ := β.contDiff_normed
+  have hg₀c : HasCompactSupport g₀ := β.hasCompactSupport_normed
+  have hg₀sub : tsupport g₀ ⊆ U := by
+    rw [hg₀, β.tsupport_normed_eq]
+    exact (Metric.closedBall_subset_ball (by simp only [β]; linarith)).trans hball
+  have hg₀int : ∫ x, g₀ x = 1 := β.integral_normed
+  refine ⟨Λ g₀, fun g hg hgc hgsub => ?_⟩
+  set I : ℝ := ∫ x, g x with hI
+  set k : ℝ → ℝ := fun x => g x - I * g₀ x with hk
+  have hks : ContDiff ℝ ∞ k := hg.sub (contDiff_const.mul hg₀s)
+  have hSc : IsCompact (tsupport g ∪ tsupport g₀) := hgc.isCompact.union hg₀c.isCompact
+  have hSne : (tsupport g ∪ tsupport g₀).Nonempty := by
+    refine ⟨m, Or.inr ?_⟩
+    rw [hg₀, β.tsupport_normed_eq]
+    exact Metric.mem_closedBall_self (by simp only [β]; linarith)
+  obtain ⟨s₀, hs₀, s₁, hs₁, hs, hS⟩ := exists_Icc_of_isCompact hSc hSne
+  have hIcc : Icc s₀ s₁ ⊆ U :=
+    hUc.out (union_subset hgsub hg₀sub hs₀) (union_subset hgsub hg₀sub hs₁)
+  have hk0 : ∀ x, x ∉ Icc s₀ s₁ → k x = 0 := by
+    intro x hx
+    have h1 : x ∉ tsupport g := fun h' => hx (hS (Or.inl h'))
+    have h2 : x ∉ tsupport g₀ := fun h' => hx (hS (Or.inr h'))
+    simp [hk, image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]
+  have hgint : Integrable g := hg.continuous.integrable_of_hasCompactSupport hgc
+  have hg₀i : Integrable g₀ := hg₀s.continuous.integrable_of_hasCompactSupport hg₀c
+  have hkint : ∫ x, k x = 0 := by
+    simp only [hk]
+    rw [integral_sub hgint (hg₀i.const_mul I), integral_const_mul, hg₀int, mul_one, sub_self]
+  obtain ⟨K, hKs, hKc, hKsub, hKd⟩ := exists_primitive_of_integral_eq_zero hks hs hk0 hkint
+  have hdK : deriv K = k := funext hKd
+  have h0 := hd K hKs hKc (hKsub.trans hIcc)
+  rw [hdK, hk, hlin g g₀ hg hgc hgsub hg₀s hg₀c hg₀sub I, sub_eq_zero] at h0
+  rw [h0, mul_comm]
 
 end Lightlike.Lorentz.SL2RPlancherel
