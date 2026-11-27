@@ -7150,36 +7150,3 @@
   review: kernel-checked
   note: "Trust check (a worked example). The manifold is the whole unit 2-sphere of Mathlib (EuclideanSpace.sphere in R^3, atlas of the two stereographic charts) with the model transported to Fin 2 -> R (I2), and the metric is r^2 times the pullback of the Euclidean inner product by the inclusion (roundMetric2I). For every locally smooth connection that is Levi-Civita for it, scalarCurvatureAt equals 2/r^2 at every point. Proof: scalarCurvatureAt_coordW (the intrinsic scalar curvature is the coordinate one in every chart), the conformal factor 16 r^2/(|y|^2+4)^2 of the stereographic chart from the antipode on its whole target R^2 (the chart sends the point to the origin), and the coordinate scalar curvature of f delta at a critical point of f. KIND representation: the sphere of radius r is the unit sphere with the metric r^2 h (isometric to it), r nonzero; Mathlib's atlas has no sphere of radius r. Non-vacuity: roundSphere2_exists_leviCivita, the Levi-Civita connection of the metric is locally smooth and Levi-Civita."
   since: unreleased
-- id: LL-XXXX
-  title: "The Lichnerowicz formula on a spin manifold: for a smooth spinor field of a spin structure of a Riemannian manifold (atlas form) and its Levi-Civita spin connection, D^2 psi = nabla*nabla psi + (R/4) psi, with D and nabla*nabla the frame-independent Dirac operator and rough Laplacian on spinor fields and R the scalar curvature"
-  area: GR
-  file: Lightlike/Dirac/SpinLichnerowicz.lean
-  decls: [Lightlike.Dirac.SpinStructure.dirac_sq_eq_rough_add_scal_div_four, Lightlike.Dirac.SpinStructure.dirac_sq]
-  status: proven
-  tier: established
-  source: exploratory
-  review: kernel-checked
-  note: "Comparison pending (no source was read at a cited location): the formula is Lawson and Michelsohn, Spin Geometry (1989), Chapter II, Theorem 8.8 (D^2 = nabla*nabla + kappa/4), to be read before the comparison is claimed. KIND representation: the spin structure is the atlas form (SpinStructure: local orthonormal frames on open domains covering M, with Spin(n) lifts of the frame changes satisfying the cocycle condition), equivalent to the principal Spin(n)-bundle form of II Def. 1.3 for every lift of the orthonormal frame bundle (SpinLift.exists_spinStructure_equiv, Lightlike/Dirac/SpinLiftSmooth.lean), so not a difference of meaning. Spinor fields are families of local representations related by rho(lift) on overlaps (SpinorField); D and nabla*nabla are defined frame-wise and shown to transform correctly (SpinStructure.dirac_lift, SpinStructure.roughLaplacian_lift), so they are operators on spinor fields. The identity is pointwise in every frame (SpinStructure.dirac_sq: for phi smooth near x), for smooth spinor fields (SpinorField.IsSmooth); no compactness, L2 or self-adjointness statement. Non-vacuity: constant spinor fields of the Euclidean spin structure of R^n. No SpinStructure instance for the 2-sphere is constructed: the trust check on the unit 2-sphere (sphere_spectrum, Lightlike/Dirac/SphereSpectrum.lean: spectrum ±(k+1), real multiplicity 4(k+1)) uses, KIND representation, the two-chart model of its spinors (a smooth V-valued f on the stereographic chart of the north pole with D f = λ f for the chart operator diracF, whose transfer f_S(y/|y|²) = |y|⁻¹ ρ(y) J f(y) extends smoothly to the chart of the south pole), not sections of a spinor bundle of this SpinStructure, and its charts are not tied to Mathlib's stereographic atlas of the sphere."
-  since: unreleased
-- id: LL-XXXX-a
-  title: "The Lichnerowicz formula on the spinor bundle of a spin manifold: for every smooth section σ of the spinor bundle of a spin structure (frames with Spin(n) lifts of the frame changes) of a Riemannian manifold and every point x, D(Dσ)(x) = (∇*∇σ)(x) + (R(x)/4) σ(x), with D the Dirac operator, ∇*∇ the rough Laplacian of the spin connection and R the scalar curvature of the Levi-Civita connection"
-  area: GR
-  file: Lightlike/Dirac/SpinorLichnerowicz.lean
-  decls: [Lightlike.Dirac.SpinorSection.dirac_dirac]
-  status: proven
-  tier: established
-  source: exploratory
-  review: kernel-checked
-  note: "Comparison pending (no source was read at a cited location): the formula is Lawson and Michelsohn, Spin Geometry (1989), Chapter II, Theorem 8.8, to be read before the comparison is claimed. The sections are the smooth sections (Mathlib ContMDiffSection) of the spinor bundle built from the spin structure's Spin(n) cocycle (Lightlike/Dirac/SpinorBundle.lean); D and ∇*∇ act on them; the identity is pointwise at every point of the manifold (no compactness, L² or self-adjointness statement). The spin structure is given by local orthonormal frames with Spin(n) lifts of the frame changes; its principal Spin(n)-bundle form is Lightlike/Dirac/SpinPrincipal.lean. Non-vacuity: constant sections of the Euclidean spin structure of ℝⁿ; it applies to the round 2-sphere through sphereSpinStructure."
-  since: unreleased
-- id: LL-XXXX-b
-  title: "The Dirac spectrum of the round unit 2-sphere on the sections of its spinor bundle: for a Clifford module of real dimension 4 and the spin structure of the 2-sphere, a nonzero smooth section σ of the spinor bundle with Dσ = λσ exists exactly for λ = ±(k+1), k a natural number, and these eigenvalues have real multiplicity 4(k+1), i.e. complex multiplicity 2(k+1)"
-  area: GR
-  file: Lightlike/Dirac/SphereSpectrumSections.lean
-  decls: [Lightlike.Dirac.sphere_dirac_spectrum_sections, Lightlike.Dirac.eigenSections, Lightlike.Dirac.mem_eigenSections, Lightlike.Dirac.sphereSpinStructure]
-  status: proven
-  tier: established
-  source: exploratory
-  review: kernel-checked
-  note: "Comparison pending (no source was read at a cited location). The manifold is the library's S2 (Mathlib's unit sphere of ℝ³, model I2) with the round metric; sphereSpinStructure has two orthonormal frames from explicit stereographic projections from the north and the south pole, the frame change a rotation and its Spin(2) lift ι(y/|y|)ι(e₁) (Lightlike/Dirac/SphereSpin.lean). eigenSections ρ λ = {σ | σ.dirac = λ • σ} (mem_eigenSections). The proof identifies the eigensections with the two-chart eigenspinors of sphere_spectrum through the north chart: the spin-connection coefficients of the north frame are y_c δ_ab − y_b δ_ac (connForm_sphere_north, Koszul formula), so the Dirac operator in the north frame is the chart operator diracF ρ stereoF stereoOmega (dirac_sphere_north), and the south frame gives the transfer of the two-chart model (transfer_identity). Non-vacuity: the quaternions as the Cl₂-module (SphereSpectrumTests)."
-  since: unreleased
