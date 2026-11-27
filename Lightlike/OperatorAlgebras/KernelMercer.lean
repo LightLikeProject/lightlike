@@ -14,6 +14,18 @@ eigenbasis of `T_K`. This file builds the continuous eigenfunctions and the poin
   also when `λ_i = 0`, because a continuous function vanishing almost everywhere vanishes;
 * `(T_K f)(x) = Σ_i λ_i φ_i(x) ⟪b_i, f⟫` for every `x` (`hasSum_kernelToC`), by Parseval's identity
   for `⟪k_x, f⟫`.
+* the diagonal is non-negative (`re_diag_nonneg`); applied to the truncated kernel
+  `K - Σ_{i ∈ S} λ_i φ_i ⊗ conj φ_i`, which is again positive (`isPositiveKernel_truncKer`), this gives
+  `Σ_{i ∈ S} λ_i |φ_i(x)|² ≤ K(x, x)` (`sum_le_diag`);
+* by Cauchy–Schwarz the row series `Σ_i λ_i φ_i(x) conj φ_i` converges uniformly
+  (`summable_rowTerm`), and pairing it with every `f ∈ L²` identifies its sum with `conj K(x, ·)`, so
+  `K(x, x) = Σ_i λ_i |φ_i(x)|²` (`hasSum_diag`);
+* **Mercer's trace formula** `Σ_i λ_i = ∫ K(x, x) dμ(x)` (`hasSum_eigenvalues`): by Dini's theorem
+  the diagonal partial sums converge uniformly, and `∫ |φ_i|² = ‖b_i‖² = 1` when `λ_i ≠ 0`.
+
+## Main results
+
+* `re_diag_nonneg`, `sum_le_diag`, `hasSum_diag`, `hasSum_eigenvalues`
 
 ## References
 
@@ -420,6 +432,75 @@ theorem hasSum_diag (x : X) :
   rw [mul_assoc, RCLike.star_def, Complex.mul_conj', ← Complex.ofReal_pow, ← Complex.ofReal_mul]
 
 end Diagonal
+
+/-- Integrals of a uniformly convergent net of continuous functions on a finite measure space. -/
+lemma tendsto_integral_of_tendstoUniformly {ι : Type*} {F : Finset ι → X → ℝ} {f : X → ℝ}
+    (hF : ∀ s, Continuous (F s)) (hf : Continuous f) (hU : TendstoUniformly F f atTop) :
+    Tendsto (fun s => ∫ x, F s x ∂μ) atTop (𝓝 (∫ x, f x ∂μ)) := by
+  rw [Metric.tendsto_nhds]
+  intro ε hε
+  set c := μ.real Set.univ + 1 with hc
+  have hc0 : 0 < c := by positivity
+  filter_upwards [Metric.tendstoUniformly_iff.1 hU (ε / c) (by positivity)] with s hs
+  rw [dist_eq_norm, ← integral_sub (integrable_of_continuous μ (hF s)) (integrable_of_continuous μ hf)]
+  calc ‖∫ x, (F s x - f x) ∂μ‖ ≤ ε / c * μ.real Set.univ := by
+        refine norm_integral_le_of_norm_le_const (Eventually.of_forall fun x => ?_)
+        have := hs x
+        rw [dist_comm, dist_eq_norm] at this
+        exact this.le
+    _ < ε := by
+        rw [div_mul_eq_mul_div, div_lt_iff₀ hc0]
+        nlinarith [measureReal_nonneg (μ := μ) (s := Set.univ)]
+
+section Trace
+
+/-- **Mercer's trace formula**: for a positive integral operator with a continuous Hermitian kernel
+and any eigenbasis, `Σ_i λ_i = ∫ K(x, x) dμ(x)`. -/
+theorem hasSum_eigenvalues [μ.IsOpenPosMeasure] [SecondCountableTopology X] (K : C(X × X, ℂ))
+    (hK : ∀ x y, K (y, x) = starRingEnd ℂ (K (x, y))) {ι : Type*}
+    (b : HilbertBasis ι ℂ (Lp ℂ 2 μ)) (lam : ι → ℝ)
+    (hb : ∀ i, kernelOp μ K (b i) = (lam i : ℂ) • b i) (hpos : IsPositiveKernel μ K) :
+    HasSum (fun i => (lam i : ℂ)) (∫ x, K (x, x) ∂μ) := by
+  have hlam : ∀ i, 0 ≤ lam i := fun i => eigen_nonneg μ hpos (hb i) (b.orthonormal.1 i)
+  set φ := fun i => eigenFun μ K (b i) (lam i) with hφ
+  set F : Finset ι → X → ℝ := fun S x => ∑ i ∈ S, lam i * ‖φ i x‖ ^ 2 with hFdef
+  set f : X → ℝ := fun x => (K (x, x)).re with hfdef
+  have hF : ∀ S, Continuous (F S) := fun S =>
+    continuous_finsetSum _ fun i _ => continuous_const.mul (((φ i).continuous.norm).pow 2)
+  have hf : Continuous f :=
+    Complex.continuous_re.comp (K.continuous.comp (continuous_id.prodMk continuous_id))
+  have hmono : Monotone F := fun S T hST x =>
+    Finset.sum_le_sum_of_subset_of_nonneg hST fun i _ _ => mul_nonneg (hlam i) (sq_nonneg _)
+  have hpt : ∀ x, Tendsto (F · x) atTop (𝓝 (f x)) := fun x => by
+    have h := Complex.reCLM.hasSum (hasSum_diag μ K hK b lam hb hpos x)
+    simp only [Complex.reCLM_apply, Complex.ofReal_re] at h
+    exact h
+  have hU := Monotone.tendstoUniformly_of_forall_tendsto hF hmono hf hpt
+  have hI := tendsto_integral_of_tendstoUniformly μ hF hf hU
+  have hterm : ∀ i, lam i * ∫ x, ‖φ i x‖ ^ 2 ∂μ = lam i := by
+    intro i
+    by_cases hl : lam i = 0
+    · simp [hl]
+    · rw [← norm_sq_toLp_eq, toLp_eigenFun μ K hl (hb i), b.orthonormal.1 i, one_pow, mul_one]
+  have hsum : ∀ S, ∫ x, F S x ∂μ = ∑ i ∈ S, lam i := by
+    intro S
+    show ∫ x, ∑ i ∈ S, lam i * ‖φ i x‖ ^ 2 ∂μ = _
+    rw [integral_finsetSum S fun i _ => integrable_of_continuous μ
+      (show Continuous fun x => lam i * ‖φ i x‖ ^ 2 from
+        continuous_const.mul (((φ i).continuous.norm).pow 2))]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [integral_const_mul, hterm]
+  have hreal : HasSum lam (∫ x, f x ∂μ) := hI.congr hsum
+  have hdiag : ∀ x, K (x, x) = ((K (x, x)).re : ℂ) := fun x => by
+    have := hK x x
+    exact (Complex.conj_eq_iff_re.1 this.symm).symm
+  have hint : ∫ x, K (x, x) ∂μ = ((∫ x, f x ∂μ : ℝ) : ℂ) := by
+    rw [← integral_complex_ofReal]
+    exact integral_congr_ae (Eventually.of_forall fun x => hdiag x)
+  rw [hint]
+  exact Complex.ofRealCLM.hasSum hreal
+
+end Trace
 
 end
 
