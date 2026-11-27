@@ -1,6 +1,7 @@
 import Mathlib
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalPairing
 import Lightlike.Lorentz.SL2RPlancherel.HaarTorusIntegral
+import Lightlike.Lorentz.SL2RPlancherel.KKParseval
 
 /-!
 # Matrix coefficients of the principal series as functions on `SL(2,ℝ)`
@@ -11,7 +12,9 @@ continuous where `num² + den² > 0`, dominated near each `g₀` by
 `(Σ g₀ij² + 1)^{1/2} |v(x)| (1 + x²)^{-1/2}`, which is integrable by Cauchy–Schwarz.
 For `f` integrable on `SL(2,ℝ)` the coefficient `∫ f(g) ⟪e_m, π_ν(g) e_n⟫ dg` (`piCoeff`) is, in polar
 coordinates, `∫_{ξ>0} sinh ξ Φ^ν_{m,n}(ξ) ∫∫ e^{-2i(mα + nθ)} f(k_α a_ξ k_θ) dθ dα dξ`
-(`piCoeff_eq_polar`).
+(`piCoeff_eq_polar`), and for continuous compactly supported `f` the angle integral is the
+`K × K` component, `piCoeff ν f m n = (2π)² ∫_{ξ>0} sinh ξ Φ^ν_{m,n}(ξ) kkCoeff f (2m, 2n) ξ dξ`
+(`piCoeff_eq_kkCoeff`).
 Layer 2c-v of the Plancherel formula on `SL(2,ℝ)` (matrix coefficients of `π_ν(f)`), milestone HA3.
 -/
 
@@ -129,6 +132,71 @@ theorem piCoeff_eq_polar (ν : ℝ) {f : SL2R → ℂ} (hf : Integrable f haarR)
   rw [← integral_const_mul]
   refine integral_congr_ae (Eventually.of_forall fun θ => ?_)
   simp only
+  ring
+
+/-- Iterated form of the Bochner integral over the box `(0,1]²`, for continuous `h`. -/
+lemma integral_box_eq {h : (Fin 2 → ℝ) → ℂ} (hh : Continuous h) :
+    ∫ x in box, h x = ∫ a in Ioc (0 : ℝ) 1, ∫ b in Ioc (0 : ℝ) 1, h ![a, b] := by
+  have hmp := volume_preserving_finTwoArrow ℝ
+  have hbox : box = (MeasurableEquiv.finTwoArrow : (Fin 2 → ℝ) ≃ᵐ ℝ × ℝ) ⁻¹'
+      (Ioc (0 : ℝ) 1 ×ˢ Ioc (0 : ℝ) 1) := by
+    ext x
+    simp [box, Fin.forall_fin_two, MeasurableEquiv.finTwoArrow]
+  have key := hmp.setIntegral_preimage_emb (MeasurableEquiv.finTwoArrow.measurableEmbedding)
+    (fun p => h (MeasurableEquiv.finTwoArrow.symm p)) (Ioc (0 : ℝ) 1 ×ˢ Ioc (0 : ℝ) 1)
+  simp only [MeasurableEquiv.symm_apply_apply] at key
+  have hv : Continuous fun p : ℝ × ℝ => (![p.1, p.2] : Fin 2 → ℝ) :=
+    continuous_pi fun i => by fin_cases i <;> simp <;> fun_prop
+  have hc : Continuous fun p : ℝ × ℝ => h (MeasurableEquiv.finTwoArrow.symm p) := hh.comp hv
+  have hint : IntegrableOn (fun p : ℝ × ℝ => h (MeasurableEquiv.finTwoArrow.symm p))
+      (Ioc (0 : ℝ) 1 ×ˢ Ioc (0 : ℝ) 1) (volume.prod volume) := by
+    rw [← Measure.volume_eq_prod]
+    exact (hc.continuousOn.integrableOn_compact (isCompact_Icc.prod isCompact_Icc)).mono_set
+      (prod_mono Ioc_subset_Icc_self Ioc_subset_Icc_self)
+  rw [IntegrableOn, ← Measure.prod_restrict] at hint
+  rw [hbox, key, Measure.volume_eq_prod, ← Measure.prod_restrict, integral_prod _ hint]
+  rfl
+
+/-- Scaling the angle: `∫_0^{2π} φ = 2π ∫_0^1 φ(2π x) dx`. -/
+lemma integral_Ioc_two_pi_eq (φ : ℝ → ℂ) :
+    ∫ α in Ioc 0 (2 * π), φ α = (2 * π : ℝ) * ∫ x in Ioc (0 : ℝ) 1, φ (2 * π * x) := by
+  have h2 : (2 * π : ℝ) ≠ 0 := by positivity
+  rw [← intervalIntegral.integral_of_le (by positivity), ← intervalIntegral.integral_of_le zero_le_one,
+    intervalIntegral.integral_comp_mul_left φ h2, mul_zero, mul_one, Complex.real_smul,
+    ← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ h2, Complex.ofReal_one, one_mul]
+
+/-- **The angle integral is a `K × K` component**: for continuous `f`,
+`∫_0^{2π} ∫_0^{2π} e^{-2i(mα + nθ)} f(k_α a_ξ k_θ) dθ dα = (2π)² kkCoeff f (2m, 2n) ξ`. -/
+theorem integral_angles_eq_kkCoeff {f : SL2R → ℂ} (hf : Continuous f) (ξ : ℝ) (m n : ℤ) :
+    ∫ α in Ioc 0 (2 * π), ∫ θ in Ioc 0 (2 * π),
+        Complex.exp (-(2 * (m * α + n * θ) * I)) * f (rot α * aR ξ * rot θ) =
+      ((2 * π : ℝ) : ℂ) ^ 2 * kkCoeff f ![2 * m, 2 * n] ξ := by
+  simp only [integral_Ioc_two_pi_eq (fun θ => Complex.exp (-(2 * (m * _ + n * θ) * I)) *
+    f (rot _ * aR ξ * rot θ))]
+  rw [integral_Ioc_two_pi_eq, integral_const_mul, kkCoeff,
+    integral_box_eq (by
+      have := continuous_kkProfile hf ξ
+      fun_prop)]
+  rw [sq, mul_assoc]
+  congr 2
+  refine integral_congr_ae (Eventually.of_forall fun a => ?_)
+  refine integral_congr_ae (Eventually.of_forall fun b => ?_)
+  simp only [kkProfile, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+  congr 1
+  congr 1
+  push_cast
+  ring
+
+/-- **The matrix coefficients of `π_ν(f)` through the `K × K` components**: for continuous compactly
+supported `f`,
+`∫ f(g) ⟪e_m, π_ν(g) e_n⟫ dg = (2π)² ∫_{ξ>0} sinh ξ Φ^ν_{m,n}(ξ) kkCoeff f (2m, 2n) ξ dξ`. -/
+theorem piCoeff_eq_kkCoeff (ν : ℝ) {f : SL2R → ℂ} (hf : Continuous f) (hc : HasCompactSupport f)
+    (m n : ℤ) :
+    piCoeff ν f m n = ((2 * π : ℝ) : ℂ) ^ 2 * ∫ ξ in Ioi (0 : ℝ), (Real.sinh ξ : ℂ) *
+      (mcoefP ν m n ξ * kkCoeff f ![2 * m, 2 * n] ξ) := by
+  rw [piCoeff_eq_polar ν (hf.integrable_of_hasCompactSupport hc), ← integral_const_mul]
+  refine setIntegral_congr_fun measurableSet_Ioi fun ξ _ => ?_
+  rw [integral_angles_eq_kkCoeff hf ξ m n]
   ring
 
 end Lightlike.Lorentz.SL2RPlancherel
