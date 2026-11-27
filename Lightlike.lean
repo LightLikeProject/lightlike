@@ -829,6 +829,7 @@ import Lightlike.OperatorAlgebras.GaussKernel
 import Lightlike.OperatorAlgebras.FockKernel
 import Lightlike.OperatorAlgebras.FockReduction
 import Lightlike.OperatorAlgebras.HilbertSchmidtBasis
+import Lightlike.OperatorAlgebras.KernelOperator
 import Lightlike.OperatorAlgebras.ShaleAlgebra
 import Lightlike.OperatorAlgebras.ShaleHilbertSchmidt
 import Lightlike.OperatorAlgebras.StateGNS
