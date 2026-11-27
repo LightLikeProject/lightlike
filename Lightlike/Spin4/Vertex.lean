@@ -5,7 +5,7 @@ import Lightlike.Recoupling.FifteenJ
 # The Euclidean EPRL vertex amplitude
 
 The vertex amplitude of the Euclidean Engle–Pereira–Rovelli–Livine (EPRL) spin foam model with
-Immirzi parameter `γ < 1` (EPRL 2008, arXiv:0711.0146, eq. (52)), built on the EPRL map of
+Immirzi parameter `γ < 1` (EPRL 2008, arXiv:0711.0146, eq. (31)), built on the EPRL map of
 `Lightlike/Spin4/EPRL.lean` and `Lightlike/Spin4/Fusion.lean` (SF5c). Doubled spins throughout.
 
 A 4-simplex is dual to the complete graph `K₅`: five nodes (the tetrahedra) and ten edges (the
@@ -19,7 +19,7 @@ contraction of the five tensors `Φ(ι_{z a})` along the edges of `K₅` (`eprlV
 
 * `eprlVertex`: the definition, as the `K₅` contraction `k5Contract4` of the EPRL node tensors
   `eprlNode` (which are the matrices `Φ(ι_z)` of SF5c, `eprlNode_eq_eprlIntertwiner`).
-* `eprlVertex_eq_fifteenJ`: the spin-network form of EPRL eq. (52),
+* `eprlVertex_eq_fifteenJ`: the spin-network form of EPRL eq. (31),
   `A_v = Σ_{x,y} Π_a f_a(z_a; x_a, y_a) {15j}(n; x) {15j}(m; y)`, with the 4-simplex
   contraction `Lightlike.Recoupling.fifteenJSimplex` (`fifteenJSimplex_eq_k5Contract`).
 * `eprlVertex_eq_vertexNineJ`: on an admissible boundary, the same with the fusion coefficients as
@@ -239,7 +239,7 @@ theorem eprlVertex_eq_sum (n m : Fin 10 → ℕ) (z : Fin 5 → ℕ) :
   refine Finset.sum_congr rfl fun P _ => ?_
   rw [k5Contract4_mul, mul_assoc]
 
-/-- **The EPRL vertex in the spin-network form** (Engle–Pereira–Rovelli–Livine 2008, eq. (52)):
+/-- **The EPRL vertex in the spin-network form** (Engle–Pereira–Rovelli–Livine 2008, eq. (31)):
 `A_v = Σ_{x,y} Π_a f_a(z_a; x_a, y_a) {15j}(n; x) {15j}(m; y)`, with the 4-simplex contraction
 `Lightlike.Recoupling.fifteenJSimplex` on the self-dual and on the anti-self-dual spins. -/
 theorem eprlVertex_eq_fifteenJ (n m : Fin 10 → ℕ) (z : Fin 5 → ℕ) :
