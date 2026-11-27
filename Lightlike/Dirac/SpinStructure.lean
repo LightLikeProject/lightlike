@@ -102,7 +102,9 @@ domains covering `M` and smooth on them, whose frame changes `Rot` (defined by
 point; the lifts exist only for frame changes in `SO(n)`, so `M` is oriented as well.  This is the
 atlas form of the definition of Lawson–Michelsohn, *Spin Geometry*, II Def. 1.3, in place of
 the principal `Spin(n)`-bundle double covering the frame bundle (a representation difference):
-atlas form; equivalence with the principal `Spin(n)`-bundle definition not proved.  The frames are
+atlas form.  It is equivalent to the principal-bundle form, a lift of the orthonormal frame bundle
+through `Spin(n) → SO(n)` (`Lightlike.Dirac.SpinPrincipalEquiv` for lifts with a smooth atlas of
+local sections, `Lightlike.Dirac.SpinLiftSmooth` for every lift).  The frames are
 smooth sections of the tangent bundle and the lifts are smooth maps into the Clifford algebra
 (every linear coordinate of `lift i j` is smooth on the overlap). -/
 structure SpinStructure (g : NondegMetric I M) (ι : Type*) extends
