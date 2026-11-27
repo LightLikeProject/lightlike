@@ -403,7 +403,6 @@ theorem norm_sq_integral_Hc_mul_conj_mcoefP (ρ : ℝ) (r l : ℕ) {G : ℝ → 
   simp only [norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, norm_prod, mul_pow,
     ← Finset.prod_pow, norm_sq_conj_neg_wP_add, norm_sq_conj_neg_wP_neg_add, wl]
   rw [show ‖(1 / 2 : ℂ)‖ = 1 / 2 by simp]
-  push_cast
   ring
 
 end Lightlike.Lorentz.SL2RPlancherel
