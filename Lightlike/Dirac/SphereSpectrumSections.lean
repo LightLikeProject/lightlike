@@ -158,4 +158,28 @@ theorem dirac_eq_of_north (σ : SpinorSection sphereSpinStructure ρ) (lam : ℝ
   erw [map_zero, ← (σ.dirac - lam • σ).rep_of_mem hd]
   exact h1
 
+lemma contDiff_northRep (σ : SpinorSection sphereSpinStructure ρ) : ContDiff ℝ ∞ (northRep σ) := by
+  rw [← contMDiff_iff_contDiff]
+  intro x
+  have h1 := σ.toField_isSmooth true (stereoN (modelEquiv2 x)) (stereoN_mem_dom _)
+  have h2 : ContMDiffAt 𝓘(ℝ, E 2) I2 ∞ (fun x : E 2 => stereoN (modelEquiv2 x)) x :=
+    (contMDiff_stereoN (modelEquiv2 x)).comp x
+      ((modelEquiv2 : E 2 →L[ℝ] Fin 2 → ℝ).contDiff.contMDiff.contMDiffAt)
+  exact h1.comp x h2
+
+/-- **The chart eigen-equation from the section.** If `D σ = λ σ`, the north representation satisfies
+`diracF ρ stereoF stereoOmega f = λ f` on the whole chart. -/
+theorem north_eq_of_dirac {σ : SpinorSection sphereSpinStructure ρ} {lam : ℝ} (h : σ.dirac = lam • σ)
+    (x : E 2) : diracF ρ stereoF stereoOmega (northRep σ) x = lam • northRep σ x := by
+  have hd := stereoN_mem_dom (modelEquiv2 x)
+  have hdiff : MDifferentiableAt I2 𝓘(ℝ, V) (σ.toField.rep true) (stereoN (modelEquiv2 x)) :=
+    (σ.toField_isSmooth true _ hd).mdifferentiableAt (by simp)
+  have key := dirac_sphere_north ρ hdiff
+  rw [show (σ.toField.rep true ∘ stereoN ∘ modelEquiv2) = northRep σ from rfl] at key
+  rw [← key]
+  change sphereSpinStructure.dirac ρ true (σ.toField.rep true) _ = lam • σ.toField.rep true _
+  have e1 : sphereSpinStructure.dirac ρ true (σ.toField.rep true) (stereoN (modelEquiv2 x)) =
+      σ.dirac.toField.rep true (stereoN (modelEquiv2 x)) := (σ.toField_dirac hd).symm
+  rw [e1, h, rep_smul _ _ hd]
+
 end Lightlike.Dirac
