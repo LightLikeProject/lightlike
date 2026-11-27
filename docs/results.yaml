@@ -7580,6 +7580,19 @@
   review: kernel-checked
   note: "Comparison pending: a trust check of the library's own statement. The cutoff gives doubled spin at most 1 to the four triangles through the edge {0, 1}; only the zero colouring (weight 1) and the bone colouring (weight 4, weight_col0) survive the triangle constraints, both with the sign +1, so the sum is 5. The other fourteen edges and the relabellings of the vertices are LL-0605."
   since: unreleased
+- id: LL-0590
+  title: "On the boundary of the 5-simplex the bone colouring of the edge {u, w} is admitted by the triangle constraints and carries the sign (-1)^(w - u - 1) in the signed Ooguri sum of the EPRL state sum at γ = 1: the state sum depends on the order of the vertices through the sign twist"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/EPRLStateSum/BoneWeight.lean
+  decls: []
+  status: retired
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+  review: kernel-checked
+  note: "Retired: replaced by LL-0600 to LL-0605. The stated dependence on the order of the vertices came from the node basis change of the earlier definition of the sorted-basis vertex, not from the state sum: with the exact basis change the state sum does not depend on the order of the vertices (LL-0600), and the bone colouring of every edge gives 5 (LL-0605). The declarations of this entry were removed with the old definition."
+  since: unreleased
 - id: LL-0591
   title: "If two complexes of tetrahedra have a common forward descendant under the 2-3 and 1-4 moves, then every regularised Ponzano–Regge amplitude value of each is a value of the descendant: ampValues K ⊆ ampValues K'' and ampValues K' ⊆ ampValues K''"
   area: PonzanoRegge
