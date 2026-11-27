@@ -1,5 +1,6 @@
 import Mathlib
 import Lightlike.Spacetime.LaplaceBeltrami.Riemannian
+import Lightlike.Spacetime.LaplaceBeltrami.CoordCalculus
 
 /-!
 # Tests: the Laplace–Beltrami operator of Minkowski space
@@ -7,7 +8,8 @@ import Lightlike.Spacetime.LaplaceBeltrami.Riemannian
 On Minkowski space (`Fin n → ℝ` with its single chart, the identity, and `η = diag(-1, 1, …, 1)`) the coordinate formula
 `Δ f = -ρ⁻¹ ∂ᵢ(ρ η^{ij} ∂ⱼ f)` with `ρ = 1` gives `Δ (yᵢ²) = -2 ηᵢᵢ`: `-2` for a space coordinate (the sign convention of
 the nonnegative Laplacian, `Δ = -div grad`) and `+2` for the time coordinate. A wrong sign convention (`Δ = +div grad`)
-would give `+2` on a space coordinate and is caught.
+would give `+2` on a space coordinate and is caught. The product rule of the coordinate operator
+(`IsCoordMetric.coordLaplacian_mul`) gives `Δ(y²) = -2` on the line.
 -/
 
 open Set Manifold Matrix
@@ -96,5 +98,30 @@ example (x : Fin 2 → ℝ) :
   NondegMetric.laplaceBeltrami_eq_coord _ (by
     have : ContDiff ℝ ∞ (fun z : Fin 2 → ℝ => z 0 ^ 2) := by fun_prop
     exact this.contMDiff) 0 (by simp)
+
+/-- The identity metric of the line. -/
+def gLine : (Fin 1 → ℝ) → Matrix (Fin 1) (Fin 1) ℝ := fun _ => 1
+
+theorem isCoordMetric_gLine : IsCoordMetric gLine univ :=
+  isCoordMetric_const Matrix.transpose_one (by show IsUnit (Matrix.det (1 : Matrix (Fin 1) (Fin 1) ℝ)); simp)
+
+theorem pd_coord (z : Fin 1 → ℝ) : pd 0 (fun w : Fin 1 → ℝ => w 0) z = 1 := by
+  unfold pd
+  rw [(hasFDerivAt_apply (𝕜 := ℝ) 0 z).fderiv]
+  simp
+
+/-- The coordinate function of the line is harmonic. -/
+theorem coordLaplacian_gLine_coord (y : Fin 1 → ℝ) : coordLaplacian gLine (fun w => w 0) y = 0 := by
+  have hflux : coordFlux gLine (fun w => w 0) 0 = fun _ => 1 := by
+    funext z
+    simp [coordFlux, coordDensity, gLine, pd_coord]
+  simp [coordLaplacian, hflux, pd_const]
+
+/-- **Trust check of the product rule**: on the line, `Δ(y²) = 2y·Δy + ... - 2|dy|² = -2`
+(the sign of the nonnegative Laplacian `Δ = -d²/dy²`). -/
+example (y : Fin 1 → ℝ) : coordLaplacian gLine (fun w => w 0 * w 0) y = -2 := by
+  have hF : ContDiffOn ℝ ∞ (fun w : Fin 1 → ℝ => w 0) univ := (contDiff_apply ℝ (fun _ : Fin 1 => ℝ) 0).contDiffOn
+  rw [isCoordMetric_gLine.coordLaplacian_mul hF hF (mem_univ y), coordLaplacian_gLine_coord]
+  simp [coordGradPair, gLine, pd_coord]
 
 end Lightlike.LaplaceBeltramiTests

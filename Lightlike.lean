@@ -1838,6 +1838,7 @@ import Lightlike.Spacetime.LaplaceBeltrami.Coord
 import Lightlike.Spacetime.LaplaceBeltrami.Weak
 import Lightlike.Spacetime.LaplaceBeltrami.Green
 import Lightlike.Spacetime.LaplaceBeltrami.Riemannian
+import Lightlike.Spacetime.LaplaceBeltrami.CoordCalculus
 import Lightlike.Spacetime.LaplaceBeltrami.Tests
 import Lightlike.Spacetime.CausalLadder.FullSupportMeasure
 import Lightlike.Spacetime.CausalLadder.NullBoundary
