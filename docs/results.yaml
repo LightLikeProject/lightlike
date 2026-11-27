@@ -7176,3 +7176,25 @@
   review: kernel-checked
   note: "The metrics 4 delta / (1 - |x|^2)^2 on the open unit ball of R^n, (L^2 / x_0^2) eta on x_0 < 0 and (L^2 / x_last^2) eta on x_last > 0 (L nonzero) are coordinate metrics on their domains. This is the definitional piece of GE12: it states that the three formulas define metrics, not that they are maximally symmetric or of constant curvature (+1/L^2, -1/L^2, -1), which is not proved here. The formulas are the standard conformally flat forms; the comparison of the curvature values with the cited section (Carroll, chapter 8, maximally symmetric spaces) is pending, and no source was read at a location for these charts. Limits: one chart each, with no global statement."
   since: unreleased
+- id: LL-0557
+  title: "Partial derivatives of P(alpha, xi, theta) = F(k_alpha a(xi) k_theta) for a function F that is differentiable on the four entries of a 2 x 2 real matrix: with g = k_alpha a(xi) k_theta and dF the derivative of F at g in the direction g X, the theta-derivative is dF(J), the xi-derivative is cos 2 theta dF(H) + sin 2 theta dF(S), and the alpha-derivative is cosh xi dF(J) - 2 sinh xi (cos 2 theta dF(S) - sin 2 theta dF(H)), for J = [[0,1],[-1,0]], H = diag(1/2, -1/2), S = [[0,1/2],[1/2,0]]"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/SmoothRight.lean
+  decls: [Lightlike.Lorentz.SL2R.hasDerivAt_kakP_theta, Lightlike.Lorentz.SL2R.hasDerivAt_kakP_xi, Lightlike.Lorentz.SL2R.hasDerivAt_kakP_alpha]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-i of the Plancherel formula on SL(2,R). The chain rule along the three one-parameter families, with the conjugation identity J g = g (cosh xi J - 2 sinh xi (cos 2 theta S - sin 2 theta H)) for g = k_alpha a(xi) k_theta, checked entrywise. Standard (right-invariant vector fields in Cartan coordinates); no source consulted. The library has no smooth structure on SL(2,R), so smoothness is taken as the restriction of a differentiable function of the four entries."
+  since: unreleased
+- id: LL-0558
+  title: "Ladder operators on the K x K Fourier components of a C^1 function on SL(2,R): for xi not 0, the (m, n+2)-component of A + iB equals f_{m,n}'(xi) - ((n cosh xi - m)/(2 sinh xi)) f_{m,n}(xi), and the (m, n-2)-component of A - iB equals f_{m,n}'(xi) + ((n cosh xi - m)/(2 sinh xi)) f_{m,n}(xi), where A, B are the right derivatives of f in the directions H and S"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RPlancherel/LadderComponents.lean
+  decls: [Lightlike.Lorentz.SL2R.kk_ladder_up, Lightlike.Lorentz.SL2R.kk_ladder_down]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Layer 2c-i of the Plancherel formula on SL(2,R). Differentiation under the integral sign in xi for the box integral over the angles, and integration by parts on the torus for the alpha- and theta-derivatives, combined with the pointwise identity of the previous entry. Standard in form; no source consulted. NOT proved: the behaviour of f_{m,n} at xi = 0 and the boundary terms (layer 2c-ii), the solution of the ladder equation (2c-iii), completeness (2c-iv), the assembly into the Plancherel integral (2c-v), and the discrete series terms (layer 3), so the Plancherel formula of SL(2,R) is still open."
+  since: unreleased
