@@ -10,7 +10,7 @@ import Mathlib.Data.Bundle
 /-!
 # Fibrewise actions on total spaces
 
-Adapted from Tau Ceti (`TauCeti/Algebra/Group/Action/TotalSpace.lean`,
+Adapted from Tau Ceti (module TauCeti.Algebra.Group.Action.TotalSpace,
 revision 2a9233e5b, Apache 2.0 license).
 
 An action on each fibre acts on the total space without changing the base point. This lets

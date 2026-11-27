@@ -197,6 +197,7 @@ import Lightlike.Asymptotics.UniformValleyTests
 import Lightlike.Asymptotics.Valley
 import Lightlike.Asymptotics.ValleyTests
 import Lightlike.Bundles.Analysis.CStarAlgebra.Basic
+import Lightlike.Bundles.FiberBundle.GroupCocycle
 import Lightlike.Bundles.FiberBundle.Proper
 import Lightlike.Bundles.FiberBundle.TrivializationExtra
 import Lightlike.Bundles.Maps.IsEmpty
@@ -322,6 +323,7 @@ import Lightlike.Cosmology.ScalarFieldFLRW.ScalarFLRW
 import Lightlike.Cosmology.ScalarFieldFLRW.ScalarChecks
 import Lightlike.Cosmology.SachsWolfeEffect.SachsWolfe
 import Lightlike.Cosmology.ConformalVacuumFLRW.Modes
+import Lightlike.Dirac.SpinPrincipal
 import Lightlike.Dirac.SpinorBundle
 import Lightlike.Dirac.SpinorLichnerowicz
 import Lightlike.FourD.Boundary

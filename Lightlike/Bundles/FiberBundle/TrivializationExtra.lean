@@ -9,7 +9,7 @@ import Mathlib.Topology.FiberBundle.Basic
 /-!
 # Preferred trivializations and disjoint unions of trivializations
 
-Adapted from Tau Ceti (`TauCeti/Topology/FiberBundle/Trivialization.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.FiberBundle.Trivialization,
 revision 2a9233e5b, Apache 2.0 license).
 
 Near a point `v₀` of the total space of a fibre bundle, every point lies over the base set of the
@@ -45,7 +45,7 @@ fibre is a bijection onto the base.
   trivial.
 * `Bundle.Trivialization.continuousOn_coordChange`: coordinate changes are jointly continuous over
   the overlap of the base sets.
-* `Bundle.Trivialization.isOpen_preimage`: the preimage under `proj` of an open subset of
+* Bundle.Trivialization.isOpen_preimage: the preimage under proj of an open subset of
   `e.baseSet` is open.
 * `Bundle.Trivialization.eq_of_apply_eq`: a trivialization is injective over its base set.
 * `Bundle.Trivialization.coe_restrOpen`, `Bundle.Trivialization.coe_restrOpen_symm`,
@@ -59,7 +59,7 @@ fibre is a bijection onto the base.
   from `e₁` to `e₂`, landing on the point with the original fibre coordinate in `e₁`.
 * `Bundle.Trivialization.equivAt`: a trivialization as an equivalence between the fibre over a
   point of its base set and the model fibre.
-* `Bundle.Trivialization.isOpen_sheet`: for a trivialization with discrete fibre of a map,
+* Bundle.Trivialization.isOpen_sheet: for a trivialization with discrete fibre of a map,
   the sheet of a given index over an open subset of the base set is open.
 * `Bundle.Trivialization.map_mem_sheet_iff`, `Bundle.Trivialization.map_symm_eq_of_mem_sheet`:
   a continuous map `g` over the base, between two trivialized maps with discrete target fibre,
@@ -129,7 +129,7 @@ theorem restrOpen_baseSet (e : Trivialization F proj) (s : Set B) (hs : IsOpen s
     (e.restrOpen s hs).baseSet = e.baseSet ∩ s :=
   (rfl)
 
-/-- For a trivialization `e` of `proj`, the preimage of an open subset of `e.baseSet` is open. -/
+/-- For a trivialization e of proj, the preimage of an open subset of e.baseSet is open. -/
 theorem isOpen_preimage (e : Trivialization F proj) {s : Set B} (hs : IsOpen s)
     (hsub : s ⊆ e.baseSet) : IsOpen (proj ⁻¹' s) := by
   rw [← inter_eq_right.2 (e.preimage_subset_source hsub)]

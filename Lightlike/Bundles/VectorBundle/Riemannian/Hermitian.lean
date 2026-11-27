@@ -13,7 +13,7 @@ import Mathlib.Analysis.RCLike.Lemmas
 /-!
 # Continuous Hermitian metrics on vector bundles
 
-Adapted from Tau Ceti (`TauCeti/Topology/VectorBundle/Riemannian/Hermitian.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.VectorBundle.Riemannian.Hermitian,
 revision 2a9233e5b, Apache 2.0 license).
 
 Mathlib's `IsContinuousRiemannianBundle` asks for real inner products on the fibres depending

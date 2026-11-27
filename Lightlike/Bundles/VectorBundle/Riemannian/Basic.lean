@@ -10,7 +10,7 @@ import Mathlib.Topology.VectorBundle.Riemannian
 /-!
 # Continuity and compactness in Riemannian vector bundles
 
-Adapted from Tau Ceti (`TauCeti/Topology/VectorBundle/Riemannian/Basic.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.VectorBundle.Riemannian.Basic,
 revision 2a9233e5b, Apache 2.0 license).
 
 In a vector bundle whose fibers carry inner products depending continuously on the base point,

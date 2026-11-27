@@ -9,7 +9,7 @@ import Lightlike.Bundles.VectorBundle.OrthonormalFrame.Pullback
 /-!
 # Naturality of orthonormal frame bundles under bundle isometries
 
-Adapted from Tau Ceti (`TauCeti/Topology/VectorBundle/OrthonormalFrame/Isometry.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.VectorBundle.OrthonormalFrame.Isometry,
 revision 2a9233e5b, Apache 2.0 license).
 
 Let `E` and `E'` be Riemannian vector bundles over the same base `B`, and let

@@ -10,7 +10,7 @@ import Mathlib.Topology.VectorBundle.Constructions
 /-!
 # Fibres and linear charts of pullback bundles
 
-Adapted from Tau Ceti (`TauCeti/Topology/VectorBundle/Pullback.lean`,
+Adapted from Tau Ceti (module TauCeti.Topology.VectorBundle.Pullback,
 revision 2a9233e5b, Apache 2.0 license).
 
 The fibres of `f *ᵖ E` inherit their additive group, topological module, normed and inner product
