@@ -511,4 +511,76 @@ theorem Fc_one_10_of_orth [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b E 
   have hB := q1 (e + 1 + β + 1) (by omega) (by omega)
   rw [eq_div_iff hB]
   linear_combination sg * hb - (x * qb q (e + 1 + β + 1) - qb q (e + 1)) * hs
+/-- `[α+β+E+2][β+1] + [E][α+1] = [E+β+1][α+β+2]`. -/
+theorem qb_id_A (q : kˣ) (hD : (q : k) - (q : k)⁻¹ ≠ 0) (α β E : ℕ) :
+    qb q (α + β + E + 2) * qb q (β + 1) + qb q E * qb q (α + 1) = qb q (E + β + 1) * qb q (α + β + 2) := by
+  have hq : (q : k) ≠ 0 := q.ne_zero
+  simp only [qb, pow_add, inv_pow]
+  field_simp
+  ring
+
+/-- `q - q⁻¹ ≠ 0` from `q² ≠ 1`. -/
+lemma hD_of_pow (q : kˣ) {N : ℕ} (hN : 1 ≤ N) (hq2 : ∀ j, 1 ≤ j → j ≤ N → (q : k) ^ (2 * j) ≠ 1) :
+    (q : k) - (q : k)⁻¹ ≠ 0 := by
+  have := hq2 1 le_rfl hN
+  intro h; apply this
+  have hq : (q : k) ≠ 0 := q.ne_zero
+  field_simp at h
+  linear_combination h
+
+lemma solve_one {x T C : k} (hT : T ≠ 0) (h : 1 * x * T + C = 1) (hk : T + C = 1) : x = 1 := by
+  have : (x - 1) * T = 0 := by linear_combination h - hk
+  exact sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hT)
+
+/-- The step for `F11` (the upper-right entry of the one-strand block is `1`), from the recursion in `b`. -/
+theorem Fc_one_11_step [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a L E : ℕ} (ha : 1 ≤ a) (hL : 1 ≤ L)
+    (hE : 1 ≤ E) (hEa : E ≤ a + 1) (hEb : E ≤ L + 1)
+    (hd : ∀ j, j ≤ 2 * (a + L) + 6 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ 2 * (a + L) + 6 → (q : k) ^ (2 * j) ≠ 1)
+    (h10 : 2 ≤ E → Fc q a (L - 1) 1 (E - 1 - 1) 1 0 (E - 1) = qb q (E - 1) / qb q (L - 1 + 1))
+    (h01 : 2 ≤ E → Fc q a L 1 (E - 1) 0 1 (E - 1 - 1) = -(qb q (a - (E - 1) + 1) / qb q (a + L - 2 * (E - 1) + 2))) :
+    Fc q a (L + 1) 1 (E - 1) 1 1 (E - 1) = 1 := by
+  have hD := hD_of_pow q (N := 2 * (a + L) + 6) (by omega) hq2
+  have hrec := Fc_b_rec_two q hδ a L (E - 1) 0 1 ha hL (fun x hx => hd x (by omega))
+    (fun x h1 h2 => hq2 x h1 (by omega)) (by omega) ⟨by omega, by simp, by omega, le_rfl⟩
+  obtain ⟨L, rfl⟩ : ∃ L', L = L' + 1 := ⟨L - 1, by omega⟩
+  rw [Fc_cup_high q hδ (L + 1) (fun j hj => hd j (by omega)), Fc_cup_low_qb q hδ hD L (fun j hj => hd j (by omega)),
+    Fc_cup_high q hδ _ (fun j hj => hd j (by omega))] at hrec
+  simp only [Nat.add_zero] at hrec
+  rw [Fc_top_one_qb q hδ (by omega) (by omega) (by omega) (fun j hj => hd j (by omega))
+      (fun j h1 h2 => hq2 j h1 (by omega))] at hrec
+  show Fc q a (L + 2) 1 (E - 1) 1 1 (E - 1) = 1
+  set x := Fc q a (L + 2) 1 (E - 1) 1 1 (E - 1)
+  have hq1 : ∀ n, 1 ≤ n → n ≤ 2 * (a + (L + 1)) + 6 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  rcases Nat.lt_or_ge E 2 with hE2 | hE2
+  · -- E = 1: the second term vanishes
+    obtain rfl : E = 1 := by omega
+    have hz : Fc q a (L + 1) 1 0 0 1 0 = 0 := by
+      by_contra h0
+      have := Fc_total q hδ a (L + 1) 1 0 0 1 0 (by omega) (fun j hj => hd j (by omega)) (by omega) le_rfl
+        (Nat.zero_le _) (Nat.zero_le _) h0
+      omega
+    simp only [show 1 - 1 = 0 from rfl, Nat.zero_add, hz, mul_zero, add_zero, one_mul] at hrec
+    simp only [Nat.sub_zero] at hrec
+    rw [mul_comm (qb q (L + 1 + 1)), div_self (mul_ne_zero (hq1 _ (by omega) (by omega)) (hq1 _ (by omega) (by omega))),
+      mul_one] at hrec
+    exact hrec
+  · rw [h10 hE2, h01 hE2] at hrec
+    refine solve_one ?_ hrec ?_
+    · exact div_ne_zero (mul_ne_zero (hq1 _ (by omega) (by omega)) (hq1 _ (by omega) (by omega)))
+        (mul_ne_zero (hq1 _ (by omega) (by omega)) (hq1 _ (by omega) (by omega)))
+    · obtain ⟨e, rfl⟩ : ∃ e, E = e + 2 := ⟨E - 2, by omega⟩
+      obtain ⟨α, rfl⟩ : ∃ α, a = e + 1 + α := ⟨a - (e + 1), by omega⟩
+      obtain ⟨β, rfl⟩ : ∃ β, L = e + β := ⟨L - e, by omega⟩
+      have hA := qb_id_A q hD α β (e + 1)
+      have h1 := hq1 (e + β + 1) (by omega) (by omega)
+      have h2 := hq1 (e + β + 1 + 1) (by omega) (by omega)
+      have h3 := hq1 (α + β + 2) (by omega) (by omega)
+      simp only [show e + 2 - 1 = e + 1 by omega, show e + 1 + α + (e + β + 1) - (e + 1) + 2 = α + β + (e + 1) + 2 by omega,
+        show e + β + 1 - (e + 1) + 1 = β + 1 by omega, show e + β + 2 = e + β + 1 + 1 by omega,
+        show e + 1 + α + (e + β + 1) - 2 * (e + 1) + 2 = α + β + 2 by omega,
+        show e + 1 + α - (e + 1) + 1 = α + 1 by omega, show e + β + 1 - 1 + 1 = e + β + 1 by omega]
+      rw [show α + β + (e + 1) + 2 = α + β + e + 1 + 2 by ring, show e + 1 + β + 1 = e + β + 1 + 1 by ring] at hA
+      field_simp
+      linear_combination hA
 end Lightlike.TemperleyLieb
