@@ -634,6 +634,7 @@ import Lightlike.Lorentz.SL2RPlancherel.Link
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalKType
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalCoeff
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalSpherical
+import Lightlike.Lorentz.SL2RPlancherel.PrincipalPairing
 import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Linearity
 import Lightlike.Lorentz.SL2RPlancherel.WeightIntegrable
