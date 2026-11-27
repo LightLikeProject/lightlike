@@ -315,4 +315,67 @@ theorem integral_Ioi_abs_sinh_div_sqrt (F : ℝ → ℂ) (t : ℝ) :
   rw [abs_of_pos hd, Complex.real_smul, hsq, show Real.cosh t + 2 * (Real.cosh ξ - Real.cosh t) / 2 =
     Real.cosh ξ by ring]
 
+/-- `F ∘ g` has compact support when `F` does and `g x → ∞` as `|x| → ∞`. -/
+lemma hasCompactSupport_comp_of_forall {F : ℝ → ℂ} (hc : HasCompactSupport F) {g : ℝ → ℝ}
+    (hg : ∀ M, ∃ r, ∀ x, r < |x| → M < g x) : HasCompactSupport fun x => F (g x) := by
+  obtain ⟨R, hR⟩ := hc.isCompact.bddAbove
+  obtain ⟨r, hr⟩ := hg R
+  refine HasCompactSupport.intro (isCompact_Icc (a := -r) (b := r)) fun x hx => ?_
+  have hx' : r < |x| := by
+    by_contra h
+    push Not at h
+    exact hx (abs_le.1 h)
+  by_contra hne
+  have := hR (subset_tsupport F hne)
+  linarith [hr x hx']
+
+lemma cosh_ge_half_abs (ξ : ℝ) : (1 + |ξ|) / 2 ≤ Real.cosh ξ := by
+  rw [← Real.cosh_abs, Real.cosh_eq]
+  have := Real.add_one_le_exp |ξ|
+  have := Real.exp_pos (-|ξ|)
+  linarith
+
+lemma hasCompactSupport_comp_cosh {F : ℝ → ℂ} (hc : HasCompactSupport F) :
+    HasCompactSupport fun ξ => F (Real.cosh ξ) :=
+  hasCompactSupport_comp_of_forall hc fun M => ⟨2 * |M| + 1, fun ξ hξ => by
+    have := cosh_ge_half_abs ξ
+    have := le_abs_self M
+    linarith⟩
+
+lemma hasCompactSupport_comp_abel {F : ℝ → ℂ} (hc : HasCompactSupport F) (t : ℝ) :
+    HasCompactSupport fun w => F (Real.cosh t + w ^ 2 / 2) :=
+  hasCompactSupport_comp_of_forall hc fun M => ⟨2 * |M| + 1, fun w hw => by
+    have h1 := Real.one_le_cosh t
+    have h2 := le_abs_self M
+    have h3 : (2 * |M| + 1) ^ 2 < w ^ 2 := by
+      rw [← sq_abs w]; exact pow_lt_pow_left₀ hw (by positivity) (by norm_num)
+    nlinarith [abs_nonneg M]⟩
+
+lemma integrableOn_mehlerKernel (ν : ℝ) {ξ : ℝ} (hξ : 0 < ξ) :
+    IntegrableOn (mehlerKernel ν ξ) (Ioo (-ξ) ξ) := by
+  rw [← image_log_sphU hξ, integrableOn_image_iff_integrableOn_abs_deriv_smul measurableSet_Ioi
+    (fun x _ => (hasDerivAt_log_sphU ξ x).hasDerivWithinAt) (strictMonoOn_log_sphU hξ).injOn]
+  refine (((integrable_sphIntegrand ν hξ).const_mul 2).integrableOn).congr_fun
+    (fun x hx => (abs_mehlerDeriv_smul hξ hx).symm) measurableSet_Ioi
+
+lemma integral_norm_mehlerKernel_le (ν : ℝ) {ξ : ℝ} (hξ : 0 < ξ) :
+    ∫ t in Ioo (-ξ) ξ, ‖mehlerKernel ν ξ t‖ ≤ 2 * Real.exp (ξ / 2) * Real.pi := by
+  have hint := integrable_sphIntegrand ν hξ
+  rw [← image_log_sphU hξ, integral_image_eq_integral_abs_deriv_smul measurableSet_Ioi
+    (fun x _ => (hasDerivAt_log_sphU ξ x).hasDerivWithinAt) (strictMonoOn_log_sphU hξ).injOn]
+  have hc : ∫ x in Ioi (0 : ℝ), |mehlerDeriv ξ x| • ‖mehlerKernel ν ξ (Real.log (sphU ξ x))‖ =
+      ∫ x in Ioi (0 : ℝ), ‖2 * sphIntegrand ν ξ x‖ := by
+    refine setIntegral_congr_fun measurableSet_Ioi fun x hx => ?_
+    rw [← abs_mehlerDeriv_smul hξ hx, norm_smul, Real.norm_eq_abs, abs_abs, smul_eq_mul]
+  rw [hc]
+  calc ∫ x in Ioi (0 : ℝ), ‖2 * sphIntegrand ν ξ x‖
+      ≤ ∫ x, ‖2 * sphIntegrand ν ξ x‖ :=
+        setIntegral_le_integral (hint.const_mul 2).norm (Filter.Eventually.of_forall fun _ => norm_nonneg _)
+    _ ≤ ∫ x, 2 * Real.exp (ξ / 2) * (1 + x ^ 2)⁻¹ := by
+        refine integral_mono (hint.const_mul 2).norm
+          (integrable_inv_one_add_sq.const_mul _) fun x => ?_
+        rw [norm_mul, show ‖(2 : ℂ)‖ = 2 by simp, mul_assoc]
+        exact mul_le_mul_of_nonneg_left (norm_sphIntegrand_le ν hξ x) (by norm_num)
+    _ = 2 * Real.exp (ξ / 2) * Real.pi := by rw [integral_const_mul, integral_univ_inv_one_add_sq]
+
 end Lightlike.Lorentz.SL2RPlancherel
