@@ -47,8 +47,9 @@ The label `z` of the tetrahedron `s∖{s_a}` enters `eprlVertex` in the channel 
 for a tetrahedron shared by two 4-simplices at positions of different parity is not the same basis
 on both sides (`Lightlike.SpinFoam.EPRLStateSum.positional_gluing_ne_intrinsic`). The state sum in
 the sorted basis of every tetrahedron, which glues, is
-`Lightlike.SpinFoam.EPRLStateSum.amplitudeI`; at `γ = 1` it is the Ooguri state sum up to an
-explicit sign twist (`Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_signed_ooguri`).
+`Lightlike.SpinFoam.EPRLStateSum.amplitudeI`; at `γ = 1` it is the Ooguri state sum
+(`Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_ooguriSum`), and on a closed complex it does not depend on the order of the
+vertices (`Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_relabel`).
 
 ## References
 

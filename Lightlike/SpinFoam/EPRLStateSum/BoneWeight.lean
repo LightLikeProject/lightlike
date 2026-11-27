@@ -239,8 +239,8 @@ lemma boneB_relabel (σ : Equiv.Perm (Fin 6)) (f : Finset (Fin 6)) :
   simp only [h]
 
 /-- **The EPRL state sum at `γ = 1` on `∂Δ⁵` is the same for every reordering of the vertices (the trust check)**: the bone
-cutoff of `{0, 1}` with the vertices relabelled by any permutation `σ` gives `5`, the value of the unrelabelled cutoff; the library's
-earlier sign twist gave `5` or `-3`. -/
+cutoff of `{0, 1}` with the vertices relabelled by any permutation `σ` gives `5`, the value of the unrelabelled cutoff. A node basis
+change without the sign `nodeEta` gives `5` or `-3` (the wrong-input control `scripts/spinfoam/eprl_order_check.py`). -/
 theorem amplitudeI_sphere6_relabel (σ : Equiv.Perm (Fin 6)) :
     amplitudeI 1 sphere6 (fun f => boneB 0 1 (f.map σ.symm.toEmbedding)) = 5 := by
   have h : (fun f : Finset (Fin 6) => boneB 0 1 (f.map σ.symm.toEmbedding)) = boneB (σ 0) (σ 1) := by
