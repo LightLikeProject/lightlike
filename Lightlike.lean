@@ -2172,6 +2172,7 @@ import Lightlike.Tests.SphereRecognition
 import Lightlike.Tests.TreeDependence
 import Lightlike.TuraevViro.FMatrix
 import Lightlike.TuraevViro.Hexagon
+import Lightlike.TuraevViro.CraneYetter
 import Lightlike.TuraevViro.LevelOne
 import Lightlike.TuraevViro.PLInvariance
 import Lightlike.TuraevViro.Model

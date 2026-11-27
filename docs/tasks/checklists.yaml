@@ -1364,8 +1364,8 @@ milestones:
         hint: "Nothing on main: no Crane–Yetter state sum and no invariance theorem. Lightlike/TuraevViro/QFifteenJ.lean says so itself; invariance needs q-Biedenharn–Elliott (QU1), proven only at r = 3 (Lightlike.TV.qBiedenharnElliott_three)."
       - id: p1
         kind: piece
-        text: "The Crane–Yetter state sum (colourings of a 4-complex, face and edge weights, sum of products of quantum 15j symbols) is defined"
-        decls: []
+        text: "The Crane–Yetter state sum (colourings of a 4-complex, face and tetrahedron weights, product of the braided vertices of the 4-simplices of Crane–Kauffman–Yetter, Fig. 23) is defined"
+        decls: [Lightlike.TV.tlDelta, Lightlike.TV.tlTheta, Lightlike.TV.tlTet, Lightlike.TV.cyVertexLoc, Lightlike.TV.cyVertexAt, Lightlike.TV.cyTetWeight, Lightlike.TV.craneYetterWeight, Lightlike.TV.craneYetter]
         hint: "Missing. Only the vertex weight exists: Lightlike.TV.qFifteenJ."
       - id: p2
         kind: piece
