@@ -2,6 +2,7 @@ import Mathlib
 import Lightlike.Lorentz.SL2RPlancherel.KKCoeffSmooth
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalSpherical
 import Lightlike.Lorentz.SL2RPlancherel.KTypeBlockL2
+import Lightlike.Lorentz.SL2RPlancherel.PrincipalBlock
 
 /-!
 # The `K × K` components of a smooth function vanishing near `K` are ladder chains
@@ -11,6 +12,8 @@ smooth, `f` has compact support and `f` vanishes where `Σ g_ij² < 2 + ε`, eve
 `kkCoeff f m` is smooth (`contDiff_kkCoeff`), vanishes for `|ξ|` small and for `|ξ|` large, and its
 restriction to `ξ > 0` is a test function supported in `(0, ∞)`; by the surjectivity of the ladder
 chains it is `Hc_{r,l} G` for a test function `G`, for every `r, l` (`exists_Hc_eq_kkCoeff`).
+Hence every same-sign block transform of such `f` is the principal-series matrix coefficient with
+density `ρ tanh(πρ)` (`norm_sq_blockL2_kkL2_of_smooth`).
 Layer 2c-v of the Plancherel formula on `SL(2,ℝ)` (a dense class of test functions), milestone HA3.
 -/
 
@@ -124,5 +127,24 @@ theorem exists_Hc_eq_kkCoeff {f : SL2R → ℂ} {F : (Fin 2 → Fin 2 → ℝ) �
   have hp : (0 : ℝ) < ξ := hξ
   rw [show ((⟨G, hG, hGc⟩ : smoothCS) : ℝ → ℂ) = G from rfl, Hc_eq_hLR r hG l hp, hGeq ξ hp]
   simp [hH, hp]
+
+/-- **The same-sign block transforms of a smooth function vanishing near `K`**: for every `r, l`
+and almost every `ρ > 0`,
+`|blockL2 r l (kkL2 f (2r, -2l))(ρ)|² = ρ tanh(πρ) / (π² (2π)⁴) · |piCoeff (2ρ) f r (-l)|²`. -/
+theorem norm_sq_blockL2_kkL2_of_smooth {f : SL2R → ℂ} {F : (Fin 2 → Fin 2 → ℝ) → ℂ}
+    (hF : ContDiff ℝ ∞ F) (hfF : ∀ g : SL2R, f g = F fun i j => g i j)
+    (hc : HasCompactSupport f) {ε : ℝ} (hε : 0 < ε)
+    (h0 : ∀ g : SL2R, sumSq g < 2 + ε → f g = 0) (hf : MemLp f 2 haarR) (r l : ℕ) :
+    ∀ᵐ ρ ∂(volume.restrict (Ioi (0 : ℝ))),
+      ‖(blockL2 r l (kkL2 (hf.toLp f) ![2 * (r : ℤ), 2 * -(l : ℤ)]) : ℝ → ℂ) ρ‖ ^ 2 =
+        ρ * Real.tanh (Real.pi * ρ) / (Real.pi ^ 2 * (2 * Real.pi) ^ 4) *
+          ‖piCoeff (2 * ρ) f r (-l)‖ ^ 2 := by
+  have hfc : Continuous f := by
+    have e : f = fun g : SL2R => F fun i j => g i j := funext hfF
+    rw [e]
+    exact hF.continuous.comp (continuous_pi fun i => continuous_pi fun j =>
+      (continuous_apply j).comp ((continuous_apply i).comp continuous_subtype_val))
+  obtain ⟨G, hG⟩ := exists_Hc_eq_kkCoeff hF hfF hc hε h0 ![2 * (r : ℤ), 2 * -(l : ℤ)] r l
+  exact norm_sq_blockL2_kkL2 hfc hf hc r l G hG
 
 end Lightlike.Lorentz.SL2RPlancherel
