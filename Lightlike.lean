@@ -1309,6 +1309,7 @@ import Lightlike.Recoupling.Ladder
 import Lightlike.Recoupling.Loop
 import Lightlike.Recoupling.Network
 import Lightlike.Recoupling.NineJ
+import Lightlike.Recoupling.NineJSwap
 import Lightlike.Recoupling.Orthogonality
 import Lightlike.Recoupling.Simplex
 import Lightlike.Recoupling.Span
@@ -2222,6 +2223,7 @@ import Lightlike.SpinFoam.EPRLStateSum.ComplexIntrinsicAmp
 import Lightlike.SpinFoam.EPRLStateSum.TrustSphere
 import Lightlike.SpinFoam.EPRLStateSum.Sphere6Sign
 import Lightlike.SpinFoam.EPRLStateSum.IntrinsicVertex
+import Lightlike.SpinFoam.EPRLStateSum.Orientation
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
