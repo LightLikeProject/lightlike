@@ -2165,6 +2165,9 @@ import Lightlike.TuraevViro.SMatrix
 import Lightlike.TuraevViro.SOrthogonal
 import Lightlike.TuraevViro.QNumber
 import Lightlike.TuraevViro.QSixJ
+import Lightlike.TuraevViro.QSixJGeneric
+import Lightlike.TuraevViro.QSixJLimit
+import Lightlike.TuraevViro.QSixJRegular
 import Lightlike.TuraevViro.QFifteenJ
 import Lightlike.TuraevViro.Reflect.Poly
 import Lightlike.TuraevViro.Reflect.RacahCert0
@@ -2373,6 +2376,8 @@ import Lightlike.TemperleyLieb.GramVanish
 import Lightlike.TemperleyLieb.Expansion
 import Lightlike.TemperleyLieb.ShiftComm
 import Lightlike.TemperleyLieb.Pentagon
+import Lightlike.TemperleyLieb.KLCoef
+import Lightlike.TemperleyLieb.TopEntry
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
