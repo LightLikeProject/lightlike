@@ -318,4 +318,113 @@ theorem kl_third_lower (q : kˣ) {a b c e₀ d₀ m i : ℕ}
         · rw [hS0 h]; ring
   rw [e0, e1, eC]
   linear_combination (-δθ) * comb
+/-- The `c` term of the `g₀ = 0` recursion as a tetrahedral sum (the base data). -/
+lemma kl_hat_upper_c (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hc : KLAdm a b (c + 1) e₀ d₀ m i) (hi : e₀ + d₀ = m + i)
+    (hdc : d₀ ≤ c) :
+    klCoef q a b (c + 1) e₀ d₀ m i = deltaKL q (a + b - 2 * e₀) / thetaKL q a b (a + b - 2 * e₀) *
+      (tetPre q a b (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ + 1) (a + b - 2 * e₀) (b + c + 1 - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀ + 1) (b + c + 1 - m) (a + b + c + 1 - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m) (a + b + c + 1 - e₀ - m) (a + b + c + 1 - e₀ - d₀) /
+        thetaKL q (a + b - 2 * e₀) (c + 1) (a + b - 2 * e₀ + c - 2 * d₀ + 1)) * ∑ z ∈ range (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m + 1), tetHat q (a + b - e₀ : ℕ) (a + b - 2 * e₀ + c - d₀ + 1 : ℕ) (b + c + 1 - m : ℕ) (a + b + c + 1 - m - e₀ - d₀ : ℕ) (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m : ℕ) (a + b + c + 1 - e₀ - m : ℕ) (a + b + c + 1 - e₀ - d₀ : ℕ) z := by
+  have hk := hc
+  simp only [KLAdm, le_min_iff] at hk
+  exact klCoef_eq_hat q hc rfl (by omega) rfl (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    (by omega) (by omega)
+
+/-- The `h = 0` term of the `g₀ = 0` recursion as a tetrahedral sum. -/
+lemma kl_hat_upper_0 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (h0 : KLAdm a b c e₀ d₀ m i) (hi : e₀ + d₀ = m + i) :
+    klCoef q a b c e₀ d₀ m i = deltaKL q (a + b - 2 * e₀) / thetaKL q a b (a + b - 2 * e₀) *
+      (tetPre q a b c (a + b - 2 * e₀ + c - 2 * d₀) (a + b - 2 * e₀) (b + c - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀) (b + c - m) (a + b + c - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c - d₀ - m) (a + b + c - e₀ - m) (a + b + c - e₀ - d₀) /
+        thetaKL q (a + b - 2 * e₀) c (a + b - 2 * e₀ + c - 2 * d₀)) * ∑ z ∈ range (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m + 1), tetHat q (a + b - e₀ : ℕ) (a + b - 2 * e₀ + c - d₀ : ℕ) (b + c - m : ℕ) (a + b + c - m - e₀ - d₀ : ℕ) (a + 2 * b - 2 * e₀ + c - d₀ - m : ℕ) (a + b + c - e₀ - m : ℕ) (a + b + c - e₀ - d₀ : ℕ) z := by
+  have hk := h0
+  simp only [KLAdm, le_min_iff] at hk
+  exact klCoef_eq_hat q h0 rfl rfl rfl (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    (by omega) (by omega)
+
+/-- The `h = 1` term of the `g₀ = 0` recursion as a tetrahedral sum. -/
+lemma kl_hat_upper_1 (q : kˣ) {a b c e₀ d₀ m i : ℕ} (h1 : KLAdm a b c e₀ d₀ (m - 1) (i + 1)) (hi : e₀ + d₀ = m + i)
+    (hm : 1 ≤ m) :
+    klCoef q a b c e₀ d₀ (m - 1) (i + 1) = deltaKL q (a + b - 2 * e₀) / thetaKL q a b (a + b - 2 * e₀) *
+      (tetPre q a b c (a + b - 2 * e₀ + c - 2 * d₀) (a + b - 2 * e₀) (b + c + 2 - 2 * m) (a + b - e₀) (a + b - 2 * e₀ + c - d₀) (b + c + 1 - m) (a + b + c + 1 - m - e₀ - d₀) (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m) (a + b + c + 1 - e₀ - m) (a + b + c - e₀ - d₀) /
+        thetaKL q (a + b - 2 * e₀) c (a + b - 2 * e₀ + c - 2 * d₀)) * ∑ z ∈ range (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m + 1), tetHat q (a + b - e₀ : ℕ) (a + b - 2 * e₀ + c - d₀ : ℕ) (b + c + 1 - m : ℕ) (a + b + c + 1 - m - e₀ - d₀ : ℕ) (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m : ℕ) (a + b + c + 1 - e₀ - m : ℕ) (a + b + c - e₀ - d₀ : ℕ) z := by
+  have hk := h1
+  simp only [KLAdm, le_min_iff] at hk
+  exact klCoef_eq_hat q h1 rfl rfl (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) (by omega)
+    (by omega) (by omega)
+
+/-- **The telescoped identity of the `g₀ = 0` recursion** on the three tetrahedral sums. -/
+lemma kl_tel_upper (q : kˣ) {a b c e₀ d₀ m i : ℕ} (hq2 : ∀ x, 1 ≤ x → x ≤ 2 * (a + b + c) + 6 → (q : k) ^ (2 * x) ≠ 1)
+    (hmb : m ≤ b) (hmz : m ≤ c + 1) (hia : i ≤ a) (hiz : i ≤ b + (c + 1) - 2 * m) (hv : ValidA a b c 1 e₀ d₀ 0)
+    (hi : e₀ + d₀ = m + i) :
+    qb q (c - d₀ + 1) * qb q (b + c + 2 - 2 * m) * ∑ z ∈ range (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m + 1), tetHat q (a + b - e₀ : ℕ) (a + b - 2 * e₀ + c - d₀ + 1 : ℕ) (b + c + 1 - m : ℕ) (a + b + c + 1 - m - e₀ - d₀ : ℕ) (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m : ℕ) (a + b + c + 1 - e₀ - m : ℕ) (a + b + c + 1 - e₀ - d₀ : ℕ) z -
+      -(qb q (b + c - m + 2) * qb q (a + b + c - 2 * m - i + 2)) * ∑ z ∈ range (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m + 1), tetHat q (a + b - e₀ : ℕ) (a + b - 2 * e₀ + c - d₀ : ℕ) (b + c - m : ℕ) (a + b + c - m - e₀ - d₀ : ℕ) (a + 2 * b - 2 * e₀ + c - d₀ - m : ℕ) (a + b + c - e₀ - m : ℕ) (a + b + c - e₀ - d₀ : ℕ) z -
+      qb q (b + 1 - m) * qb q (i + 1) * ∑ z ∈ range (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m + 1), tetHat q (a + b - e₀ : ℕ) (a + b - 2 * e₀ + c - d₀ : ℕ) (b + c + 1 - m : ℕ) (a + b + c + 1 - m - e₀ - d₀ : ℕ) (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m : ℕ) (a + b + c + 1 - e₀ - m : ℕ) (a + b + c - e₀ - d₀ : ℕ) z = 0 := by
+  obtain ⟨he, hd₀, hg, hg1⟩ := hv
+  have he1 := he.trans (min_le_left _ _); have he2 := he.trans (min_le_right _ _)
+  have hd1 := hd₀.trans (min_le_left _ _); have hd2 := hd₀.trans (min_le_right _ _)
+  have hD : (q : k) - (q : k)⁻¹ ≠ 0 := hD_of_pow q (N := 2 * (a + b + c) + 6) (by omega) hq2
+  have hnz := qz_ne_of_pow q (M := 2 * (a + b + c) + 6) hq2
+  have ht := tel_upper_sum q hD (M := ((2 * (a + b + c) + 6 : ℕ) : ℤ)) hnz (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m + 1)
+    (a + b - e₀ : ℕ) (a + b - 2 * e₀ + c - d₀ + 1 : ℕ) (b + c + 1 - m : ℕ) (a + b + c + 1 - m - e₀ - d₀ : ℕ) (a + 2 * b - 2 * e₀ + c + 1 - d₀ - m : ℕ) (a + b + c + 1 - e₀ - m : ℕ)
+    ⟨by positivity, by positivity, by positivity, by positivity⟩
+    ⟨by push_cast; omega, by push_cast; omega, by push_cast; omega, by omega⟩ (by push_cast; omega)
+  have hB3 : ((a + b - e₀ : ℕ) : ℤ) + ((a + b - 2 * e₀ + c - d₀ + 1 : ℕ) : ℤ) + ((b + c + 1 - m : ℕ) : ℤ) + ((a + b + c + 1 - m - e₀ - d₀ : ℕ) : ℤ) - ((a + 2 * b - 2 * e₀ + c + 1 - d₀ - m : ℕ) : ℤ) - ((a + b + c + 1 - e₀ - m : ℕ) : ℤ) =
+      ((a + b + c + 1 - e₀ - d₀ : ℕ) : ℤ) := by omega
+  simp only [hB3] at ht
+  rw [mul_sum, mul_sum, mul_sum, ← sum_sub_distrib, ← sum_sub_distrib]
+  refine (sum_congr rfl fun z _ => ?_).trans ht
+  rw [show ((a + b + c + 1 - e₀ - d₀ : ℕ) : ℤ) - ((a + b - e₀ : ℕ) : ℤ) = ((c - d₀ + 1 : ℕ) : ℤ) by omega,
+    show ((b + c + 1 - m : ℕ) : ℤ) + ((a + b + c + 1 - m - e₀ - d₀ : ℕ) : ℤ) - ((a + b + c + 1 - e₀ - d₀ : ℕ) : ℤ) + 1 = ((b + c + 2 - 2 * m : ℕ) : ℤ) by omega,
+    show ((b + c + 1 - m : ℕ) : ℤ) + 1 = ((b + c - m + 2 : ℕ) : ℤ) by omega,
+    show ((a + b + c + 1 - m - e₀ - d₀ : ℕ) : ℤ) + 1 = ((a + b + c - 2 * m - i + 2 : ℕ) : ℤ) by omega,
+    show ((a + 2 * b - 2 * e₀ + c + 1 - d₀ - m : ℕ) : ℤ) - ((a + b - 2 * e₀ + c - d₀ + 1 : ℕ) : ℤ) + 1 = ((b + 1 - m : ℕ) : ℤ) by omega,
+    show ((a + b + c + 1 - e₀ - m : ℕ) : ℤ) - ((a + b - 2 * e₀ + c - d₀ + 1 : ℕ) : ℤ) + 1 = ((i + 1 : ℕ) : ℤ) by omega,
+    show ((a + b - 2 * e₀ + c - d₀ + 1 : ℕ) : ℤ) - 1 = ((a + b - 2 * e₀ + c - d₀ : ℕ) : ℤ) by omega,
+    show ((b + c + 1 - m : ℕ) : ℤ) - 1 = ((b + c - m : ℕ) : ℤ) by omega,
+    show ((a + b + c + 1 - m - e₀ - d₀ : ℕ) : ℤ) - 1 = ((a + b + c - m - e₀ - d₀ : ℕ) : ℤ) by omega,
+    show ((a + 2 * b - 2 * e₀ + c + 1 - d₀ - m : ℕ) : ℤ) - 1 = ((a + 2 * b - 2 * e₀ + c - d₀ - m : ℕ) : ℤ) by omega,
+    show ((a + b + c + 1 - e₀ - m : ℕ) : ℤ) - 1 = ((a + b + c - e₀ - m : ℕ) : ℤ) by omega,
+    show ((a + b + c + 1 - e₀ - d₀ : ℕ) : ℤ) - 1 = ((a + b + c - e₀ - d₀ : ℕ) : ℤ) by omega,
+    ← qb_eq_qz, ← qb_eq_qz, ← qb_eq_qz, ← qb_eq_qz, ← qb_eq_qz, ← qb_eq_qz]
+  ring
+
+/-- The `h = 0` term of the `g₀ = 0` recursion forces the `c` term. -/
+lemma kl_upper_0_imp_c {a b c e₀ d₀ m i : ℕ} (hmb : m ≤ b) (hmz : m ≤ c + 1) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + 1) - 2 * m) (hv : ValidA a b c 1 e₀ d₀ 0) (hi : e₀ + d₀ = m + i)
+    (h0 : KLAdm b c 1 m 0 0 m ∧ KLAdm a (b + c - 2 * m) 1 i 0 0 i ∧ KLAdm a b c e₀ d₀ m i) :
+    KLAdm a b (c + 1) e₀ d₀ m i ∧ KLAdm (a + b - 2 * e₀) c 1 d₀ 0 0 d₀ := by
+  obtain ⟨he, hd₀, hg, -⟩ := hv
+  simp only [KLAdm, le_min_iff] at he hd₀ h0 ⊢
+  omega
+
+/-- The `h = 1` term of the `g₀ = 0` recursion forces the `c` term. -/
+lemma kl_upper_1_imp_c {a b c e₀ d₀ m i : ℕ} (hmb : m ≤ b) (hmz : m ≤ c + 1) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + 1) - 2 * m) (hv : ValidA a b c 1 e₀ d₀ 0) (hi : e₀ + d₀ = m + i)
+    (h1 : 1 ≤ m ∧ KLAdm b c 1 (m - 1) 1 0 m ∧ KLAdm a (b + c - 2 * (m - 1)) 1 (i + 1) 0 1 i ∧
+      KLAdm a b c e₀ d₀ (m - 1) (i + 1)) :
+    KLAdm a b (c + 1) e₀ d₀ m i ∧ KLAdm (a + b - 2 * e₀) c 1 d₀ 0 0 d₀ := by
+  obtain ⟨he, hd₀, hg, -⟩ := hv
+  simp only [KLAdm, le_min_iff] at he hd₀ h1 ⊢
+  omega
+
+/-- The `h = 0` term of the `g₀ = 0` recursion: present, or its box is empty. -/
+lemma kl_upper_0_present {a b c e₀ d₀ m i : ℕ} (hmb : m ≤ b) (hmz : m ≤ c + 1) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + 1) - 2 * m) (hv : ValidA a b c 1 e₀ d₀ 0) (hi : e₀ + d₀ = m + i)
+    (h : ¬ (KLAdm b c 1 m 0 0 m ∧ KLAdm a (b + c - 2 * m) 1 i 0 0 i ∧ KLAdm a b c e₀ d₀ m i)) :
+    a + 2 * b - 2 * e₀ + c - d₀ - m < a + b - e₀ ∨ a + b + c - e₀ - m < a + b - e₀ := by
+  by_contra hlt
+  apply h
+  obtain ⟨he, hd₀, hg, -⟩ := hv
+  simp only [KLAdm, le_min_iff] at he hd₀ ⊢
+  omega
+
+/-- The `h = 1` term of the `g₀ = 0` recursion: present, or its box is empty. -/
+lemma kl_upper_1_present {a b c e₀ d₀ m i : ℕ} (hmb : m ≤ b) (hmz : m ≤ c + 1) (hia : i ≤ a)
+    (hiz : i ≤ b + (c + 1) - 2 * m) (hv : ValidA a b c 1 e₀ d₀ 0) (hi : e₀ + d₀ = m + i)
+    (h : ¬ (1 ≤ m ∧ KLAdm b c 1 (m - 1) 1 0 m ∧ KLAdm a (b + c - 2 * (m - 1)) 1 (i + 1) 0 1 i ∧
+      KLAdm a b c e₀ d₀ (m - 1) (i + 1))) :
+    a + b + c - e₀ - d₀ < a + b + c + 1 - m - e₀ - d₀ ∨ a + b + c - e₀ - d₀ < b + c + 1 - m := by
+  by_contra hlt
+  apply h
+  obtain ⟨he, hd₀, hg, -⟩ := hv
+  simp only [KLAdm, le_min_iff] at he hd₀ ⊢
+  omega
 end Lightlike.TemperleyLieb
