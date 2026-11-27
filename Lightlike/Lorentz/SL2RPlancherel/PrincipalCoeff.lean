@@ -422,4 +422,59 @@ theorem hasDerivAt_qForm_comp (ν : ℝ) (n : ℤ) {N D : ℝ → ℝ} {N' D' t 
   push_cast
   ring_nf
 
+lemma qForm_one (ν : ℝ) (n : ℤ) (x : ℝ) : qForm ν n x 1 = kVecP ν n x := by
+  simp only [qForm, kVecP, mul_one, Complex.ofReal_one, show ((I * (ν : ℂ) - 1) / 2) = wP ν from rfl]
+  congr 2
+  ring
+
+/-- `t ↦ (num, den)(c(t), x)` has derivative `(-sin t x - e^ξ cos t, e^{-ξ} cos t x - sin t)`. -/
+lemma hasDerivAt_num_cT (ξ x t : ℝ) :
+    HasDerivAt (fun t => num (cT ξ t) x) (-(Real.sin t) * x - Real.exp ξ * Real.cos t) t := by
+  have h : (fun t => num (cT ξ t) x) = fun t => Real.cos t * x - Real.exp ξ * Real.sin t :=
+    funext fun t => num_cT ξ t x
+  rw [h]
+  have := ((Real.hasDerivAt_cos t).mul_const x).sub ((Real.hasDerivAt_sin t).const_mul (Real.exp ξ))
+  convert this using 1
+
+lemma hasDerivAt_den_cT (ξ x t : ℝ) :
+    HasDerivAt (fun t => den (cT ξ t) x) (Real.exp (-ξ) * Real.cos t * x - Real.sin t) t := by
+  have h : (fun t => den (cT ξ t) x) = fun t => Real.exp (-ξ) * Real.sin t * x + Real.cos t :=
+    funext fun t => den_cT ξ t x
+  rw [h]
+  have := (((Real.hasDerivAt_sin t).const_mul (Real.exp (-ξ))).mul_const x).add (Real.hasDerivAt_cos t)
+  convert this using 1
+
+/-- **The derivative along `c(t)` at `t = 0`, in `K`-types**:
+`d/dt|₀ (π(c(t)) e_n)(x) = -2in cosh ξ e_n(x) - i sinh ξ (w - n) e_{n+1}(x) + i sinh ξ (w + n) e_{n-1}(x)`. -/
+theorem hasDerivAt_qForm_cT_zero (ν : ℝ) (n : ℤ) (ξ x : ℝ) :
+    HasDerivAt (fun t => qForm ν n (num (cT ξ t) x) (den (cT ξ t) x))
+      (-(2 * I * n * Real.cosh ξ) * kVecP ν n x -
+        I * Real.sinh ξ * (wP ν - n) * kVecP ν (n + 1) x +
+        I * Real.sinh ξ * (wP ν + n) * kVecP ν (n - 1) x) 0 := by
+  have hpos := num_sq_add_den_sq_pos (cT ξ 0) x
+  have h := hasDerivAt_qForm_comp ν n (hasDerivAt_num_cT ξ x 0) (hasDerivAt_den_cT ξ x 0) hpos
+  convert h using 1
+  have hN : num (cT ξ 0) x = x := by rw [num_cT]; simp
+  have hD : den (cT ξ 0) x = 1 := by rw [den_cT]; simp
+  rw [hN, hD, qForm_one]
+  simp only [Real.sin_zero, Real.cos_zero, neg_zero, zero_mul, mul_one, zero_sub, sub_zero]
+  -- `e_{n±1} = e_n u^{±1}` and the hyperbolic functions in exponentials
+  have hp := ofReal_add_I_ne_zero x
+  have hm := ofReal_sub_I_ne_zero x
+  have hune : ((x : ℂ) - I) / ((x : ℂ) + I) ≠ 0 := div_ne_zero hm hp
+  have h1 : kVecP ν (n + 1) x = kVecP ν n x * (((x : ℂ) - I) / ((x : ℂ) + I)) := by
+    simp only [kVecP]; rw [zpow_add_one₀ hune]; ring
+  have h2 : kVecP ν (n - 1) x = kVecP ν n x / (((x : ℂ) - I) / ((x : ℂ) + I)) := by
+    simp only [kVecP]; rw [zpow_sub_one₀ hune]; ring
+  have hx2 : (((x ^ 2 + 1 : ℝ)) : ℂ) = ((x : ℂ) - I) * ((x : ℂ) + I) := by
+    push_cast; ring_nf; rw [Complex.I_sq]; ring
+  have hE : Real.exp ξ * Real.exp (-ξ) = 1 := by rw [← Real.exp_add]; simp
+  rw [h1, h2, Real.cosh_eq, Real.sinh_eq]
+  rw [show (x ^ 2 + 1 ^ 2 : ℝ) = x ^ 2 + 1 by ring, hx2]
+  have hEC : ((Real.exp ξ : ℝ) : ℂ) * ((Real.exp (-ξ) : ℝ) : ℂ) = 1 := by exact_mod_cast hE
+  field_simp
+  push_cast
+  linear_combination (2 * kVecP ν n x * x * wP ν * (Complex.exp ξ - Complex.exp (-ξ)) +
+    2 * I * kVecP ν n x * n * Complex.exp ξ) * Complex.I_sq
+
 end Lightlike.Lorentz.SL2RPlancherel
