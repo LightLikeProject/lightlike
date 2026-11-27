@@ -345,6 +345,8 @@ import Lightlike.Geometry.HeatKernel.TransportEquations
 import Lightlike.Geometry.HeatKernel.TransportEquationsTests
 import Lightlike.Geometry.HeatKernel.WorldFunctionDiag
 import Lightlike.Geometry.HeatKernel.WorldFunctionDiagTests
+import Lightlike.Geometry.HeatKernel.NormalTransport
+import Lightlike.Geometry.HeatKernel.NormalTransportTests
 import Lightlike.Geometry.HeatKernel.GaussianDeriv
 import Lightlike.Geometry.HeatKernel.Potential
 import Lightlike.Geometry.HeatKernel.InducedGravity
