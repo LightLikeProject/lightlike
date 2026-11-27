@@ -104,25 +104,23 @@ lemma sum_tetTerm_eq_sum_tetHat (q : kˣ) {F₁ F₂ F₃ F₄ B₁ B₂ B₃ N 
     omega
 
 
-/-- **The termwise certificate for `g₀ = 1`**: with `G(z) = [z-F₁][z-F₂] T₁(z) / ([B₁-F₁][B₁-F₂])`,
-`ρ' T_{c+1}(z) - ρ'' T₀(z) - T₁(z) = G(z+1) - G(z)` for the zero-extended summands, where `T₁` has the data
-`(F, B)`, `T_{c+1}` has `F₄ - 1, B₁ - 1`, and `T₀` has `F₃ - 1, F₄ - 1, B₁ - 1, B₂ - 1`. -/
+/-- **The termwise certificate for `g₀ = 1`**: with `G(z) = [z-F₁][z-F₂] T₁(z)`,
+`[B₂-F₄+1][F₃+F₄-B₃] T_{c+1}(z) - [F₃+1][B₃-F₃+1] T₀(z) - [B₁-F₁][B₁-F₂] T₁(z) = G(z+1) - G(z)` for the zero-extended
+summands, where `T₁` has the data `(F, B)`, `T_{c+1}` has `F₄ - 1, B₁ - 1`, and `T₀` has `F₃ - 1, F₄ - 1, B₁ - 1, B₂ - 1`
+(`B₃ = F₁ + F₂ + F₃ + F₄ - B₁ - B₂`). -/
 theorem tel_lower_term (q : kˣ) (hq : (q : k) - (q : k)⁻¹ ≠ 0) {M : ℤ} (hnz : ∀ n : ℤ, 1 ≤ n → n ≤ M → qz q n ≠ 0)
     (z : ℕ) (F₁ F₂ F₃ F₄ B₁ B₂ : ℤ) (hF : 0 ≤ F₁ ∧ 0 ≤ F₂ ∧ 0 ≤ F₃ ∧ 0 ≤ F₄)
-    (hM : (z : ℤ) + 2 ≤ M ∧ B₁ ≤ M ∧ B₂ ≤ M ∧ F₁ + F₂ + F₃ + F₄ - B₁ - B₂ ≤ M)
-    (hk : qz q (B₁ - F₁) * qz q (B₁ - F₂) ≠ 0) :
+    (hM : (z : ℤ) + 2 ≤ M ∧ B₁ ≤ M ∧ B₂ ≤ M ∧ F₁ + F₂ + F₃ + F₄ - B₁ - B₂ ≤ M) :
     let B₃ := F₁ + F₂ + F₃ + F₄ - B₁ - B₂
-    let κ := (qz q (B₁ - F₁) * qz q (B₁ - F₂))⁻¹
-    let G : ℕ → k := fun w => κ * qz q (w - F₁) * qz q (w - F₂) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ w
-    κ * (qz q (B₂ - F₄ + 1) * qz q (F₃ + F₄ - B₃)) * tetHat q F₁ F₂ F₃ (F₄ - 1) (B₁ - 1) B₂ B₃ z -
-        κ * (qz q (F₃ + 1) * qz q (B₃ - F₃ + 1)) * tetHat q F₁ F₂ (F₃ - 1) (F₄ - 1) (B₁ - 1) (B₂ - 1) B₃ z -
-        tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ z = G (z + 1) - G z := by
-  intro B₃ κ G
+    let G : ℕ → k := fun w => qz q (w - F₁) * qz q (w - F₂) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ w
+    qz q (B₂ - F₄ + 1) * qz q (F₃ + F₄ - B₃) * tetHat q F₁ F₂ F₃ (F₄ - 1) (B₁ - 1) B₂ B₃ z -
+        qz q (F₃ + 1) * qz q (B₃ - F₃ + 1) * tetHat q F₁ F₂ (F₃ - 1) (F₄ - 1) (B₁ - 1) (B₂ - 1) B₃ z -
+        qz q (B₁ - F₁) * qz q (B₁ - F₂) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ z = G (z + 1) - G z := by
+  intro B₃ G
   obtain ⟨hF1, hF2, hF3, hF4⟩ := hF
   obtain ⟨hz, hB1, hB2, hB3⟩ := hM
   have P : ∀ n : ℤ, n ≤ M → rqf q (n - 1) = qz q n * rqf q n := fun n hn =>
     rqf_pred q n fun h1 => hnz n h1 hn
-  -- each zero-extended summand through the envelope `W = tetEnv`
   have eF : ∀ F : ℤ, 0 ≤ F → rqf q ((z : ℤ) - F) = qz q (z + 1 - F) * rqf q (z + 1 - F) := fun F hF0 => by
     rw [← P _ (by omega)]; congr 1; ring
   have eB : ∀ B : ℤ, B ≤ M → rqf q (B - 1 - z) = qz q (B - z) * rqf q (B - z) := fun B hB0 => by
@@ -139,39 +137,25 @@ theorem tel_lower_term (q : kˣ) (hq : (q : k) - (q : k)⁻¹ ≠ 0) {M : ℤ} (
   simp only [G, tetHat]
   rw [eF F₁ hF1, eF F₂ hF2, eF F₃ hF3, eF F₄ hF4, e4 F₃, e4 F₄, eB B₁ hB1, eB B₂ hB2, eF1, eF1, eF1, eF1,
     eB' B₁ hB1, eB' B₂ hB2, eB' B₃ hB3, eq1, eq1, hfac]
-  have hκ : κ * (qz q (B₁ - F₁) * qz q (B₁ - F₂)) = 1 := inv_mul_cancel₀ hk
   linear_combination
     ((-1) ^ z * qfac q (z + 1) *
         (rqf q (z + 1 - F₁) * rqf q (z + 1 - F₂) * rqf q (z + 1 - F₃) * rqf q (z + 1 - F₄)) *
-        (rqf q (B₁ - z) * rqf q (B₂ - z) * rqf q (B₃ - z)) * qz q (z + 1 - F₁) * qz q (z + 1 - F₂) * κ) * core +
-    ((-1) ^ z * qfac q (z + 1) *
-        (rqf q (z + 1 - F₁) * rqf q (z + 1 - F₂) * rqf q (z + 1 - F₃) * rqf q (z + 1 - F₄)) *
-        (rqf q (B₁ - z) * rqf q (B₂ - z) * rqf q (B₃ - z)) * qz q (z + 1 - F₁) * qz q (z + 1 - F₂) *
-        (qz q (z + 1 - F₃) * qz q (z + 1 - F₄))) * hκ
-
+        (rqf q (B₁ - z) * rqf q (B₂ - z) * rqf q (B₃ - z)) * qz q (z + 1 - F₁) * qz q (z + 1 - F₂)) * core
 
 /-- **The telescoped recursion for `g₀ = 1`**: summed over `range N` past the range of the summands,
-`ρ' Σ T_{c+1} - ρ'' Σ T₀ - Σ T₁ = 0`. -/
+`[B₂-F₄+1][F₃+F₄-B₃] Σ T_{c+1} - [F₃+1][B₃-F₃+1] Σ T₀ - [B₁-F₁][B₁-F₂] Σ T₁ = 0`. -/
 theorem tel_lower_sum (q : kˣ) (hq : (q : k) - (q : k)⁻¹ ≠ 0) {M : ℤ} (hnz : ∀ n : ℤ, 1 ≤ n → n ≤ M → qz q n ≠ 0)
     (N : ℕ) (F₁ F₂ F₃ F₄ B₁ B₂ : ℤ) (hF : 0 ≤ F₁ ∧ 0 ≤ F₂ ∧ 0 ≤ F₃ ∧ 0 ≤ F₄)
-    (hM : (N : ℤ) + 1 ≤ M ∧ B₁ ≤ M ∧ B₂ ≤ M ∧ F₁ + F₂ + F₃ + F₄ - B₁ - B₂ ≤ M) (hN : B₁ < N)
-    (hk : qz q (B₁ - F₁) * qz q (B₁ - F₂) ≠ 0) :
+    (hM : (N : ℤ) + 1 ≤ M ∧ B₁ ≤ M ∧ B₂ ≤ M ∧ F₁ + F₂ + F₃ + F₄ - B₁ - B₂ ≤ M) (hN : B₁ < N) :
     let B₃ := F₁ + F₂ + F₃ + F₄ - B₁ - B₂
-    let κ := (qz q (B₁ - F₁) * qz q (B₁ - F₂))⁻¹
-    ∑ z ∈ range N, (κ * (qz q (B₂ - F₄ + 1) * qz q (F₃ + F₄ - B₃)) * tetHat q F₁ F₂ F₃ (F₄ - 1) (B₁ - 1) B₂ B₃ z -
-        κ * (qz q (F₃ + 1) * qz q (B₃ - F₃ + 1)) * tetHat q F₁ F₂ (F₃ - 1) (F₄ - 1) (B₁ - 1) (B₂ - 1) B₃ z -
-        tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ z) = 0 := by
-  intro B₃ κ
+    ∑ z ∈ range N, (qz q (B₂ - F₄ + 1) * qz q (F₃ + F₄ - B₃) * tetHat q F₁ F₂ F₃ (F₄ - 1) (B₁ - 1) B₂ B₃ z -
+        qz q (F₃ + 1) * qz q (B₃ - F₃ + 1) * tetHat q F₁ F₂ (F₃ - 1) (F₄ - 1) (B₁ - 1) (B₂ - 1) B₃ z -
+        qz q (B₁ - F₁) * qz q (B₁ - F₂) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ z) = 0 := by
+  intro B₃
   obtain ⟨hN1, hB1, hB2, hB3⟩ := hM
-  set G : ℕ → k := fun w => κ * qz q (w - F₁) * qz q (w - F₂) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ w with hG
-  have term : ∀ z ∈ range N, (κ * (qz q (B₂ - F₄ + 1) * qz q (F₃ + F₄ - B₃)) *
-        tetHat q F₁ F₂ F₃ (F₄ - 1) (B₁ - 1) B₂ B₃ z -
-      κ * (qz q (F₃ + 1) * qz q (B₃ - F₃ + 1)) * tetHat q F₁ F₂ (F₃ - 1) (F₄ - 1) (B₁ - 1) (B₂ - 1) B₃ z -
-      tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ z) = G (z + 1) - G z := by
-    intro z hz
-    rw [mem_range] at hz
-    exact tel_lower_term q hq hnz z F₁ F₂ F₃ F₄ B₁ B₂ hF ⟨by omega, hB1, hB2, hB3⟩ hk
-  rw [sum_congr rfl term, sum_range_sub (f := G)]
+  set G : ℕ → k := fun w => qz q (w - F₁) * qz q (w - F₂) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ w with hG
+  rw [sum_congr rfl fun z hz => tel_lower_term q hq hnz z F₁ F₂ F₃ F₄ B₁ B₂ hF
+    ⟨by rw [mem_range] at hz; omega, hB1, hB2, hB3⟩, sum_range_sub (f := G)]
   have hGN : G N = 0 := by
     simp only [hG]
     rw [tetHat_eq_zero q (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hN))))), mul_zero]
@@ -182,23 +166,18 @@ theorem tel_lower_sum (q : kˣ) (hq : (q : k) - (q : k)⁻¹ ≠ 0) {M : ℤ} (h
     · rw [tetHat_eq_zero q (Or.inl (by push_cast; omega)), mul_zero]
   rw [hGN, hG0, sub_zero]
 
-
-/-- **The termwise certificate for `g₀ = 0`**: with `κ₀ = 1/([B₃-F₁][j₁+1])`, `j₁ = F₃ + F₄ - B₃`, and
-`G(z) = -κ₀ [z-F₁][F₃+F₄+1-z] T_{c+1}(z)`,
-`T_{c+1}(z) + κ₀[F₃+1][F₄+1] T₀(z) - κ₀[B₁-F₂+1][B₂-F₂+1] T₁(z) = G(z+1) - G(z)`, where `T_{c+1}` has the data
-`(F, B)`, `T₀` has `F₂ - 1, F₃ - 1, F₄ - 1, B₁ - 1, B₂ - 1, B₃ - 1`, and `T₁` has `F₂ - 1, B₃ - 1`. -/
+/-- **The termwise certificate for `g₀ = 0`**: with `j₁ = F₃ + F₄ - B₃` and `G(z) = -[z-F₁][F₃+F₄+1-z] T_{c+1}(z)`,
+`[B₃-F₁][j₁+1] T_{c+1}(z) + [F₃+1][F₄+1] T₀(z) - [B₁-F₂+1][B₂-F₂+1] T₁(z) = G(z+1) - G(z)`, where `T_{c+1}` has the
+data `(F, B)`, `T₀` has `F₂ - 1, F₃ - 1, F₄ - 1, B₁ - 1, B₂ - 1, B₃ - 1`, and `T₁` has `F₂ - 1, B₃ - 1`. -/
 theorem tel_upper_term (q : kˣ) (hq : (q : k) - (q : k)⁻¹ ≠ 0) {M : ℤ} (hnz : ∀ n : ℤ, 1 ≤ n → n ≤ M → qz q n ≠ 0)
     (z : ℕ) (F₁ F₂ F₃ F₄ B₁ B₂ : ℤ) (hF : 0 ≤ F₁ ∧ 0 ≤ F₂ ∧ 0 ≤ F₃ ∧ 0 ≤ F₄)
-    (hM : (z : ℤ) + 2 ≤ M ∧ B₁ ≤ M ∧ B₂ ≤ M ∧ F₁ + F₂ + F₃ + F₄ - B₁ - B₂ ≤ M)
-    (hk : qz q (F₁ + F₂ + F₃ + F₄ - B₁ - B₂ - F₁) * qz q (F₃ + F₄ - (F₁ + F₂ + F₃ + F₄ - B₁ - B₂) + 1) ≠ 0) :
+    (hM : (z : ℤ) + 2 ≤ M ∧ B₁ ≤ M ∧ B₂ ≤ M ∧ F₁ + F₂ + F₃ + F₄ - B₁ - B₂ ≤ M) :
     let B₃ := F₁ + F₂ + F₃ + F₄ - B₁ - B₂
-    let κ := (qz q (B₃ - F₁) * qz q (F₃ + F₄ - B₃ + 1))⁻¹
-    let G : ℕ → k := fun w => -(κ * qz q (w - F₁) * qz q (F₃ + F₄ + 1 - w) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ w)
-    tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ z +
-        κ * (qz q (F₃ + 1) * qz q (F₄ + 1)) * tetHat q F₁ (F₂ - 1) (F₃ - 1) (F₄ - 1) (B₁ - 1) (B₂ - 1) (B₃ - 1) z -
-        κ * (qz q (B₁ - F₂ + 1) * qz q (B₂ - F₂ + 1)) * tetHat q F₁ (F₂ - 1) F₃ F₄ B₁ B₂ (B₃ - 1) z =
-      G (z + 1) - G z := by
-  intro B₃ κ G
+    let G : ℕ → k := fun w => -(qz q (w - F₁) * qz q (F₃ + F₄ + 1 - w) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ w)
+    qz q (B₃ - F₁) * qz q (F₃ + F₄ - B₃ + 1) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ z +
+        qz q (F₃ + 1) * qz q (F₄ + 1) * tetHat q F₁ (F₂ - 1) (F₃ - 1) (F₄ - 1) (B₁ - 1) (B₂ - 1) (B₃ - 1) z -
+        qz q (B₁ - F₂ + 1) * qz q (B₂ - F₂ + 1) * tetHat q F₁ (F₂ - 1) F₃ F₄ B₁ B₂ (B₃ - 1) z = G (z + 1) - G z := by
+  intro B₃ G
   obtain ⟨hF1, hF2, hF3, hF4⟩ := hF
   obtain ⟨hz, hB1, hB2, hB3⟩ := hM
   have P : ∀ n : ℤ, n ≤ M → rqf q (n - 1) = qz q n * rqf q n := fun n hn =>
@@ -212,48 +191,34 @@ theorem tel_upper_term (q : kˣ) (hq : (q : k) - (q : k)⁻¹ ≠ 0) {M : ℤ} (
   have e4 : ∀ F : ℤ, rqf q ((z : ℤ) - (F - 1)) = rqf q (z + 1 - F) := fun F => by congr 1; ring
   have eF1 : ∀ F : ℤ, rqf q (((z + 1 : ℕ) : ℤ) - F) = rqf q (z + 1 - F) := fun F => by rw [Nat.cast_add, Nat.cast_one]
   have eq1 : ∀ F : ℤ, qz q (((z + 1 : ℕ) : ℤ) - F) = qz q (z + 1 - F) := fun F => by rw [Nat.cast_add, Nat.cast_one]
-  have eq2 : qz q (F₃ + F₄ + 1 - ((z + 1 : ℕ) : ℤ)) = qz q (F₃ + F₄ - z) := by congr 1; push_cast; ring
   have hfac : qfac q (z + 1 + 1) = qfac q (z + 1) * qz q (z + 2) := by
     rw [show (z : ℤ) + 2 = ((z + 2 : ℕ) : ℤ) by push_cast; ring, ← qb_eq_qz]; rfl
+  have eq2 : qz q (F₃ + F₄ + 1 - ((z + 1 : ℕ) : ℤ)) = qz q (F₃ + F₄ - z) := by congr 1; push_cast; ring
   have core := kl_cert_upper q hq (z : ℤ) F₁ F₂ F₃ F₄ B₁ B₂
   simp only at core
   simp only [G, tetHat]
   rw [eF F₁ hF1, eF F₂ hF2, eF F₃ hF3, eF F₄ hF4, e4 F₂, e4 F₃, e4 F₄, eB B₁ hB1, eB B₂ hB2, eB B₃ hB3,
     eF1, eF1, eF1, eF1, eB' B₁ hB1, eB' B₂ hB2, eB' B₃ hB3, eq1, eq2, hfac]
-  have hκ : κ * (qz q (B₃ - F₁) * qz q (F₃ + F₄ - B₃ + 1)) = 1 := inv_mul_cancel₀ hk
   linear_combination
     ((-1) ^ z * qfac q (z + 1) *
         (rqf q (z + 1 - F₁) * rqf q (z + 1 - F₂) * rqf q (z + 1 - F₃) * rqf q (z + 1 - F₄)) *
-        (rqf q (B₁ - z) * rqf q (B₂ - z) * rqf q (B₃ - z)) * qz q (z + 1 - F₁) * κ) * core -
-    ((-1) ^ z * qfac q (z + 1) *
-        (rqf q (z + 1 - F₁) * rqf q (z + 1 - F₂) * rqf q (z + 1 - F₃) * rqf q (z + 1 - F₄)) *
-        (rqf q (B₁ - z) * rqf q (B₂ - z) * rqf q (B₃ - z)) * qz q (z + 1 - F₁) *
-        (qz q (z + 1 - F₂) * qz q (z + 1 - F₃) * qz q (z + 1 - F₄))) * hκ
-
+        (rqf q (B₁ - z) * rqf q (B₂ - z) * rqf q (B₃ - z)) * qz q (z + 1 - F₁)) * core
 
 /-- **The telescoped recursion for `g₀ = 0`**: summed over `range N` past the range of the summands,
-`Σ T_{c+1} + κ₀[F₃+1][F₄+1] Σ T₀ - κ₀[B₁-F₂+1][B₂-F₂+1] Σ T₁ = 0`. -/
+`[B₃-F₁][j₁+1] Σ T_{c+1} + [F₃+1][F₄+1] Σ T₀ - [B₁-F₂+1][B₂-F₂+1] Σ T₁ = 0`. -/
 theorem tel_upper_sum (q : kˣ) (hq : (q : k) - (q : k)⁻¹ ≠ 0) {M : ℤ} (hnz : ∀ n : ℤ, 1 ≤ n → n ≤ M → qz q n ≠ 0)
     (N : ℕ) (F₁ F₂ F₃ F₄ B₁ B₂ : ℤ) (hF : 0 ≤ F₁ ∧ 0 ≤ F₂ ∧ 0 ≤ F₃ ∧ 0 ≤ F₄)
-    (hM : (N : ℤ) + 1 ≤ M ∧ B₁ ≤ M ∧ B₂ ≤ M ∧ F₁ + F₂ + F₃ + F₄ - B₁ - B₂ ≤ M) (hN : B₁ < N)
-    (hk : qz q (F₁ + F₂ + F₃ + F₄ - B₁ - B₂ - F₁) * qz q (F₃ + F₄ - (F₁ + F₂ + F₃ + F₄ - B₁ - B₂) + 1) ≠ 0) :
+    (hM : (N : ℤ) + 1 ≤ M ∧ B₁ ≤ M ∧ B₂ ≤ M ∧ F₁ + F₂ + F₃ + F₄ - B₁ - B₂ ≤ M) (hN : B₁ < N) :
     let B₃ := F₁ + F₂ + F₃ + F₄ - B₁ - B₂
-    let κ := (qz q (B₃ - F₁) * qz q (F₃ + F₄ - B₃ + 1))⁻¹
-    ∑ z ∈ range N, (tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ z +
-        κ * (qz q (F₃ + 1) * qz q (F₄ + 1)) * tetHat q F₁ (F₂ - 1) (F₃ - 1) (F₄ - 1) (B₁ - 1) (B₂ - 1) (B₃ - 1) z -
-        κ * (qz q (B₁ - F₂ + 1) * qz q (B₂ - F₂ + 1)) * tetHat q F₁ (F₂ - 1) F₃ F₄ B₁ B₂ (B₃ - 1) z) = 0 := by
-  intro B₃ κ
+    ∑ z ∈ range N, (qz q (B₃ - F₁) * qz q (F₃ + F₄ - B₃ + 1) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ z +
+        qz q (F₃ + 1) * qz q (F₄ + 1) * tetHat q F₁ (F₂ - 1) (F₃ - 1) (F₄ - 1) (B₁ - 1) (B₂ - 1) (B₃ - 1) z -
+        qz q (B₁ - F₂ + 1) * qz q (B₂ - F₂ + 1) * tetHat q F₁ (F₂ - 1) F₃ F₄ B₁ B₂ (B₃ - 1) z) = 0 := by
+  intro B₃
   obtain ⟨hN1, hB1, hB2, hB3⟩ := hM
-  set G : ℕ → k := fun w => -(κ * qz q (w - F₁) * qz q (F₃ + F₄ + 1 - w) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ w)
+  set G : ℕ → k := fun w => -(qz q (w - F₁) * qz q (F₃ + F₄ + 1 - w) * tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ w)
     with hG
-  have term : ∀ z ∈ range N, (tetHat q F₁ F₂ F₃ F₄ B₁ B₂ B₃ z +
-      κ * (qz q (F₃ + 1) * qz q (F₄ + 1)) * tetHat q F₁ (F₂ - 1) (F₃ - 1) (F₄ - 1) (B₁ - 1) (B₂ - 1) (B₃ - 1) z -
-      κ * (qz q (B₁ - F₂ + 1) * qz q (B₂ - F₂ + 1)) * tetHat q F₁ (F₂ - 1) F₃ F₄ B₁ B₂ (B₃ - 1) z) =
-      G (z + 1) - G z := by
-    intro z hz
-    rw [mem_range] at hz
-    exact tel_upper_term q hq hnz z F₁ F₂ F₃ F₄ B₁ B₂ hF ⟨by omega, hB1, hB2, hB3⟩ hk
-  rw [sum_congr rfl term, sum_range_sub (f := G)]
+  rw [sum_congr rfl fun z hz => tel_upper_term q hq hnz z F₁ F₂ F₃ F₄ B₁ B₂ hF
+    ⟨by rw [mem_range] at hz; omega, hB1, hB2, hB3⟩, sum_range_sub (f := G)]
   have hGN : G N = 0 := by
     simp only [hG]
     rw [tetHat_eq_zero q (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl hN))))), mul_zero, neg_zero]
