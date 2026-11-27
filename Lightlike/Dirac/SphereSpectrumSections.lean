@@ -16,7 +16,8 @@ Dirac operator `SpinorSection.dirac` (`Lightlike/Dirac/SpinorBundle.lean`). This
 * `SpinorSection.eq_zero_of_north`: a smooth section vanishing on `S2 ∖ {N}` vanishes;
 * `northMap`: the representation of a section in the north frame, read in the north chart, linear and injective;
 * `dirac_eq_of_north`, `northMap_mem`: `D σ = λ σ` iff the north representation is a two-chart eigenspinor
-  (the south frame gives #950's transfer through `transfer_identity`);
+  (the south frame gives the transfer of the two-chart model of `SphereSpectrum.lean` through
+  `transfer_identity`);
 * `eigenSections ρ λ` (`mem_eigenSections`: `σ ∈ eigenSections ρ λ ↔ D σ = λ σ`), `eigenSectionsEquiv`;
 * `sphere_dirac_spectrum_sections`: for `dim V = 4`, eigensections exist exactly for `λ = ±(k+1)`, with real
   multiplicity `4(k+1)` (complex `2(k+1)`).
@@ -219,7 +220,7 @@ lemma norm_modelEquiv2_symm (y : Fin 2 → ℝ) : ‖modelEquiv2.symm y‖ = √
   rw [← norm_sq_modelEquiv2_symm, Real.sqrt_sq (norm_nonneg _)]
 
 /-- **The transfer identity**: if `f = |y|⁻¹ c(y) γ₁ g` (the north–south relation of a section), then
-`−γ₀ g = |y|⁻¹ c(y) J f` (#950's transfer `sphereT`). -/
+`−γ₀ g = |y|⁻¹ c(y) J f` (the transfer `sphereT` of `SphereSpectrum.lean`). -/
 lemma transfer_identity (w : E 2) (hw : w ≠ 0) (g : V) :
     -(gam ρ 0 g) = sphereT ρ w (‖w‖⁻¹ • cliffV ρ w (gam ρ 1 g)) := by
   have hn : ‖w‖ ≠ 0 := norm_ne_zero_iff.mpr hw
@@ -259,7 +260,7 @@ lemma stereoS_tau {y : Fin 2 → ℝ} (hy : y ≠ 0) : stereoS (tau y) = stereoN
   have h3 : invS (stereoN y) = tau y := by rw [invS_eq_tau h1 h2, invN_stereoN]
   rw [← h3, stereoS_invS h2]
 
-/-- The south chart function of a section in #950's convention: `fS(w) = −γ₀ f_S(stereoS (R w))`. -/
+/-- The south chart function of a section in the convention of `SphereSpectrum.lean`: `fS(w) = −γ₀ f_S(stereoS (R w))`. -/
 def southRep (σ : SpinorSection sphereSpinStructure ρ) (w : E 2) : V :=
   -(gam ρ 0 (σ.toField.rep false (stereoS (reflY (modelEquiv2 w)))))
 
