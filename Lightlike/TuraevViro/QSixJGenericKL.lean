@@ -217,6 +217,26 @@ noncomputable def klK (θ : ℝ) (a b c i D j : ℕ) : ℝ :=
   (-1) ^ (i + (a + b + i) / 2 + (i + c + D) / 2) * qnG θ (j + 1) * delta2G θ a b i *
     delta2G θ i c D * racahG θ a b i c D j
 
+/-- The twelve indices of the prefactor of the tetrahedral net: each `B_l - F_k` is an `s - x` of
+one face (natural-number arithmetic for the channels of `KLAdm`). -/
+theorem tetPre_idx {a b c e d f d' i D j : ℕ} (hi : a + b - 2 * e = i) (hD : i + c - 2 * d = D)
+    (hj : b + c - 2 * f = j) (h5 : D = a + j - 2 * d') (_h1a : e ≤ a) (_h1b : e ≤ b) (h2i : d ≤ i)
+    (h2c : d ≤ c) (h3b : f ≤ b) (h3c : f ≤ c) (h4a : d' ≤ a) (h4j : d' ≤ j) :
+    ((b + D + i + j) / 2 - (a + b + i) / 2 = (a + j + D) / 2 - a ∧
+      (b + D + i + j) / 2 - (i + c + D) / 2 = (b + c + j) / 2 - c ∧
+      (b + D + i + j) / 2 - (b + c + j) / 2 = (i + c + D) / 2 - c ∧
+      (b + D + i + j) / 2 - (a + j + D) / 2 = (a + b + i) / 2 - a) ∧
+    ((a + c + i + j) / 2 - (a + b + i) / 2 = (b + c + j) / 2 - b ∧
+      (a + c + i + j) / 2 - (i + c + D) / 2 = (a + j + D) / 2 - D ∧
+      (a + c + i + j) / 2 - (b + c + j) / 2 = (a + b + i) / 2 - b ∧
+      (a + c + i + j) / 2 - (a + j + D) / 2 = (i + c + D) / 2 - D) ∧
+    ((a + b + c + D) / 2 - (a + b + i) / 2 = (i + c + D) / 2 - i ∧
+      (a + b + c + D) / 2 - (i + c + D) / 2 = (a + b + i) / 2 - i ∧
+      (a + b + c + D) / 2 - (b + c + j) / 2 = (a + j + D) / 2 - j ∧
+      (a + b + c + D) / 2 - (a + j + D) / 2 = (b + c + j) / 2 - j) := by
+  subst hi hD hj
+  refine ⟨⟨?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_, ?_⟩, ?_, ?_, ?_, ?_⟩ <;> omega
+
 /-- **The prefactor of the tetrahedral net** is the product of the four triads over the edges:
 each `B_l - F_k` is an `s - x` of one face. -/
 theorem tetPreN_eq (θ : ℝ) {a b c e d f d' : ℕ} (h : KLAdm a b c e d f d') :
@@ -231,23 +251,10 @@ theorem tetPreN_eq (θ : ℝ) {a b c e d f d' : ℕ} (h : KLAdm a b c e d f d') 
         qfG θ (b + c - 2 * f)) := by
   obtain ⟨h1, h2, h3, h4, h5⟩ := h
   simp only [le_min_iff] at h1 h2 h3 h4
+  obtain ⟨⟨k11, k12, k13, k14⟩, ⟨k21, k22, k23, k24⟩, k31, k32, k33, k34⟩ :=
+    tetPre_idx (a := a) (b := b) (c := c) (e := e) (d := d) (f := f) (d' := d') rfl rfl rfl h5
+      h1.1 h1.2 h2.1 h2.2 h3.1 h3.2 h4.1 h4.2
   unfold tetPreN triPi
-  generalize hD : a + b - 2 * e + c - 2 * d = D at *
-  generalize hi : a + b - 2 * e = i at *
-  generalize hj : b + c - 2 * f = j at *
-  -- the twelve indices, face by face
-  have k11 : (b + D + i + j) / 2 - (a + b + i) / 2 = (a + j + D) / 2 - a := by omega
-  have k12 : (b + D + i + j) / 2 - (i + c + D) / 2 = (b + c + j) / 2 - c := by omega
-  have k13 : (b + D + i + j) / 2 - (b + c + j) / 2 = (i + c + D) / 2 - c := by omega
-  have k14 : (b + D + i + j) / 2 - (a + j + D) / 2 = (a + b + i) / 2 - a := by omega
-  have k21 : (a + c + i + j) / 2 - (a + b + i) / 2 = (b + c + j) / 2 - b := by omega
-  have k22 : (a + c + i + j) / 2 - (i + c + D) / 2 = (a + j + D) / 2 - D := by omega
-  have k23 : (a + c + i + j) / 2 - (b + c + j) / 2 = (a + b + i) / 2 - b := by omega
-  have k24 : (a + c + i + j) / 2 - (a + j + D) / 2 = (i + c + D) / 2 - D := by omega
-  have k31 : (a + b + c + D) / 2 - (a + b + i) / 2 = (i + c + D) / 2 - i := by omega
-  have k32 : (a + b + c + D) / 2 - (i + c + D) / 2 = (a + b + i) / 2 - i := by omega
-  have k33 : (a + b + c + D) / 2 - (b + c + j) / 2 = (a + j + D) / 2 - j := by omega
-  have k34 : (a + b + c + D) / 2 - (a + j + D) / 2 = (b + c + j) / 2 - j := by omega
   rw [k11, k12, k13, k14, k21, k22, k23, k24, k31, k32, k33, k34]
   ring
 
@@ -292,7 +299,6 @@ theorem kl_alg {P₁ P₂ P₃ P₄ A B C D I J I₁ J₁ S₁ S₂ R σ σ₁ �
       (P₃ * P₄ / (J * J₁)) / (P₁ * P₂ / (I * I₁)) * (σ * J₁ * (P₁ / S₁) * (P₂ / S₂) * R) := by
   rw [← hσ]
   field_simp
-  ring
 
 
 end Lightlike.TV
