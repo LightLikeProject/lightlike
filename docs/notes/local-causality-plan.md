@@ -1,6 +1,6 @@
 # Local causality (Chruściel Prop. 2.4.5), gap rows G1-001, G1-002: plan
 
-Branch `causal/local-causality` (from fable3's wip `fable3/local-causality` e2f8abd, on `fable3/geodesic-global` 8699ca8).
+Branch `causal/local-causality` (continues earlier work on the global geodesic flow).
 
 ## Source read (pdftotext of the arXiv PDF)
 
@@ -10,7 +10,7 @@ Proposition 2.4.5 (p. 20): for `O ⊂ O_p` a normal-coordinate ball with `∇x�
 Proposition 2.4.7 (p. 21): `I⁺(p; O)` is open; Lemma 2.4.8 (p. 21): a time function is non-decreasing along causal paths; Lemma 2.4.9 (p. 22);
 the proof by perturbed metrics (pp. 22–23).
 
-## Method (fable3's, no perturbed metrics)
+## Method (no perturbed metrics)
 
 In normal coordinates `v(s) = φ⁻¹(γ(s))` of a future causal curve from `p` in the time ball: `f = g_p(v, v)` (= σ_p) and
 `h = −g_p(e, v)` (= x⁰). Then
