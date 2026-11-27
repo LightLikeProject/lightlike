@@ -144,6 +144,20 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
       (∃ C a : ℝ, 0 < a ∧ ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y,
         |H t p y| ≤ C * t ^ (-(n : ℝ) / 2) * Real.exp (-a * (∑ i, (y i - p i) ^ 2) / t)) ∧
       (∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∫ y, |H t p y| ≤ C) ∧
+      -- the structure of `H`, for the delta property
+      (∃ (Ω : Set ((Fin n → ℝ) × (Fin n → ℝ))) (θ : (Fin n → ℝ) → ℝ)
+          (σ : (Fin n → ℝ) × (Fin n → ℝ) → ℝ) (V : (Fin n → ℝ) × (Fin n → ℝ) → (Fin n → ℝ)),
+        IsOpen Ω ∧ (x, x) ∈ Ω ∧ (∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → (p, y) ∈ Ω) ∧
+        (∀ q ∈ Ω, q.2 ∈ U) ∧ ContDiffOn ℝ ∞ V Ω ∧ (∀ k, ContDiffOn ℝ ∞ (u k) Ω) ∧
+        (∀ p, (p, p) ∈ Ω → V (p, p) = 0 ∧
+          HasFDerivAt (fun y => V (p, y)) (ContinuousLinearMap.id ℝ (Fin n → ℝ)) p) ∧
+        (∀ q ∈ Ω, σ q = Geodesic.pairing g q.1 (V q) (V q)) ∧
+        (∀ z, ‖z‖ < r / 2 → θ z = 1) ∧ (∀ z, r ≤ ‖z‖ → θ z = 0) ∧ (∀ z, θ z ∈ Icc (0 : ℝ) 1) ∧
+        Continuous θ ∧
+        (∃ c : ℝ, 0 < c ∧ ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → c * ‖y - p‖ ^ 2 ≤ σ (p, y)) ∧
+        (∃ A : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r →
+          |truncAnsatz (fun k y => u k (p, y)) N t y| ≤ A) ∧
+        ∀ t p y, H t p y = θ (y - p) * (heatGaussian n (σ (p, y)) t * truncAnsatz (fun k y => u k (p, y)) N t y)) ∧
       ∃ C : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p, ‖p - x‖ < r → ∀ y, ∃ D, HasDerivAt (fun s => H s p y) D t ∧
         |D + coordLaplacian g (H t p) y| ≤ C * t ^ ((N : ℝ) - n / 2) := by
   have hg' : IsCoordMetric g U := hg.coord.toLightlike
@@ -156,7 +170,7 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
   have h3r : 3 * r = min r₀ ρ := by rw [hrdef]; ring
   have hr3 : 3 * r ≤ r₀ ∧ 3 * r ≤ ρ := ⟨h3r ▸ min_le_left r₀ ρ, h3r ▸ min_le_right r₀ ρ⟩
   -- the cutoff in `y − p`
-  obtain ⟨θ, hθ, hθs, W₀, hW₀o, hKW₀, hθ1⟩ := exists_cutoff_of_isOpen (E := Fin n → ℝ)
+  obtain ⟨θ, hθ, hθs, W₀, hW₀o, hKW₀, hθ1, hθr⟩ := exists_cutoff_of_isOpen (E := Fin n → ℝ)
     (isOpen_ball (x := (0 : Fin n → ℝ)) (ε := r)) (isCompact_closedBall (0 : Fin n → ℝ) (r / 2))
     (closedBall_subset_ball (by linarith : r / 2 < r))
   set H : ℝ → (Fin n → ℝ) → (Fin n → ℝ) → ℝ := fun t p y =>
@@ -261,7 +275,17 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
       rw [hθ0, zero_mul, abs_zero]
       positivity
   refine ⟨r, u, H, hr, fun p hp => (hdiag p ?_).2, fun t ht p hp => ?_,
-    ⟨CG, a, hapos, hGauss⟩, ⟨CG * (Real.pi / a) ^ ((n : ℝ) / 2), fun t ht p hp => ?_⟩, C,
+    ⟨CG, a, hapos, hGauss⟩, ⟨CG * (Real.pi / a) ^ ((n : ℝ) / 2), fun t ht p hp => ?_⟩,
+    ⟨Ω, θ, σ, V, hΩo, hxΩ, fun p y hp hy => hKcΩ (hmemK p y hp hy), hΩU, hVs, hus, hVd, hσV,
+      fun z hz => hθ1 z (hKW₀ (by rw [mem_closedBall, dist_zero_right]; exact hz.le)),
+      fun z hz => image_eq_zero_of_notMem_tsupport fun h => by
+        have := hθs h; rw [mem_ball, dist_zero_right] at this; linarith,
+      hθr, hθ.continuous, ⟨c, hc, fun p y hp hy => hσnn (p, y) (hmemK p y hp hy)⟩,
+      ⟨|A2|, fun t ht p y hp hy => by
+        have := hA2 _ (hmemK p y hp hy)
+        rw [Real.norm_eq_abs, abs_of_nonneg (Finset.sum_nonneg fun k _ => abs_nonneg _)] at this
+        exact (abs_sum_pow_mul_le ht.1.le ht.2 N _).trans (this.trans (le_abs_self _))⟩,
+      fun t p y => rfl⟩, C,
     fun t ht p hp y => ?_⟩
   · exact hKcΩ (hmemK p p hp (by simpa using hr))
   · have hpp := hKcΩ (hmemK p p hp (by simpa using hr))
