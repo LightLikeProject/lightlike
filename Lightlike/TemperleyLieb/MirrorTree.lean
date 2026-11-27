@@ -13,12 +13,14 @@ The reflection `reflectOp N` (`Mirror.lean`) reverses and flips the first `N` bi
 `j, j+1` of a word with `j + j' + 2` letters is turned into the cap at the mirror positions `j', j'+1`
 (`reflect_capOp`), and likewise for cups (`reflect_cupOp`): the cap and cup weights only see the pairs `01`
 and `10`, which the reflection fixes. With `jwAt_mirror` these are the rules by which the mirror turns the
-second-bracketing tree vectors of the blocks `(a, b, c)` into the first-bracketing ones of `(c, b, a)`.
+second-bracketing tree vectors of the blocks `(a, b, c)` into the first-bracketing ones of `(c, b, a)`
+(`reflect_UR`, `reflect_UL`), so that the recoupling matrices of `(a, b, c)` and `(c, b, a)` are inverse to each
+other (`Fc_mirror_inv`).
 -/
 
 namespace Lightlike.TemperleyLieb
 
-open Finsupp Finset
+open Finsupp
 
 variable {k : Type*} [Field k]
 
@@ -142,12 +144,12 @@ theorem Fc_mirror_inv [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b c f d'
     (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
     (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f)
     (hgc : g ≤ c) (hgb : g ≤ b) (hhA : h ≤ c + b - 2 * g) (hha : h ≤ a) :
-    ∑ e ∈ range (a + 1), ∑ d ∈ range (c + 1), Fc q c b a g h e d * Fc q a b c e d f d' =
+    ∑ e ∈ Finset.range (a + 1), ∑ d ∈ Finset.range (c + 1), Fc q c b a g h e d * Fc q a b c e d f d' =
       if g = f ∧ h = d' then 1 else 0 := by
   set D := a + (b + c - 2 * f) - 2 * d' with hD
   have hd1 : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
   have hE := expansion_range q hδ a b c f d' hab hd1 hq2 hfb hfc hda hdf
-  have hterm : ∀ e ∈ range (a + 1), ∀ d ∈ range (c + 1),
+  have hterm : ∀ e ∈ Finset.range (a + 1), ∀ d ∈ Finset.range (c + 1),
       reflectOp k (a + b + c) * (Fc q a b c e d f d' • UL q a b c e d) =
         (Fc q a b c e d f d' • UR q c b a e d) * reflectOp k D := by
     intro e _ d _
@@ -160,10 +162,10 @@ theorem Fc_mirror_inv [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b c f d'
         smul_mul_assoc]
   have hM := reflect_UR (k := k) q a b c f d' hfb hfc hda hdf (fun j hj => hd j (by omega))
   rw [hE] at hM
-  simp only [mul_sum] at hM
-  rw [sum_congr rfl fun e he => sum_congr rfl fun d hdm => hterm e he d hdm] at hM
-  simp only [← sum_mul] at hM
-  have hUL : UL q c b a f d' = ∑ e ∈ range (a + 1), ∑ d ∈ range (c + 1), Fc q a b c e d f d' • UR q c b a e d := by
+  simp only [Finset.mul_sum] at hM
+  rw [Finset.sum_congr rfl fun e he => Finset.sum_congr rfl fun d hdm => hterm e he d hdm] at hM
+  simp only [← Finset.sum_mul] at hM
+  have hUL : UL q c b a f d' = ∑ e ∈ Finset.range (a + 1), ∑ d ∈ Finset.range (c + 1), Fc q a b c e d f d' • UR q c b a e d := by
     have := congrArg (· * reflectOp k D) hM
     rw [← hD] at this
     simp only [mul_assoc, reflectOp_mul_self, mul_one] at this
@@ -174,7 +176,7 @@ theorem Fc_mirror_inv [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b c f d'
   set K := kapRec q c b g * kapRec q (c + b - 2 * g) a h with hK
   have hKne : K ≠ 0 := mul_ne_zero (kapRec_ne q g c b hgc hgb (fun x h1 h2 => hq2' x h1 (by omega)))
     (kapRec_ne q h (c + b - 2 * g) a hhA hha (fun x h1 h2 => hq2' x h1 (by omega)))
-  have hpair : ∀ e ∈ range (a + 1), ∀ d ∈ range (c + 1),
+  have hpair : ∀ e ∈ Finset.range (a + 1), ∀ d ∈ Finset.range (c + 1),
       ULd q c b a g h * (Fc q a b c e d f d' • UR q c b a e d) =
         (K * (Fc q c b a g h e d * Fc q a b c e d f d')) • jwAt q 0 (c + b - 2 * g + a - 2 * h) := by
     intro e _ d _
@@ -186,14 +188,14 @@ theorem Fc_mirror_inv [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b c f d'
         (by have := hdd.trans (min_le_left _ _); omega), gramCoef_eq_kap_mul_Fc q (le_min hgc hgb) (le_min hhA hha)
         hq2', smul_smul]
       congr 1; ring
-  rw [hUL, mul_sum] at hL
-  simp only [mul_sum] at hL
-  rw [sum_congr rfl fun e he => sum_congr rfl fun d hdm => hpair e he d hdm] at hL
-  simp only [← sum_smul, ← mul_sum] at hL
+  rw [hUL, Finset.mul_sum] at hL
+  simp only [Finset.mul_sum] at hL
+  rw [Finset.sum_congr rfl fun e he => Finset.sum_congr rfl fun d hdm => hpair e he d hdm] at hL
+  simp only [← Finset.sum_smul, ← Finset.mul_sum] at hL
   have hp := jwAt_ne_zero (k := k) q (c + b - 2 * g + a - 2 * h)
   by_cases hgf : g = f ∧ h = d'
   · rw [if_pos hgf] at hL ⊢
-    have h3 : (K * ∑ e ∈ range (a + 1), ∑ d ∈ range (c + 1), Fc q c b a g h e d * Fc q a b c e d f d' - K) •
+    have h3 : (K * ∑ e ∈ Finset.range (a + 1), ∑ d ∈ Finset.range (c + 1), Fc q c b a g h e d * Fc q a b c e d f d' - K) •
         (jwAt q 0 (c + b - 2 * g + a - 2 * h) : Module.End k (ModelSpace k)) = 0 :=
       (sub_smul _ _ (jwAt q 0 (c + b - 2 * g + a - 2 * h) : Module.End k (ModelSpace k))).trans (sub_eq_zero.mpr hL)
     have := sub_eq_zero.mp ((smul_eq_zero.mp h3).resolve_right hp)
