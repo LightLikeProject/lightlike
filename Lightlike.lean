@@ -2391,6 +2391,7 @@ import Lightlike.Dirac.SphereSpectrumBridge
 import Lightlike.Dirac.SphereSpectrumModes
 import Lightlike.Dirac.SphereSpectrumCount
 import Lightlike.Dirac.SphereSpectrum
+import Lightlike.Dirac.SphereSpectrumSections
 import Lightlike.Dirac.SphereSpectrumTests
 import Lightlike.SpinFoam.OoguriGaugeFixed.Capstone
 import Lightlike.SpinFoam.OoguriGaugeFixed.ForcingClosure

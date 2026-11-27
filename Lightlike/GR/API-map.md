@@ -105,7 +105,7 @@ as a hypothesis (conditional) [46]. The Dirac operator squares to minus the Lapl
 f) = -Δ f for a C² function with values in a Clifford module [47]. Lichnerowicz in a frame: for a frame
 connection with antisymmetric connection form and a curvature with the Riemann symmetries, D² f = −Σ
 ∇²f(eᵢ, eᵢ) + (s/4) f, given the Ricci identity for the frame Hessian (conditional) [48]. On the unit
-2-sphere the curvature term of the Lichnerowicz formula is s/4 and not s/2 [49]. On a manifold with a spin structure (atlas form: local orthonormal frames with Spin(n) lifts of the frame changes) the spin connection, the Dirac operator and the rough Laplacian are frame independent, and for a smooth spinor field D²ψ = ∇*∇ψ + (R/4)ψ with R the scalar curvature of the Levi-Civita connection [72]. For every k and sign
+2-sphere the curvature term of the Lichnerowicz formula is s/4 and not s/2 [49]. On a manifold with a spin structure (atlas form: local orthonormal frames with Spin(n) lifts of the frame changes) the spin connection, the Dirac operator and the rough Laplacian are frame independent, and for a smooth spinor field D²ψ = ∇*∇ψ + (R/4)ψ with R the scalar curvature of the Levi-Civita connection [72]. On smooth sections of the spinor bundle the same identity holds at every point of the manifold [73], and for the round unit 2-sphere with its spin structure the Dirac operator on spinor sections has the eigenvalues ±(k+1), each with real multiplicity 4(k+1) for a four-dimensional Clifford module [74]. For every k and sign
 epsilon the eigenvalue epsilon (k+1) of the Dirac operator of the unit 2-sphere in the stereographic
 chart has an injective linear image of k+1 copies of the spinor module among its eigenspinors [50].
 Within the angular polynomial class, a flat eigenspinor of the Dirac operator of the unit 2-sphere in
@@ -276,6 +276,9 @@ For a tangent vector `(a, v)`, `v ⊥ ω`, the boundary metric of the image is `
 71. Lightlike/GR/AdSConformalBoundary/NullConeSummary.lean - `ads_isometry_conformal_boundary`
 72. Lightlike/Dirac/SpinLichnerowicz.lean - `Dirac.SpinStructure.dirac_sq_eq_rough_add_scal_div_four`,
     `Dirac.SpinStructure.dirac_sq`
+73. Lightlike/Dirac/SpinorLichnerowicz.lean - `Dirac.SpinorSection.dirac_dirac`
+74. Lightlike/Dirac/SphereSpectrumSections.lean - `Dirac.sphere_dirac_spectrum_sections`, `Dirac.eigenSections`,
+    `Dirac.mem_eigenSections`
 
 ## References
 
