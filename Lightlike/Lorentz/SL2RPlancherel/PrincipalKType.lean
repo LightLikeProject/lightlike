@@ -1,0 +1,140 @@
+import Mathlib
+import Lightlike.Lorentz.SL2RPrincipal
+
+/-!
+# The `K`-type vectors of the even principal series of `SL(2,ℝ)`
+
+In the non-compact picture `L²(ℝ)` of `principalSeries 0 ν`, the functions
+`e_k(x) = (1 + x²)^{(iν - 1)/2} ((x - i)/(x + i))^k`, `k ∈ ℤ`, are the `K`-type vectors:
+`π(k_θ) e_k = e^{-2ikθ} e_k` (`act_rot_kVecP`).  The Möbius map of the rotation `k_θ` is
+`x ↦ (x cos θ - sin θ)/(x sin θ + cos θ)` and multiplies `(x - i)/(x + i)` by `e^{-2iθ}`
+(`mob_rot_phase`).  Layer 2c-v of the Plancherel formula on `SL(2,ℝ)` (the identification of the
+block transforms with matrix coefficients), milestone HA3.
+-/
+
+open MeasureTheory Set Real Complex Lightlike.Lorentz.SL2R
+
+noncomputable section
+
+namespace Lightlike.Lorentz.SL2RPlancherel
+
+/-- **The `K`-type vectors** `e_k(x) = (1 + x²)^{(iν - 1)/2} ((x - i)/(x + i))^k` of the even
+principal series with parameter `ν`. -/
+def kVecP (ν : ℝ) (k : ℤ) (x : ℝ) : ℂ :=
+  (((1 + x ^ 2 : ℝ)) : ℂ) ^ ((I * ν - 1) / 2) * (((x : ℂ) - I) / ((x : ℂ) + I)) ^ k
+
+lemma den_rot (θ x : ℝ) : den (rot θ) x = Real.sin θ * x + Real.cos θ := by
+  simp [den, rot]
+
+lemma num_rot (θ x : ℝ) : num (rot θ) x = Real.cos θ * x - Real.sin θ := by
+  simp [num, rot]; ring
+
+/-- `x ± i` does not vanish for real `x`. -/
+lemma ofReal_add_I_ne_zero (x : ℝ) : (x : ℂ) + I ≠ 0 := by
+  intro h; have := congrArg Complex.im h; simp at this
+
+lemma ofReal_sub_I_ne_zero (x : ℝ) : (x : ℂ) - I ≠ 0 := by
+  intro h; have := congrArg Complex.im h; simp at this
+
+/-- **The phase of the rotation**: for `den (k_θ) x ≠ 0`,
+`(mob - i)/(mob + i) = e^{-2iθ} (x - i)/(x + i)` with `mob = mob (k_θ) x`. -/
+theorem mob_rot_phase (θ x : ℝ) (hx : den (rot θ) x ≠ 0) :
+    ((mob (rot θ) x : ℂ) - I) / ((mob (rot θ) x : ℂ) + I) =
+      Complex.exp (-(2 * θ * I)) * (((x : ℂ) - I) / ((x : ℂ) + I)) := by
+  set c : ℂ := (Real.cos θ : ℂ) with hc
+  set sn : ℂ := (Real.sin θ : ℂ) with hs
+  have hD : ((Real.sin θ * x + Real.cos θ : ℝ) : ℂ) ≠ 0 := by
+    rw [← den_rot]; exact_mod_cast hx
+  have hmob : (mob (rot θ) x : ℂ) =
+      ((Real.cos θ * x - Real.sin θ : ℝ) : ℂ) / ((Real.sin θ * x + Real.cos θ : ℝ) : ℂ) := by
+    simp only [mob, num_rot, den_rot]; push_cast; ring
+  have e1 : (mob (rot θ) x : ℂ) - I = (c - I * sn) * ((x : ℂ) - I) /
+      ((Real.sin θ * x + Real.cos θ : ℝ) : ℂ) := by
+    rw [hmob, eq_div_iff hD, sub_mul, div_mul_cancel₀ _ hD]
+    simp only [Complex.ofReal_sub, Complex.ofReal_mul, Complex.ofReal_add]
+    linear_combination (-sn) * Complex.I_sq
+  have e2 : (mob (rot θ) x : ℂ) + I = (c + I * sn) * ((x : ℂ) + I) /
+      ((Real.sin θ * x + Real.cos θ : ℝ) : ℂ) := by
+    rw [hmob, eq_div_iff hD, add_mul, div_mul_cancel₀ _ hD]
+    simp only [Complex.ofReal_sub, Complex.ofReal_mul, Complex.ofReal_add]
+    linear_combination (-sn) * Complex.I_sq
+  have hcs : (c - I * sn) * (c + I * sn) = 1 := by
+    have h := Real.cos_sq_add_sin_sq θ
+    have h' : (c ^ 2 + sn ^ 2 : ℂ) = 1 := by simp only [hc, hs]; exact_mod_cast h
+    linear_combination h' - sn ^ 2 * Complex.I_sq
+  have hne : c + I * sn ≠ 0 := right_ne_zero_of_mul_eq_one hcs
+  have hinv : (c + I * sn)⁻¹ = c - I * sn := (eq_inv_of_mul_eq_one_left hcs).symm
+  have hexp : Complex.exp (-(2 * θ * I)) = (c - I * sn) ^ 2 := by
+    have h1 : Complex.exp (-(θ * I)) = c - I * sn := by
+      rw [show -((θ : ℂ) * I) = ((-θ : ℝ) : ℂ) * I by push_cast; ring, Complex.exp_mul_I]
+      simp only [hc, hs]; push_cast; rw [Complex.cos_neg, Complex.sin_neg]; ring
+    rw [← h1, ← Complex.exp_nat_mul]; congr 1; push_cast; ring
+  have hxI := ofReal_add_I_ne_zero x
+  rw [e1, e2, hexp]
+  calc (c - I * sn) * ((x : ℂ) - I) / ((Real.sin θ * x + Real.cos θ : ℝ) : ℂ) /
+        ((c + I * sn) * ((x : ℂ) + I) / ((Real.sin θ * x + Real.cos θ : ℝ) : ℂ))
+      = (c - I * sn) * (c + I * sn)⁻¹ * (((x : ℂ) - I) / ((x : ℂ) + I)) := by
+        field_simp
+    _ = (c - I * sn) ^ 2 * (((x : ℂ) - I) / ((x : ℂ) + I)) := by rw [hinv]; ring
+
+/-- The `K`-type vectors are square integrable: `|e_k(x)|² = 1/(1 + x²)`. -/
+theorem norm_kVecP (ν : ℝ) (k : ℤ) (x : ℝ) : ‖kVecP ν k x‖ = (1 + x ^ 2) ^ (-(1 : ℝ) / 2) := by
+  have hpos : (0 : ℝ) < 1 + x ^ 2 := by positivity
+  have hphase : ‖((x : ℂ) - I) / ((x : ℂ) + I)‖ = 1 := by
+    rw [norm_div]
+    have h1 : ‖(x : ℂ) - I‖ = ‖(x : ℂ) + I‖ := by
+      rw [← Complex.norm_conj ((x : ℂ) + I)]; simp [map_add, sub_eq_add_neg]
+    rw [h1, div_self (norm_ne_zero_iff.mpr (ofReal_add_I_ne_zero x))]
+  rw [kVecP, norm_mul, norm_zpow, hphase, one_zpow, mul_one,
+    Complex.norm_cpow_eq_rpow_re_of_pos hpos]
+  congr 1
+  simp
+
+/-- `1 + mob(k_θ)(x)² = (1 + x²) / den(k_θ)(x)²`. -/
+lemma one_add_mob_rot_sq (θ x : ℝ) (hx : den (rot θ) x ≠ 0) :
+    1 + mob (rot θ) x ^ 2 = (1 + x ^ 2) / den (rot θ) x ^ 2 := by
+  have h := Real.cos_sq_add_sin_sq θ
+  have hmob : mob (rot θ) x = num (rot θ) x / den (rot θ) x := rfl
+  rw [hmob, eq_div_iff (pow_ne_zero _ hx), add_mul, div_pow,
+    div_mul_cancel₀ _ (pow_ne_zero _ hx), one_mul, num_rot, den_rot]
+  linear_combination (1 + x ^ 2) * h
+
+/-- **The rotations act on the `K`-type vectors by a phase**: for `den (k_θ) x ≠ 0`,
+`(π(k_θ) e_k)(x) = e^{-2ikθ} e_k(x)` (even principal series). -/
+theorem act_rot_kVecP (ν θ : ℝ) (k : ℤ) (x : ℝ) (hx : den (rot θ) x ≠ 0) :
+    act 0 ν (rot θ) (kVecP ν k) x = Complex.exp (-(2 * k * θ * I)) * kVecP ν k x := by
+  set d := den (rot θ) x with hd
+  set w : ℂ := (I * ν - 1) / 2 with hw
+  have had : 0 < |d| := abs_pos.mpr hx
+  have hx2 : (0 : ℝ) ≤ 1 + x ^ 2 := by positivity
+  -- the modulus
+  have hmod : (((1 + mob (rot θ) x ^ 2 : ℝ)) : ℂ) ^ w =
+      (((1 + x ^ 2 : ℝ)) : ℂ) ^ w * ((((|d| : ℝ) : ℂ)) ^ w * (((|d| : ℝ) : ℂ)) ^ w)⁻¹ := by
+    have e : (1 + mob (rot θ) x ^ 2 : ℝ) = (1 + x ^ 2) * (|d| * |d|)⁻¹ := by
+      rw [one_add_mob_rot_sq θ x hx, abs_mul_abs_self, div_eq_mul_inv, ← hd, sq d]
+    have harg : ((((|d| * |d| : ℝ)) : ℂ)).arg ≠ π := by
+      rw [Complex.arg_ofReal_of_nonneg (by positivity)]
+      exact Real.pi_ne_zero.symm
+    rw [e, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hx2
+      (inv_nonneg.2 (mul_nonneg (abs_nonneg _) (abs_nonneg _))), Complex.ofReal_inv,
+      Complex.inv_cpow _ _ harg, Complex.ofReal_mul,
+      Complex.mul_cpow_ofReal_nonneg (abs_nonneg _) (abs_nonneg _)]
+  have hmult : mult 0 ν d = (((|d| : ℝ) : ℂ)) ^ w * (((|d| : ℝ) : ℂ)) ^ w := by
+    rw [mult, zpow_zero, mul_one, show I * (ν : ℂ) - 1 = (2 : ℕ) * w by rw [hw]; push_cast; ring,
+      Complex.cpow_nat_mul, sq]
+  have hne : (((|d| : ℝ) : ℂ)) ^ w ≠ 0 := by
+    rw [Ne, Complex.cpow_eq_zero_iff]; push Not
+    intro h; exact absurd (by exact_mod_cast h) had.ne'
+  rw [act, kVecP, kVecP, hmult, hmod, mob_rot_phase θ x hx, mul_zpow, ← Complex.exp_int_mul]
+  have he : (k : ℂ) * -(2 * (θ : ℂ) * I) = -(2 * k * θ * I) := by ring
+  rw [he]
+  field_simp
+  rw [hw]
+  ring
+
+/-- Non-vacuity: the hypothesis `den (k_θ) x ≠ 0` holds for `θ = 0`. -/
+example (ν : ℝ) (k : ℤ) (x : ℝ) :
+    act 0 ν (rot 0) (kVecP ν k) x = Complex.exp (-(2 * k * (0 : ℝ) * I)) * kVecP ν k x :=
+  act_rot_kVecP ν 0 k x (by simp [den_rot])
+
+end Lightlike.Lorentz.SL2RPlancherel
