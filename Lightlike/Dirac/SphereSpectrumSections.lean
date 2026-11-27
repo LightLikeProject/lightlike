@@ -9,12 +9,17 @@ import Lightlike.Dirac.SphereSpectrum
 The smooth sections of the spinor bundle of `sphereSpinStructure` (`Lightlike/Dirac/SphereSpin.lean`) and their
 Dirac operator `SpinorSection.dirac` (`Lightlike/Dirac/SpinorBundle.lean`). This file relates the eigensections
 `D σ = λ σ` to the chart eigenspinors of the two-chart spectrum theorem (`SphereEigenspace`,
-`Lightlike/Dirac/SphereSpectrum.lean`) through the north chart (work in progress).
+`Lightlike/Dirac/SphereSpectrum.lean`) through the north chart, and deduces the spectrum on sections.
 
-## This layer
+## Main results
 
-* `northRep σ`: the representation of `σ` in the north frame, read in the north chart;
-* `SpinorSection.eq_zero_of_north`: a smooth section vanishing on `S2 ∖ {N}` vanishes.
+* `SpinorSection.eq_zero_of_north`: a smooth section vanishing on `S2 ∖ {N}` vanishes;
+* `northMap`: the representation of a section in the north frame, read in the north chart, linear and injective;
+* `dirac_eq_of_north`, `northMap_mem`: `D σ = λ σ` iff the north representation is a two-chart eigenspinor
+  (the south frame gives #950's transfer through `transfer_identity`);
+* `eigenSections ρ λ` (`mem_eigenSections`: `σ ∈ eigenSections ρ λ ↔ D σ = λ σ`), `eigenSectionsEquiv`;
+* `sphere_dirac_spectrum_sections`: for `dim V = 4`, eigensections exist exactly for `λ = ±(k+1)`, with real
+  multiplicity `4(k+1)` (complex `2(k+1)`).
 -/
 
 open Bundle Manifold Filter
@@ -409,7 +414,7 @@ section Main
 variable [FiniteDimensional ℝ V] (hV : Module.finrank ℝ V = 4)
 include hV
 
-/-- **The Dirac spectrum of the round unit 2-sphere on the sections of its spinor bundle** (`GE5` trust check,
+/-- **The Dirac spectrum of the round unit 2-sphere on the sections of its spinor bundle** (trust check,
 for a Clifford module `V` of real dimension `4`): a smooth section `σ ≠ 0` with `D σ = λ σ` exists exactly for
 `λ = ±(k+1)`, `k ∈ ℕ`, and these eigenvalues have real multiplicity `4(k+1)` (complex multiplicity `2(k+1)`). -/
 theorem sphere_dirac_spectrum_sections (lam : ℝ) :

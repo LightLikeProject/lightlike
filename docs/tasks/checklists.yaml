@@ -172,7 +172,7 @@ milestones:
       - id: t1
         kind: trust
         text: "The Dirac spectrum on the unit 2-sphere is ±(k+1) with multiplicity 2(k+1)"
-        decls: [Lightlike.Dirac.sphere_spectrum, Lightlike.Dirac.SphereEigenspace, Lightlike.Dirac.sphereEigenspace_finrank, Lightlike.Dirac.sphereEigenspace_eq_bot]
+        decls: [Lightlike.Dirac.sphere_dirac_spectrum_sections, Lightlike.Dirac.eigenSections, Lightlike.Dirac.mem_eigenSections, Lightlike.Dirac.sphereSpinStructure]
         hint: "Partial only: Lightlike.Dirac.sphere_dirac_lower_bound (eigenvalue k+1 with 2(k+1) multiplicity lower bound), Lightlike.Dirac.angular_class_complete_bounded (completeness inside an angular class, chart only). Missing: no other eigenvalues, smooth sections on S²."
       - id: t2
         kind: trust
