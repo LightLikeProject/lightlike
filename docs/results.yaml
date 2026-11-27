@@ -7630,3 +7630,44 @@
   review: kernel-checked
   note: "At every level r ≥ 2 the normalised Turaev–Viro state sum of a triangulated 3-manifold is unchanged by the 2-3 and the 1-4 Pachner move, with no hypothesis: turaevViro_move23_all and turaevViro_move14_all apply turaevViro_move23_of_BE and turaevViro_move14_of_BE to qBiedenharnElliott_all (LL-0592), the q-orthogonality being qOrthogonality_proved (LL-0075). This discharges the hypotheses of LL-0031, whose conditional statements turaevViro_move23 and turaevViro_move14 stay. Not covered here: invariance up to PL homeomorphism at r ≥ 4; at r = 3 it is turaevViro3_plHomeomorphic (LL-0289)."
   since: unreleased
+- id: LL-0594
+  title: "The unitary principal series of SL(2,R) on L2(R) is irreducible for every real parameter nu when the parity is even and for every nu different from 0 when it is odd; the odd series at nu = 0 is the only exception (it is reducible)"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RIrreducible/Principal.lean
+  decls: [Lightlike.Lorentz.SL2R.principalSeries_isIrreducible, Lightlike.Lorentz.SL2R.exists_weightExp_sub_eq_zero_iff]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kitaev-2017, location: "eq. (15)", check: "irreducibility"}
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+  review: kernel-checked
+  note: "Compared with Kitaev, arXiv:1711.08169, eq. (15) and Section 3.2 items 1 and 2 (read; page not checked): F_lambda^mu is irreducible unless lambda or -lambda lies in mu + Z, and for lambda = 1/2 + i nu/2, mu = epsilon/2 this is nu = 0 with epsilon odd, where F_{1/2}^{1/2} splits (Section 3.1). Difference of kind: Kitaev's statement is about the algebraic module of K-finite vectors; here irreducibility is topological, the only closed invariant subspaces of the unitary representation on L2(R) are 0 and L2(R), which needs the completeness of the K-weight vectors (weightL2_complete). The theorem takes the exact hypothesis (epsilon even or nu nonzero); exists_weightExp_sub_eq_zero_iff shows that the argument breaks precisely at the excluded point. The comparison with Knapp (1986), Chapter II, and Lang, SL2(R), is pending: the books were not read."
+  since: unreleased
+- id: LL-0595
+  title: "The holomorphic discrete series D_n^+ of SL(2,R) on the weighted Bergman space of the upper half plane is irreducible for every n at least 2"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RIrreducible/Discrete.lean
+  decls: [Lightlike.Lorentz.SL2R.discreteSeries_isIrreducible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kitaev-2017, location: "eq. (15)", check: "irreducibility"}
+      - {ref: knapp-1986, location: "Chapter: Chapter II. Representations of SU(2), SL(2, ℝ) and SL(2, ℂ)|10.1515/9781400883974-005"}
+  review: kernel-checked
+  note: "Compared with Kitaev, arXiv:1711.08169, Section 3.2 items 2 and 3 (read; page not checked): the unitary discrete series D_lambda^+ is the irreducible subrepresentation F_lambda^+ spanned by the weights lambda, lambda + 1, ..., with lambda = n/2 here. Difference of kind: Kitaev's statement is algebraic, here every closed invariant subspace of the Bergman space is 0 or everything. The proof links every K-weight vector to the lowest weight vector through the coherent vectors D_n(diag(A, 1/A)) e_0. The comparison with Knapp (1986), Chapter II, and Lang, SL2(R), is pending: the books were not read."
+  since: unreleased
+- id: LL-0596
+  title: "The antiholomorphic discrete series D_n^- of SL(2,R), defined as D_n^+ composed with the outer automorphism g to J g J, J = diag(1,-1), is unitary, has the negated K-weights and is irreducible for every n at least 2"
+  area: Lorentz
+  file: Lightlike/Lorentz/SL2RIrreducible/Discrete.lean
+  decls: [Lightlike.Lorentz.SL2R.discreteSeriesMinus, Lightlike.Lorentz.SL2R.discreteSeriesMinus_inner, Lightlike.Lorentz.SL2R.discreteSeriesMinus_rot, Lightlike.Lorentz.SL2R.discreteSeriesMinus_isIrreducible]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: kitaev-2017, location: "eq. (15)", check: "irreducibility"}
+  review: kernel-checked
+  note: "Compared with Kitaev, arXiv:1711.08169, Section 3.2 (read; page not checked): D_lambda^- has the weights -lambda, -lambda - 1, ... . The library defines D_n^- as the twist of D_n^+ by the automorphism g to J g J, which negates the K-weights (discreteSeriesMinus_rot); that this equals the complex conjugate representation is not proved here (the antiholomorphic matrix coefficients of the Plancherel formula are stated separately). Irreducibility is inherited from D_n^+ because the automorphism is onto."
+  since: unreleased

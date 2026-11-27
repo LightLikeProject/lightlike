@@ -132,7 +132,17 @@ blocks, the squared norms of the projections of F onto the even antiholomorphic 
 the squared norms of the projections of the blocks onto their discrete parts; the same holds for the holomorphic
 series applied to the complex conjugate of F [94].
 
-The irreducibility of the principal series is not yet formalized. [TODO]
+Topological irreducibility of a unitary representation (the only closed invariant subspaces are 0 and
+everything) follows from a complete family of K-weight vectors with pairwise distinct weights and a connected
+linking graph (`⟪e_a, π(g) e_b⟫ ≠ 0` for some g) [96]. The holomorphic discrete series `D_n⁺` is irreducible for
+every `n ≥ 2`, and so is `D_n⁻`, defined as `D_n⁺` composed with the automorphism `g ↦ JgJ`, `J = diag(1, −1)`,
+which negates the K-weights [97]. For the principal series of both parities the vectors
+`e_k(x) = (1 + x²)^{(iν−1−ε)/2} (x − i)^{k+ε} (x + i)^{−k}` of K-weight `2k + ε` are orthogonal eigenvectors of
+the rotations [98], satisfy the ladder relation `x e_k' − w e_k = ((s − k)/2) e_{k+1} + ((s + k + ε)/2) e_{k−1}`,
+and the matrix coefficient between neighbouring weights has derivative `(s − k) ‖e_{k+1}‖²` at 0, which vanishes
+only for `ν = 0` and `1 + ε + 2k = 0` [99]; the weight vectors are complete in `L²(ℝ)` [100]. Hence the principal
+series of SL(2,R) is irreducible for every real ν when the parity is even and for every ν ≠ 0 when it is odd; the
+single excluded case, the odd series at ν = 0, is exactly where the linking argument breaks [101].
 
 Further results of this area in the results catalogue:
 The spherical Plancherel theorem for SL(2,R): the spherical transform is a unitary equivalence from
@@ -391,6 +401,19 @@ non-vacuity check (stated, not proven) [41].
 95. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileChain.lean -
     `Lorentz.SL2RPlancherel.integral_chain_mul_profile_eq_zero`: ladder chain images with an offset a ∈ {0, 1/2} are
     orthogonal to the radial profiles of `D_n⁻`, n = 2(a + ν)
+
+96. Lightlike/Lorentz/SL2RIrreducible/Criterion.lean - `Lorentz.SL2R.IsTopologicallyIrreducible`,
+    `Lorentz.SL2R.isTopologicallyIrreducible_of_weights`, `Lorentz.SL2R.isTopologicallyIrreducible_comp`
+97. Lightlike/Lorentz/SL2RIrreducible/Discrete.lean - `Lorentz.SL2R.discreteSeries_isIrreducible`,
+    `Lorentz.SL2R.discreteSeriesMinus`, `Lorentz.SL2R.discreteSeriesMinus_rot`,
+    `Lorentz.SL2R.discreteSeriesMinus_isIrreducible`
+98. Lightlike/Lorentz/SL2RIrreducible/PrincipalWeights.lean - `Lorentz.SL2R.weightVec`,
+    `Lorentz.SL2R.principalSeries_rot_weightL2`, `Lorentz.SL2R.inner_weightL2_of_ne`
+99. Lightlike/Lorentz/SL2RIrreducible/PrincipalLadder.lean - `Lorentz.SL2R.ladder_weightVec`,
+    `Lorentz.SL2R.hasDerivAt_diagPairing`, `Lorentz.SL2R.exists_inner_ne_zero`
+100. Lightlike/Lorentz/SL2RIrreducible/PrincipalComplete.lean - `Lorentz.SL2R.weightL2_complete`
+101. Lightlike/Lorentz/SL2RIrreducible/Principal.lean - `Lorentz.SL2R.principalSeries_isIrreducible`,
+    `Lorentz.SL2R.weightExp_sub_eq_zero_iff`, `Lorentz.SL2R.exists_weightExp_sub_eq_zero_iff`
 
 ## References
 
