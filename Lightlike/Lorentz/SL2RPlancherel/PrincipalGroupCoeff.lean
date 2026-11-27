@@ -9,6 +9,9 @@ For every `v ∈ L²(ℝ)` the matrix coefficient `g ↦ ⟪v, π_ν(g) e_n⟫` 
 (`continuous_inner_principalSeries_kVecL2`): it is `∫ conj(v(x)) Q(num g x, den g x) dx` with `Q`
 continuous where `num² + den² > 0`, dominated near each `g₀` by
 `(Σ g₀ij² + 1)^{1/2} |v(x)| (1 + x²)^{-1/2}`, which is integrable by Cauchy–Schwarz.
+For `f` integrable on `SL(2,ℝ)` the coefficient `∫ f(g) ⟪e_m, π_ν(g) e_n⟫ dg` (`piCoeff`) is, in polar
+coordinates, `∫_{ξ>0} sinh ξ Φ^ν_{m,n}(ξ) ∫∫ e^{-2i(mα + nθ)} f(k_α a_ξ k_θ) dθ dα dξ`
+(`piCoeff_eq_polar`).
 Layer 2c-v of the Plancherel formula on `SL(2,ℝ)` (matrix coefficients of `π_ν(f)`), milestone HA3.
 -/
 
@@ -92,5 +95,40 @@ theorem continuous_inner_principalSeries_kVecL2 (ν : ℝ) (n : ℤ) (v : L2R) :
       _ = (S g₀ + 1) ^ ((1 : ℝ) / 2) * (‖v x‖ * (1 + x ^ 2) ^ (-(1 : ℝ) / 2)) := by ring
   · exact (integrable_conj_mul v r).norm.const_mul _
   · exact Eventually.of_forall fun x => continuousAt_const.mul (continuousAt_qForm_comp ν n x g₀)
+
+lemma norm_inner_principalSeries_le (ν : ℝ) (m n : ℤ) (g : SL2R) :
+    ‖inner ℂ (kVecL2 ν m) (principalSeries 0 ν g (kVecL2 ν n))‖ ≤ ‖kVecL2 ν m‖ * ‖kVecL2 ν n‖ :=
+  calc _ ≤ ‖kVecL2 ν m‖ * ‖principalSeries 0 ν g (kVecL2 ν n)‖ := norm_inner_le_norm _ _
+    _ = _ := by rw [principalSeries_apply, (piIso 0 ν g).norm_map]
+
+/-- The `(m, n)` matrix coefficient of `π_ν(f) = ∫ f(g) π_ν(g) dg`:
+`∫ f(g) ⟪e_m, π_ν(g) e_n⟫ dg`. -/
+def piCoeff (ν : ℝ) (f : SL2R → ℂ) (m n : ℤ) : ℂ :=
+  ∫ g, f g * inner ℂ (kVecL2 ν m) (principalSeries 0 ν g (kVecL2 ν n)) ∂haarR
+
+lemma integrable_mul_inner_principalSeries (ν : ℝ) {f : SL2R → ℂ} (hf : Integrable f haarR)
+    (m n : ℤ) :
+    Integrable (fun g => f g * inner ℂ (kVecL2 ν m) (principalSeries 0 ν g (kVecL2 ν n))) haarR :=
+  hf.mul_bdd (continuous_inner_principalSeries_kVecL2 ν n _).aestronglyMeasurable
+    (Eventually.of_forall (norm_inner_principalSeries_le ν m n))
+
+/-- **The matrix coefficients of `π_ν(f)` in polar coordinates**:
+`∫ f(g) ⟪e_m, π_ν(g) e_n⟫ dg
+= ∫_{ξ>0} sinh ξ Φ^ν_{m,n}(ξ) ∫_0^{2π} ∫_0^{2π} e^{-2i(mα + nθ)} f(k_α a_ξ k_θ) dθ dα dξ`. -/
+theorem piCoeff_eq_polar (ν : ℝ) {f : SL2R → ℂ} (hf : Integrable f haarR) (m n : ℤ) :
+    piCoeff ν f m n = ∫ ξ in Ioi (0 : ℝ), (Real.sinh ξ : ℂ) * (mcoefP ν m n ξ *
+      ∫ α in Ioc 0 (2 * π), ∫ θ in Ioc 0 (2 * π),
+        Complex.exp (-(2 * (m * α + n * θ) * I)) * f (rot α * aR ξ * rot θ)) := by
+  rw [piCoeff, integral_haarR_torus (integrable_mul_inner_principalSeries ν hf m n)]
+  refine setIntegral_congr_fun measurableSet_Ioi fun ξ _ => ?_
+  congr 1
+  simp only [inner_kVecL2_kak]
+  rw [← integral_const_mul]
+  refine integral_congr_ae (Eventually.of_forall fun α => ?_)
+  simp only
+  rw [← integral_const_mul]
+  refine integral_congr_ae (Eventually.of_forall fun θ => ?_)
+  simp only
+  ring
 
 end Lightlike.Lorentz.SL2RPlancherel
