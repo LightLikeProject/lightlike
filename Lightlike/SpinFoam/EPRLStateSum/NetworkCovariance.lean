@@ -248,4 +248,151 @@ theorem kernel_relabel (col : Finset V → ℕ) (x₁ x₂ : K.simps × Fin 5) (
   rw [hbox, hbox']
   exact (sum_fourJT_mul_perm (legSpins K col x₁) (legPerm K σ x₁) (legReads K x₁ m₁) (legReads K x₂ m₂)).symm
 
+/-- The summand of the network. -/
+noncomputable def netTerm (K : Complex4 V) (col : Finset V → ℕ) (M : K.simps → Fin 10 → ℤ) : ℝ :=
+  (∏ s : K.simps, edgeW (complexJ K col s) (M s)) *
+    ∏ t : K.tets, ∑ k ∈ tetBoxI K col t, ∏ x ∈ fiberOf K t, nodeF K col x (M x.1) k
+
+/-- **The network of a complex**: the sum of `netTerm` over the families of edge projections. -/
+noncomputable def Znet (K : Complex4 V) (col : Finset V → ℕ) : ℝ :=
+  ∑ M ∈ Fintype.piFinset (fun s : K.simps => projBox K col s), netTerm K col M
+
+/-- A node whose factor vanishes for every label kills the summand. -/
+lemma netTerm_eq_zero_of_node (K : Complex4 V) (col : Finset V → ℕ) (M : K.simps → Fin 10 → ℤ)
+    (x : K.simps × Fin 5) (h : ∀ k, nodeF K col x (M x.1) k = 0) : netTerm K col M = 0 := by
+  unfold netTerm
+  rw [mul_eq_zero]
+  right
+  refine Finset.prod_eq_zero (Finset.mem_univ (incTet K x)) ?_
+  refine Finset.sum_eq_zero fun k _ => ?_
+  exact Finset.prod_eq_zero (i := x) (by simp [fiberOf]) (h k)
+
+/-- The node factor vanishes if one of its legs reads a non-admissible projection. -/
+lemma nodeF_eq_zero_of_not_adm (K : Complex4 V) (col : Finset V → ℕ) (x : K.simps × Fin 5) (m : Fin 10 → ℤ) (k : ℕ)
+    (i : Fin 4) (h : ¬ AdmProj (legSpins K col x i) (legReads K x m i)) : nodeF K col x m k = 0 := by
+  rw [nodeF_eq_fourJT]
+  have hI := isInv_fourJT (legSpins K col x 0) (legSpins K col x 1) (legSpins K col x 2) (legSpins K col x 3) k
+  refine hI.eq_zero (i := i) ?_
+  fin_cases i <;> simpa using h
+
+/-- The tetrahedron `σ⁻¹ t'` of `K`. -/
+def tetBwd (t' : (relabelComplex K σ).tets) : K.tets :=
+  ⟨t'.1.map σ.symm.toEmbedding, (mem_relabel_faces K σ 3 _).1 t'.2⟩
+
+/-- The tetrahedra of a relabelled complex are those of `K`. -/
+def tetEquiv : K.tets ≃ (relabelComplex K σ).tets where
+  toFun := tetFwd K σ
+  invFun := tetBwd K σ
+  left_inv t := Subtype.ext (map_map_symm σ t.1)
+  right_inv t' := Subtype.ext (map_symm_map σ t'.1)
+
+/-- The 4-simplices of a relabelled complex are those of `K`. -/
+def fwdEquiv : K.simps ≃ (relabelComplex K σ).simps where
+  toFun := fwd K σ
+  invFun := bwd K σ
+  left_inv := bwd_fwd K σ
+  right_inv := fwd_bwd K σ
+
+/-- **Every tetrahedron of a closed complex has two incidences.** -/
+lemma fiberOf_card (hK : K.IsClosed4) (t : K.tets) : (fiberOf K t).card = 2 := by
+  classical
+  have h := card_incFiber K t
+  rw [Fintype.card_subtype] at h
+  have h2 := hK t.1 t.2
+  unfold fiberOf
+  rw [h]
+  exact h2
+
+lemma fiberOf_eq_pair (hK : K.IsClosed4) (t : K.tets) :
+    ∃ x₁ x₂, x₁ ≠ x₂ ∧ fiberOf K t = {x₁, x₂} := by
+  obtain ⟨x₁, x₂, hne, h⟩ := Finset.card_eq_two.1 (fiberOf_card K hK t)
+  exact ⟨x₁, x₂, hne, h⟩
+
+/-- The reparametrisation of the families of edge projections of `K` as families of `relabelComplex K σ`. -/
+noncomputable def projRelabel (M : K.simps → Fin 10 → ℤ) : (relabelComplex K σ).simps → Fin 10 → ℤ :=
+  fun s' => permProj (phi K σ (bwd K σ s')) (M (bwd K σ s'))
+
+lemma projRelabel_fwd (M : K.simps → Fin 10 → ℤ) (s : K.simps) :
+    projRelabel K σ M (fwd K σ s) = permProj (phi K σ s) (M s) := by
+  unfold projRelabel
+  simp only [bwd_fwd]
+
+/-- Every leg of every node reads an admissible projection. -/
+def Good (col : Finset V → ℕ) (M : K.simps → Fin 10 → ℤ) : Prop :=
+  ∀ (x : K.simps × Fin 5) (i : Fin 4), AdmProj (legSpins K col x i) (legReads K x (M x.1) i)
+
+lemma Good.parity {col : Finset V → ℕ} {M : K.simps → Fin 10 → ℤ} (hg : Good K col M) (s : K.simps) (e : Fin 10) :
+    ((jE (complexJ K col s) e : ℤ) - M s e) % 2 = 0 := by
+  have hlt := epr_lt e
+  obtain ⟨i, hi⟩ := Fin.exists_succAbove_eq (x := (epr e).2) (y := (epr e).1) (ne_of_gt hlt)
+  have h := (hg (s, (epr e).1) i).2.2
+  unfold legSpins legReads at h
+  simp only [hi, legProj_epr] at h
+  exact h
+
+/-- **The summand of the network of a relabelled complex**: the old summand times `(-1)` to the number of reversed links (on a closed complex). -/
+theorem netTerm_relabel (hK : K.IsClosed4) (col : Finset V → ℕ) (M : K.simps → Fin 10 → ℤ) :
+    netTerm (relabelComplex K σ) (relabelCol σ col) (projRelabel K σ M) =
+      (-1 : ℝ) ^ (∑ s : K.simps, invSum (complexJ K col s) (phi K σ s)) * netTerm K col M := by
+  by_cases hg : Good K col M
+  · unfold netTerm
+    have hE : ∏ s' : (relabelComplex K σ).simps,
+        edgeW (complexJ (relabelComplex K σ) (relabelCol σ col) s') (projRelabel K σ M s') =
+        (-1 : ℝ) ^ (∑ s : K.simps, invSum (complexJ K col s) (phi K σ s)) *
+          ∏ s : K.simps, edgeW (complexJ K col s) (M s) := by
+      rw [← Equiv.prod_comp (fwdEquiv K σ)]
+      rw [← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]
+      refine Finset.prod_congr rfl fun s _ => ?_
+      show edgeW (complexJ (relabelComplex K σ) (relabelCol σ col) (fwd K σ s)) (projRelabel K σ M (fwd K σ s)) = _
+      rw [projRelabel_fwd]
+      have hJfun : complexJ (relabelComplex K σ) (relabelCol σ col) (fwd K σ s) =
+          fun a b => complexJ K col s (phi K σ s a) (phi K σ s b) := by
+        funext a b
+        exact complexJ_relabel K σ col s (fwd K σ s) rfl a b
+      rw [hJfun]
+      unfold edgeW
+      exact edgeW_permProj (complexJ K col s) (simplexJ_symm s.1 (K.card_eq _ s.2) col) (phi K σ s) (M s)
+        (hg.parity K s)
+    have hN : ∏ t' : (relabelComplex K σ).tets, ∑ k ∈ tetBoxI (relabelComplex K σ) (relabelCol σ col) t',
+        ∏ x' ∈ fiberOf (relabelComplex K σ) t',
+          nodeF (relabelComplex K σ) (relabelCol σ col) x' (projRelabel K σ M x'.1) k =
+        ∏ t : K.tets, ∑ k ∈ tetBoxI K col t, ∏ x ∈ fiberOf K t, nodeF K col x (M x.1) k := by
+      rw [← Equiv.prod_comp (tetEquiv K σ)]
+      refine Finset.prod_congr rfl fun t _ => ?_
+      show ∑ k ∈ tetBoxI (relabelComplex K σ) (relabelCol σ col) (tetFwd K σ t),
+          ∏ x' ∈ fiberOf (relabelComplex K σ) (tetFwd K σ t),
+            nodeF (relabelComplex K σ) (relabelCol σ col) x' (projRelabel K σ M x'.1) k = _
+      obtain ⟨x₁, x₂, hne, hfib⟩ := fiberOf_eq_pair K hK t
+      have h1 : incTet K x₁ = t := by
+        have : x₁ ∈ fiberOf K t := by rw [hfib]; simp
+        simpa [fiberOf] using this
+      have h2 : incTet K x₂ = t := by
+        have : x₂ ∈ fiberOf K t := by rw [hfib]; simp
+        simpa [fiberOf] using this
+      have hne' : theta K σ x₁ ≠ theta K σ x₂ := fun h => hne (theta_injective K σ h)
+      rw [fiberOf_tetFwd, hfib, Finset.image_insert, Finset.image_singleton]
+      simp only [Finset.prod_pair hne', Finset.prod_pair hne]
+      have := kernel_relabel K σ col x₁ x₂ (h1.trans h2.symm) (M x₁.1) (M x₂.1)
+      rw [h1] at this
+      subst h1
+      rw [← this]
+      refine Finset.sum_congr rfl fun k _ => ?_
+      show nodeF (relabelComplex K σ) (relabelCol σ col) (theta K σ x₁) (projRelabel K σ M (fwd K σ x₁.1)) k *
+          nodeF (relabelComplex K σ) (relabelCol σ col) (theta K σ x₂) (projRelabel K σ M (fwd K σ x₂.1)) k = _
+      rw [projRelabel_fwd, projRelabel_fwd]
+    rw [hE, hN]
+    ring
+  · obtain ⟨x, i, hbad⟩ : ∃ (x : K.simps × Fin 5) (i : Fin 4),
+        ¬ AdmProj (legSpins K col x i) (legReads K x (M x.1) i) := by
+      by_contra h
+      exact hg fun x i => by_contra fun h' => h ⟨x, i, h'⟩
+    have h0 : netTerm K col M = 0 :=
+      netTerm_eq_zero_of_node K col M x fun k => nodeF_eq_zero_of_not_adm K col x (M x.1) k i hbad
+    have h1 : netTerm (relabelComplex K σ) (relabelCol σ col) (projRelabel K σ M) = 0 := by
+      refine netTerm_eq_zero_of_node _ _ _ (theta K σ x) fun k => ?_
+      show nodeF (relabelComplex K σ) (relabelCol σ col) (theta K σ x) (projRelabel K σ M (fwd K σ x.1)) k = 0
+      rw [projRelabel_fwd, nodeF_theta]
+      exact (isInv_fourJP (legSpins K col x) (legPerm K σ x) k).eq_zero (i := i) hbad
+    rw [h0, h1, mul_zero]
+
 end Lightlike.SpinFoam.EPRLStateSum

@@ -150,6 +150,16 @@ lemma edgeW_perm (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J q p) (π
   exact Equiv.prod_comp (Equiv.ofBijective (edgeMap π) (edgeMap_injective π).bijective_of_finite)
     (fun e => edgeSign (jE J e) (m e))
 
+/-- **The edge weights of the projections read after a relabelling**: `edgeW` of the relabelled spins at `permProj π m` is `(-1)^(invSum)` times the old one,
+on parity-valid projections. -/
+lemma edgeW_permProj (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J q p) (π : Equiv.Perm (Fin 5)) (m : Fin 10 → ℤ)
+    (hpar : ∀ e, ((jE J e : ℤ) - m e) % 2 = 0) :
+    ∏ e' : Fin 10, edgeSign (jE (fun a b => J (π a) (π b)) e') (permProj π m e') =
+      (-1 : ℝ) ^ invSum J π * ∏ e : Fin 10, edgeSign (jE J e) (m e) := by
+  rw [← edgeW_perm J hJ π m hpar]
+  refine Finset.prod_congr rfl fun e' _ => ?_
+  rfl
+
 /-- The readings of a projection family in the box are bounded by the spins. -/
 lemma legProj_mem (J : Fin 5 → Fin 5 → ℕ) (hJ : ∀ p q, J p q = J q p) (m : Fin 10 → ℤ)
     (hm : m ∈ Fintype.piFinset fun e : Fin 10 => Icc (-(jE J e : ℤ)) (jE J e)) (p q : Fin 5) :
