@@ -49,7 +49,7 @@ example (N : ℕ) {t : ℝ} (ht : 0 < t) (y : Fin 1 → ℝ) :
           coordLaplacian gLine (fun z => gaussFactor t (σLine z) * truncAnsatz uFree N t z) y = 0 := by
   obtain ⟨D, hD, hDeq⟩ := heatOperator_truncated_ansatz isCoordMetric_gLine
     ((contDiff_apply ℝ (fun _ : Fin 1 => ℝ) 0).mul (contDiff_apply ℝ (fun _ : Fin 1 => ℝ) 0)).contDiffOn
-    (fun k => contDiffOn_const) eikonal_σLine (isTransport_free N) ht (mem_univ y)
+    (fun k => contDiffOn_const) (fun z _ => congrFun eikonal_σLine z) (isTransport_free N) ht (mem_univ y)
   refine ⟨D, hD, hDeq.trans ?_⟩
   rw [coordLaplacian_const]
   ring
