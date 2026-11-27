@@ -237,4 +237,60 @@ theorem hasDerivAt_mcoefP (ν : ℝ) (m n : ℤ) (ξ₀ : ℝ) :
     mcoefP_eq_integral, mcoefP_eq_integral]
   rfl
 
+/-- `num² + den² > 0`: the column `(num, den) = gᵀ (x, 1)` does not vanish. -/
+lemma num_sq_add_den_sq_pos (g : SL2R) (x : ℝ) : 0 < num g x ^ 2 + den g x ^ 2 := by
+  by_contra h
+  push Not at h
+  have h1 : num g x = 0 := by nlinarith [sq_nonneg (num g x), sq_nonneg (den g x)]
+  have h2 : den g x = 0 := by nlinarith [sq_nonneg (num g x), sq_nonneg (den g x)]
+  have hdet : g 0 0 * g 1 1 - g 0 1 * g 1 0 = 1 := by
+    have := g.2; rw [Matrix.det_fin_two] at this; linarith
+  simp only [num, den] at h1 h2
+  -- `x = (g11 num - g10 den)`, `1 = (g00 den - g01 num)` up to the determinant
+  have : (1 : ℝ) = g 0 0 * (g 0 1 * x + g 1 1) - g 0 1 * (g 0 0 * x + g 1 0) := by
+    linear_combination -hdet
+  rw [h1, h2] at this
+  simp at this
+
+/-- **The `K`-type vectors under any group element, in smooth form**: off the pole,
+`(π(g) e_n)(x) = (num² + den²)^w ((num - i den)/(num + i den))^n` with `num = num g x`,
+`den = den g x`; the singularities of the multiplier and of `e_n ∘ mob` cancel. -/
+theorem act_kVecP_eq (ν : ℝ) (n : ℤ) (g : SL2R) (x : ℝ) (hx : den g x ≠ 0) :
+    act 0 ν g (kVecP ν n) x =
+      (((num g x ^ 2 + den g x ^ 2 : ℝ)) : ℂ) ^ (wP ν) *
+        ((((num g x : ℝ) : ℂ) - I * (den g x : ℂ)) / (((num g x : ℝ) : ℂ) + I * (den g x : ℂ))) ^ n := by
+  set d := den g x with hd
+  set N := num g x with hN
+  have had : 0 < |d| := abs_pos.mpr hx
+  have hA : 0 ≤ N ^ 2 + d ^ 2 := by positivity
+  have hdC : ((d : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hx
+  -- the modulus
+  have e : (1 + mob g x ^ 2 : ℝ) = (N ^ 2 + d ^ 2) * (|d| * |d|)⁻¹ := by
+    rw [abs_mul_abs_self, mob, ← hN, ← hd]; field_simp; ring
+  have harg : ((((|d| * |d| : ℝ)) : ℂ)).arg ≠ π := by
+    rw [Complex.arg_ofReal_of_nonneg (by positivity)]
+    exact Real.pi_ne_zero.symm
+  have hmod : (((1 + mob g x ^ 2 : ℝ)) : ℂ) ^ (wP ν) =
+      (((N ^ 2 + d ^ 2 : ℝ)) : ℂ) ^ (wP ν) * ((((|d| : ℝ) : ℂ)) ^ (wP ν) * (((|d| : ℝ) : ℂ)) ^ (wP ν))⁻¹ := by
+    rw [e, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hA
+      (inv_nonneg.2 (mul_nonneg (abs_nonneg _) (abs_nonneg _))), Complex.ofReal_inv,
+      Complex.inv_cpow _ _ harg, Complex.ofReal_mul,
+      Complex.mul_cpow_ofReal_nonneg (abs_nonneg _) (abs_nonneg _)]
+  have hmult : mult 0 ν d = (((|d| : ℝ) : ℂ)) ^ (wP ν) * (((|d| : ℝ) : ℂ)) ^ (wP ν) := by
+    rw [mult, zpow_zero, mul_one, show I * (ν : ℂ) - 1 = (2 : ℕ) * wP ν by rw [wP]; push_cast; ring,
+      Complex.cpow_nat_mul, sq]
+  have hne : (((|d| : ℝ) : ℂ)) ^ (wP ν) ≠ 0 := by
+    rw [Ne, Complex.cpow_eq_zero_iff]; push Not
+    intro h; exact absurd (by exact_mod_cast h) had.ne'
+  -- the phase
+  have hph : ((mob g x : ℂ) - I) / ((mob g x : ℂ) + I) =
+      (((N : ℝ) : ℂ) - I * (d : ℂ)) / (((N : ℝ) : ℂ) + I * (d : ℂ)) := by
+    have hmob : (mob g x : ℂ) = ((N : ℝ) : ℂ) / ((d : ℝ) : ℂ) := by simp [mob, hN, hd]
+    have hden : ((N : ℝ) : ℂ) + I * (d : ℂ) ≠ 0 := by
+      intro h; have := congrArg Complex.im h; simp at this; exact hx this
+    rw [hmob]
+    field_simp
+  rw [act, kVecP, show ((I * (ν : ℂ) - 1) / 2) = wP ν from rfl, hmult, hmod, hph]
+  field_simp
+
 end Lightlike.Lorentz.SL2RPlancherel
