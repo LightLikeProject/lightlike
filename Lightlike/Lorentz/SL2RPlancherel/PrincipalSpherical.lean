@@ -207,4 +207,61 @@ lemma abs_mehlerDeriv_smul {ν ξ x : ℝ} (hξ : 0 < ξ) (hx : 0 < x) :
   simp only [Complex.ofReal_div, Complex.ofReal_mul, Complex.ofReal_exp, Complex.ofReal_ofNat]
   field_simp
 
+lemma sphIntegrand_neg (ν ξ x : ℝ) : sphIntegrand ν ξ (-x) = sphIntegrand ν ξ x := by
+  simp only [sphIntegrand, sphU_neg, neg_sq]
+
+lemma continuous_sphIntegrand (ν ξ : ℝ) : Continuous (sphIntegrand ν ξ) := by
+  have hlog : Continuous fun x => Real.log (sphU ξ x) :=
+    (continuous_sphU ξ).log fun x => (sphU_pos ξ x).ne'
+  exact (Complex.continuous_exp.comp (continuous_const.mul
+    (Complex.continuous_ofReal.comp hlog))).div
+    (Complex.continuous_ofReal.comp (continuous_const.add (continuous_pow 2)))
+    fun x => by exact_mod_cast (show (0 : ℝ) < 1 + x ^ 2 by positivity).ne'
+
+lemma re_wP_mul (ν L : ℝ) : (wP ν * (L : ℂ)).re = -L / 2 := by
+  simp only [wP, Complex.mul_re, Complex.div_re, Complex.sub_re, Complex.mul_re, Complex.I_re,
+    Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, Complex.one_re, Complex.div_im,
+    Complex.sub_im, Complex.mul_im, Complex.one_im]
+  norm_num
+  ring
+
+lemma norm_sphIntegrand_le (ν : ℝ) {ξ : ℝ} (hξ : 0 < ξ) (x : ℝ) :
+    ‖sphIntegrand ν ξ x‖ ≤ Real.exp (ξ / 2) * (1 + x ^ 2)⁻¹ := by
+  have h1 : (0 : ℝ) < 1 + x ^ 2 := by positivity
+  have hs := Real.sinh_pos_iff.2 hξ
+  have hlow : Real.exp (-ξ) ≤ sphU ξ x := by
+    rw [sphU_eq]
+    have hEs : Real.exp (-ξ) = Real.exp ξ - 2 * Real.sinh ξ := by rw [Real.sinh_eq]; ring
+    have : 2 * Real.sinh ξ / (1 + x ^ 2) ≤ 2 * Real.sinh ξ :=
+      div_le_self (by linarith) (by nlinarith [sq_nonneg x])
+    linarith
+  have hL : -ξ ≤ Real.log (sphU ξ x) := (Real.le_log_iff_exp_le (sphU_pos ξ x)).2 hlow
+  rw [sphIntegrand, norm_div, Complex.norm_exp, Complex.norm_real, Real.norm_eq_abs,
+    abs_of_pos h1, div_eq_mul_inv, re_wP_mul]
+  gcongr
+  linarith
+
+lemma integrable_sphIntegrand (ν : ℝ) {ξ : ℝ} (hξ : 0 < ξ) : Integrable (sphIntegrand ν ξ) :=
+  (integrable_inv_one_add_sq.const_mul (Real.exp (ξ / 2))).mono'
+    (continuous_sphIntegrand ν ξ).aestronglyMeasurable
+    (Filter.Eventually.of_forall (norm_sphIntegrand_le ν hξ))
+
+/-- **Mehler's formula** for the spherical matrix coefficient:
+`Φ^ν_{0,0}(ξ) = ∫_{-ξ}^{ξ} e^{iνt/2}/√(2(cosh ξ - cosh t)) dt` for `ξ > 0`. -/
+theorem mcoefP_zero_zero_mehler (ν : ℝ) {ξ : ℝ} (hξ : 0 < ξ) :
+    mcoefP ν 0 0 ξ = ∫ t in Ioo (-ξ) ξ, mehlerKernel ν ξ t := by
+  have hint := integrable_sphIntegrand ν hξ
+  have h0 : mcoefP ν 0 0 ξ = ∫ x, sphIntegrand ν ξ x := mcoefP_zero_zero ν ξ
+  rw [h0, ← intervalIntegral.integral_Iic_add_Ioi (b := 0) hint.integrableOn hint.integrableOn]
+  have hneg : ∫ x in Iic (0 : ℝ), sphIntegrand ν ξ x = ∫ x in Ioi (0 : ℝ), sphIntegrand ν ξ x := by
+    have := integral_comp_neg_Iic (0 : ℝ) (sphIntegrand ν ξ)
+    simp only [sphIntegrand_neg, neg_zero] at this
+    exact this
+  rw [hneg, ← two_mul, ← image_log_sphU hξ,
+    integral_image_eq_integral_abs_deriv_smul measurableSet_Ioi
+      (fun x _ => (hasDerivAt_log_sphU ξ x).hasDerivWithinAt) (strictMonoOn_log_sphU hξ).injOn,
+    ← integral_const_mul]
+  refine setIntegral_congr_fun measurableSet_Ioi fun x hx => ?_
+  exact (abs_mehlerDeriv_smul hξ hx).symm
+
 end Lightlike.Lorentz.SL2RPlancherel
