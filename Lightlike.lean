@@ -369,6 +369,8 @@ import Lightlike.Geometry.HeatKernel.HeatCoeffs
 import Lightlike.Geometry.HeatKernel.HeatCoeffsTests
 import Lightlike.Geometry.HeatKernel.WorldFunctionBounds
 import Lightlike.Geometry.HeatKernel.WorldFunctionBoundsTests
+import Lightlike.Geometry.HeatKernel.CutoffAnsatz
+import Lightlike.Geometry.HeatKernel.CutoffAnsatzTests
 import Lightlike.Geometry.HeatKernel.GaussianDeriv
 import Lightlike.Geometry.HeatKernel.Potential
 import Lightlike.Geometry.HeatKernel.InducedGravity
