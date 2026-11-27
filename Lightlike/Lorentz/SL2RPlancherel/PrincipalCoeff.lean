@@ -237,4 +237,121 @@ theorem hasDerivAt_mcoefP (ν : ℝ) (m n : ℤ) (ξ₀ : ℝ) :
     mcoefP_eq_integral, mcoefP_eq_integral]
   rfl
 
+/-- `num² + den² > 0`: the column `(num, den) = gᵀ (x, 1)` does not vanish. -/
+lemma num_sq_add_den_sq_pos (g : SL2R) (x : ℝ) : 0 < num g x ^ 2 + den g x ^ 2 := by
+  by_contra h
+  push Not at h
+  have h1 : num g x = 0 := by nlinarith [sq_nonneg (num g x), sq_nonneg (den g x)]
+  have h2 : den g x = 0 := by nlinarith [sq_nonneg (num g x), sq_nonneg (den g x)]
+  have hdet : g 0 0 * g 1 1 - g 0 1 * g 1 0 = 1 := by
+    have := g.2; rw [Matrix.det_fin_two] at this; linarith
+  simp only [num, den] at h1 h2
+  -- `x = (g11 num - g10 den)`, `1 = (g00 den - g01 num)` up to the determinant
+  have : (1 : ℝ) = g 0 0 * (g 0 1 * x + g 1 1) - g 0 1 * (g 0 0 * x + g 1 0) := by
+    linear_combination -hdet
+  rw [h1, h2] at this
+  simp at this
+
+/-- **The `K`-type vectors under any group element, in smooth form**: off the pole,
+`(π(g) e_n)(x) = (num² + den²)^w ((num - i den)/(num + i den))^n` with `num = num g x`,
+`den = den g x`; the singularities of the multiplier and of `e_n ∘ mob` cancel. -/
+theorem act_kVecP_eq (ν : ℝ) (n : ℤ) (g : SL2R) (x : ℝ) (hx : den g x ≠ 0) :
+    act 0 ν g (kVecP ν n) x =
+      (((num g x ^ 2 + den g x ^ 2 : ℝ)) : ℂ) ^ (wP ν) *
+        ((((num g x : ℝ) : ℂ) - I * (den g x : ℂ)) / (((num g x : ℝ) : ℂ) + I * (den g x : ℂ))) ^ n := by
+  set d := den g x with hd
+  set N := num g x with hN
+  have had : 0 < |d| := abs_pos.mpr hx
+  have hA : 0 ≤ N ^ 2 + d ^ 2 := by positivity
+  have hdC : ((d : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hx
+  -- the modulus
+  have e : (1 + mob g x ^ 2 : ℝ) = (N ^ 2 + d ^ 2) * (|d| * |d|)⁻¹ := by
+    rw [abs_mul_abs_self, mob, ← hN, ← hd]; field_simp; ring
+  have harg : ((((|d| * |d| : ℝ)) : ℂ)).arg ≠ π := by
+    rw [Complex.arg_ofReal_of_nonneg (by positivity)]
+    exact Real.pi_ne_zero.symm
+  have hmod : (((1 + mob g x ^ 2 : ℝ)) : ℂ) ^ (wP ν) =
+      (((N ^ 2 + d ^ 2 : ℝ)) : ℂ) ^ (wP ν) * ((((|d| : ℝ) : ℂ)) ^ (wP ν) * (((|d| : ℝ) : ℂ)) ^ (wP ν))⁻¹ := by
+    rw [e, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hA
+      (inv_nonneg.2 (mul_nonneg (abs_nonneg _) (abs_nonneg _))), Complex.ofReal_inv,
+      Complex.inv_cpow _ _ harg, Complex.ofReal_mul,
+      Complex.mul_cpow_ofReal_nonneg (abs_nonneg _) (abs_nonneg _)]
+  have hmult : mult 0 ν d = (((|d| : ℝ) : ℂ)) ^ (wP ν) * (((|d| : ℝ) : ℂ)) ^ (wP ν) := by
+    rw [mult, zpow_zero, mul_one, show I * (ν : ℂ) - 1 = (2 : ℕ) * wP ν by rw [wP]; push_cast; ring,
+      Complex.cpow_nat_mul, sq]
+  have hne : (((|d| : ℝ) : ℂ)) ^ (wP ν) ≠ 0 := by
+    rw [Ne, Complex.cpow_eq_zero_iff]; push Not
+    intro h; exact absurd (by exact_mod_cast h) had.ne'
+  -- the phase
+  have hph : ((mob g x : ℂ) - I) / ((mob g x : ℂ) + I) =
+      (((N : ℝ) : ℂ) - I * (d : ℂ)) / (((N : ℝ) : ℂ) + I * (d : ℂ)) := by
+    have hmob : (mob g x : ℂ) = ((N : ℝ) : ℂ) / ((d : ℝ) : ℂ) := by simp [mob, hN, hd]
+    have hden : ((N : ℝ) : ℂ) + I * (d : ℂ) ≠ 0 := by
+      intro h; have := congrArg Complex.im h; simp at this; exact hx this
+    rw [hmob]
+    field_simp
+  rw [act, kVecP, show ((I * (ν : ℂ) - 1) / 2) = wP ν from rfl, hmult, hmod, hph]
+  field_simp
+
+/-- The smooth form `Q(N, D) = (N² + D²)^w ((N - iD)/(N + iD))^n` of `π(g) e_n`. -/
+def qForm (ν : ℝ) (n : ℤ) (N D : ℝ) : ℂ :=
+  (((N ^ 2 + D ^ 2 : ℝ)) : ℂ) ^ (wP ν) * ((((N : ℝ) : ℂ) - I * (D : ℂ)) / (((N : ℝ) : ℂ) + I * (D : ℂ))) ^ n
+
+/-- **Matrix coefficients against an arbitrary vector**:
+`⟪f, π(g) e_n⟫ = ∫ conj(f(x)) Q(num g x, den g x) dx`. -/
+theorem inner_principalSeries_kVecL2 (ν : ℝ) (n : ℤ) (f : L2R) (g : SL2R) :
+    inner ℂ f (principalSeries 0 ν g (kVecL2 ν n)) =
+      ∫ x, (starRingEnd ℂ) (f x) * qForm ν n (num g x) (den g x) := by
+  rw [MeasureTheory.L2.inner_def]
+  refine integral_congr_ae ?_
+  have h2 := coeFn_principalSeries 0 ν g (kVecL2 ν n)
+  have h3 := ae_eq_comp_mob g (MemLp.coeFn_toLp (memLp_kVecP ν n))
+  filter_upwards [h2, h3, ae_den_ne_zero g] with x e2 e3 hx
+  simp only [Function.comp_apply] at e3
+  rw [e2, RCLike.inner_apply']
+  congr 1
+  have := act_kVecP_eq ν n g x hx
+  rw [act] at this
+  rw [show (kVecL2 ν n : ℝ → ℂ) (mob g x) = kVecP ν n (mob g x) from e3, this, qForm]
+
+/-- **A uniform lower bound**: `1 + x² ≤ (Σ g_ij²)(num² + den²)` for `g ∈ SL(2,ℝ)` (`det g = 1`). -/
+lemma one_add_sq_le_num_den (g : SL2R) (x : ℝ) :
+    1 + x ^ 2 ≤ (g 0 0 ^ 2 + g 0 1 ^ 2 + g 1 0 ^ 2 + g 1 1 ^ 2) * (num g x ^ 2 + den g x ^ 2) := by
+  have hdet : g 0 0 * g 1 1 - g 0 1 * g 1 0 = 1 := by
+    have := g.2; rw [Matrix.det_fin_two] at this; linarith
+  have hx : x = g 1 1 * num g x - g 1 0 * den g x := by
+    simp only [num, den]; linear_combination (-x) * hdet
+  have h1 : (1 : ℝ) = g 0 0 * den g x - g 0 1 * num g x := by
+    simp only [num, den]; linear_combination -hdet
+  have c1 : (g 1 1 * num g x - g 1 0 * den g x) ^ 2 ≤
+      (g 1 1 ^ 2 + g 1 0 ^ 2) * (num g x ^ 2 + den g x ^ 2) := by
+    nlinarith [sq_nonneg (g 1 1 * den g x + g 1 0 * num g x)]
+  have c2 : (g 0 0 * den g x - g 0 1 * num g x) ^ 2 ≤
+      (g 0 0 ^ 2 + g 0 1 ^ 2) * (num g x ^ 2 + den g x ^ 2) := by
+    nlinarith [sq_nonneg (g 0 0 * num g x + g 0 1 * den g x)]
+  have hn : 0 ≤ num g x ^ 2 + den g x ^ 2 := by positivity
+  calc 1 + x ^ 2 = (g 0 0 * den g x - g 0 1 * num g x) ^ 2 +
+        (g 1 1 * num g x - g 1 0 * den g x) ^ 2 := by rw [← h1, ← hx]; ring
+    _ ≤ (g 0 0 ^ 2 + g 0 1 ^ 2) * (num g x ^ 2 + den g x ^ 2) +
+        (g 1 1 ^ 2 + g 1 0 ^ 2) * (num g x ^ 2 + den g x ^ 2) := add_le_add c2 c1
+    _ = _ := by ring
+
+lemma norm_qForm (ν : ℝ) (n : ℤ) {N D : ℝ} (h : 0 < N ^ 2 + D ^ 2) :
+    ‖qForm ν n N D‖ = (N ^ 2 + D ^ 2) ^ (-(1 : ℝ) / 2) := by
+  have hden : ((N : ℝ) : ℂ) + I * (D : ℂ) ≠ 0 := by
+    intro h0
+    have hr := congrArg Complex.re h0
+    have hi := congrArg Complex.im h0
+    simp at hr hi
+    rw [hr, hi] at h; simp at h
+  have hph : ‖(((N : ℝ) : ℂ) - I * (D : ℂ)) / (((N : ℝ) : ℂ) + I * (D : ℂ))‖ = 1 := by
+    rw [norm_div]
+    have h1 : ‖((N : ℝ) : ℂ) - I * (D : ℂ)‖ = ‖((N : ℝ) : ℂ) + I * (D : ℂ)‖ := by
+      rw [← Complex.norm_conj (((N : ℝ) : ℂ) + I * (D : ℂ))]
+      simp [map_add, sub_eq_add_neg]
+    rw [h1, div_self (norm_ne_zero_iff.mpr hden)]
+  rw [qForm, norm_mul, norm_zpow, hph, one_zpow, mul_one, Complex.norm_cpow_eq_rpow_re_of_pos h]
+  congr 1
+  simp [wP]
+
 end Lightlike.Lorentz.SL2RPlancherel
