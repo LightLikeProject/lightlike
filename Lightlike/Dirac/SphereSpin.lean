@@ -535,13 +535,13 @@ lemma ι_mul_ι_mem_spinGroup_Qneg {u w : E n} (hu : ‖u‖ = 1) (hw : ‖w‖ 
     ι (Qneg n) u * ι (Qneg n) w ∈ spinGroup (Qneg n) :=
   ⟨Submonoid.mul_mem _ (ι_mem_pinGroup_Qneg hu) (ι_mem_pinGroup_Qneg hw), ι_mul_ι_mem_evenOdd_zero _ u w⟩
 
-lemma polar_Qneg (u v : E n) : QuadraticMap.polar (Qneg n) u v = -(2 * inner ℝ u v) := by
+lemma polar_Qneg_eq (u v : E n) : QuadraticMap.polar (Qneg n) u v = -(2 * inner ℝ u v) := by
   rw [QuadraticMap.polar, Qneg_apply, Qneg_apply, Qneg_apply, norm_add_sq_real]; ring
 
 /-- Conjugation by a unit vector: `ι u ι v ι(u)* = ι(2⟨u,v⟩ u - v)`. -/
 lemma conj_ι_unit {u : E n} (hu : ‖u‖ = 1) (v : E n) :
     ι (Qneg n) u * ι (Qneg n) v * star (ι (Qneg n) u) = ι (Qneg n) ((2 * inner ℝ u v) • u - v) := by
-  rw [star_ι, mul_neg, ι_mul_ι_mul_ι, polar_Qneg, Qneg_apply, hu, ← map_neg]
+  rw [star_ι, mul_neg, ι_mul_ι_mul_ι, polar_Qneg_eq, Qneg_apply, hu, ← map_neg]
   congr 1
   simp only [one_pow, neg_smul, one_smul]
   abel
