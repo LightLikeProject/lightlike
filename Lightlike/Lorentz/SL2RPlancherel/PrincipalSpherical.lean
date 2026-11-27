@@ -8,6 +8,12 @@ import Lightlike.Lorentz.SL2RPlancherel.AbelTransform
 For the `K`-fixed vector `e_0(x) = (1 + x²)^w`, `w = (iν - 1)/2`, the matrix coefficient
 `Φ^ν_{0,0}(ξ) = ⟪e_0, π(a(ξ)) e_0⟫` is an average of `u^w` with
 `u_ξ(x) = (e^{-ξ} + e^ξ x²)/(1 + x²)` against `dx/(1 + x²)` (`mcoefP_zero_zero`).
+The substitution `t = log u_ξ(x)` maps `(0, ∞)` onto `(-ξ, ξ)` and gives Mehler's formula
+`Φ^ν_{0,0}(ξ) = ∫_{-ξ}^{ξ} e^{iνt/2}/√(2(cosh ξ - cosh t)) dt` (`mcoefP_zero_zero_mehler`).
+Exchanging the order of integration on `{|t| < ξ}` and substituting `w = √(2(cosh ξ - cosh t))`
+turns the radial pairing into the Fourier transform of the Abel transform, so
+`∫_{ξ>0} sinh ξ F(cosh ξ) Φ^ν_{0,0}(ξ) dξ = (1/2) sphTransformH F (ν/2)` for continuous
+compactly supported `F` (`integral_sinh_mul_mcoefP_zero_zero`).
 Layer 2c-v of the Plancherel formula on `SL(2,ℝ)` (the spherical base of the identification of
 the block transforms with matrix coefficients), milestone HA3.
 -/
@@ -377,5 +383,123 @@ lemma integral_norm_mehlerKernel_le (ν : ℝ) {ξ : ℝ} (hξ : 0 < ξ) :
         rw [norm_mul, show ‖(2 : ℂ)‖ = 2 by simp, mul_assoc]
         exact mul_le_mul_of_nonneg_left (norm_sphIntegrand_le ν hξ x) (by norm_num)
     _ = 2 * Real.exp (ξ / 2) * Real.pi := by rw [integral_const_mul, integral_univ_inv_one_add_sq]
+
+/-- The integrand on `{|t| < ξ}` of the order swap. -/
+def sphJoint (ν : ℝ) (F : ℝ → ℂ) (ξ t : ℝ) : ℂ :=
+  (Ioo (-ξ) ξ).indicator (fun t => (Real.sinh ξ : ℂ) * F (Real.cosh ξ) * mehlerKernel ν ξ t) t
+
+lemma sphJoint_eq_indicator_Ioi (ν : ℝ) (F : ℝ → ℂ) (ξ t : ℝ) :
+    sphJoint ν F ξ t = (Ioi |t|).indicator
+      (fun ξ => (Real.sinh ξ : ℂ) * F (Real.cosh ξ) * mehlerKernel ν ξ t) ξ := by
+  have h : (-ξ < t ∧ t < ξ) ↔ |t| < ξ := abs_lt.symm
+  simp only [sphJoint, Set.indicator, Set.mem_Ioo, Set.mem_Ioi, h]
+
+lemma measurable_sphJoint (ν : ℝ) {F : ℝ → ℂ} (hF : Continuous F) :
+    Measurable (Function.uncurry (sphJoint ν F)) := by
+  have hs : MeasurableSet {p : ℝ × ℝ | -p.1 < p.2 ∧ p.2 < p.1} :=
+    (measurableSet_lt measurable_fst.neg measurable_snd).inter
+      (measurableSet_lt measurable_snd measurable_fst)
+  have hm : Measurable fun p : ℝ × ℝ =>
+      (Real.sinh p.1 : ℂ) * F (Real.cosh p.1) * mehlerKernel ν p.1 p.2 := by
+    have hFm := hF.measurable
+    unfold mehlerKernel
+    fun_prop
+  have e : Function.uncurry (sphJoint ν F) = {p : ℝ × ℝ | -p.1 < p.2 ∧ p.2 < p.1}.indicator
+      fun p => (Real.sinh p.1 : ℂ) * F (Real.cosh p.1) * mehlerKernel ν p.1 p.2 := by
+    funext p
+    simp only [Function.uncurry, sphJoint, Set.indicator, Set.mem_Ioo, Set.mem_ofPred_eq]
+  rw [e]
+  exact hm.indicator hs
+
+lemma integrable_sphJoint (ν : ℝ) {F : ℝ → ℂ} (hF : Continuous F) (hc : HasCompactSupport F) :
+    Integrable (Function.uncurry (sphJoint ν F)) (volume.prod volume) := by
+  have hAc : Continuous fun ξ => (Real.sinh ξ : ℂ) * F (Real.cosh ξ) :=
+    (Complex.continuous_ofReal.comp Real.continuous_sinh).mul (hF.comp Real.continuous_cosh)
+  have hAcs : HasCompactSupport fun ξ => (Real.sinh ξ : ℂ) * F (Real.cosh ξ) :=
+    (hasCompactSupport_comp_cosh hc).mul_left
+  have hJm := (measurable_sphJoint ν hF).aestronglyMeasurable (μ := volume.prod volume)
+  rw [integrable_prod_iff hJm]
+  refine ⟨Filter.Eventually.of_forall fun ξ => ?_, ?_⟩
+  · simp only [Function.uncurry_apply_pair, sphJoint]
+    by_cases hξ : 0 < ξ
+    · exact (show IntegrableOn (fun t => (Real.sinh ξ : ℂ) * F (Real.cosh ξ) * mehlerKernel ν ξ t)
+        (Ioo (-ξ) ξ) volume from (integrableOn_mehlerKernel ν hξ).const_mul _).integrable_indicator
+        measurableSet_Ioo
+    · rw [Ioo_eq_empty (by linarith), indicator_empty]
+      exact integrable_zero _ _ _
+  · have hB : Integrable fun ξ => 2 * Real.exp (ξ / 2) * Real.pi *
+        ‖(Real.sinh ξ : ℂ) * F (Real.cosh ξ)‖ :=
+      ((continuous_const.mul (Real.continuous_exp.comp (continuous_id.div_const 2))).mul
+        continuous_const |>.mul hAc.norm).integrable_of_hasCompactSupport hAcs.norm.mul_left
+    refine hB.mono' hJm.norm.integral_prod_right' (Filter.Eventually.of_forall fun ξ => ?_)
+    rw [Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]
+    have e : (fun t => ‖Function.uncurry (sphJoint ν F) (ξ, t)‖) = (Ioo (-ξ) ξ).indicator
+        fun t => ‖(Real.sinh ξ : ℂ) * F (Real.cosh ξ)‖ * ‖mehlerKernel ν ξ t‖ := by
+      funext t
+      simp only [Function.uncurry_apply_pair, sphJoint, norm_indicator_eq_indicator_norm, norm_mul]
+    rw [e, integral_indicator measurableSet_Ioo, integral_const_mul]
+    by_cases hξ : 0 < ξ
+    · calc ‖(Real.sinh ξ : ℂ) * F (Real.cosh ξ)‖ * ∫ t in Ioo (-ξ) ξ, ‖mehlerKernel ν ξ t‖
+          ≤ ‖(Real.sinh ξ : ℂ) * F (Real.cosh ξ)‖ * (2 * Real.exp (ξ / 2) * Real.pi) :=
+            mul_le_mul_of_nonneg_left (integral_norm_mehlerKernel_le ν hξ) (norm_nonneg _)
+        _ = _ := by ring
+    · rw [Ioo_eq_empty (by linarith), Measure.restrict_empty, integral_zero_measure, mul_zero]
+      positivity
+
+/-- **The order swap**: `∫_{ξ>0} sinh ξ F(cosh ξ) ∫_{-ξ}^{ξ} e^{iνt/2}/√(2(cosh ξ - cosh t)) dt dξ
+= ∫_ℝ e^{iνt/2} ∫_{w>0} F(cosh t + w²/2) dw dt`. -/
+theorem integral_sinh_mehler_swap (ν : ℝ) {F : ℝ → ℂ} (hF : Continuous F)
+    (hc : HasCompactSupport F) :
+    ∫ ξ in Ioi (0 : ℝ), (Real.sinh ξ : ℂ) * F (Real.cosh ξ) * ∫ t in Ioo (-ξ) ξ, mehlerKernel ν ξ t =
+      ∫ t : ℝ, Complex.exp (I * ν * t / 2) * ∫ w in Ioi (0 : ℝ), F (Real.cosh t + w ^ 2 / 2) := by
+  have hi : ∀ ξ, ∫ t, sphJoint ν F ξ t =
+      (Real.sinh ξ : ℂ) * F (Real.cosh ξ) * ∫ t in Ioo (-ξ) ξ, mehlerKernel ν ξ t := fun ξ => by
+    simp only [sphJoint]
+    rw [integral_indicator measurableSet_Ioo, integral_const_mul]
+  have hii : ∀ t, ∫ ξ, sphJoint ν F ξ t =
+      Complex.exp (I * ν * t / 2) * ∫ w in Ioi (0 : ℝ), F (Real.cosh t + w ^ 2 / 2) := fun t => by
+    simp only [sphJoint_eq_indicator_Ioi]
+    rw [integral_indicator measurableSet_Ioi, ← integral_Ioi_abs_sinh_div_sqrt,
+      ← integral_const_mul]
+    refine setIntegral_congr_fun measurableSet_Ioi fun ξ _ => ?_
+    simp only [mehlerKernel, Complex.ofReal_div]
+    ring
+  calc ∫ ξ in Ioi (0 : ℝ), (Real.sinh ξ : ℂ) * F (Real.cosh ξ) *
+        ∫ t in Ioo (-ξ) ξ, mehlerKernel ν ξ t
+      = ∫ ξ, (Real.sinh ξ : ℂ) * F (Real.cosh ξ) * ∫ t in Ioo (-ξ) ξ, mehlerKernel ν ξ t := by
+        refine setIntegral_eq_integral_of_forall_compl_eq_zero fun ξ hξ => ?_
+        have hξ' : ξ ≤ 0 := not_lt.1 hξ
+        rw [Ioo_eq_empty (by linarith), Measure.restrict_empty, integral_zero_measure, mul_zero]
+    _ = ∫ ξ, ∫ t, sphJoint ν F ξ t := by simp only [hi]
+    _ = ∫ t, ∫ ξ, sphJoint ν F ξ t := integral_integral_swap (integrable_sphJoint ν hF hc)
+    _ = _ := by simp only [hii]
+
+/-- **The spherical base**: for continuous compactly supported `F`,
+`∫_{ξ>0} sinh ξ F(cosh ξ) Φ^ν_{0,0}(ξ) dξ = (1/2) f̂(ν/2)`, `f̂ = sphTransformH F` the spherical
+transform of `F ∘ coshDistR` on the upper half-plane. -/
+theorem integral_sinh_mul_mcoefP_zero_zero (ν : ℝ) {F : ℝ → ℂ} (hF : Continuous F)
+    (hc : HasCompactSupport F) :
+    ∫ ξ in Ioi (0 : ℝ), (Real.sinh ξ : ℂ) * F (Real.cosh ξ) * mcoefP ν 0 0 ξ =
+      (1 / 2) * sphTransformH F (ν / 2) := by
+  have h1 : ∫ ξ in Ioi (0 : ℝ), (Real.sinh ξ : ℂ) * F (Real.cosh ξ) * mcoefP ν 0 0 ξ =
+      ∫ ξ in Ioi (0 : ℝ), (Real.sinh ξ : ℂ) * F (Real.cosh ξ) *
+        ∫ t in Ioo (-ξ) ξ, mehlerKernel ν ξ t :=
+    setIntegral_congr_fun measurableSet_Ioi fun ξ hξ => by rw [mcoefP_zero_zero_mehler ν hξ]
+  rw [h1, integral_sinh_mehler_swap ν hF hc, sphTransformH_eq_integral_abel, ← integral_const_mul]
+  congr 1
+  funext t
+  have hab : abelTransform F t = 2 * ∫ w in Ioi (0 : ℝ), F (Real.cosh t + w ^ 2 / 2) := by
+    have hint : Integrable fun w : ℝ => F (Real.cosh t + w ^ 2 / 2) :=
+      (hF.comp (by fun_prop)).integrable_of_hasCompactSupport (hasCompactSupport_comp_abel hc t)
+    rw [abelTransform, ← intervalIntegral.integral_Iic_add_Ioi (b := 0) hint.integrableOn
+      hint.integrableOn]
+    have := integral_comp_neg_Iic (0 : ℝ) (fun w => F (Real.cosh t + w ^ 2 / 2))
+    simp only [neg_sq, neg_zero] at this
+    rw [this, two_mul]
+  rw [hab]
+  have he : Complex.exp (I * ν * t / 2) = Complex.exp (((ν / 2 : ℝ) : ℂ) * t * I) := by
+    congr 1; push_cast; ring
+  rw [he]
+  ring
 
 end Lightlike.Lorentz.SL2RPlancherel
