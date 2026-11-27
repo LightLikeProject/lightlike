@@ -149,4 +149,62 @@ lemma image_log_sphU {ξ : ℝ} (hξ : 0 < ξ) :
       ring
     simp only [hu, Real.log_exp]
 
+/-- The Mehler kernel `e^{iνt/2}/√(2(cosh ξ - cosh t))`. -/
+def mehlerKernel (ν ξ t : ℝ) : ℂ :=
+  Complex.exp (I * ν * t / 2) / ((Real.sqrt (2 * (Real.cosh ξ - Real.cosh t)) : ℝ) : ℂ)
+
+/-- The integrand of `mcoefP_zero_zero`. -/
+def sphIntegrand (ν ξ x : ℝ) : ℂ :=
+  Complex.exp (wP ν * Real.log (sphU ξ x)) / ((1 + x ^ 2 : ℝ) : ℂ)
+
+/-- **The Jacobian identity** of the substitution `t = log u_ξ(x)`, `x > 0`:
+`|t'(x)| e^{iνt/2}/√(2(cosh ξ - cosh t)) = 2 u^w/(1 + x²)`. -/
+lemma abs_mehlerDeriv_smul {ν ξ x : ℝ} (hξ : 0 < ξ) (hx : 0 < x) :
+    |mehlerDeriv ξ x| • mehlerKernel ν ξ (Real.log (sphU ξ x)) = 2 * sphIntegrand ν ξ x := by
+  have hs := Real.sinh_pos_iff.2 hξ
+  have h1 : (0 : ℝ) < 1 + x ^ 2 := by positivity
+  have h3 : (0 : ℝ) < Real.exp (-ξ) + Real.exp ξ * x ^ 2 := by positivity
+  have hu := sphU_pos ξ x
+  have het : Real.exp (Real.log (sphU ξ x)) = sphU ξ x := Real.exp_log hu
+  have hq : 0 < 2 * Real.sinh ξ * x / (1 + x ^ 2) := by positivity
+  have hct : Real.cosh (Real.log (sphU ξ x)) = (sphU ξ x + (sphU ξ x)⁻¹) / 2 := by
+    rw [Real.cosh_eq, Real.exp_neg, het]
+  have hcosh : 2 * (Real.cosh ξ - Real.cosh (Real.log (sphU ξ x))) =
+      (2 * Real.sinh ξ * x / (1 + x ^ 2)) ^ 2 / sphU ξ x := by
+    have h3' : (0 : ℝ) < (Real.exp ξ)⁻¹ + Real.exp ξ * x ^ 2 := by positivity
+    rw [hct, Real.cosh_eq, Real.sinh_eq, sphU, Real.exp_neg]
+    field_simp
+    ring
+  have hsqrt : Real.sqrt (2 * (Real.cosh ξ - Real.cosh (Real.log (sphU ξ x)))) =
+      (2 * Real.sinh ξ * x / (1 + x ^ 2)) / Real.sqrt (sphU ξ x) := by
+    rw [hcosh, Real.sqrt_div (sq_nonneg _), Real.sqrt_sq hq.le]
+  have hsu : Real.sqrt (sphU ξ x) = Real.exp (Real.log (sphU ξ x) / 2) := by
+    have : sphU ξ x = Real.exp (Real.log (sphU ξ x) / 2) * Real.exp (Real.log (sphU ξ x) / 2) := by
+      rw [← Real.exp_add, add_halves, het]
+    conv_lhs => rw [this]
+    exact Real.sqrt_mul_self (Real.exp_pos _).le
+  have hder : mehlerDeriv ξ x = 2 * (2 * Real.sinh ξ * x / (1 + x ^ 2)) / (sphU ξ x * (1 + x ^ 2)) := by
+    rw [mehlerDeriv, sphU]
+    field_simp
+    ring
+  have hpos : 0 < mehlerDeriv ξ x := by rw [mehlerDeriv]; positivity
+  rw [abs_of_pos hpos, Complex.real_smul, mehlerKernel, sphIntegrand, hsqrt, hsu, hder]
+  set t := Real.log (sphU ξ x) with ht
+  set q := 2 * Real.sinh ξ * x / (1 + x ^ 2) with hq'
+  rw [← het]
+  have hw : Complex.exp (wP ν * t) =
+      Complex.exp (I * ν * t / 2) * Complex.exp ((t / 2 : ℝ) : ℂ) / Complex.exp (t : ℂ) := by
+    rw [← Complex.exp_add, ← Complex.exp_sub]
+    congr 1
+    simp only [wP]
+    push_cast
+    ring
+  rw [hw]
+  have hqC : (q : ℂ) ≠ 0 := by exact_mod_cast hq.ne'
+  have hBC : ((1 + x ^ 2 : ℝ) : ℂ) ≠ 0 := by exact_mod_cast h1.ne'
+  have hE1 : Complex.exp ((t / 2 : ℝ) : ℂ) ≠ 0 := Complex.exp_ne_zero _
+  have hE2 : Complex.exp (t : ℂ) ≠ 0 := Complex.exp_ne_zero _
+  simp only [Complex.ofReal_div, Complex.ofReal_mul, Complex.ofReal_exp, Complex.ofReal_ofNat]
+  field_simp
+
 end Lightlike.Lorentz.SL2RPlancherel
