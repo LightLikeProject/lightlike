@@ -599,6 +599,8 @@ import Lightlike.Lorentz.SL2RPlancherel.KTypeOpposite
 import Lightlike.Lorentz.SL2RPlancherel.LadderOppositeOrth
 import Lightlike.Lorentz.SL2RPlancherel.LadderOppositeSurjective
 import Lightlike.Lorentz.SL2RPlancherel.KTypeOppositeL2
+import Lightlike.Lorentz.SL2RPlancherel.KKL2
+import Lightlike.Lorentz.SL2RPlancherel.KTypeOppositeIso
 import Lightlike.Lorentz.SL2RPlancherel.KTypePlancherel
 import Lightlike.Lorentz.SL2RPlancherel.SphericalIdentity
 import Lightlike.Lorentz.SL2RPlancherel.SphericalClean
