@@ -99,7 +99,6 @@ to start; it does not rank the approaches.
 | [`T-QU1-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P3%22) | q-orthogonality of the quantum 6j symbols at r = 5 | [T_QU1_P3.lean](../../Tasks/QU/T_QU1_P3.lean) | QU1 | M | intermediate |
 | [`T-QU1-P4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P4%22) | q-Biedenharn–Elliott identity at r = 5 | [T_QU1_P4.lean](../../Tasks/QU/T_QU1_P4.lean) | QU1 | M | intermediate |
 | [`T-QU1-P5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P5%22) | q-orthogonality of the quantum 6j symbols for every r ≥ 2 | [T_QU1_P5.lean](../../Tasks/QU/T_QU1_P5.lean) | QU1 | L | research-level |
-| [`T-QU1-P6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-QU1-P6%22) | q-Biedenharn–Elliott identity for every r ≥ 2 | [T_QU1_P6.lean](../../Tasks/QU/T_QU1_P6.lean) | QU1 | L | research-level |
 | [`T-CA1-P1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CA1-P1%22) | The bracket of a smeared momentum constraint with a smeared Hamiltonian constraint is a smeared Hamiltonian … | [T_CA1_P1.lean](../../Tasks/CA/T_CA1_P1.lean) | CA1 | L | research-level |
 | [`T-CA1-P2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CA1-P2%22) | The bracket of two smeared Hamiltonian constraints is a smeared momentum constraint with the structure … | [T_CA1_P2.lean](../../Tasks/CA/T_CA1_P2.lean) | CA1 | L | research-level |
 | [`T-CA1-P3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-CA1-P3%22) | The Lie-derivative form of the smeared momentum constraint equals the ADM form with the covariant divergence … | [T_CA1_P3.lean](../../Tasks/CA/T_CA1_P3.lean) | CA1 | M | intermediate |
@@ -172,6 +171,7 @@ Done-when texts and trust checks: [milestones.md](milestones.md#lorentzian-and-r
 | [`T-GE8`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE8%22) | Heat-kernel expansion of Laplace-type operators on compact Riemannian manifolds (Seeley–DeWitt coefficients … | vassilevich-2003, bgv-1992 | L | advanced | GE1 |
 | [`T-GE5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE5%22) | Spin structures and the Dirac operator, on Mathlib's Clifford algebras; the Lichnerowicz formula | bgv-1992 | L | advanced | GE1 |
 | [`T-GE13`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE13%22) | Hypersurfaces: induced metric, unit normal, second fundamental form (extrinsic curvature), the Gauss and … | gourgoulhon-2007 | M | intermediate | GE1 |
+| [`T-GE16`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-GE16%22) | Spinors on Lorentzian spacetimes: Spin(1,3) → SO⁺(1,3), spin structures on oriented, time-oriented Lorentzian … | lawson-michelsohn-1989 | L | advanced | GE1, GE2, GE5 |
 
 ### Cosmology
 

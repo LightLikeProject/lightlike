@@ -34,6 +34,8 @@ v1.0:
   areas: [geometry, harmonic-analysis, operator-algebras, asymptotics, pl-topology, quantum-groups, regge, spin-foams]
   sizes: [S, M, L]
   count: 55
+  # Milestones in these areas and sizes that are scheduled after v1.0, not part of it (owner, 27 Nov 2026).
+  later: [GE16]
 
 milestones:
   GE1:
@@ -657,7 +659,7 @@ milestones:
       - id: m3
         kind: main
         text: "The principal series (even and odd) and the discrete series of SL(2,R) are irreducible; the statement excludes only the known reducible point, the odd principal series at rho = 0"
-        decls: []
+        decls: [Lightlike.Lorentz.SL2R.principalSeries_isIrreducible, Lightlike.Lorentz.SL2R.discreteSeries_isIrreducible, Lightlike.Lorentz.SL2R.discreteSeriesMinus_isIrreducible]
         hint: "The done-when of HA3 requires irreducibility. Not stated on main (rg irreducible in SL2R*.lean, SL2RPlancherel/*.lean finds nothing)."
       - id: p1
         kind: piece
@@ -1322,8 +1324,8 @@ milestones:
       - id: m1
         kind: main
         text: "The q-Biedenharn–Elliott identity (Lightlike.TV.qBiedenharnElliott hr) holds for every level r ≥ 4, as a theorem with no hypothesis"
-        decls: []
-        hint: "Proven only at r = 3 (Lightlike.TV.qBiedenharnElliott_three, Lightlike/TuraevViro/LevelOne.lean). At r = 4 and r = 5 it is proven in the task files Tasks/QU/T_QU1_P2.lean and T_QU1_P4.lean (Lightlike.TV.qBiedenharnElliott_four, qBiedenharnElliott_five; no sorry), which are not in the Lightlike library, so not listed. The all-r statement qBiedenharnElliott_all is a sorry stub (Tasks/QU/T_QU1_P6.lean)."
+        decls: [Lightlike.TV.qBiedenharnElliott_all]
+        hint: "Lightlike.TV.qBiedenharnElliott_all (Lightlike/TuraevViro/QBiedenharnElliott.lean) proves it for every r ≥ 2: the Kauffman–Lins form of the recoupling coefficient at generic q (Fc_eq_klCoef) gives the generic identity GenBE at every angle with sin(nθ) ≠ 0, and the limit θ → π/r gives the identity at the root of unity. The r = 3, 4, 5 forms (qBiedenharnElliott_three in LevelOne.lean; _four, _five in the task files Tasks/QU/T_QU1_P2.lean and T_QU1_P4.lean) are special cases."
       - id: m2
         kind: main
         text: "The q-orthogonality identity (Lightlike.TV.qOrthogonality hr) holds for every level r ≥ 4, as a theorem with no hypothesis"
@@ -1332,8 +1334,8 @@ milestones:
       - id: p1
         kind: piece
         text: "The Turaev–Viro invariance theorems under the 2-3 and 1-4 moves hold for every level r ≥ 4 without q-Biedenharn–Elliott and q-orthogonality as hypotheses"
-        decls: []
-        hint: "Close but not this: Lightlike.TV.turaevViro_move23_of_BE and Lightlike.TV.turaevViro_move14_of_BE (orthogonality discharged, still take qBiedenharnElliott hr), Lightlike.TV.turaevViro_move23 and turaevViro_move14 (conditional). Missing: the unconditional versions for r ≥ 4, which follow from m1."
+        decls: [Lightlike.TV.turaevViro_move23_all, Lightlike.TV.turaevViro_move14_all]
+        hint: "Lightlike.TV.turaevViro_move23_all and turaevViro_move14_all (Lightlike/TuraevViro/TuraevViroMoves.lean): the normalised Turaev–Viro state sum is invariant under the 2-3 and 1-4 moves at every level r ≥ 2, with no hypothesis (q-Biedenharn–Elliott is qBiedenharnElliott_all, q-orthogonality is qOrthogonality_proved)."
       - id: t1
         kind: trust
         text: "Known q-6j values at a root of unity, and the q-Biedenharn–Elliott and q-orthogonality identities on concrete instances, agree with the Lean definitions"

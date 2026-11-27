@@ -1199,6 +1199,10 @@ milestones:
     class: sourced
     refs:
       - {ref: carroll-1997, location: "Chapter 4", check: "Hilbert action"}
+  GE16:
+    class: sourced
+    refs:
+      - {ref: lawson-michelsohn-1989, location: "Chapter: I. Clifford Algebras, Spin Groups and Their Representations|10.1515/9781400883912-004"}
   HA5:
     class: sourced
     refs:

@@ -58,7 +58,6 @@ import Tasks.QU.T_QU1_P2
 import Tasks.QU.T_QU1_P3
 import Tasks.QU.T_QU1_P4
 import Tasks.QU.T_QU1_P5
-import Tasks.QU.T_QU1_P6
 import Tasks.SF.T_SF10_P2
 import Tasks.SF.T_SF10_P3
 import Tasks.SF.T_SF10_P4

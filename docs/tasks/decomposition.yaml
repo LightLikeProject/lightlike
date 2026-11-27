@@ -108,18 +108,6 @@ tasks:
       - The q-Racah formula and q-hypergeometric summation (Kirillov–Reshetikhin 1989).
       - Representation theory of U_q(sl₂) at roots of unity (Turaev, Quantum invariants of knots and 3-manifolds, 1994).
       - Kauffman–Lins recoupling theory (Temperley–Lieb recoupling theory and invariants of 3-manifolds, 1994).
-  - id: T-QU1-P6
-    milestone: QU1
-    kind: proof
-    title: q-Biedenharn–Elliott identity for every r ≥ 2
-    file: Tasks/QU/T_QU1_P6.lean
-    decl: Lightlike.TV.qBiedenharnElliott_all
-    size: L
-    difficulty: research-level
-    routes:
-      - The q-Racah formula and q-hypergeometric identities (Kirillov–Reshetikhin 1989).
-      - Representation theory of U_q(sl₂) at roots of unity (Turaev 1994).
-      - Kauffman–Lins recoupling theory (1994).
   - id: T-OP1-P1
     milestone: OP1
     kind: proof

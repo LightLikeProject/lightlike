@@ -1,8 +1,9 @@
 # SF1 m1: uniqueness of the Barrett–Crane intertwiner (Reisenberger 1999)
 
-Status: not proved in the library; the main item of SF1 stays open (parked). This note records the
-statement and the hypotheses as printed, read on 26 Nov 2026 in the arXiv version gr-qc/9809067v1
-(*On relativistic spin network vertices*), and what is already in Lean.
+Status: proved, for four legs, as `Lightlike.SpinFoam.BC.bcNode_unique`
+(`Lightlike/SpinFoam/BarrettCraneUnique.lean`), by a route that needs neither the operators `G²` nor
+`β_J`; see the last section. This note records the statement and the hypotheses as printed, read on
+26 Nov 2026 in the arXiv version gr-qc/9809067v1 (*On relativistic spin network vertices*).
 
 ## What the paper states (§2 Definition 1 and §3 Theorem, pp. 2–7)
 
@@ -38,3 +39,14 @@ in the library's channel basis `fourJNode` (the second pairing needs the 6j chan
 input quoted from Lévy-Leblond–Lévy-Nahas and has not been read at its source or proved here; (c)
 the statement that a relativistic intertwiner is of the form `X P`, with the condition (2) of the
 definition as a hypothesis, and the conclusion that `bcNode` is the projector.
+
+## The proof in Lean (27 Nov 2026)
+
+`bcNode_unique` assumes condition (2) for the pairings `(01)(23)` and `(02)(13)` only, which is a
+weaker hypothesis than the paper's (all three pairings). The components of `Φ` are diagonal in
+both tree bases, and the two bases are related by the orthogonal 6j recoupling matrix
+(`sum_basisB_mul_basisA`). Its column at the extreme channel `l₀ = min(j₀ + j₂, j₁ + j₃)` is a
+stretched 6j symbol, whose Racah sum has one term, so it is nonzero for every admissible `k`
+(`sixJSym_extreme_ne_zero`). Hence every diagonal entry equals `M_{l₀ l₀}`, so `Φ = c · bcNode`.
+The missing items (a)–(c) above are therefore not needed. `scalar_of_commute_chain` stays as the
+matrix form of Reisenberger's own last step.
