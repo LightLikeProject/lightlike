@@ -90,6 +90,38 @@ attained by the nonzero vector `lowestVec n` of `A²_n` [31]. For the principal-
 and none when `τ = 1`, by the sign of the Casimir on the `K`-fixed vector; for `|τ| < 1` (the complementary
 series) there is no such obstruction [42] [43].
 
+The Taylor coefficients at 0 of a holomorphic function on the unit disc are the Fourier modes of its restriction
+to a circle [62], and the disc integral of k(w) conj(w)^m ρ(|w|) is 2π a_m ∫ s^{2m+1} ρ [63]. For n ≥ 2 the vectors
+e_k(z) = (z − i)^k (z + i)^{-(n+k)} of the weighted Bergman space `A²_n` are mutually orthogonal, by their rotation
+character [64]; they are complete, have explicit norms and form an orthonormal Hilbert basis [65]. Two non-negative
+power series with the same sum for every x with 0 ≤ x < 1 have the same coefficients [66]. The vector `D_n(diag(A, 1/A)) e_0` is the
+coherent function (A z + i/A)^{-n}, whose pairing with e_k gives C(n−1+k, n−1) ‖e_k‖² = ‖e_0‖² [67]; the characters of
+the box (0, 1]² are orthogonal [68]. The matrix coefficients ⟨e_j, D_n(g) e_k⟩ are K × K-eigenfunctions with a
+single Fourier component [69]; the angular Fourier series of the coherent matrix coefficient [70] and its Plancherel
+norm as a series over the K-weight pairs [71] give Schur orthogonality for the K-weight vectors [72]. Coefficients of
+distinct K-weight pairs are orthogonal [73], Pythagoras holds for finite sums of mutually orthogonal L² functions [74],
+and Schur orthogonality ∫ |⟨v, D_n(g) w⟩|² dg = (2π |c_0|² / ‖e_0‖²) ‖v‖² ‖w‖² holds for all v, w in `A²_n`, so that
+the formal degree of `D_n` is (n − 1)/(8π²) [75]. The normalised coefficients form an orthonormal system of
+`L²(SL(2,ℝ))`, and the squared norm of the projection of f onto its closed span is the sum of the squared inner
+products [76]; this is d_n times the Hilbert–Schmidt norm of `D_n(f)`, the discrete series term of the Plancherel
+formula [77]. The antiholomorphic series `D_n⁻` has the conjugate coefficients, which are orthogonal to those of
+`D_{n'}⁺` [78].
+
+At a(ξ) = diag(e^{ξ/2}, e^{-ξ/2}) the coefficient is ⟨e_j, D_n(a(ξ)) e_l⟩ = ‖e_j‖² cosh(ξ/2)^{-n} P_{jl}(tanh(ξ/2)), with
+P_{jl} the j-th Taylor coefficient of (t + w)^l (1 + t w)^{-(n+l)} [79]. The profile polynomials are differentiable in t
+[80] and satisfy the ladder relations of the generating function [81]; the radial profiles satisfy the ladder
+equations ψ_{j,k+1}' + b ψ_{j,k+1} = (k+1) ψ_{jk}, ψ_{j0}' + b ψ_{j0} = 0 and ψ_{jl}' − b ψ_{jl} = −(n+l) ψ_{j,l+1} [82],
+and decay like e^{-nξ/2} [83]. The profiles of `D_n` and `D_{n'}` with n ≠ n' and equal K × K-weights are orthogonal in
+`L²((0, ∞), sinh ξ dξ)` [84]. In the ladder operators of the K-type equations the lowest weight profile is killed by the
+raising operator for `D_n⁺` and by the lowering operator for `D_n⁻` [85]. The coefficients of distinct series are
+orthogonal in `L²(SL(2,ℝ))`, by rotation invariance for different K × K-weights and by the radial Pythagoras identity
+for equal weights [86] [87], and the radial `L²` norm of ⟨e_j, D_n(a(ξ)) e_k⟩ is 2 ‖e_j‖² ‖e_k‖² / (n − 1) [87]; the
+coefficients of all holomorphic and antiholomorphic discrete series form an orthonormal system, and the squared norm of
+the projection onto its closed span is the sum over all series of the squared norms of the projections onto the
+isotypic subspaces, at most ‖f‖² [88]. The radial profile of `D_{2ν}⁻` of K-type (ν + k, −(ν + j)) is orthogonal to every
+image of a test function under the (ν + k)-fold raising chain [89], and also to the images that are continuous on
+the closed half-line and vanish only for large ξ [90].
+
 The irreducibility of the principal series is not yet formalized. [TODO]
 
 Further results of this area in the results catalogue:
@@ -231,6 +263,109 @@ non-vacuity check (stated, not proven) [41].
 60. Lightlike/Lorentz/SL2RPlancherel/LadderOppositeOrth.lean - `Lorentz.SL2RPlancherel.integral_hLRN_mul_phiN`
 61. Lightlike/Lorentz/SL2RPlancherel/KTypeOppositeL2.lean - `Lorentz.SL2RPlancherel.closure_range_blockEN`,
     `Lorentz.SL2RPlancherel.norm_blockFN`
+62. Lightlike/Lorentz/SL2RPlancherel/DiscCircleMode.lean - `Lorentz.SL2RPlancherel.discCoeff`,
+    `Lorentz.SL2RPlancherel.integral_circleMap_mode`, `Lorentz.SL2RPlancherel.eq_zero_of_discCoeff_eq_zero`:
+    the Taylor coefficients of a holomorphic function on the unit disc as circle Fourier modes
+63. Lightlike/Lorentz/SL2RPlancherel/DiscMode.lean - `Lorentz.SL2RPlancherel.integral_ball_mode`: the disc
+    integral of k(w) conj(w)^m ρ(|w|) is 2π a_m ∫ s^{2m+1} ρ
+64. Lightlike/Lorentz/SL2RPlancherel/DiscreteBasis.lean - `Lorentz.kVec`, `Lorentz.kClass`,
+    `Lorentz.discreteAction_rot_kClass`, `Lorentz.kClass_orthogonal`: the K-weight vectors
+    (z - i)^k (z + i)^{-(n+k)} of the weighted Bergman space A²_n and their rotation character
+65. Lightlike/Lorentz/SL2RPlancherel/DiscreteBasisComplete.lean -
+    `Lorentz.SL2RPlancherel.inner_kClass_holo`, `Lorentz.SL2RPlancherel.kClass_complete`,
+    `Lorentz.SL2RPlancherel.norm_sq_kClass`, `Lorentz.SL2RPlancherel.kBasis`: completeness of the K-weight
+    vectors, their norms, and the orthonormal Hilbert basis of A²_n
+66. Lightlike/Lorentz/SL2RPlancherel/NonnegSeriesUnique.lean - `Lorentz.SL2RPlancherel.coeff_eq_of_hasSum`: two
+    non-negative power series with the same sum on [0, 1) have the same coefficients
+67. Lightlike/Lorentz/SL2RPlancherel/DiscreteCoherent.lean - `Lorentz.SL2RPlancherel.cohFun`,
+    `Lorentz.SL2RPlancherel.discreteAction_diag_lowest`, `Lorentz.SL2RPlancherel.inner_kClass_diag_lowest`,
+    `Lorentz.SL2RPlancherel.choose_mul_norm_sq_kClass`: D_n(diag(A, 1/A)) e₀ is the coherent function
+    (A z + i/A)^{-n}, its pairing with e_k, and C(n-1+k, n-1) ‖e_k‖² = ‖e₀‖²
+68. Lightlike/Lorentz/SL2RPlancherel/BoxCharacter.lean - `Lorentz.SL2RPlancherel.integral_box_char`: orthogonality of
+    the characters on the box (0,1]²
+69. Lightlike/Lorentz/SL2RPlancherel/DiscreteSchurK.lean - `Lorentz.SL2RPlancherel.mcoef`,
+    `Lorentz.SL2RPlancherel.mcoef_rot`, `Lorentz.SL2RPlancherel.kkCoeff_mcoef`,
+    `Lorentz.SL2RPlancherel.lintegral_norm_sq_mcoef`: the matrix coefficients of the K-weight vectors are
+    K × K-eigenfunctions with a single Fourier component
+70. Lightlike/Lorentz/SL2RPlancherel/DiscreteSchurCoh.lean - `Lorentz.SL2RPlancherel.hasSum_inner_rot`,
+    `Lorentz.SL2RPlancherel.hasSum_kkProfile_coh`, `Lorentz.SL2RPlancherel.kkCoeff_coh`: the angular Fourier
+    series of the coherent matrix coefficient and its K × K components
+71. Lightlike/Lorentz/SL2RPlancherel/DiscreteSchurKfin.lean - `Lorentz.SL2RPlancherel.lintegral_norm_sq_coh`: the
+    Plancherel norm of the coherent matrix coefficient as a series over the K-weight pairs
+72. Lightlike/Lorentz/SL2RPlancherel/DiscreteSchurKfinal.lean -
+    `Lorentz.SL2RPlancherel.lintegral_norm_sq_mcoef_kvec`: Schur orthogonality for the K-weight vectors of D_n⁺
+73. Lightlike/Lorentz/SL2RPlancherel/DiscreteSchurOrth.lean - `Lorentz.SL2RPlancherel.integral_mcoef_orth`:
+    matrix coefficients of distinct K-weight pairs are orthogonal in L²(SL(2,ℝ))
+74. Lightlike/Lorentz/SL2RPlancherel/OrthSumL2.lean -
+    `Lorentz.SL2RPlancherel.lintegral_norm_sq_sum_of_orth`: Pythagoras for finite sums of mutually orthogonal L²
+    functions
+75. Lightlike/Lorentz/SL2RPlancherel/DiscreteSchurAll.lean - `Lorentz.SL2RPlancherel.schurRatio`,
+    `Lorentz.SL2RPlancherel.lintegral_norm_sq_mcoef_finite`, `Lorentz.SL2RPlancherel.lintegral_norm_sq_mcoef_eq`:
+    Schur orthogonality ∫ |⟨v, D_n(g) w⟩|² dg = (2π|c₀|²/‖e₀‖²) ‖v‖² ‖w‖² for all v, w in A²_n
+76. Lightlike/Lorentz/SL2RPlancherel/DiscreteProjection.lean - `Lorentz.SL2RPlancherel.uFun`,
+    `Lorentz.SL2RPlancherel.uLp_orthonormal`, `Lorentz.SL2RPlancherel.discreteSpace`,
+    `Lorentz.SL2RPlancherel.norm_sq_starProjection_discrete`: the normalised matrix coefficients of D_n⁺ form an
+    orthonormal system of L²(SL(2,ℝ)) and the squared norm of the projection onto its closed span is the sum of
+    the squared inner products
+77. Lightlike/Lorentz/SL2RPlancherel/DiscretePlancherelTerm.lean - `Lorentz.SL2RPlancherel.formalDegree`,
+    `Lorentz.SL2RPlancherel.schurRatio_eq`, `Lorentz.SL2RPlancherel.norm_sq_starProjection_discrete_eq`: the
+    formal degree d_n = (n-1)/(8π²) and the discrete series term of the Plancherel formula, ‖P_n f‖² = d_n Σ
+    |∫ f conj(⟨ê_j, D_n(g) ê_l⟩) dg|²
+78. Lightlike/Lorentz/SL2RPlancherel/DiscreteMinus.lean - `Lorentz.SL2RPlancherel.integral_mcoef_mul_mcoef`,
+    `Lorentz.SL2RPlancherel.uLpBar`, `Lorentz.SL2RPlancherel.inner_uLp_uLpBar`,
+    `Lorentz.SL2RPlancherel.discreteSpace_orthogonal_bar`: the antiholomorphic series D_n⁻ by conjugation (its
+    coefficients are the conjugates of those of D_n⁺) and the orthogonality of the coefficients of D_n⁺ and D_n'⁻ in
+    L²(SL(2,ℝ)) (opposite K-weights)
+79. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfile.lean - `Lorentz.SL2RPlancherel.genFun`,
+    `Lorentz.SL2RPlancherel.profPoly`, `Lorentz.SL2RPlancherel.mcoef_aR`: the matrix coefficient of the K-weight
+    vectors of D_n⁺ at a(ξ) in closed form, ⟨e_j, D_n(a(ξ)) e_l⟩ = ‖e_j‖² cosh(ξ/2)^(-n) P_jl(tanh(ξ/2)), P_jl the
+    j-th Taylor coefficient of (t + w)^l (1 + t w)^(-(n+l))
+80. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileLadder.lean - `Lorentz.SL2RPlancherel.hasDerivAt_profPoly`:
+    the profile polynomials are differentiable in t, with derivative the Taylor coefficient of the t-derivative of
+    the generating function (differentiation under the Cauchy integral)
+81. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileRel.lean - `Lorentz.SL2RPlancherel.profPoly_lower`,
+    `Lorentz.SL2RPlancherel.profPoly_lower_zero`, `Lorentz.SL2RPlancherel.profPoly_raise`: the ladder relations
+    t(1-t²) P' + (l(1+t²) - j(1-t²)) P_jl = 2 l t P_{j,l-1} and
+    t(1-t²) P' + (j(1-t²) - l(1+t²) - 2 n t²) P_jl = -2 (n+l) t P_{j,l+1} for the profile polynomials
+82. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileODE.lean - `Lorentz.SL2RPlancherel.profileFun`,
+    `Lorentz.SL2RPlancherel.ladB`, `Lorentz.SL2RPlancherel.profileFun_up`, `Lorentz.SL2RPlancherel.profileFun_up_zero`,
+    `Lorentz.SL2RPlancherel.profileFun_down`, `Lorentz.SL2RPlancherel.profile_eq_mcoef`: the radial profiles
+    ψ_jl(ξ) of the discrete series satisfy ψ_{j,k+1}' + b ψ_{j,k+1} = (k+1) ψ_jk, ψ_j0' + b ψ_j0 = 0 and
+    ψ_jl' - b ψ_jl = -(n+l) ψ_{j,l+1}, b = ((n+2l) cosh ξ - (n+2j))/(2 sinh ξ)
+83. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileDecay.lean - `Lorentz.SL2RPlancherel.norm_profPoly_le`,
+    `Lorentz.SL2RPlancherel.norm_profileFun_le`: the Cauchy bound for the profile polynomials and the decay
+    |ψ(ξ)| ≤ C e^(-nξ/2) of the radial profiles
+84. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfilePair.lean - `Lorentz.SL2RPlancherel.profPair`,
+    `Lorentz.SL2RPlancherel.profPair_eq_zero_of_ne`: the radial profiles of D_n⁺ and D_n'⁺, n ≠ n', with equal
+    K × K-weights are orthogonal in L²((0,∞), sinh ξ dξ) (integration by parts along the ladder)
+85. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileLadderForm.lean - `Lorentz.SL2RPlancherel.ladUp_profileFun_zero`,
+    `Lorentz.SL2RPlancherel.ladUp_profileFun_succ`, `Lorentz.SL2RPlancherel.ladDown_profileFun`,
+    `Lorentz.SL2RPlancherel.ladDown_profileFun_zero_minus`: the radial profiles of the discrete series in the ladder
+    operators of the K-type equations: the lowest weight profile is killed by the raising operator (D_n⁺) and by the
+    lowering operator (D_n⁻)
+86. Lightlike/Lorentz/SL2RPlancherel/DiscreteInnerOrth.lean - `Lorentz.SL2RPlancherel.integral_mcoef_orth_gen`,
+    `Lorentz.SL2RPlancherel.integral_norm_sq_block`, `Lorentz.SL2RPlancherel.integral_re_eq_zero_of_pythag`: tools for
+    the orthogonality of distinct discrete series: coefficients with different K × K-weights are orthogonal (rotation
+    invariance), the Plancherel identity in the K × K-components for a single-weight function as a real integral, and
+    the Pythagoras criterion for Re ∫ F conj G = 0
+87. Lightlike/Lorentz/SL2RPlancherel/DiscreteOrthDifferent.lean - `Lorentz.SL2RPlancherel.inner_uLp_uLp_ne`,
+    `Lorentz.SL2RPlancherel.integral_sinh_norm_sq_mcoef_aR`: the normalised matrix coefficients of D_n⁺ and D_n'⁺ are
+    orthogonal in L²(SL(2,ℝ)) for n ≠ n' (equal K × K-weights: radial Pythagoras from the orthogonality of the profiles;
+    different weights: rotation invariance), and the radial L² norm of ⟨e_j, D_n(a(ξ)) e_k⟩
+88. Lightlike/Lorentz/SL2RPlancherel/DiscretePlancherelTotal.lean - `Lorentz.SL2RPlancherel.discFam_orthonormal`,
+    `Lorentz.SL2RPlancherel.norm_sq_starProjection_discreteAll`,
+    `Lorentz.SL2RPlancherel.norm_sq_starProjection_discreteAll_le`: the normalised coefficients of all holomorphic and
+    antiholomorphic discrete series form an orthonormal system of L²(SL(2,ℝ)); the squared norm of the projection onto
+    its closed span is the sum over all series of the squared norms of the projections onto the isotypic subspaces
+    (the discrete part of the Plancherel formula), at most ‖f‖²
+89. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileImages.lean - `Lorentz.SL2RPlancherel.integral_ladUp_mul_conj`,
+    `Lorentz.SL2RPlancherel.integral_ladUpChain_mul_profile`: the lowering operator is adjoint to the raising operator on
+    test functions, and the radial profile of the antiholomorphic series D_{2ν}⁻ of K-type (ν + k, -(ν + j)) is orthogonal
+    to every image of a test function under the (ν + k)-fold raising chain
+90. Lightlike/Lorentz/SL2RPlancherel/DiscreteProfileBdry.lean -
+    `Lorentz.SL2RPlancherel.integral_ladUp_mul_conj_of_cont`,
+    `Lorentz.SL2RPlancherel.integral_chain_mul_conj_eq_zero`: the same orthogonality for chains of ladder images that
+    are continuous on [0, ∞) and vanish for large ξ but not near 0 (the images of the radial generators)
 
 ## References
 
