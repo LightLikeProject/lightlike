@@ -1,0 +1,13 @@
+- id: LL-XXXX-v
+  title: "The Barrett–Crane vertex is an exact rational number and reproduces published Riemannian 10j values: 7/18 at ten spins 1/2, 307/1500 at ten spins 1, -163/1728 at mixed spins"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/BarrettCraneValues.lean
+  decls: [Lightlike.SpinFoam.BC.bcVertex_eq_vertexQ, Lightlike.SpinFoam.BC.fifteenJ_sq, Lightlike.SpinFoam.BC.Tests.bcVertex_half, Lightlike.SpinFoam.BC.Tests.bcVertex_one, Lightlike.SpinFoam.BC.Tests.bcVertexBC_mixed]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: baez-christensen-2002, location: "Abstract", check: "positive or negative"}
+  review: kernel-checked
+  note: "Published values: J. D. Christensen's table of Riemannian 10j symbols computed with the Christensen–Egan algorithm (J. D. Christensen, G. Egan, Class. Quantum Grav. 19 (2002) 1185, arXiv:gr-qc/0110045; the paper prints no values, the table is linked from its arXiv page: jdc.math.uwo.ca/spin-foams/10j-samples/riemannian) and G. Egan's exact rationals (gregegan.net/SCIENCE/tenJ/tenJ.html), both read 27 Nov 2026. Proved: bcVertex with spin 1/2 on all ten edges is 7/18 (table 0.388888…, Egan 7 / 18), with spin 1 on all edges 307/1500 (table 0.204666…, Egan 307 / 1 500); with spin 1 on the edges (i, i+1) and 1/2 on the edges (i, i+2) (Christensen–Egan §2 labels j_{1,i}, j_{2,i}) bcVertexBC is -163/1728 (table -0.0943287037037036923959, equal to -163/1728 to double precision). Method: bcVertex_eq_vertexQ writes the vertex for all spins as a rational number (the square of each 15j symbol is rational, fifteenJ_sq, by Racah's formula), evaluated by kernel decide. What the negative value shows: bcVertexBC, with the sign (-1)^(sum of doubled spins), agrees with the published value at a half-integer spin sum, so the sign rule of Baez and Christensen matches the table there; it does not prove bcVertexBC equal to their 10j for all spins, and the table's reading of the ten input spins as j_{1,0..4} then j_{2,0..4} is inferred, not stated on the page. Not proved: the value 9263/73500 at ten spins 3/2 (1024 channel tuples, beyond the kernel evaluation used here); scripts/spin4/bc10j_check.py checks it numerically, with a wrongly normalised intertwiner as control."
+  since: unreleased
