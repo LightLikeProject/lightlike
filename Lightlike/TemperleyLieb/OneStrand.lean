@@ -193,4 +193,20 @@ theorem Fc_cup_high (q : kˣ) (hδ : loopVal q ≠ 0) (n : ℕ) (hd : ∀ j, j �
   simp only [kapRec, inv_one, one_mul]
   field_simp
 
+/-- **The recursion of the one-strand block in the second block** (the pentagon with blocks `(a, b, 1, 1)`,
+`j = 1`, `m = 0`, `i = e₀`; its right side has the empty block `(a, b, 0)`). -/
+theorem Fc_b_rec [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b e₀ d₀ g₀ : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (hd : ∀ x, x ≤ a + b + 1 + 1 → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ 2 * (a + b) + 4 → (q : k) ^ (2 * x) ≠ 1)
+    (heb : e₀ ≤ b) (h₀ : ValidA a b 1 1 e₀ d₀ g₀) :
+    ∑ f ∈ range (b + 1), ∑ h ∈ range (1 + 1), ∑ d' ∈ range (a + 1),
+        Fc q b 1 1 f h 1 0 * (Fc q a (b + 1 - 2 * f) 1 d' g₀ h e₀ * Fc q a b 1 e₀ d₀ f d') =
+      Fc q (a + b - 2 * e₀) 1 1 d₀ g₀ 1 0 := by
+  have hP := pentagon q hδ a b 1 1 e₀ d₀ g₀ 1 0 e₀ ha hb le_rfl hd (fun x h1 h2 => hq2 x h1 (by omega)) le_rfl le_rfl
+    (Nat.zero_le _) (Nat.zero_le _) (h₀.1.trans (min_le_left _ _)) (by have := h₀.1; omega) h₀
+  rw [hP]
+  simp only [show 1 + 1 - 2 * 1 = 0 by omega, Nat.zero_add, range_one, sum_singleton]
+  rw [Fc_zero_third q hδ a b e₀ e₀ h₀.1 h₀.1 (by omega) (fun j hj => hd j (by omega))
+    (fun j h1 h2 => hq2 j h1 (by omega)), if_pos rfl, one_mul]
+
 end Lightlike.TemperleyLieb
