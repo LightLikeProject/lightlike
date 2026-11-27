@@ -12,6 +12,13 @@ With an empty third block the tetrahedral net is a theta net, `tetKL q a b 0 i i
 (`tetKL_zero_third`: its sum has the single term `z = (a+b+i)/2`), and `θ(i, 0, i) = Δ_i`
 (`thetaKL_zero_mid`), so the Kauffman–Lins coefficient is the identity matrix (`klCoef_zero_third`), as `Fc` is
 (`Fc_zero_third`). This is the base `c = 0` of the identification `Fc = klCoef`.
+
+The blocks with a third block of one strand (`c = 1`) are computed in closed form (`Fc_one_block`,
+`Fc_top_one_qb`): `F00 = [a+b-E+2][b-E+1]/([b+1][a+b-2E+2])`, `F01 = -[a-E+1]/[a+b-2E+2]`, `F10 = [E]/[b+1]`,
+`F11 = 1`. The proof is an induction on `b`: the recursion of the pentagon with blocks `(a, b, 1, 1)`
+(`Fc_b_rec_two`) gives `F11` and `F01` from the levels below (`Fc_one_11_step`, `Fc_one_01_step`), the orthogonality
+of the columns (`Fc_one_orth`, from the mirror inverse and the vertical flip) gives `F10` (`Fc_one_10_of_orth`), and
+the base values are the cup column (`Fc_cup_low`, `Fc_cup_high`) and the edge entry (`Fc_edge`).
 -/
 
 namespace Lightlike.TemperleyLieb
@@ -641,4 +648,67 @@ theorem Fc_one_01_step [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a L E : �
     have := hq1 (L + 2) (by omega) (by omega); have := hq1 (α + 2) (by omega) (by omega)
     field_simp
     ring
+/-- **The one-strand block of `Fc` in closed form**: for the blocks `(a, b, 1)` and every total channel, the entries
+are `F01 = -[a-E+1]/[a+b-2E+2]`, `F11 = 1`, `F10 = [E]/[b+1]` (and `F00` is `Fc_top_one_qb`). -/
+theorem Fc_one_block [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) : ∀ b a, 1 ≤ a →
+    (∀ j, j ≤ 2 * (a + b) + 6 → chebD (loopVal q) j ≠ 0) →
+    (∀ j, 1 ≤ j → j ≤ 2 * (a + b) + 6 → (q : k) ^ (2 * j) ≠ 1) →
+    (∀ E, 1 ≤ E → E ≤ a → E ≤ b → Fc q a b 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + b - 2 * E + 2))) ∧
+    (∀ E, 1 ≤ E → E ≤ a + 1 → E ≤ b → Fc q a b 1 (E - 1) 1 1 (E - 1) = 1) ∧
+    (∀ E, 1 ≤ E → E ≤ a → E ≤ b + 1 → Fc q a b 1 (E - 1) 1 0 E = qb q E / qb q (b + 1)) := by
+  intro b
+  induction b using Nat.strong_induction_on with
+  | _ b ih =>
+  intro a ha hd hq2
+  have hD := hD_of_pow q (N := 2 * (a + b) + 6) (by omega) hq2
+  have hq1 : ∀ n, 1 ≤ n → n ≤ 2 * (a + b) + 6 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  match b, ih, hd, hq2, hD, hq1 with
+  | 0, _, hd, hq2, hD, hq1 =>
+    refine ⟨fun E h1 _ h3 => absurd h3 (by omega), fun E h1 _ h3 => absurd h3 (by omega), fun E h1 h2 h3 => ?_⟩
+    obtain rfl : E = 1 := by omega
+    rw [show 1 - 1 = 0 from rfl, Fc_edge q hδ a 0 (by omega) (fun j hj => hd j (by omega))
+      (fun j h1 h2 => hq2 j h1 (by omega)), div_self (hq1 1 le_rfl (by omega))]
+  | 1, _, hd, hq2, hD, hq1 =>
+    have h01 : ∀ E, 1 ≤ E → E ≤ a → E ≤ 1 →
+        Fc q a 1 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + 1 - 2 * E + 2)) := by
+      intro E h1 h2 h3
+      obtain rfl : E = 1 := by omega
+      obtain ⟨n, rfl⟩ : ∃ n, a = n + 1 := ⟨a - 1, by omega⟩
+      rw [show 1 - 1 = 0 from rfl, Fc_cup_low_qb q hδ hD n (fun j hj => hd j (by omega)),
+        show n + 1 - 1 + 1 = n + 1 by omega, show n + 1 + 1 - 2 * 1 + 2 = n + 2 by omega]
+    have h11 : ∀ E, 1 ≤ E → E ≤ a + 1 → E ≤ 1 → Fc q a 1 1 (E - 1) 1 1 (E - 1) = 1 := by
+      intro E h1 h2 h3
+      obtain rfl : E = 1 := by omega
+      exact Fc_cup_high q hδ a (fun j hj => hd j (by omega))
+    refine ⟨h01, h11, fun E h1 h2 h3 => ?_⟩
+    rcases Nat.lt_or_ge E 2 with hE | hE
+    · obtain rfl : E = 1 := by omega
+      exact Fc_one_10_of_orth q hδ le_rfl h2 le_rfl (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+        (h11 1 le_rfl (by omega) le_rfl) (h01 1 le_rfl h2 le_rfl)
+    · obtain rfl : E = 2 := by omega
+      rw [show 2 - 1 = 1 from rfl, Fc_edge q hδ a 1 (by omega) (fun j hj => hd j (by omega))
+        (fun j h1 h2 => hq2 j h1 (by omega)), div_self (hq1 2 (by omega) (by omega))]
+  | L + 2, ih, hd, hq2, hD, hq1 =>
+    have ihL := ih (L + 1) (by omega) a ha (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+    have ihL1 := ih L (by omega) a ha (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+    have h11 : ∀ E, 1 ≤ E → E ≤ a + 1 → E ≤ L + 2 → Fc q a (L + 2) 1 (E - 1) 1 1 (E - 1) = 1 := by
+      intro E h1 h2 h3
+      exact Fc_one_11_step q hδ (L := L + 1) ha (by omega) h1 h2 h3 (fun j hj => hd j (by omega))
+        (fun j h1 h2 => hq2 j h1 (by omega))
+        (fun h => by rw [show L + 1 - 1 = L from rfl]
+                     exact ihL1.2.2 (E - 1) (by omega) (by omega) (by omega))
+        (fun h => ihL.1 (E - 1) (by omega) (by omega) (by omega))
+    have h01 : ∀ E, 1 ≤ E → E ≤ a → E ≤ L + 2 →
+        Fc q a (L + 2) 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + (L + 2) - 2 * E + 2)) := by
+      intro E h1 h2 h3
+      exact Fc_one_01_step q hδ (L := L + 1) ha (by omega) h1 h2 h3 (fun j hj => hd j (by omega))
+        (fun j h1 h2 => hq2 j h1 (by omega)) (ihL.2.2 E h1 h2 (by omega))
+        (fun h => ihL.2.1 E h1 (by omega) h)
+    refine ⟨h01, h11, fun E h1 h2 h3 => ?_⟩
+    rcases Nat.lt_or_ge E (L + 3) with hE | hE
+    · exact Fc_one_10_of_orth q hδ h1 h2 (by omega) (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+        (h11 E h1 (by omega) (by omega)) (h01 E h1 h2 (by omega))
+    · obtain rfl : E = L + 3 := by omega
+      rw [show L + 3 - 1 = L + 2 from rfl, Fc_edge q hδ a (L + 2) (by omega) (fun j hj => hd j (by omega))
+        (fun j h1 h2 => hq2 j h1 (by omega)), div_self (hq1 (L + 3) (by omega) (by omega))]
 end Lightlike.TemperleyLieb
