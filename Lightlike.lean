@@ -2272,6 +2272,11 @@ import Lightlike.SpinFoam.TetrahedronCutoff
 import Lightlike.Dirac.Flat
 import Lightlike.Dirac.Tests
 import Lightlike.Dirac.SpinConnection
+import Lightlike.Dirac.SpinManifold
+import Lightlike.Dirac.SpinLiftDeriv
+import Lightlike.Dirac.SpinLichnerowicz
+import Lightlike.Dirac.CliffordCenter
+import Lightlike.Dirac.CliffordNorm
 import Lightlike.Dirac.SpinStructure
 import Lightlike.Dirac.Weitzenbock
 import Lightlike.Dirac.Lichnerowicz
