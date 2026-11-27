@@ -3,6 +3,7 @@ import Lightlike.TemperleyLieb.KLCoef
 import Lightlike.TemperleyLieb.TopEntry
 import Lightlike.TemperleyLieb.VertexNorm
 import Lightlike.TemperleyLieb.Slide
+import Lightlike.TemperleyLieb.Adjoint
 
 /-!
 # Base values of the Kauffman–Lins coefficient
@@ -295,4 +296,59 @@ theorem Fc_edge [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b : ℕ) (hab 
   simp only [K]
   field_simp
 
+/-- The two columns of the one-strand block are orthogonal for the vertex-norm weights. -/
+theorem Fc_one_orth [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b E : ℕ} (hE : 1 ≤ E) (hEa : E ≤ a)
+    (hEb : E ≤ b) (hd : ∀ j, j ≤ a + b + 2 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 2 → (q : k) ^ (2 * j) ≠ 1) :
+    kapRec q a b E * kapRec q (a + b - 2 * E) 1 0 * Fc q a b 1 E 0 0 E * Fc q a b 1 E 0 1 (E - 1) +
+      kapRec q a b (E - 1) * kapRec q (a + b - 2 * (E - 1)) 1 1 *
+        Fc q a b 1 (E - 1) 1 0 E * Fc q a b 1 (E - 1) 1 1 (E - 1) = 0 := by
+  have hinv := Fc_mirror_inv (k := k) q hδ (a := a) (b := b) (c := 1) (f := 0) (d' := E) (g := 1) (h := E - 1)
+    (by omega) (by omega) (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+    (Nat.zero_le _) (Nat.zero_le _) hEa (by omega) le_rfl (by omega) (by omega) (by omega)
+  rw [if_neg (by omega)] at hinv
+  have kr1 := kapRec_ne (k := k) q 1 1 b le_rfl (by omega) (fun x h1 h2 => hq2 x h1 (by omega))
+  have kr2 := kapRec_ne (k := k) q (E - 1) (1 + b - 2 * 1) a (by omega) (by omega) (fun x h1 h2 => hq2 x h1 (by omega))
+  set KR := kapRec q 1 b 1 * kapRec q (1 + b - 2 * 1) a (E - 1)
+  have hKR : KR ≠ 0 := mul_ne_zero kr1 kr2
+  -- each term, through the flip
+  have hterm : ∀ e ∈ range (a + 1), ∀ d ∈ range (1 + 1),
+      Fc q 1 b a 1 (E - 1) e d * Fc q a b 1 e d 0 E =
+        KR⁻¹ * (kapRec q a b e * kapRec q (a + b - 2 * e) 1 d * Fc q a b 1 e d 1 (E - 1) * Fc q a b 1 e d 0 E) := by
+    intro e _ d _
+    by_cases h0 : Fc q a b 1 e d 0 E = 0
+    · simp [h0]
+    · obtain ⟨he, hdd⟩ := Fc_guard h0
+      have hf := Fc_flip (k := k) q hδ (a := a) (b := b) (c := 1) (e := e) (d := d) (f := 1) (d' := E - 1)
+        (by omega) (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+        (he.trans (min_le_left _ _)) (he.trans (min_le_right _ _)) (hdd.trans (min_le_right _ _))
+        (hdd.trans (min_le_left _ _)) (by omega) le_rfl (by omega) (by omega)
+      rw [hf]; simp only [KR]; field_simp
+  rw [sum_congr rfl fun e he => sum_congr rfl fun d hdm => hterm e he d hdm] at hinv
+  simp only [← mul_sum] at hinv
+  have hsum := (mul_eq_zero.mp hinv).resolve_left (inv_ne_zero hKR)
+  -- only (E, 0) and (E-1, 1) contribute
+  have hin : ∀ g : ℕ → k, ∑ d ∈ range (1 + 1), g d = g 0 + g 1 := fun g => by simp [sum_range_succ]
+  rw [sum_congr rfl fun e _ => hin _, sum_add_distrib] at hsum
+  have z0 : ∀ e ∈ range (a + 1), e ≠ E →
+      kapRec q a b e * kapRec q (a + b - 2 * e) 1 0 * Fc q a b 1 e 0 1 (E - 1) * Fc q a b 1 e 0 0 E = 0 := by
+    intro e _ he
+    by_cases h0 : Fc q a b 1 e 0 0 E = 0
+    · simp [h0]
+    · have := Fc_total q hδ a b 1 e 0 0 E (by omega) (fun j hj => hd j (by omega)) (Nat.zero_le _)
+        (Nat.zero_le _) hEa (by omega) h0
+      obtain ⟨he', -⟩ := Fc_guard h0
+      exact absurd this (by have := he'.trans (min_le_left _ _); have := he'.trans (min_le_right _ _); omega)
+  have z1 : ∀ e ∈ range (a + 1), e ≠ E - 1 →
+      kapRec q a b e * kapRec q (a + b - 2 * e) 1 1 * Fc q a b 1 e 1 1 (E - 1) * Fc q a b 1 e 1 0 E = 0 := by
+    intro e _ he
+    by_cases h0 : Fc q a b 1 e 1 0 E = 0
+    · simp [h0]
+    · have := Fc_total q hδ a b 1 e 1 0 E (by omega) (fun j hj => hd j (by omega)) (Nat.zero_le _)
+        (Nat.zero_le _) hEa (by omega) h0
+      obtain ⟨he', hdd⟩ := Fc_guard h0
+      exact absurd this (by have := hdd.trans (min_le_left _ _); have := he'.trans (min_le_left _ _); omega)
+  rw [sum_eq_single E z0 (fun h => absurd (mem_range.mpr (by omega)) h),
+    sum_eq_single (E - 1) z1 (fun h => absurd (mem_range.mpr (by omega)) h)] at hsum
+  linear_combination hsum
 end Lightlike.TemperleyLieb
