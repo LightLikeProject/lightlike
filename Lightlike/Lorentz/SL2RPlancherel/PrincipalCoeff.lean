@@ -109,4 +109,42 @@ theorem deriv_kVecP_rel (ν : ℝ) (n : ℤ) (x : ℝ) :
   push_cast
   ring
 
+/-- **The `ξ`-derivative of `π(a(ξ)) e_n`, pointwise**:
+`d/dξ [e^{-wξ} e_n(e^ξ x)] = e^{-wξ} [((w - n)/2) e_{n+1}(e^ξ x) + ((w + n)/2) e_{n-1}(e^ξ x)]`. -/
+theorem hasDerivAt_act_aR_kVecP (ν : ℝ) (n : ℤ) (x ξ : ℝ) :
+    HasDerivAt (fun ξ : ℝ => Complex.exp (-(wP ν * ξ)) * kVecP ν n (Real.exp ξ * x))
+      (Complex.exp (-(wP ν * ξ)) * ((wP ν - n) / 2 * kVecP ν (n + 1) (Real.exp ξ * x) +
+        (wP ν + n) / 2 * kVecP ν (n - 1) (Real.exp ξ * x))) ξ := by
+  have he : HasDerivAt (fun ξ : ℝ => Complex.exp (-(wP ν * ξ)))
+      (Complex.exp (-(wP ν * ξ)) * (-(wP ν))) ξ := by
+    have h : HasDerivAt (fun ξ : ℝ => -(wP ν * (ξ : ℂ))) (-(wP ν)) ξ := by
+      have := ((hasDerivAt_id ξ).ofReal_comp.const_mul (wP ν)).fun_neg
+      simpa using this
+    exact h.cexp
+  have hy' : HasDerivAt (fun ξ : ℝ => Real.exp ξ * x) (Real.exp ξ * x) ξ :=
+    (Real.hasDerivAt_exp ξ).mul_const x
+  have hk := (hasDerivAt_kVecP ν n (Real.exp ξ * x)).scomp ξ hy'
+  have h := he.mul hk
+  have hrel := deriv_kVecP_rel ν n (Real.exp ξ * x)
+  convert h using 1
+  · funext t; rfl
+  · rw [← hrel, Complex.real_smul]
+    simp only [Function.comp_apply]
+    push_cast
+    ring
+
+lemma norm_exp_neg_wP (ν ξ : ℝ) : ‖Complex.exp (-(wP ν * ξ))‖ = Real.exp (ξ / 2) := by
+  rw [Complex.norm_exp]
+  congr 1
+  simp [wP]
+  ring
+
+/-- `(1 + (e^ξ x)²)^{-1/2} ≤ c^{-1/2} (1 + x²)^{-1/2}` for `e^{2ξ} ≥ c`, `0 < c ≤ 1`. -/
+lemma rpow_one_add_sq_exp_le {c ξ : ℝ} (hc : 0 < c) (hc1 : c ≤ 1) (hξ : c ≤ Real.exp ξ ^ 2) (x : ℝ) :
+    (1 + (Real.exp ξ * x) ^ 2) ^ (-(1 : ℝ) / 2) ≤ c ^ (-(1 : ℝ) / 2) * (1 + x ^ 2) ^ (-(1 : ℝ) / 2) := by
+  have h1 : c * (1 + x ^ 2) ≤ 1 + (Real.exp ξ * x) ^ 2 := by
+    rw [mul_pow]; nlinarith [sq_nonneg x]
+  rw [← Real.mul_rpow hc.le (by positivity)]
+  exact Real.rpow_le_rpow_of_nonpos (by positivity) h1 (by norm_num)
+
 end Lightlike.Lorentz.SL2RPlancherel
