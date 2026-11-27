@@ -785,4 +785,143 @@ theorem tendsto_genBETerm (hr : 2 ≤ r) {a b c d e f p q r' x : ℕ}
     · rw [if_neg h3]
       exact H.tendsto_zero hr (mixed_lt hr hba h0 h3)
 
+/-! ## The sum over the middle colour -/
+
+lemma tri_reflect {u v x : ℕ} (ht : Tri u v x) (hu : u ≤ r - 2) (hv : v ≤ r - 2) (hs : r - 1 ≤ (u + v + x) / 2) :
+    Tri u v (2 * r - 2 - x) := by
+  obtain ⟨h0, h1, h2, h3⟩ := ht
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> omega
+
+/-- The middle colours whose three triads are triangles above the level. -/
+def PairCond (r a b c d e f x : ℕ) : Prop :=
+  Tri a b x ∧ Tri c d x ∧ Tri e f x ∧
+    (r - 1 ≤ (a + b + x) / 2 ∧ r - 1 ≤ (c + d + x) / 2 ∧ r - 1 ≤ (e + f + x) / 2)
+
+lemma pairCond_reflect {a b c d e f x : ℕ} (ha : a ≤ r - 2) (hb : b ≤ r - 2) (hc : c ≤ r - 2)
+    (hd : d ≤ r - 2) (he : e ≤ r - 2) (hf : f ≤ r - 2) (h : PairCond r a b c d e f x) :
+    PairCond r a b c d e f (2 * r - 2 - x) ∧ 2 * r - 2 - (2 * r - 2 - x) = x ∧ 2 * r - 2 - x ≤ a + b := by
+  obtain ⟨t1, t2, t3, h1, h2, h3⟩ := h
+  have hx := tri_le_reflect t1 ha hb
+  have t1' := tri_reflect t1 ha hb h1
+  exact ⟨⟨t1', tri_reflect t2 hc hd h2, tri_reflect t3 he hf h3, tri_above_reflect t1 ha hb,
+    tri_above_reflect t2 hc hd, tri_above_reflect t3 he hf⟩, by omega, t1'.2.1⟩
+
+open Classical in
+/-- The part of the limit summand with the three triads through `x` above the level. -/
+noncomputable def pairPart (r a b c d e f p q r' x : ℕ) : ℝ :=
+  if PairCond r a b c d e f x then limTerm r a b c d e f p q r' x else 0
+
+/-- **The paired limit terms sum to zero**: `x ↔ 2r - 2 - x` is an involution of the colours above the level,
+`L_{2r-2-x} = -L_x`, and its fixed point `x = r - 1` carries `[r] = 0`. -/
+theorem sum_pairPart (hr : 2 ≤ r) {a b c d e f p q r' : ℕ}
+    (q1 : qAdm r a d p) (q2 : qAdm r c b p) (q3 : qAdm r c f q) (q4 : qAdm r e d q) (q5 : qAdm r e a r')
+    (q6 : qAdm r b f r') : ∑ x ∈ range (a + b + 1), pairPart r a b c d e f p q r' x = 0 := by
+  classical
+  have ha := qAdm_left q1
+  have hb := qAdm_mid q2
+  have hc := qAdm_left q2
+  have hd := qAdm_mid q1
+  have he := qAdm_left q4
+  have hf := qAdm_mid q3
+  refine sum_involution (fun x _ => if PairCond r a b c d e f x then 2 * r - 2 - x else x) ?_ ?_ ?_ ?_
+  · intro x _
+    by_cases hx : PairCond r a b c d e f x
+    · obtain ⟨hx', -, -⟩ := pairCond_reflect ha hb hc hd he hf hx
+      simp only [if_pos hx, pairPart, if_pos hx']
+      obtain ⟨t1, t2, t3, h1, h2, h3⟩ := hx
+      rw [limTerm_reflect hr q1 q2 q3 q4 q5 q6 t1 t2 t3 h1 h2 h3]; ring
+    · simp only [if_neg hx, pairPart]; ring
+  · intro x _ hfx
+    by_cases hx : PairCond r a b c d e f x
+    · rw [if_pos hx]
+      intro heq
+      apply hfx
+      have hx1 : x + 1 = r := by have := tri_le_reflect hx.1 ha hb; omega
+      simp only [pairPart, if_pos hx, limTerm, hx1, qnum_self hr]; ring
+    · exact absurd (by simp only [pairPart, if_neg hx]) hfx
+  · intro x hx0
+    by_cases hx : PairCond r a b c d e f x
+    · rw [if_pos hx, mem_range]; have := (pairCond_reflect ha hb hc hd he hf hx).2.2; omega
+    · rw [if_neg hx]; exact hx0
+  · intro x _
+    by_cases hx : PairCond r a b c d e f x
+    · obtain ⟨hx', hxx, -⟩ := pairCond_reflect ha hb hc hd he hf hx
+      simp only [if_pos hx, if_pos hx', hxx]
+    · simp only [if_neg hx]
+
+open Classical in
+/-- The part of the limit summand with the three triads through `x` within the level. -/
+noncomputable def rootPart (r a b c d e f p q r' x : ℕ) : ℝ :=
+  if Tri a b x ∧ Tri c d x ∧ Tri e f x ∧
+      ((a + b + x) / 2 + 2 ≤ r ∧ (c + d + x) / 2 + 2 ≤ r ∧ (e + f + x) / 2 + 2 ≤ r) then
+    (-1 : ℝ) ^ ((a + b + c + d + e + f + p + q + r' + x) / 2) * qnum r (x + 1) *
+      (qDelta r a b x ^ 2 * qDelta r c d x ^ 2 * qDelta r e f x ^ 2) *
+      (qRacahSum r a b x c d p * qRacahSum r c d x e f q * qRacahSum r e f x b a r')
+  else 0
+
+/-- **The limit of the left side** of the generic Biedenharn–Elliott identity: the root-of-unity summands of
+the colours within the level (the paired terms above the level cancel). -/
+theorem tendsto_genBE_lhs (hr : 2 ≤ r) {a b c d e f p q r' : ℕ}
+    (q1 : qAdm r a d p) (q2 : qAdm r c b p) (q3 : qAdm r c f q) (q4 : qAdm r e d q) (q5 : qAdm r e a r')
+    (q6 : qAdm r b f r') :
+    Tendsto (fun θ => ∑ x ∈ range (a + b + 1), genBETerm θ a b c d e f p q r' x) (𝓝[≠] (π / r))
+      (𝓝 (∑ x ∈ range (a + b + 1), rootPart r a b c d e f p q r' x)) := by
+  classical
+  have H : Tendsto (fun θ => ∑ x ∈ range (a + b + 1), genBETerm θ a b c d e f p q r' x) (𝓝[≠] (π / r))
+      (𝓝 (∑ x ∈ range (a + b + 1),
+        if Tri a b x ∧ Tri c d x ∧ Tri e f x then termLim r a b c d e f p q r' x else 0)) := by
+    refine tendsto_finset_sum _ fun x _ => ?_
+    by_cases ht : Tri a b x ∧ Tri c d x ∧ Tri e f x
+    · rw [if_pos ht]; exact tendsto_genBETerm hr q1 q2 q3 q4 q5 q6 ht.1 ht.2.1 ht.2.2
+    · rw [if_neg ht]
+      simp only [genBETerm, if_neg ht]
+      exact tendsto_const_nhds
+  have hpt : ∀ x, (if Tri a b x ∧ Tri c d x ∧ Tri e f x then termLim r a b c d e f p q r' x else 0) =
+      rootPart r a b c d e f p q r' x + pairPart r a b c d e f p q r' x := by
+    intro x
+    unfold rootPart pairPart PairCond
+    by_cases ht : Tri a b x ∧ Tri c d x ∧ Tri e f x
+    · simp only [ht, true_and, if_true]
+      unfold termLim
+      split_ifs <;> first | (exfalso; omega) | ring
+    · obtain h | h | h : ¬ Tri a b x ∨ ¬ Tri c d x ∨ ¬ Tri e f x := by tauto
+      all_goals simp [h]
+  simp only [hpt, sum_add_distrib, sum_pairPart hr q1 q2 q3 q4 q5 q6, add_zero] at H
+  exact H
+
+/-- **The limit of the right side** of the generic Biedenharn–Elliott identity. -/
+theorem tendsto_genBE_rhs (hr : 2 ≤ r) {a b c d e f p q r' : ℕ}
+    (q1 : qAdm r a d p) (q2 : qAdm r c b p) (q3 : qAdm r c f q) (q4 : qAdm r e d q) (q5 : qAdm r e a r')
+    (q6 : qAdm r b f r') :
+    Tendsto (fun θ => delta2G θ p q r' * racahG θ p q r' e a d * racahG θ p q r' f b c) (𝓝[≠] (π / r))
+      (𝓝 (if (p + q + r') / 2 + 2 ≤ r then
+        qDelta r p q r' ^ 2 * qRacahSum r p q r' e a d * qRacahSum r p q r' f b c else 0)) := by
+  have ha := qAdm_left q1
+  have hb := qAdm_mid q2
+  have hc := qAdm_left q2
+  have hd := qAdm_mid q1
+  have he := qAdm_left q4
+  have hf := qAdm_mid q3
+  have hp := qAdm_right q1
+  have hq := qAdm_right q3
+  have hr' := qAdm_right q5
+  have n5 : ¬ r - 1 ≤ (e + a + r') / 2 := by have := qAdm_half q5; omega
+  have n6 : ¬ r - 1 ≤ (f + b + r') / 2 := by have := qAdm_half q6; rw [Nat.add_comm f b]; omega
+  have H := ((decomp_delta2G hr p q r' (by omega)).mul
+    (decomp_racahG (j₁ := p) (j₂ := q) (j₃ := r') (j₄ := e) (j₅ := a) (j₆ := d) hr ⟨hp, hq, he, ha, hd⟩)).mul
+    (decomp_racahG (j₁ := p) (j₂ := q) (j₃ := r') (j₄ := f) (j₅ := b) (j₆ := c) hr ⟨hp, hq, hf, hb, hc⟩)
+  simp only [n5, n6, or_false] at H
+  by_cases h0 : (p + q + r') / 2 + 2 ≤ r
+  · rw [if_pos h0]
+    have n1 : ¬ r - 1 ≤ (p + q + r') / 2 := by omega
+    have m1 : ¬ r ≤ (p + q + r') / 2 + 1 := by omega
+    simp only [n1, m1, ↓reduceIte, add_zero] at H
+    rw [delta2Reg_of_lt hr (by omega)] at H
+    exact H.tendsto_eq hr
+  · rw [if_neg h0]
+    have w1 : r - 1 ≤ (p + q + r') / 2 := by omega
+    have m1 : r ≤ (p + q + r') / 2 + 1 := by omega
+    simp only [w1, m1, ↓reduceIte] at H
+    exact H.tendsto_zero hr (by norm_num)
+
 end Lightlike.TV
