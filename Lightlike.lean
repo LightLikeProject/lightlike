@@ -2863,6 +2863,7 @@ import Lightlike.Asymptotics.SmoothExtension
 import Lightlike.Asymptotics.SmoothExtensionTests
 import Lightlike.Asymptotics.ExpDecay
 import Lightlike.Asymptotics.GaussianIntegralPi
+import Lightlike.Asymptotics.GaussianIntegralPiTests
 import Lightlike.Asymptotics.EulerPrimitive
 import Lightlike.Asymptotics.EulerPrimitiveTests
 import Lightlike.GFT.DualPseudoManifold.Check
