@@ -2,6 +2,7 @@ import Mathlib
 import Lightlike.Lorentz.SL2RPlancherel.PrincipalSpherical
 import Lightlike.Lorentz.SL2RPlancherel.LadderClosed
 import Lightlike.Lorentz.SL2RPlancherel.LadderLocal
+import Lightlike.Lorentz.SL2RPlancherel.LadderRecursion
 
 /-!
 # Symmetries of the principal-series matrix coefficients
@@ -16,6 +17,7 @@ coefficients), milestone HA3.
 -/
 
 open MeasureTheory Set Complex Filter Topology Lightlike.Lorentz.SL2R
+open scoped ContDiff
 
 noncomputable section
 
@@ -144,5 +146,103 @@ theorem integral_Ioi_ladUp_mul_conj (l r : ℝ) {F G : ℝ → ℂ} {R : ℝ}
   have := tendsto_nhds_unique hl1 (hl3.congr' heq)
   rw [hI1, hI2, this]
   ring
+
+lemma continuous_mcoefP (ν : ℝ) (m n : ℤ) : Continuous (mcoefP ν m n) :=
+  continuous_iff_continuousAt.2 fun ξ => (hasDerivAt_mcoefP ν m n ξ).continuousAt
+
+lemma contDiff_one_mcoefP (ν : ℝ) (m n : ℤ) : ContDiff ℝ 1 (mcoefP ν m n) := by
+  rw [contDiff_one_iff_deriv]
+  refine ⟨fun ξ => (hasDerivAt_mcoefP ν m n ξ).differentiableAt, ?_⟩
+  have : deriv (mcoefP ν m n) = fun ξ => (wP ν - n) / 2 * mcoefP ν m (n + 1) ξ +
+      (wP ν + n) / 2 * mcoefP ν m (n - 1) ξ := funext fun ξ => (hasDerivAt_mcoefP ν m n ξ).deriv
+  rw [this]
+  exact (continuous_const.mul (continuous_mcoefP ν m (n + 1))).add
+    (continuous_const.mul (continuous_mcoefP ν m (n - 1)))
+
+/-- `Φ^ν_{0,0}` is real. -/
+lemma conj_mcoefP_zero_zero (ν ξ : ℝ) : (starRingEnd ℂ) (mcoefP ν 0 0 ξ) = mcoefP ν 0 0 ξ := by
+  have h := mcoefP_eq_conj ν ξ 0 0
+  simp only [sub_self, zpow_zero, one_mul] at h
+  exact h.symm
+
+lemma hasCompactSupport_profile (k : ℕ) {G : ℝ → ℂ} (hc : HasCompactSupport G) :
+    HasCompactSupport (profile k G) :=
+  (hasCompactSupport_comp_cosh (hasCompactSupport_iteratedDeriv hc k)).mul_left
+
+/-- An integrand `F conj(Φ) sinh` with `F` continuous and compactly supported is integrable. -/
+lemma integrableOn_mul_conj_sinh {F Φ : ℝ → ℂ} (hF : Continuous F) (hc : HasCompactSupport F)
+    (hΦ : Continuous Φ) :
+    IntegrableOn (fun ξ => F ξ * (starRingEnd ℂ) (Φ ξ) * (Real.sinh ξ : ℂ)) (Ioi 0) := by
+  refine Integrable.integrableOn ?_
+  refine Continuous.integrable_of_hasCompactSupport ?_ ?_
+  · exact (hF.mul (Complex.continuous_conj.comp hΦ)).mul
+      (Complex.continuous_ofReal.comp Real.continuous_sinh)
+  · exact (hc.mul_right).mul_right
+
+lemma tendsto_mul_conj_sinh {F Φ : ℝ → ℂ} (hF : Continuous F) (hΦ : Continuous Φ) :
+    Tendsto (fun a => F a * (starRingEnd ℂ) (Φ a) * (Real.sinh a : ℂ)) (𝓝[>] 0) (𝓝 0) := by
+  have hc : Continuous fun a => F a * (starRingEnd ℂ) (Φ a) * (Real.sinh a : ℂ) :=
+    (hF.mul (Complex.continuous_conj.comp hΦ)).mul
+      (Complex.continuous_ofReal.comp Real.continuous_sinh)
+  have := (hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Ioi (0 : ℝ)))
+  simpa using this
+
+/-- **The profile chain against the matrix coefficients**:
+`∫_{ξ>0} profile_k G(ξ) conj Φ^ν_{0,k}(ξ) sinh ξ dξ = ∏_{j<k} conj(-(w + j + 1)) · (1/2) Ĝ(ν/2)`. -/
+theorem integral_profile_mul_conj_mcoefP (ν : ℝ) (k : ℕ) {G : ℝ → ℂ} (hG : ContDiff ℝ ∞ G)
+    (hc : HasCompactSupport G) :
+    ∫ ξ in Ioi 0, profile k G ξ * (starRingEnd ℂ) (mcoefP ν 0 k ξ) * (Real.sinh ξ : ℂ) =
+      (∏ j ∈ Finset.range k, (starRingEnd ℂ) (-(wP ν + ((j : ℂ) + 1)))) *
+        ((1 / 2) * sphTransformH G (ν / 2)) := by
+  induction k with
+  | zero =>
+    simp only [Finset.range_zero, Finset.prod_empty, one_mul, Nat.cast_zero]
+    rw [← integral_sinh_mul_mcoefP_zero_zero ν hG.continuous hc]
+    refine setIntegral_congr_fun measurableSet_Ioi fun ξ _ => ?_
+    simp only [profile, pow_zero, Complex.ofReal_one, one_mul, iteratedDeriv_zero,
+      conj_mcoefP_zero_zero]
+    ring
+  | succ k ih =>
+    have hPk := contDiff_profile k hG
+    obtain ⟨R, -, hR'⟩ := exists_eq_zero_of_hasCompactSupport (hasCompactSupport_profile k hc)
+    have hR : ∀ ξ, R < ξ → profile k G ξ = 0 := fun ξ h => hR' ξ h.le
+    have hdown : ∀ ξ ∈ Ioi (0 : ℝ), ladDown ((k : ℝ) + 1) 0 (mcoefP ν 0 ((k : ℤ) + 1)) ξ =
+        -(wP ν + ((k : ℂ) + 1)) * mcoefP ν 0 k ξ := by
+      intro ξ hξ
+      have h := ladDown_mcoefP ν 0 ((k : ℤ) + 1) (ne_of_gt hξ)
+      push_cast at h
+      simpa using h
+    have h1 : IntegrableOn (fun ξ => ladUp (k : ℝ) 0 (profile k G) ξ *
+        (starRingEnd ℂ) (mcoefP ν 0 ((k : ℤ) + 1) ξ) * (Real.sinh ξ : ℂ)) (Ioi 0) :=
+      (integrableOn_mul_conj_sinh (contDiff_profile (k + 1) hG).continuous
+        (hasCompactSupport_profile (k + 1) hc) (continuous_mcoefP ν 0 ((k : ℤ) + 1))).congr_fun
+        (fun ξ hξ => by simp only [ladUp_profile k hG hξ]) measurableSet_Ioi
+    have h2 : IntegrableOn (fun ξ => profile k G ξ *
+        (starRingEnd ℂ) (ladDown ((k : ℝ) + 1) 0 (mcoefP ν 0 ((k : ℤ) + 1)) ξ) *
+          (Real.sinh ξ : ℂ)) (Ioi 0) :=
+      (integrableOn_mul_conj_sinh hPk.continuous (hasCompactSupport_profile k hc)
+        (show Continuous fun ξ => -(wP ν + ((k : ℂ) + 1)) * mcoefP ν 0 k ξ from
+          continuous_const.mul (continuous_mcoefP ν 0 k))).congr_fun
+        (fun ξ hξ => by simp only [hdown ξ hξ]) measurableSet_Ioi
+    have hadj := integral_Ioi_ladUp_mul_conj (k : ℝ) 0 (hPk.of_le (by norm_cast)).contDiffOn
+      (contDiff_one_mcoefP ν 0 ((k : ℤ) + 1)).contDiffOn hR
+      (tendsto_mul_conj_sinh hPk.continuous (continuous_mcoefP ν 0 ((k : ℤ) + 1))) h1 h2
+    have e1 : ∫ ξ in Ioi 0, profile (k + 1) G ξ *
+        (starRingEnd ℂ) (mcoefP ν 0 ((k + 1 : ℕ) : ℤ) ξ) * (Real.sinh ξ : ℂ) =
+        ∫ ξ in Ioi 0, ladUp (k : ℝ) 0 (profile k G) ξ *
+          (starRingEnd ℂ) (mcoefP ν 0 ((k : ℤ) + 1) ξ) * (Real.sinh ξ : ℂ) :=
+      setIntegral_congr_fun measurableSet_Ioi fun ξ hξ => by
+        simp only [ladUp_profile k hG hξ, Nat.cast_succ]
+    have e2 : ∫ ξ in Ioi 0, profile k G ξ *
+        (starRingEnd ℂ) (ladDown ((k : ℝ) + 1) 0 (mcoefP ν 0 ((k : ℤ) + 1)) ξ) *
+          (Real.sinh ξ : ℂ) =
+        (starRingEnd ℂ) (-(wP ν + ((k : ℂ) + 1))) *
+          ∫ ξ in Ioi 0, profile k G ξ * (starRingEnd ℂ) (mcoefP ν 0 k ξ) * (Real.sinh ξ : ℂ) := by
+      rw [← integral_const_mul]
+      refine setIntegral_congr_fun measurableSet_Ioi fun ξ hξ => ?_
+      simp only [hdown ξ hξ, map_mul]
+      ring
+    rw [e1, hadj, e2, ih, Finset.prod_range_succ]
+    ring
 
 end Lightlike.Lorentz.SL2RPlancherel
