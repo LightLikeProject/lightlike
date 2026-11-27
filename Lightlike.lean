@@ -2329,6 +2329,11 @@ import Lightlike.SpinFoam.EPRLStateSum.VertexPerm
 import Lightlike.SpinFoam.EPRLStateSum.SortedVertex
 import Lightlike.SpinFoam.EPRLStateSum.ComplexNetwork
 import Lightlike.SpinFoam.EPRLStateSum.ContractPerm
+import Lightlike.SpinFoam.EPRLStateSum.RelabelComplex
+import Lightlike.SpinFoam.EPRLStateSum.NetworkCovariance
+import Lightlike.SpinFoam.EPRLStateSum.LinkParity
+import Lightlike.SpinFoam.EPRLStateSum.InversionParity
+import Lightlike.SpinFoam.EPRLStateSum.RelabelAmplitude
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane
