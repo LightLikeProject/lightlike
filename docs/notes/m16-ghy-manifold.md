@@ -9,13 +9,13 @@ boundary term `-∮ √|h| h^{αβ} n^μ ∂_μ δg_{αβ}` from the Einstein–
 
 ## Starting point
 
-* `fable2/ge15-ghy` (e335ef3, queued): `eh_ghy_variation_regular`, the cancellation for a region of `ℝⁿ⁺¹` with regular,
+* an earlier branch (queued): `eh_ghy_variation_regular`, the cancellation for a region of `ℝⁿ⁺¹` with regular,
   nowhere null boundary, the metric and the perturbation defined and smooth on all of `ℝⁿ⁺¹` with `det g ≠ 0`
   everywhere; the boundary term in graph charts with a partition of unity. Its weaker line: one coordinate patch, not a
   region of a manifold.
 * `regge/ge15-divergence-manifold` (3c396c4): the divergence theorem on a manifold, flux in charts with a partition of
   unity subordinate to charts and graph charts of the boundary in each chart.
-* fable2's bulk variation on a manifold for a compactly supported perturbation (`CompactVariation.lean`), with small
+* the earlier bulk variation on a manifold for a compactly supported perturbation (`CompactVariation.lean`), with small
   coordinate balls and a retraction (`Retraction.lean`) to apply the `ℝⁿ` statements.
 
 ## Plan
@@ -26,7 +26,7 @@ boundary term `-∮ √|h| h^{αβ} n^μ ∂_μ δg_{αβ}` from the Einstein–
    pointwise coordinate identity in each chart (partition of unity in the integrand, not in `h`).
 3. `∫_D div_g V(h) = flux of V(h)` (the divergence theorem on a manifold).
 4. In each chart the derivative of the GHY density in graph charts is minus the flux density of `√|g| V(h)` where `h = 0`
-   on the boundary (the pointwise identity behind fable2's `eh_ghy_variation_graph`), with the same partition.
+   on the boundary (the pointwise identity behind the earlier `eh_ghy_variation_graph`), with the same partition.
 5. Sum: the boundary terms cancel, `d/dt (S_EH + S_GHY) = -∫_D ⟨E, h⟩ dvol_g`.
 
 Why the intrinsic `V` in step 1: with the partition `ψ_a` in the integrand, integrating `ψ_a ∂_j(√|g| V_a^j)` by parts chart
@@ -54,8 +54,8 @@ components of one vector field (`Σ_a dψ_a = 0` on the support of `h`).
   PalatiniCoord's global ones) and vanishes outside a compact set outside which `h` vanishes
   (`palatiniField_eq_zero_of_notMem`): the hypotheses `hX`, `hXK` of `divergence_theorem_manifold`.
 * Step 2 plan (bulk variation on a region): cut `D ∩ K` into disjoint measurable pieces `A_k ∩ D`, each in a compact set
-  of a small chart ball (the cover of fable2's `eh_first_variation_manifold_compact`, intersected with `D`); over a piece
-  fable2's `hasDerivAt_ehAction_piece` gives the chart integral `pieceVar` of `-√|g| ⟨E, h⟩ + ∂ⱼ(√|g| Wʲ)` for the metric
+  of a small chart ball (the cover of the earlier `eh_first_variation_manifold_compact`, intersected with `D`); over a piece
+  the earlier `hasDerivAt_ehAction_piece` gives the chart integral `pieceVar` of `-√|g| ⟨E, h⟩ + ∂ⱼ(√|g| Wʲ)` for the metric
   retracted to the ball. On the inner ball the retracted metric agrees with the chart metric near every point, so by the
   germ lemmas (`Locality.lean`, extended to `dChristoffel` and `Wvec`) `pieceVar` is the same integral for the chart
   metric; `ehIntegrand_chart` and `setIntegral_volumeMeasure_chart` turn the first term into `-∫_A ⟨E, h⟩ dV_g`, and
@@ -97,7 +97,7 @@ components of one vector field (`Σ_a dψ_a = 0` on the support of `h`).
 
 * representation: the Gibbons–Hawking–York term `2 ∮ √|h| K` is written in graph charts of the boundary with a partition
   of unity (charts at `c a` with weights `w a`, graph charts with cut-offs `ρ a b`, signs `σ a b`), as
-  `eh_ghy_variation_regular` does in `ℝⁿ⁺¹`; its density `ghyGraph` is fable2's.
+  `eh_ghy_variation_regular` does in `ℝⁿ⁺¹`; its density `ghyGraph` is from the earlier branch.
 * representation: the action is that of `D ∩ K` for `h` vanishing outside the compact `K` (the action of `D \ K` does not
   depend on `t`), so `D` need not be compact; the variation is `δg = h` along `g + t h`, `δg = 0` on `∂D` as in the source.
 * convention: the boundary is given by `C²` defining functions with `du ≠ 0` and `du(♯du) ≠ 0` (nowhere null), the
