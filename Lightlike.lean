@@ -2238,6 +2238,7 @@ import Lightlike.TemperleyLieb.Pentagon
 import Lightlike.TemperleyLieb.KLCoef
 import Lightlike.TemperleyLieb.TopEntry
 import Lightlike.TemperleyLieb.ThirdBlock
+import Lightlike.TemperleyLieb.OneStrand
 import Lightlike.Dirac.ConnesDistance
 import Lightlike.Dirac.ConnesDistance2
 import Lightlike.Dirac.ConnesDistance3
