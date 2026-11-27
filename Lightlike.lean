@@ -2290,6 +2290,7 @@ import Lightlike.Dirac.SpinManifold
 import Lightlike.Dirac.SpinLiftDeriv
 import Lightlike.Dirac.SpinLichnerowicz
 import Lightlike.Dirac.SphereSpin
+import Lightlike.Dirac.SphereDirac
 import Lightlike.Dirac.CliffordCenter
 import Lightlike.Dirac.CliffordNorm
 import Lightlike.Dirac.SpinStructure
