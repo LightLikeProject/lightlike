@@ -144,18 +144,19 @@ The EPRL state sum is formalized in the sorted basis of the tetrahedra, in which
 4-simplices carries one and the same basis. The intrinsic vertex is the vertex of the 4-simplex with every virtual spin
 rewritten by the transition matrix between the positional and the sorted channel, the exact overlap of the two orthonormal
 bases of the invariant space of the tetrahedron, and at the BF point γ = 1 on a closed 4-complex the state sum is the sum
-over the triangle colourings and the virtual spins of the triangle constraints times the Ooguri weight: the state sum of a
-closed 4-complex equals the Ooguri state sum [46]. The corrected intrinsic vertex is the basis-free contraction of the
-intertwiners of the sorted legs of its five tetrahedra along the ten links of `K₅` [43], and on a closed complex the
-sum over the labels of the tetrahedra is a network of these projectors [44]. Relabelling the vertices by a permutation
-`σ` reverses the orientation of the links of the pairs of vertices that `σ` inverts, and the sign `(-1)` to the number of
-reversed links is even on a closed complex because the sum of the colours of the link of an edge is even [45]; so the
-state sum is the same for every order of the vertices, also with the tetrahedra glued through `ε` [47]. Exchanging the
-two factors of Spin(4), the opposite orientation of ℝ⁴ (γ ↦ -γ), leaves the vertex and the state sum unchanged [38]. On
-the boundary of the 5-simplex with the cutoff of the bone colouring of any edge the γ = 1 state sum is 1 + 4 = 5, and
-with the face amplitude (J + 1)² in place of J + 1 the same sum is 65 [39], [40]. The source (arXiv:0711.0146) fixes no
-order or sign convention: "matches the source" means that the amplitude is the basis-free contraction of the definition
-in the source.
+over the triangle colourings and the virtual spins of the triangle constraints times the sign of the link orientations
+times the Ooguri weight [37]; the sign is `1` and the state sum of a closed 4-complex equals the Ooguri state sum [51]. The
+corrected intrinsic vertex is the basis-free contraction of the intertwiners of the sorted legs of its five tetrahedra along
+the ten links of `K₅` [43], [44], and on a closed complex the sum over the labels of the tetrahedra is a network of these
+projectors [46]. Relabelling the vertices by a permutation `σ` reverses the orientation of the links of the pairs of
+vertices that `σ` inverts [45], [47], [48], and the sign `(-1)` to the number of reversed links is even on a closed complex
+because the sum of the colours of the link of an edge is even [49], [50]; so the state sum is the same for every order of the
+vertices, also with the tetrahedra glued through `ε` [52]. Exchanging the two factors of Spin(4), the opposite orientation of
+ℝ⁴ (γ ↦ -γ), leaves the vertex and the state sum unchanged [38]. On the boundary of the 5-simplex with the cutoff of the bone
+colouring of the edge {0, 1} the γ = 1 state sum is 1 + 4 = 5, and with the face amplitude (J + 1)² in place of J + 1 the
+same sum is 65 [39]; the bone cutoff of any edge gives 5, for every relabelling of the vertices [40]. The source
+(arXiv:0711.0146) fixes no order or sign convention: "matches the source" means that the amplitude is the basis-free
+contraction of the definition in the source.
 
 ## Lean References
 
@@ -285,25 +286,23 @@ in the source.
     `SpinFoam.EPRLStateSum.amplitudeI_neg`
 39. Lightlike/SpinFoam/EPRLStateSum/BoneAmplitude.lean -
     `SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_low_spin`, `SpinFoam.EPRLStateSum.Trust.amplitudeI_wrong_face`
-40. Lightlike/SpinFoam/EPRLStateSum/BoneColouring.lean, BoneCollapse.lean, BoneWeight.lean -
-    `SpinFoam.EPRLStateSum.Trust.weight_bone`, `SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_bone`,
+40. Lightlike/SpinFoam/EPRLStateSum/BoneWeight.lean - `SpinFoam.EPRLStateSum.Trust.weight_bone`, `SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_bone`,
     `SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_relabel`
 41. Lightlike/SpinFoam/BarrettCraneUnique.lean - `SpinFoam.BC.bcNode_unique`, `SpinFoam.BC.bcNode_hyp`,
     `SpinFoam.BC.sixJSym_extreme_ne_zero`, `SpinFoam.BC.coefA_bcNodeR_half`
 42. Lightlike/SpinFoam/BarrettCraneValues.lean - `SpinFoam.BC.bcVertex_eq_vertexQ`, `SpinFoam.BC.fifteenJ_sq`,
     `SpinFoam.BC.Tests.bcVertex_half`, `SpinFoam.BC.Tests.bcVertex_one`, `SpinFoam.BC.Tests.bcVertexBC_mixed`
-43. Lightlike/SpinFoam/EPRLStateSum/VertexPerm.lean, SortedVertex.lean, ContractPerm.lean -
-    `SpinFoam.EPRLStateSum.fifteenJSimplex_eq_contract5`, `SpinFoam.EPRLStateSum.simpEIAux_eq_contract5`,
-    `SpinFoam.EPRLStateSum.contract5_perm`
-44. Lightlike/SpinFoam/EPRLStateSum/ComplexNetwork.lean - `SpinFoam.EPRLStateSum.tetSum_network`
-45. Lightlike/SpinFoam/EPRLStateSum/RelabelComplex.lean, NetworkCovariance.lean, LinkParity.lean, InversionParity.lean -
-    `SpinFoam.EPRLStateSum.relabelComplex`, `SpinFoam.EPRLStateSum.Znet_relabel`,
-    `SpinFoam.EPRLStateSum.link_sum_even`, `SpinFoam.EPRLStateSum.invSum_total_even`,
-    `SpinFoam.EPRLStateSum.Znet_eq_zero`
-46. Lightlike/SpinFoam/EPRLStateSum/LinkSignEven.lean - `SpinFoam.EPRLStateSum.linkSign_of_tetPar`,
-    `SpinFoam.EPRLStateSum.amplitudeI_one_eq_ooguriSum`
-47. Lightlike/SpinFoam/EPRLStateSum/RelabelAmplitude.lean - `SpinFoam.EPRLStateSum.Znet_relabel_eq`,
-    `SpinFoam.EPRLStateSum.amplitudeI_one_relabel`, `SpinFoam.EPRLStateSum.amplitudeIeps_relabel`
+43. Lightlike/SpinFoam/EPRLStateSum/VertexPerm.lean - `SpinFoam.EPRLStateSum.fifteenJSimplex_eq_contract5`
+44. Lightlike/SpinFoam/EPRLStateSum/SortedVertex.lean - `SpinFoam.EPRLStateSum.simpEIAux_eq_contract5`
+45. Lightlike/SpinFoam/EPRLStateSum/ContractPerm.lean - `SpinFoam.EPRLStateSum.contract5_perm`
+46. Lightlike/SpinFoam/EPRLStateSum/ComplexNetwork.lean - `SpinFoam.EPRLStateSum.tetSum_network`
+47. Lightlike/SpinFoam/EPRLStateSum/RelabelComplex.lean - `SpinFoam.EPRLStateSum.relabelComplex`
+48. Lightlike/SpinFoam/EPRLStateSum/NetworkCovariance.lean - `SpinFoam.EPRLStateSum.Znet_relabel`
+49. Lightlike/SpinFoam/EPRLStateSum/LinkParity.lean - `SpinFoam.EPRLStateSum.link_sum_even`
+50. Lightlike/SpinFoam/EPRLStateSum/InversionParity.lean - `SpinFoam.EPRLStateSum.invSum_total_even`, `SpinFoam.EPRLStateSum.Znet_eq_zero`
+51. Lightlike/SpinFoam/EPRLStateSum/LinkSignEven.lean - `SpinFoam.EPRLStateSum.linkSign_of_tetPar`, `SpinFoam.EPRLStateSum.amplitudeI_one_eq_ooguriSum`
+52. Lightlike/SpinFoam/EPRLStateSum/RelabelAmplitude.lean - `SpinFoam.EPRLStateSum.Znet_relabel_eq`, `SpinFoam.EPRLStateSum.amplitudeI_one_relabel`,
+    `SpinFoam.EPRLStateSum.amplitudeIeps_relabel`
 
 ## References
 

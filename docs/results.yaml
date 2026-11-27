@@ -7542,17 +7542,17 @@
   note: "At an edge of degree d >= 3 of a closed combinatorial 3-manifold, the complex and its stellar subdivision at the edge have a common forward descendant (commonForward_starAt_edge): the complex reaches it by one 1-4 move and d - 2 2-3 moves, the subdivision by one 2-3 move. With LL-0585 this is piece p4 of PL7a: an edge subdivision is not itself forward (LL-0585), so the forward route meets it at a common descendant."
   since: unreleased
 - id: LL-0587
-  title: "The intrinsic EPRL vertex is the vertex of the 4-simplex with the virtual spins rewritten by the transition matrices between the positional and the sorted channel (the exact overlap of the two orthonormal bases, with the sign nodeEta), and at γ = 1 the EPRL state sum on a closed 4-complex equals the Ooguri state sum: the sum over the triangle colourings and the virtual spins of the triangle constraints times the Ooguri weight, with no sign"
+  title: "The intrinsic EPRL vertex is the vertex of the 4-simplex with the virtual spins rewritten by the transition matrices between the positional and the sorted channel (the exact overlap of the two orthonormal bases, with the sign nodeEta), and at γ = 1 the EPRL state sum on a closed 4-complex is the sum over the triangle colourings and the virtual spins of the triangle constraints times the sign of the link orientations (a function of the colouring) times the Ooguri weight; the sign is 1 (LL-0603)"
   area: SpinFoam
   file: Lightlike/SpinFoam/EPRLStateSum/IntrinsicVertex.lean
-  decls: [Lightlike.SpinFoam.EPRLStateSum.simpEI_eq_sum_simpE, Lightlike.SpinFoam.EPRLStateSum.simpEIAux_eq_sum_nodeT, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_signed_ooguri, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_closed, Lightlike.SpinFoam.EPRLStateSum.linkSign_of_tetPar, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_ooguriSum]
+  decls: [Lightlike.SpinFoam.EPRLStateSum.simpEI_eq_sum_simpE, Lightlike.SpinFoam.EPRLStateSum.simpEIAux_eq_sum_nodeT, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_signed_ooguri, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_closed]
   status: proven
   tier: frontier
   source:
     refs:
       - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
   review: kernel-checked
-  note: "Comparison pending: the equality of the state sum with the Ooguri amplitude is the library's own statement, not a theorem of Engle, Pereira, Rovelli and Livine (2008), which fixes no order or sign convention. The node basis change nodeT is the exact overlap of the sorted-leg and the cyclic-leg intertwiners (it carries the sign nodeEta). amplitudeI_one_eq_signed_ooguri has the sign linkSign = (-1)^(sum over the 4-simplices of triPart) of the link orientations; linkSign_of_tetPar shows that it is 1 on every colouring whose tetrahedra have an even leg sum, so amplitudeI_one_eq_ooguriSum has no sign. Differences from the Ooguri amplitude of the milestone text: the complex is closed (IsClosed4), and the virtual spin of a tetrahedron ranges over its own box (the triangle constraints bound it) instead of a separate cutoff."
+  note: "Comparison pending: the equality of the state sum with the Ooguri amplitude with the sign of the link orientations is the library's own statement, not a theorem of Engle, Pereira, Rovelli and Livine (2008), which fixes no order or sign convention. The node basis change nodeT is the exact overlap of the sorted-leg and the cyclic-leg intertwiners (it carries the sign nodeEta). The sign linkSign = (-1)^(sum over the 4-simplices of triPart) is a function of the colouring only; LL-0603 shows that it is 1 on every colouring whose tetrahedra have an even leg sum."
   since: unreleased
 - id: LL-0588
   title: "The EPRL vertex is unchanged by the exchange of the two factors of Spin(4), (n, m) to (m, n), and the EPRL state sum is unchanged by gamma to -gamma, the opposite orientation of R^4"
@@ -7568,54 +7568,17 @@
   note: "Comparison pending. The proof is the sign (-1)^S of two exchanged rows of a 9j symbol, which cancels over the ten edges of K5. The orientation of K5 inside the 15j symbol (edges from the smaller to the larger position) is a convention of the vertex order, not the orientation of R^4; the state sum does not depend on the vertex order (LL-0600)."
   since: unreleased
 - id: LL-0589
-  title: "Trust check on the boundary of the 5-simplex: with the bone cutoff of any of the fifteen edges, and for every permutation of the six vertices, the EPRL state sum at γ = 1 is 1 + 4 = 5, and with the face amplitude (J + 1)^2 instead of J + 1 the same sum is 65"
+  title: "Trust check on the boundary of the 5-simplex: with the bone cutoff the EPRL state sum at γ = 1 is 1 + 4 = 5, and with the face amplitude (J + 1)^2 instead of J + 1 the same sum is 65"
   area: SpinFoam
   file: Lightlike/SpinFoam/EPRLStateSum/BoneAmplitude.lean
-  decls: [Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_low_spin, Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_wrong_face, Lightlike.SpinFoam.EPRLStateSum.Trust.weight_bone, Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_bone, Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_relabel]
+  decls: [Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_low_spin, Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_wrong_face]
   status: proven
   tier: frontier
   source:
     refs:
       - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
   review: kernel-checked
-  note: "Comparison pending: a trust check of the library's own statement. The cutoff of an edge {u, w} gives doubled spin at most 1 to the four triangles through the edge; only the zero colouring (weight 1) and the bone colouring (weight 4, weight_bone) survive the triangle constraints, both with the sign +1 (linkSign), so the sum is 5 for every edge and for every relabelling of the vertices (amplitudeI_sphere6_relabel). A node basis change without the sign nodeEta gives 5 or -3 (numerical control scripts/spinfoam/eprl_order_check.py), so the check tells the two definitions apart."
-  since: unreleased
-- id: LL-0600
-  title: "The EPRL state sum at γ = 1 on a closed 4-complex does not depend on the order of the vertices: for every permutation σ of the vertices, the state sum of the relabelled complex with the relabelled cutoff equals that of the complex, also with the tetrahedra glued through ε"
-  area: SpinFoam
-  file: Lightlike/SpinFoam/EPRLStateSum/RelabelAmplitude.lean
-  decls: [Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_relabel, Lightlike.SpinFoam.EPRLStateSum.Znet_relabel_eq, Lightlike.SpinFoam.EPRLStateSum.amplitudeIeps_relabel]
-  status: proven
-  tier: frontier
-  source:
-    refs:
-      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
-  review: kernel-checked
-  note: "Comparison pending: the independence is the library's own statement; the source (Engle, Pereira, Rovelli and Livine 2008) fixes no order or sign convention, so \"matches the source\" means \"is the basis-free contraction of the source's definition\" (LL-0602). The hypothesis is a closed 4-complex (IsClosed4); a complex with boundary is not covered. The proof: the sum over the labels of the tetrahedra is a network (tetSum_network); a relabelling reverses the links of the pairs of vertices it inverts, each reversal multiplies the contraction by (-1)^J, and the total sign is even because the colours of the link of an edge sum to an even number on a closed complex (LL-0601); a colouring with an odd tetrahedron has no invariant network (Znet_eq_zero). The variant glued through ε carries the colouring sign (-1)^(J_t/2) per tetrahedron (fourJ_neg), defined as epsSign. Trust check: LL-0589. Non-vacuity: the boundary of the 5-simplex."
-  since: unreleased
-- id: LL-0601
-  title: "On a closed 4-complex whose tetrahedra have an even sum of the four triangle colours, the colours of the triangles of the link of an edge have an even sum, and the number of the links of the 4-simplices that a relabelling of the vertices reverses, counted with the colours, is even"
-  area: SpinFoam
-  file: Lightlike/SpinFoam/EPRLStateSum/LinkParity.lean
-  decls: [Lightlike.SpinFoam.EPRLStateSum.link_sum_even, Lightlike.SpinFoam.EPRLStateSum.invSum_total_even]
-  status: proven
-  tier: established
-  source: exploratory
-  review: kernel-checked
-  note: "Comparison pending: no source was read at a cited location for this statement; it is a mod 2 statement about closed pseudo-manifolds: the sum over the tetrahedra s minus y of the four colours counts the triangles of the link once and every other triangle twice, because every tetrahedron of a closed complex lies in two 4-simplices (IsClosed4). It is used for the sign of a relabelling in LL-0600."
-  since: unreleased
-- id: LL-0602
-  title: "The intrinsic EPRL vertex of a 4-simplex is the contraction of the intertwiners of the sorted legs of its five tetrahedra along the ten links of K5, each link read with the form (-1)^((J - m)/2) from its lower to its higher end, so the vertex does not depend on a basis of the tetrahedra"
-  area: SpinFoam
-  file: Lightlike/SpinFoam/EPRLStateSum/SortedVertex.lean
-  decls: [Lightlike.SpinFoam.EPRLStateSum.simpEIAux_eq_contract5, Lightlike.SpinFoam.EPRLStateSum.fifteenJSimplex_eq_contract5, Lightlike.SpinFoam.EPRLStateSum.tetSum_network]
-  status: proven
-  tier: frontier
-  source:
-    refs:
-      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
-  review: kernel-checked
-  note: "Comparison pending: the source (Engle, Pereira, Rovelli and Livine 2008) defines the vertex through 15j symbols and fixes no order of the five tetrahedra, no order of the legs of a tetrahedron and no sign convention; the contraction is the library's reading of that definition, which is basis-free up to the orientation of the links. tetSum_network is the sum over the labels of the tetrahedra of a complex as a network of projectors onto the invariants of the legs."
+  note: "Comparison pending: a trust check of the library's own statement. The cutoff gives doubled spin at most 1 to the four triangles through the edge {0, 1}; only the zero colouring (weight 1) and the bone colouring (weight 4, weight_col0) survive the triangle constraints, both with the sign +1, so the sum is 5. The other fourteen edges and the relabellings of the vertices are LL-0605."
   since: unreleased
 - id: LL-0591
   title: "If two complexes of tetrahedra have a common forward descendant under the 2-3 and 1-4 moves, then every regularised Ponzano–Regge amplitude value of each is a value of the descendant: ampValues K ⊆ ampValues K'' and ampValues K' ⊆ ampValues K''"
@@ -7720,4 +7683,78 @@
       - {ref: baez-christensen-2002, location: "Abstract", check: "positive or negative"}
   review: kernel-checked
   note: "Published values: J. D. Christensen's table of Riemannian 10j symbols computed with the Christensen–Egan algorithm (J. D. Christensen, G. Egan, Class. Quantum Grav. 19 (2002) 1185, arXiv:gr-qc/0110045; the paper prints no values, the table is linked from its arXiv page: jdc.math.uwo.ca/spin-foams/10j-samples/riemannian) and G. Egan's exact rationals (gregegan.net/SCIENCE/tenJ/tenJ.html), both read 27 Nov 2026. Proved: bcVertex with spin 1/2 on all ten edges is 7/18 (table 0.388888…, Egan 7 / 18), with spin 1 on all edges 307/1500 (table 0.204666…, Egan 307 / 1 500); with spin 1 on the edges (i, i+1) and 1/2 on the edges (i, i+2) (Christensen–Egan §2 labels j_{1,i}, j_{2,i}) bcVertexBC is -163/1728 (table -0.0943287037037036923959, equal to -163/1728 to double precision). Method: bcVertex_eq_vertexQ writes the vertex for all spins as a rational number (the square of each 15j symbol is rational, fifteenJ_sq, by Racah's formula), evaluated by kernel decide. What the negative value shows: bcVertexBC, with the sign (-1)^(sum of doubled spins), agrees with the published value at a half-integer spin sum, so the sign rule of Baez and Christensen matches the table there; it does not prove bcVertexBC equal to their 10j for all spins, and the table's reading of the ten input spins as j_{1,0..4} then j_{2,0..4} is inferred, not stated on the page. Not proved: the value 9263/73500 at ten spins 3/2 (1024 channel tuples, beyond the kernel evaluation used here); scripts/spin4/bc10j_check.py checks it numerically, with a wrongly normalised intertwiner as control."
+  since: unreleased
+- id: LL-0600
+  title: "The EPRL state sum at γ = 1 on a closed 4-complex does not depend on the order of the vertices: for every permutation σ of the vertices, the state sum of the relabelled complex with the relabelled cutoff equals that of the complex, also with the tetrahedra glued through ε"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/EPRLStateSum/RelabelAmplitude.lean
+  decls: [Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_relabel, Lightlike.SpinFoam.EPRLStateSum.Znet_relabel_eq, Lightlike.SpinFoam.EPRLStateSum.amplitudeIeps_relabel]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+  review: kernel-checked
+  note: "Comparison pending: the independence is the library's own statement; the source (Engle, Pereira, Rovelli and Livine 2008) fixes no order or sign convention, so \"matches the source\" means \"is the basis-free contraction of the source's definition\" (LL-0602). The hypothesis is a closed 4-complex (IsClosed4); a complex with boundary is not covered. The proof: the sum over the labels of the tetrahedra is a network (tetSum_network); a relabelling reverses the links of the pairs of vertices it inverts, each reversal multiplies the contraction by (-1)^J, and the total sign is even because the colours of the link of an edge sum to an even number on a closed complex (LL-0601); a colouring with an odd tetrahedron has no invariant network (Znet_eq_zero). The variant glued through ε carries the colouring sign (-1)^(J_t/2) per tetrahedron (fourJ_neg), defined as epsSign. Trust check: LL-0589. Non-vacuity: the boundary of the 5-simplex."
+  since: unreleased
+- id: LL-0601
+  title: "On a closed 4-complex whose tetrahedra have an even sum of the four triangle colours, the colours of the triangles of the link of an edge have an even sum"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/EPRLStateSum/LinkParity.lean
+  decls: [Lightlike.SpinFoam.EPRLStateSum.link_sum_even]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "A mod 2 statement about closed pseudo-manifolds: the sum over the tetrahedra s minus y of the four colours counts the triangles of the link of the edge {x, y} once and every other triangle twice, because every tetrahedron of a closed complex lies in two 4-simplices (IsClosed4). It is used for the sign of a relabelling in LL-0600 and LL-0604."
+  since: unreleased
+- id: LL-0602
+  title: "The intrinsic EPRL vertex of a 4-simplex is the contraction of the intertwiners of the sorted legs of its five tetrahedra along the ten links of K5, each link read with the form (-1)^((J - m)/2) from its lower to its higher end, so the vertex does not depend on a basis of the tetrahedra"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/EPRLStateSum/SortedVertex.lean
+  decls: [Lightlike.SpinFoam.EPRLStateSum.simpEIAux_eq_contract5]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+  review: kernel-checked
+  note: "Comparison pending: the source (Engle, Pereira, Rovelli and Livine 2008) defines the vertex through 15j symbols and fixes no order of the five tetrahedra, no order of the legs of a tetrahedron and no sign convention; the contraction is the library's reading of that definition, which is basis-free up to the orientation of the links. tetSum_network is the sum over the labels of the tetrahedra of a complex as a network of projectors onto the invariants of the legs."
+  since: unreleased
+- id: LL-0603
+  title: "On a closed 4-complex the sign of the link orientations of a colouring whose tetrahedra have an even leg sum is 1, so at γ = 1 the EPRL state sum equals the Ooguri state sum: the sum over the triangle colourings and the virtual spins of the triangle constraints times the Ooguri weight"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/EPRLStateSum/LinkSignEven.lean
+  decls: [Lightlike.SpinFoam.EPRLStateSum.linkSign_of_tetPar, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_one_eq_ooguriSum]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+  review: kernel-checked
+  note: "Comparison pending: the equality of the state sum with the Ooguri amplitude is the library's own statement, not a theorem of Engle, Pereira, Rovelli and Livine (2008), which fixes no order or sign convention. Modulo 2 the exponent of the sign of a 4-simplex is the sum of the leg colours of the tetrahedra omitting the positions 2 and 3 plus the sum over its five tetrahedra of their legs 0 and 1; the first two are even and the last counts every tetrahedron of a closed complex twice. Differences from the Ooguri amplitude of the milestone text: the complex is closed (IsClosed4), and the virtual spin of a tetrahedron ranges over its own box (the triangle constraints bound it) instead of a separate cutoff."
+  since: unreleased
+- id: LL-0604
+  title: "On a closed 4-complex whose tetrahedra have an even leg sum, the number of the links of the 4-simplices that a relabelling of the vertices reverses, counted with the colours, is even"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/EPRLStateSum/InversionParity.lean
+  decls: [Lightlike.SpinFoam.EPRLStateSum.invSum_total_even]
+  status: proven
+  tier: established
+  source: structural
+  review: kernel-checked
+  note: "The exponent counts, for every pair of vertices that the relabelling inverts, the colours of the triangles of the link of the edge, which have an even sum by LL-0601; it is the sign of the relabelling of a network in LL-0600."
+  since: unreleased
+- id: LL-0605
+  title: "Trust check on the boundary of the 5-simplex: with the bone cutoff of any of the fifteen edges, and for the bone cutoff of {0, 1} with the vertices relabelled by any permutation, the EPRL state sum at γ = 1 is 1 + 4 = 5"
+  area: SpinFoam
+  file: Lightlike/SpinFoam/EPRLStateSum/BoneWeight.lean
+  decls: [Lightlike.SpinFoam.EPRLStateSum.Trust.weight_bone, Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_bone, Lightlike.SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_relabel]
+  status: proven
+  tier: frontier
+  source:
+    refs:
+      - {ref: eprl-2008, location: "Section III", check: "EUCLIDEAN"}
+  review: kernel-checked
+  note: "Comparison pending: a trust check of the library's own statement. For every edge {u, w} only the zero colouring (weight 1) and the bone colouring (weight 4, weight_bone) survive the triangle constraints, both with the sign +1, so the sum is 5 for every edge and for every relabelling of the vertices. A node basis change without the sign nodeEta gives 5 or -3 (numerical control scripts/spinfoam/eprl_order_check.py), so the check tells the two definitions apart."
   since: unreleased
