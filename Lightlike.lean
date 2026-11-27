@@ -348,6 +348,7 @@ import Lightlike.FourD.Complex
 import Lightlike.FourD.Orientation
 import Lightlike.FourD.Pachner
 import Lightlike.FourD.Tests
+import Lightlike.FourD.ComplexProjectivePlane
 import Lightlike.Geometry.HeatKernel.ConformalCurvature
 import Lightlike.Geometry.HeatKernel.Consistency
 import Lightlike.Geometry.HeatKernel.EulerMaclaurin
@@ -370,6 +371,8 @@ import Lightlike.Geometry.HeatKernel.HeatCoeffOneDiag
 import Lightlike.Geometry.HeatKernel.PartialJets
 import Lightlike.Geometry.HeatKernel.WorldFunctionJet
 import Lightlike.Geometry.HeatKernel.CoordDensityDeriv
+import Lightlike.Geometry.HeatKernel.JetInvariants
+import Lightlike.Geometry.HeatKernel.FourthJet
 import Lightlike.Geometry.HeatKernel.HeatCoeffsTests
 import Lightlike.Geometry.HeatKernel.WorldFunctionBounds
 import Lightlike.Geometry.HeatKernel.WorldFunctionBoundsTests
@@ -383,6 +386,10 @@ import Lightlike.Geometry.HeatKernel.ChartParametrixDelta
 import Lightlike.Geometry.HeatKernel.ChartParametrixDeltaTests
 import Lightlike.Geometry.HeatKernel.GaussDerivBounds
 import Lightlike.Geometry.HeatKernel.GaussDerivBoundsTests
+import Lightlike.Geometry.HeatKernel.IsChartParametrix
+import Lightlike.Geometry.HeatKernel.IsChartParametrixTests
+import Lightlike.Geometry.HeatKernel.ChartHeatErrorDeriv
+import Lightlike.Geometry.HeatKernel.ChartHeatErrorDerivTests
 import Lightlike.Geometry.HeatKernel.CutoffAnsatz
 import Lightlike.Geometry.HeatKernel.CutoffAnsatzTests
 import Lightlike.Geometry.HeatKernel.ChartParametrix
@@ -608,6 +615,10 @@ import Lightlike.Lorentz.SL2R
 import Lightlike.Lorentz.SL2RBergman
 import Lightlike.Lorentz.SL2RCasimir
 import Lightlike.Lorentz.SL2RDiscrete
+import Lightlike.Lorentz.SL2RIrreducible.Criterion
+import Lightlike.Lorentz.SL2RIrreducible.Discrete
+import Lightlike.Lorentz.SL2RIrreducible.PrincipalLadder
+import Lightlike.Lorentz.SL2RIrreducible.PrincipalWeights
 import Lightlike.Lorentz.SL2RPlancherel.AbelHalfIntegral
 import Lightlike.Lorentz.SL2RPlancherel.AbelKernel
 import Lightlike.Lorentz.SL2RPlancherel.AbelKernelTanh
@@ -678,6 +689,7 @@ import Lightlike.Lorentz.SL2RPlancherel.PrincipalDiscreteOrth
 import Lightlike.Lorentz.SL2RPlancherel.CasimirTest
 import Lightlike.Lorentz.SL2RPlancherel.OppositeTransform
 import Lightlike.Lorentz.SL2RPlancherel.OppositeIdent
+import Lightlike.Lorentz.SL2RPlancherel.OppositeL2
 import Lightlike.Lorentz.SL2RPlancherel.Injectivity
 import Lightlike.Lorentz.SL2RPlancherel.Linearity
 import Lightlike.Lorentz.SL2RPlancherel.WeightIntegrable
@@ -868,6 +880,7 @@ import Lightlike.OperatorAlgebras.KernelOperator
 import Lightlike.OperatorAlgebras.KernelHilbertSchmidt
 import Lightlike.OperatorAlgebras.KernelSpectral
 import Lightlike.OperatorAlgebras.KernelMercer
+import Lightlike.OperatorAlgebras.KernelManifold
 import Lightlike.OperatorAlgebras.ShaleAlgebra
 import Lightlike.OperatorAlgebras.ShaleHilbertSchmidt
 import Lightlike.OperatorAlgebras.StateGNS
@@ -2214,6 +2227,9 @@ import Lightlike.TuraevViro.QNumber
 import Lightlike.TuraevViro.QSixJ
 import Lightlike.TuraevViro.QSixJGeneric
 import Lightlike.TuraevViro.QSixJGenericKL
+import Lightlike.TuraevViro.QSixJGenericBE
+import Lightlike.TuraevViro.QSixJGenericPentagon
+import Lightlike.TuraevViro.QSixJGenericPositive
 import Lightlike.TuraevViro.QSixJLimit
 import Lightlike.TuraevViro.QSixJRegular
 import Lightlike.TuraevViro.QFifteenJ
@@ -2433,6 +2449,8 @@ import Lightlike.TemperleyLieb.KLThirdBlock
 import Lightlike.TemperleyLieb.KLCertificate
 import Lightlike.TemperleyLieb.KLTelescoping
 import Lightlike.TemperleyLieb.KLThirdRec
+import Lightlike.TemperleyLieb.KLThirdAssembly
+import Lightlike.TemperleyLieb.RecouplingKL
 import Lightlike.TemperleyLieb.MirrorTree
 import Lightlike.TemperleyLieb.Adjoint
 import Lightlike.TemperleyLieb.Slide

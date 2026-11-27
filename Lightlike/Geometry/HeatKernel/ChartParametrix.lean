@@ -153,7 +153,15 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
           HasFDerivAt (fun y => V (p, y)) (ContinuousLinearMap.id ℝ (Fin n → ℝ)) p) ∧
         (∀ q ∈ Ω, σ q = Geodesic.pairing g q.1 (V q) (V q)) ∧
         (∀ z, ‖z‖ < r / 2 → θ z = 1) ∧ (∀ z, r ≤ ‖z‖ → θ z = 0) ∧ (∀ z, θ z ∈ Icc (0 : ℝ) 1) ∧
-        Continuous θ ∧ (∀ t p, ‖p - x‖ < r → Continuous (H t p)) ∧
+        ContDiff ℝ ∞ θ ∧ tsupport θ ⊆ ball 0 r ∧ (∀ t p, ‖p - x‖ < r → Continuous (H t p)) ∧
+        (∀ t > 0, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → ∃ D, HasDerivAt (fun s => H s p y) D t ∧
+          D + coordLaplacian g (H t p) y =
+            θ (y - p) * (heatGaussian n (σ (p, y)) t * (t ^ N * coordLaplacian g (fun z => u N (p, z)) y)) +
+            (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * (gaussFactor t (σ (p, y)) * truncAnsatz (fun k y => u k (p, y)) N t y *
+              coordLaplacian g (fun z => θ (z - p)) y - 2 * (gaussFactor t (σ (p, y)) *
+                ((∑ k ∈ Finset.range (N + 1), t ^ k * coordGradPair g (fun z => θ (z - p)) (fun z => u k (p, z)) y) -
+                  truncAnsatz (fun k y => u k (p, y)) N t y *
+                    coordGradPair g (fun z => θ (z - p)) (fun z => σ (p, z)) y / (4 * t))))) ∧
         (∃ c : ℝ, 0 < c ∧ ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → c * ‖y - p‖ ^ 2 ≤ σ (p, y)) ∧
         (∃ A : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r →
           |truncAnsatz (fun k y => u k (p, y)) N t y| ≤ A) ∧
@@ -298,13 +306,53 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
           show θ (z - p) * _ = 0
           rw [show θ (z - p) = 0 from hz, zero_mul]
       exact continuousAt_const.congr (h1.mono fun z hz => hz.symm)
+  -- the heat error, expanded
+  have hform : ∀ t > 0, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → ∃ D, HasDerivAt (fun s => H s p y) D t ∧
+      D + coordLaplacian g (H t p) y =
+        θ (y - p) * (heatGaussian n (σ (p, y)) t * (t ^ N * coordLaplacian g (fun z => u N (p, z)) y)) +
+            (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * (gaussFactor t (σ (p, y)) * truncAnsatz (fun k y => u k (p, y)) N t y *
+              coordLaplacian g (fun z => θ (z - p)) y - 2 * (gaussFactor t (σ (p, y)) *
+                ((∑ k ∈ Finset.range (N + 1), t ^ k * coordGradPair g (fun z => θ (z - p)) (fun z => u k (p, z)) y) -
+                  truncAnsatz (fun k y => u k (p, y)) N t y *
+                    coordGradPair g (fun z => θ (z - p)) (fun z => σ (p, z)) y / (4 * t)))) := by
+    intro t ht0 p y hp hyp
+    have hqΩ := hKcΩ (hmemK p y hp hyp)
+    set U' := {z | (p, z) ∈ Ω} with hU'
+    have hU'o : IsOpen U' := isOpen_slice hΩo p
+    have hgU' : IsCoordMetric g U' := hg'.mono hU'o fun z hz => hΩU _ hz
+    have hσp : ContDiffOn ℝ ∞ (fun z => σ (p, z)) U' :=
+      hσs.comp (contDiffOn_const.prodMk contDiffOn_id) fun z hz => hz
+    have hup : ∀ k, ContDiffOn ℝ ∞ (fun z => u k (p, z)) U' := fun k =>
+      (hus k).comp (contDiffOn_const.prodMk contDiffOn_id) fun z hz => hz
+    have heikp : ∀ z ∈ U', coordGradPair g (fun z => σ (p, z)) (fun z => σ (p, z)) z = 4 * σ (p, z) :=
+      fun z hz => heik (p, z) hz
+    have hθp' : ContDiff ℝ ∞ (fun z => θ (z - p)) := hθ.comp (contDiff_id.sub contDiff_const)
+    obtain ⟨D, hD, hDeq⟩ := heatOperator_cutoff_ansatz hgU' hσp hup heikp (htr p N) hθp' ht0 hqΩ
+    refine ⟨D, hD, ?_⟩
+    have hΦ : ContDiffOn ℝ ∞ (fun z => θ (z - p) * (gaussFactor t (σ (p, z)) *
+        truncAnsatz (fun k y => u k (p, y)) N t z)) U' :=
+      hθp'.contDiffOn.mul (((contDiff_gaussFactor t).comp_contDiffOn hσp).mul
+        (ContDiffOn.sum fun k _ => contDiffOn_const.mul (hup k)))
+    have hHt : H t p = fun z => (4 * Real.pi * t) ^ (-(n : ℝ) / 2) * (θ (z - p) * (gaussFactor t (σ (p, z)) *
+        truncAnsatz (fun k y => u k (p, y)) N t z)) := by
+      funext z; simp only [hHdef, heatGaussian]; ring
+    rw [hHt, hgU'.coordLaplacian_const_mul _ hΦ hqΩ, hDeq]
+    have hσd : DifferentiableAt ℝ (fun z => σ (p, z)) y :=
+      (hσp.contDiffAt (hU'o.mem_nhds hqΩ)).differentiableAt (by simp)
+    have hUd : DifferentiableAt ℝ (fun z => truncAnsatz (fun k y => u k (p, y)) N t z) y :=
+      ((ContDiffOn.sum fun k _ => contDiffOn_const.mul (hup k)).contDiffAt
+        (hU'o.mem_nhds hqΩ)).differentiableAt (by simp)
+    have hgpU : coordGradPair g (fun z => θ (z - p)) (fun z => truncAnsatz (fun k y => u k (p, y)) N t z) y =
+        ∑ k ∈ Finset.range (N + 1), t ^ k * coordGradPair g (fun z => θ (z - p)) (fun z => u k (p, z)) y :=
+      hgU'.coordGradPair_sum_smul_right _ (fun k => t ^ k) hup hqΩ
+    rw [coordGradPair_gauss_mul hσd hUd t, hgpU]
   refine ⟨r, u, H, hr, fun p hp => (hdiag p ?_).2, fun t ht p hp => ?_,
     ⟨CG, a, hapos, hGauss⟩, ⟨CG * (Real.pi / a) ^ ((n : ℝ) / 2), fun t ht p hp => ?_⟩,
     ⟨Ω, θ, σ, V, hΩo, hxΩ, fun p y hp hy => hKcΩ (hmemK p y hp hy), hΩU, hVs, hus, hVd, hσV,
       fun z hz => hθ1 z (hKW₀ (by rw [mem_closedBall, dist_zero_right]; exact hz.le)),
       fun z hz => image_eq_zero_of_notMem_tsupport fun h => by
         have := hθs h; rw [mem_ball, dist_zero_right] at this; linarith,
-      hθr, hθ.continuous, hHc, ⟨c, hc, fun p y hp hy => hσnn (p, y) (hmemK p y hp hy)⟩,
+      hθr, hθ, hθs, hHc, hform, ⟨c, hc, fun p y hp hy => hσnn (p, y) (hmemK p y hp hy)⟩,
       ⟨|A2|, fun t ht p y hp hy => by
         have := hA2 _ (hmemK p y hp hy)
         rw [Real.norm_eq_abs, abs_of_nonneg (Finset.sum_nonneg fun k _ => abs_nonneg _)] at this
