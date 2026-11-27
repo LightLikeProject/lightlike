@@ -275,6 +275,8 @@ Ooguri amplitude and of the EPRL amplitude on the boundary of the 5-simplex is n
     `SpinFoam.EPRLStateSum.Trust.amplitudeI_sphere6_low_spin`, `SpinFoam.EPRLStateSum.Trust.amplitudeI_wrong_face`
 40. Lightlike/SpinFoam/EPRLStateSum/OrderDependence.lean - `SpinFoam.EPRLStateSum.Trust.eprlGlobalSign_bone`,
     `SpinFoam.EPRLStateSum.Trust.bone_admitted`
+41. Lightlike/SpinFoam/BarrettCraneUnique.lean - `SpinFoam.BC.bcNode_unique`, `SpinFoam.BC.bcNode_hyp`,
+    `SpinFoam.BC.sixJSym_extreme_ne_zero`, `SpinFoam.BC.coefA_bcNodeR_half`
 
 ## References
 

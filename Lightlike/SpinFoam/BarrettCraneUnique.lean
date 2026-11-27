@@ -101,7 +101,7 @@ theorem sum_basisB_mul_basisA (j : Fin 4 → ℕ) (k l : ℕ) :
     intro l l'
     rw [boxJ, box4, sum_piFinset_four]
     simp only [basisB, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-      Matrix.cons_val_three, Matrix.head_cons]
+      Matrix.cons_val_three]
     rw [← sum_fourJ_mul_fourJ (j 0) (j 2) (j 1) (j 3) l l']
     exact sum_congr rfl fun a _ => sum_comm
   simp only [hA, mul_sum]
@@ -351,17 +351,81 @@ theorem bcNode_unique {j : Fin 4 → ℕ} {Φ : (Fin 4 → ℤ) → (Fin 4 → �
   · rw [Complex.re_mul_ofReal]; exact h₁ μ ν
   · rw [Complex.im_mul_ofReal]; exact h₂ μ ν
 
-/-- **Non-vacuity**: the Barrett–Crane node itself satisfies the hypotheses of `bcNode_unique`. -/
+/-- **Non-vacuity**: the Barrett–Crane node itself satisfies every hypothesis of `bcNode_unique`. -/
 theorem bcNode_hyp (j : Fin 4 → ℕ) :
-    (∀ ν, IsInv (legs j) ![false, false, false, false] (fun μ => (bcNode j μ ν).re)) ∧
-    (∀ μ, IsInv (legs j) ![false, false, false, false] (fun ν => (bcNode j μ ν).re)) ∧
+    (∀ ν, IsInv (legs j) ![false, false, false, false] (fun μ => (bcNode j μ ν).re) ∧
+      IsInv (legs j) ![false, false, false, false] (fun μ => (bcNode j μ ν).im)) ∧
+    (∀ μ, IsInv (legs j) ![false, false, false, false] (fun ν => (bcNode j μ ν).re) ∧
+      IsInv (legs j) ![false, false, false, false] (fun ν => (bcNode j μ ν).im)) ∧
     (∀ k k', k ≠ k' → ∑ μ ∈ boxJ j, ∑ ν ∈ boxJ j,
       ((basisA j k μ * basisA j k' ν : ℝ) : ℂ) * bcNode j μ ν = 0) ∧
     (∀ l l', l ≠ l' → ∑ μ ∈ boxJ j, ∑ ν ∈ boxJ j,
       ((basisB j l μ * basisB j l' ν : ℝ) : ℂ) * bcNode j μ ν = 0) := by
-  simp only [bcNode_eq_ofReal, Complex.ofReal_re, ← Complex.ofReal_mul, ← Complex.ofReal_sum,
-    Complex.ofReal_eq_zero]
-  exact ⟨isInv_bcNodeR_left j, isInv_bcNodeR_right j, fun k k' h => coefA_bcNodeR j h,
-    fun l l' h => coefB_bcNodeR j h⟩
+  simp only [bcNode_eq_ofReal, Complex.ofReal_re, Complex.ofReal_im, ← Complex.ofReal_mul,
+    ← Complex.ofReal_sum, Complex.ofReal_eq_zero]
+  exact ⟨fun ν => ⟨isInv_bcNodeR_left j ν, isInv_zero⟩, fun μ => ⟨isInv_bcNodeR_right j μ, isInv_zero⟩,
+    fun k k' h => coefA_bcNodeR j h, fun l l' h => coefB_bcNodeR j h⟩
+
+/-- The diagonal components of the Barrett–Crane node are `1` on the channels. -/
+theorem coefA_bcNodeR_self (j : Fin 4 → ℕ) {k : ℕ} (hk : k ∈ channel (j 0) (j 1) (j 2) (j 3)) :
+    coefA j (bcNodeR j) k k = 1 := by
+  have e : ∀ μ ν, bcNodeR j μ ν = ∑ k ∈ channel (j 0) (j 1) (j 2) (j 3),
+      (1 : ℝ) * (basisA j k μ * basisA j k ν) :=
+    fun μ ν => by simp [bcNodeR]
+  obtain ⟨-, t1, t2⟩ := mem_filter.1 hk
+  simp only [coefA, e, double_sum_eq, basisA, boxJ, sum_box4_fourJT]
+  rw [sum_eq_single k (fun k' _ hk' => by rw [ite_eq_right (fun h : k = k' ∧ _ => hk' h.1.symm),
+    zero_mul, mul_zero]) (fun h => absurd hk h)]
+  rw [ite_eq_left ⟨rfl, t1, by unfold Tri at *; omega⟩, one_mul, one_mul]
+
+/-- **The conclusion is not trivial**: the Barrett–Crane node of four spin-½ legs (doubled spins
+`1`) is nonzero; its channel `0` gives `⟨ι_0 ⊗ ι_0, bcNode⟩ = 1`. -/
+theorem coefA_bcNodeR_half : coefA (fun _ => 1) (bcNodeR fun _ => 1) 0 0 = 1 :=
+  coefA_bcNodeR_self _ (by decide)
+
+namespace Tests
+
+/-- The tensor `ι_0 ⊗ ι_0` of four spin-½ legs. -/
+noncomputable def single0 (μ ν : Fin 4 → ℤ) : ℝ :=
+  basisA (fun _ => 1) 0 μ * basisA (fun _ => 1) 0 ν
+
+/-- **The second pairing is needed** (wrong-model check): on four spin-½ legs, `ι_0 ⊗ ι_0` is
+invariant in each factor and diagonal in the `(01)(23)` basis, but it is not a multiple of the
+Barrett–Crane node (whose channels are `0` and `2`). So diagonality in one tree basis alone does
+not give the conclusion of `bcNode_unique`. -/
+theorem single0_counterexample :
+    (∀ ν, IsInv (legs fun _ => 1) ![false, false, false, false] fun μ => single0 μ ν) ∧
+    (∀ μ, IsInv (legs fun _ => 1) ![false, false, false, false] (single0 μ)) ∧
+    (∀ k k', k ≠ k' → coefA (fun _ => 1) single0 k k' = 0) ∧
+    ¬ ∃ c : ℝ, ∀ μ ν, single0 μ ν = c * bcNodeR (fun _ => 1) μ ν := by
+  have e : ∀ μ ν, single0 μ ν = ∑ k ∈ ({0} : Finset ℕ),
+      (1 : ℝ) * (basisA (fun _ => 1) k μ * basisA (fun _ => 1) k ν) :=
+    fun μ ν => by simp [single0]
+  have hc : ∀ k k', coefA (fun _ => 1) single0 k k' =
+      (if k = 0 ∧ Tri 1 1 k ∧ Tri k 1 1 then 1 else 0) *
+        (if k' = 0 ∧ Tri 1 1 k' ∧ Tri k' 1 1 then 1 else 0) := by
+    intro k k'
+    simp only [coefA, e, double_sum_eq, basisA, boxJ, sum_box4_fourJT]
+    simp only [sum_singleton, one_mul]
+  refine ⟨fun ν => ?_, fun μ => ?_, fun k k' h => ?_, fun ⟨c, hcΦ⟩ => ?_⟩
+  · exact ((isInv_fourJT 1 1 1 1 0).smul (basisA (fun _ => 1) 0 ν)).congr fun μ => mul_comm _ _
+  · exact (isInv_fourJT 1 1 1 1 0).smul (basisA (fun _ => 1) 0 μ)
+  · rw [hc]
+    by_cases h0 : k = 0
+    · rw [ite_eq_right (fun h' : k' = 0 ∧ _ => h (h0.trans h'.1.symm)), mul_zero]
+    · rw [ite_eq_right (fun h' : k = 0 ∧ _ => h0 h'.1), zero_mul]
+  · have hlin : ∀ k, coefA (fun _ => 1) single0 k k = c * coefA (fun _ => 1) (bcNodeR fun _ => 1) k k := by
+      intro k
+      simp only [coefA, hcΦ, mul_sum]
+      exact sum_congr rfl fun μ _ => sum_congr rfl fun ν _ => by ring
+    have h0 := hlin 0
+    have h2 := hlin 2
+    rw [coefA_bcNodeR_self _ (by decide), hc] at h0 h2
+    rw [ite_eq_left ⟨rfl, by unfold Tri; omega, by unfold Tri; omega⟩] at h0
+    rw [ite_eq_right (fun h : 2 = 0 ∧ _ => absurd h.1 (by norm_num))] at h2
+    norm_num at h0 h2
+    linarith
+
+end Tests
 
 end Lightlike.SpinFoam.BC

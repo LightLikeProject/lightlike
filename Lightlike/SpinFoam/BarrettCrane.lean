@@ -32,7 +32,7 @@ is the dimension `(j + 1)²` of `(j, j)`.
 
 * `barrett-crane-1998`, §IV: the vertex amplitude of the model.
 * `reisenberger-1999`: the Barrett–Crane intertwiner is the unique one of four simple
-  representations.
+  representations (`bcNode_unique`, `Lightlike/SpinFoam/BarrettCraneUnique.lean`).
 -/
 
 open Finset Matrix Lightlike.Recoupling
