@@ -84,4 +84,24 @@ theorem ULd_mul_UR_top (q : kˣ) (a b c e : ℕ) (hea : e ≤ a) (heb : e ≤ b)
         rw [hfull, habsX, hmid]; simp only [mul_assoc]
     _ = kapRec q a (b + c) e • jwAt q 0 (X + c) := hvn
 
+/-- **The recoupling coefficient with both channels of the third block maximal**:
+`Fc q a b c e 0 0 e = κ(a, b+c, e) / κ(a, b, e)`. -/
+theorem Fc_top (q : kˣ) (hδ : loopVal q ≠ 0) (a b c e : ℕ) (hea : e ≤ a) (heb : e ≤ b) (hN : 1 ≤ a + b + c)
+    (hd : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0) :
+    Fc q a b c e 0 0 e = kapRec q a (b + c) e / kapRec q a b e := by
+  have h1 := gram_spec q hδ a b c e 0 0 e hN hd hea heb (Nat.zero_le _) (Nat.zero_le _) (Nat.zero_le _)
+    (Nat.zero_le _) hea (by omega)
+  have h2 := ULd_mul_UR_top q a b c e hea heb hd
+  have h3 : (gramCoef q a b c e 0 0 e - kapRec q a (b + c) e) •
+      (jwAt q 0 (a + b - 2 * e + c - 2 * 0) : Module.End k (ModelSpace k)) = 0 :=
+    (sub_smul (gramCoef q a b c e 0 0 e) (kapRec q a (b + c) e)
+      (jwAt q 0 (a + b - 2 * e + c - 2 * 0) : Module.End k (ModelSpace k))).trans
+      (sub_eq_zero.mpr (h1.symm.trans h2))
+  have hg : gramCoef q a b c e 0 0 e = kapRec q a (b + c) e :=
+    sub_eq_zero.mp ((smul_eq_zero.mp h3).resolve_right (jwAt_ne_zero q _))
+  unfold Fc
+  rw [if_pos ⟨le_min hea heb, Nat.zero_le _⟩, hg]
+  simp only [kapRec, inv_one, mul_one]
+  rw [div_eq_inv_mul]
+
 end Lightlike.TemperleyLieb
