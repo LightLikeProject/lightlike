@@ -155,4 +155,82 @@ theorem cutoffGauss_sub_frozen_le {t c r C₁ C₂ : ℝ} (ht : 0 < t) (ht1 : t 
           have : 32 / (r ^ 2 * c) ≤ 64 / (r ^ 2 * c) := by gcongr; norm_num
           linarith
 
+/-- Away from the diagonal the Gaussian factor is `O(√t)` times a wider Gaussian: for `r' ≤ ‖z‖`,
+`e^{-u} ≤ (32/(r'²c)) √t e^{-u/2}` with `u = c‖z‖²/4t`, `t ∈ (0, 1]`. -/
+theorem exp_neg_le_of_far {t c r' : ℝ} (ht : 0 < t) (ht1 : t ≤ 1) (hc : 0 < c) (hr' : 0 < r') {z : Fin n → ℝ}
+    (hz : r' ≤ ‖z‖) :
+    Real.exp (-(c * ‖z‖ ^ 2 / (4 * t))) ≤ 32 / (r' ^ 2 * c) * √t * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t)) / 2) := by
+  set u := c * ‖z‖ ^ 2 / (4 * t) with hu
+  have hu0 : 0 ≤ u := by positivity
+  have htst : t ≤ √t := by
+    have h1 : √t ≤ 1 := Real.sqrt_le_one.mpr ht1
+    have h2 := Real.mul_self_sqrt ht.le
+    nlinarith [Real.sqrt_nonneg t]
+  have hz2 : ‖z‖ ^ 2 = 4 / c * t * u := by rw [hu]; field_simp
+  have h1 : 1 ≤ ‖z‖ ^ 2 / r' ^ 2 := by
+    rw [le_div_iff₀ (by positivity), one_mul]; exact pow_le_pow_left₀ hr'.le hz 2
+  calc Real.exp (-u) ≤ ‖z‖ ^ 2 / r' ^ 2 * Real.exp (-u) := le_mul_of_one_le_left (Real.exp_pos _).le h1
+    _ = 4 / (r' ^ 2 * c) * t * (u * Real.exp (-u)) := by rw [hz2]; field_simp
+    _ ≤ 4 / (r' ^ 2 * c) * t * (2 * Real.exp (-u / 2)) :=
+        mul_le_mul_of_nonneg_left (mul_exp_neg_le u hu0) (by positivity)
+    _ = 8 / (r' ^ 2 * c) * t * Real.exp (-u / 2) := by ring
+    _ ≤ 8 / (r' ^ 2 * c) * √t * Real.exp (-u / 2) := by gcongr
+    _ ≤ 32 / (r' ^ 2 * c) * √t * Real.exp (-u / 2) := by
+        gcongr; norm_num
+
+/-- **The pointwise comparison with two radii**: the Taylor bound and the bound on `U − 1` only for `‖z‖ < r_b`,
+the lower bound on `σ` and `|U| ≤ A` for `‖z‖ < r` (the support of the cutoff), `r_b ≤ r`. -/
+theorem cutoffGauss_sub_frozen_le₂ {t c r rb C₁ C₂ A : ℝ} (ht : 0 < t) (ht1 : t ≤ 1) (hc : 0 < c)
+    (hrb : 0 < rb) (hrbr : rb ≤ r) (hC₁ : 0 ≤ C₁) (hC₂ : 0 ≤ C₂) (hA : 0 ≤ A) {z : Fin n → ℝ} {θv σv qv Uv : ℝ}
+    (hθb : θv ∈ Icc (0 : ℝ) 1) (hθ1 : ‖z‖ < r / 2 → θv = 1) (hθ0 : r ≤ ‖z‖ → θv = 0)
+    (hσ : ‖z‖ < r → c * ‖z‖ ^ 2 ≤ σv) (hq : c * ‖z‖ ^ 2 ≤ qv) (hσq : ‖z‖ < rb → |σv - qv| ≤ C₁ * ‖z‖ ^ 3)
+    (hU : ‖z‖ < rb → |Uv - 1| ≤ C₂ * (‖z‖ + t)) (hUA : ‖z‖ < r → |Uv| ≤ A) :
+    |θv * Real.exp (-σv / (4 * t)) * Uv - Real.exp (-qv / (4 * t))| ≤
+      (((1 + C₂ * (rb + 1)) * C₁ * 2 * √(4 / c) ^ 3 + C₂ * (√(4 / c) + 1) + 64 / (rb ^ 2 * c)) +
+        (A + 1) * (32 / (rb ^ 2 * c))) * √t * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t)) / 2) := by
+  set K₀ := (1 + C₂ * (rb + 1)) * C₁ * 2 * √(4 / c) ^ 3 + C₂ * (√(4 / c) + 1) + 64 / (rb ^ 2 * c) with hK₀
+  have hK₀0 : 0 ≤ K₀ := by positivity
+  have hK₁0 : 0 ≤ (A + 1) * (32 / (rb ^ 2 * c)) := by positivity
+  have hE0 : 0 ≤ √t * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t)) / 2) := by positivity
+  have hθabs : |θv| ≤ 1 := by rw [abs_of_nonneg hθb.1]; exact hθb.2
+  have hqe : Real.exp (-qv / (4 * t)) ≤ Real.exp (-(c * ‖z‖ ^ 2 / (4 * t))) := by
+    apply Real.exp_le_exp.2; rw [neg_div, neg_le_neg_iff]; gcongr
+  by_cases hnear : ‖z‖ < rb
+  · -- the near region: the one-radius comparison at radius `rb`
+    have h := cutoffGauss_sub_frozen_le ht ht1 hc hrb hC₁ hC₂ hθabs
+      (fun h => hθ1 (lt_of_lt_of_le h (by linarith))) (fun h => absurd hnear (not_lt.2 h))
+      (fun h => hσ (lt_of_lt_of_le h hrbr)) hq hσq hU
+    calc _ ≤ K₀ * √t * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t)) / 2) := h
+      _ ≤ _ := by nlinarith [mul_nonneg hK₁0 hE0]
+  · push Not at hnear
+    have hfar := exp_neg_le_of_far ht ht1 hc hrb hnear
+    by_cases hin : ‖z‖ < r
+    · -- the middle region: both terms are Gaussian-small
+      have hσe : Real.exp (-σv / (4 * t)) ≤ Real.exp (-(c * ‖z‖ ^ 2 / (4 * t))) := by
+        apply Real.exp_le_exp.2; rw [neg_div, neg_le_neg_iff]; gcongr; exact hσ hin
+      have h1 : |θv * Real.exp (-σv / (4 * t)) * Uv - Real.exp (-qv / (4 * t))| ≤
+          (A + 1) * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t))) := by
+        have h2 := abs_add_le (θv * Real.exp (-σv / (4 * t)) * Uv) (-Real.exp (-qv / (4 * t)))
+        rw [abs_neg, ← sub_eq_add_neg, abs_of_pos (Real.exp_pos _)] at h2
+        have h3 : |θv * Real.exp (-σv / (4 * t)) * Uv| ≤ A * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t))) := by
+          rw [abs_mul, abs_mul, abs_of_pos (Real.exp_pos _)]
+          calc |θv| * Real.exp (-σv / (4 * t)) * |Uv| ≤ 1 * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t))) * A := by
+                gcongr; exact hUA hin
+            _ = _ := by ring
+        linarith
+      calc _ ≤ (A + 1) * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t))) := h1
+        _ ≤ (A + 1) * (32 / (rb ^ 2 * c) * √t * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t)) / 2)) := by gcongr
+        _ = (A + 1) * (32 / (rb ^ 2 * c)) * (√t * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t)) / 2)) := by ring
+        _ ≤ _ := by nlinarith [mul_nonneg hK₀0 hE0]
+    · -- beyond the cutoff: `θ = 0`
+      push Not at hin
+      rw [hθ0 hin, zero_mul, zero_mul, zero_sub, abs_neg, abs_of_pos (Real.exp_pos _)]
+      calc Real.exp (-qv / (4 * t)) ≤ Real.exp (-(c * ‖z‖ ^ 2 / (4 * t))) := hqe
+        _ ≤ 32 / (rb ^ 2 * c) * √t * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t)) / 2) := hfar
+        _ = 32 / (rb ^ 2 * c) * (√t * Real.exp (-(c * ‖z‖ ^ 2 / (4 * t)) / 2)) := by ring
+        _ ≤ _ := by
+            have : 32 / (rb ^ 2 * c) ≤ (A + 1) * (32 / (rb ^ 2 * c)) :=
+              le_mul_of_one_le_left (by positivity) (by linarith)
+            nlinarith [mul_nonneg hK₀0 hE0, mul_le_mul_of_nonneg_right this hE0]
+
 end Lightlike
