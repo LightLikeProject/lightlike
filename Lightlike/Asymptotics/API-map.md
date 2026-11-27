@@ -107,7 +107,7 @@ integral is O(λ^{-N}) for every N: for smooth compactly supported cutoffs χ �
 finite critical set K, the integral of (ψ − χ) A e^{λS} decays faster than any power of λ (conditional)
 [56]. The Hessian of the Lorentzian vertex action at a point with Re S = 0 is invertible if and only if
 no nonzero real vector lies in the common kernel of the real and imaginary parts of its negative; the
-real part is positive semidefinite and the matrix is symmetric [57]. Racah's sum with a zero spin has a single nonzero term, whose closed value agrees with the 6j symbol [59].
+real part is positive semidefinite and the matrix is symmetric [57]. Racah's sum with a zero spin has a single nonzero term, whose closed value agrees with the 6j symbol [59]. As a trust check of the method on a sum with independently known asymptotics, Kummer's sum Σ_t (−1)^t C(m,t)² is run through the same chain (contour identity, complex Stirling, Laplace's method at the complex saddle α₀ = (1+i)/2 of its own phase, ψ''(α₀) = −4): its leading term 2^{2n+1}(−1)^n √(π/(2(2n+1)))/π at m = 2n agrees with the asymptotics (−1)^n 4^n/√(πn) of the closed form (−1)^n C(2n,n) obtained from the real Stirling formula [61].
 
 ## Lean References
 
@@ -300,6 +300,8 @@ real part is positive semidefinite and the matrix is symmetric [57]. Racah's sum
 59. Lightlike/Asymptotics/RacahSaddles/RacahZeroSpin.lean - `Asymptotics.racahSum_zero_spin`,
     `Asymptotics.racahDelta_mul_racahSum_zero_spin`
 60. Lightlike/Asymptotics/Stirling.lean - `Asymptotics.norm_stirMu_le`, `Asymptotics.tendsto_Gamma_div_stir`
+61. Lightlike/Asymptotics/KummerSum/Asymptotic.lean - `Asymptotics.kummerSum_saddle_matches_closed_form`,
+    `Asymptotics.tendsto_kummerSum_div_kummerLead`, `Asymptotics.tendsto_centralBinom_div_kummerLead`
 
 ## References
 

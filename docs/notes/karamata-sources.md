@@ -1,6 +1,6 @@
 # Karamata's Tauberian theorem and Ingham's theorem: sources read and proof route
 
-Stream fable2, branch `fable2/karamata` (from `pl/sp3` 90db986), started 18 November 2026.
+Started 18 November 2026.
 
 ## Sources read
 
