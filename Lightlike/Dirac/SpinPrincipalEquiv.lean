@@ -21,7 +21,9 @@ proves that these data are equivalent to the atlas form `SpinStructure`:
 
 ## Difference from the source
 
-Lawson–Michelsohn state Definition 1.3 for principal bundles without a smooth structure.  The
+Lawson–Michelsohn state Definition 1.3 for principal bundles without a smooth structure, and
+`Lightlike.OrthonormalFrameLift` is not smooth by definition either: its bundle is a topological
+fibre bundle and its map to frames is only required to be continuous.  The
 equivalence here is with lifts that carry a smooth atlas of local sections (the smooth-category
 form of the definition, the one in which the Dirac operator is defined).  That every lift of the
 orthonormal frame bundle of a smooth manifold admits such an atlas (by lifting smooth local frames
