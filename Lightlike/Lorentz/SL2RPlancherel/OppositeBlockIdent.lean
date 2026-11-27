@@ -312,48 +312,50 @@ theorem tendsto_srcL_truncT (s l : ℕ) (i : DiscIdx s l) :
   refine this.congr fun n => ?_
   exact Real.sqrt_sq (norm_nonneg _)
 
-/-- **The transforms of the truncations tend to `0` pointwise**: the pairing of `φ_i` with the
-principal-series coefficient vanishes. -/
+/-- **The pairings of the truncations tend to `0`**: the pairing of `φ_i` with the
+principal-series coefficient vanishes (`integral_phiN_mul_conj_mcoefP_eq_zero`). -/
+theorem tendsto_oppPairing_truncFun (s l : ℕ) (i : DiscIdx s l) (ν : ℝ) :
+    Tendsto (fun n => oppPairing s l (truncFun s l i.1 n) ν) atTop (𝓝 0) := by
+  have hint := integrableOn_phiN_mul_conj_mcoefP ν s l s l i.1 i.2 i.1.2
+  have hz := integral_phiN_mul_conj_mcoefP_eq_zero ν s l i.1 i.2 i.1.2
+  have hlim := tendsto_integral_filter_of_dominated_convergence
+    (μ := volume.restrict (Ioi (0 : ℝ))) (l := (atTop : Filter ℕ))
+    (F := fun n x => truncFun s l i.1 n x * (starRingEnd ℂ) (mcoefP ν s l x) * (Real.sinh x : ℂ))
+    (f := fun x => ((phiN s l i.1 x : ℝ) : ℂ) * (starRingEnd ℂ) (mcoefP ν s l x) *
+      (Real.sinh x : ℂ) / (Real.pi : ℂ))
+    (fun x => ‖((phiN s l i.1 x : ℝ) : ℂ) * (starRingEnd ℂ) (mcoefP ν s l x) * (Real.sinh x : ℂ)‖)
+    (Eventually.of_forall fun n => (((contDiff_truncFun s l i.1 n).continuous.mul
+      (Complex.continuous_conj.comp (continuous_mcoefP ν s l))).mul
+      (Complex.continuous_ofReal.comp Real.continuous_sinh)).aestronglyMeasurable)
+    (Eventually.of_forall fun n => Eventually.of_forall fun x => ?_) hint.norm ?_
+  · unfold oppPairing
+    rw [show (0 : ℂ) = ∫ x in Ioi 0, ((phiN s l i.1 x : ℝ) : ℂ) * (starRingEnd ℂ) (mcoefP ν s l x) *
+        (Real.sinh x : ℂ) / (Real.pi : ℂ) by rw [integral_div, hz, zero_div]]
+    exact hlim
+  · have h0 : 0 ≤ (cutoffBump n : ℝ → ℝ) x := (cutoffBump n).nonneg
+    have h1 : (cutoffBump n : ℝ → ℝ) x ≤ 1 := (cutoffBump n).le_one
+    simp only [truncFun, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_div, abs_mul,
+      abs_of_nonneg h0, abs_of_pos Real.pi_pos]
+    have hπ : 1 ≤ Real.pi := by linarith [Real.pi_gt_three]
+    have hk : (cutoffBump n : ℝ → ℝ) x / Real.pi ≤ 1 := (div_le_one Real.pi_pos).2 (h1.trans hπ)
+    have e : |phiN s l i.1 x| * (cutoffBump n : ℝ → ℝ) x / Real.pi =
+        |phiN s l i.1 x| * ((cutoffBump n : ℝ → ℝ) x / Real.pi) := by ring
+    rw [e]
+    have hk0 : 0 ≤ (cutoffBump n : ℝ → ℝ) x / Real.pi := div_nonneg h0 Real.pi_pos.le
+    gcongr
+    calc |phiN s l i.1 x| * ((cutoffBump n : ℝ → ℝ) x / Real.pi) ≤ |phiN s l i.1 x| * 1 := by
+          gcongr
+      _ = _ := mul_one _
+  · filter_upwards [ae_restrict_mem measurableSet_Ioi] with x hx
+    refine tendsto_const_nhds.congr' ?_
+    filter_upwards [eventually_cutoffBump_eq_one hx] with n hn
+    simp only [truncFun, hn, mul_one]
+    push_cast
+    ring
+/-- **The transforms of the truncations tend to `0` pointwise.** -/
 theorem tendsto_oppTrans_truncFun (s l : ℕ) (i : DiscIdx s l) (ρ : ℝ) :
     Tendsto (fun n => oppTrans s l (truncFun s l i.1 n) ρ) atTop (𝓝 0) := by
-  have hP : Tendsto (fun n => oppPairing s l (truncFun s l i.1 n) (2 * ρ)) atTop (𝓝 0) := by
-    set ν := 2 * ρ
-    have hint := integrableOn_phiN_mul_conj_mcoefP ν s l s l i.1 i.2 i.1.2
-    have hz := integral_phiN_mul_conj_mcoefP_eq_zero ν s l i.1 i.2 i.1.2
-    have hlim := tendsto_integral_filter_of_dominated_convergence
-      (μ := volume.restrict (Ioi (0 : ℝ))) (l := (atTop : Filter ℕ))
-      (F := fun n x => truncFun s l i.1 n x * (starRingEnd ℂ) (mcoefP ν s l x) * (Real.sinh x : ℂ))
-      (f := fun x => ((phiN s l i.1 x : ℝ) : ℂ) * (starRingEnd ℂ) (mcoefP ν s l x) *
-        (Real.sinh x : ℂ) / (Real.pi : ℂ))
-      (fun x => ‖((phiN s l i.1 x : ℝ) : ℂ) * (starRingEnd ℂ) (mcoefP ν s l x) * (Real.sinh x : ℂ)‖)
-      (Eventually.of_forall fun n => (((contDiff_truncFun s l i.1 n).continuous.mul
-        (Complex.continuous_conj.comp (continuous_mcoefP ν s l))).mul
-        (Complex.continuous_ofReal.comp Real.continuous_sinh)).aestronglyMeasurable)
-      (Eventually.of_forall fun n => Eventually.of_forall fun x => ?_) hint.norm ?_
-    · unfold oppPairing
-      rw [show (0 : ℂ) = ∫ x in Ioi 0, ((phiN s l i.1 x : ℝ) : ℂ) * (starRingEnd ℂ) (mcoefP ν s l x) *
-          (Real.sinh x : ℂ) / (Real.pi : ℂ) by rw [integral_div, hz, zero_div]]
-      exact hlim
-    · have h0 : 0 ≤ (cutoffBump n : ℝ → ℝ) x := (cutoffBump n).nonneg
-      have h1 : (cutoffBump n : ℝ → ℝ) x ≤ 1 := (cutoffBump n).le_one
-      simp only [truncFun, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_div, abs_mul,
-        abs_of_nonneg h0, abs_of_pos Real.pi_pos]
-      have hπ : 1 ≤ Real.pi := by linarith [Real.pi_gt_three]
-      have hk : (cutoffBump n : ℝ → ℝ) x / Real.pi ≤ 1 := (div_le_one Real.pi_pos).2 (h1.trans hπ)
-      have e : |phiN s l i.1 x| * (cutoffBump n : ℝ → ℝ) x / Real.pi =
-          |phiN s l i.1 x| * ((cutoffBump n : ℝ → ℝ) x / Real.pi) := by ring
-      rw [e]
-      have hk0 : 0 ≤ (cutoffBump n : ℝ → ℝ) x / Real.pi := div_nonneg h0 Real.pi_pos.le
-      gcongr
-      calc |phiN s l i.1 x| * ((cutoffBump n : ℝ → ℝ) x / Real.pi) ≤ |phiN s l i.1 x| * 1 := by
-            gcongr
-        _ = _ := mul_one _
-    · filter_upwards [ae_restrict_mem measurableSet_Ioi] with x hx
-      refine tendsto_const_nhds.congr' ?_
-      filter_upwards [eventually_cutoffBump_eq_one hx] with n hn
-      simp only [truncFun, hn, mul_one]
-      push_cast
-      ring
+  have hP := tendsto_oppPairing_truncFun s l i (2 * ρ)
   have := hP.const_mul (((Real.sqrt (ρ * Real.tanh (Real.pi * ρ) * wl l ρ * wl s ρ) : ℝ) : ℂ) /
     oppConst s l (2 * ρ))
   rw [mul_zero] at this
@@ -383,21 +385,19 @@ def evalTrans (s l : ℕ) (ρ : ℝ) : testPos →ₗ[ℂ] ℂ where
     rw [oppTrans, oppTrans, oppPairing_smul, RingHom.id_apply, smul_eq_mul]
     ring
 
-/-- **The defect factors through the moments**: `T χ - blockL2N (P_cont (src χ)) = L (⟪φ_i, src χ⟫)_i`
-for a continuous linear `L`, because the defect vanishes when all moments vanish
-(`transL_eq_of_orth`). -/
-theorem exists_defect_factor (s l : ℕ) :
-    ∃ L : (DiscIdx s l → ℂ) →L[ℂ] L2Ioi, ∀ K : testPos,
-      transL s l K - blockSide s l K = L (momentCLM s l (srcL K)) := by
+/-- **A linear map vanishing when all moments vanish factors through the moments**: if `D` is
+linear on the test functions of `(0, ∞)` and `D χ = 0` whenever `⟪φ_i, src χ⟫ = 0` for all `i`,
+then `D χ = L (⟪φ_i, src χ⟫)_i` for a continuous linear `L`. -/
+theorem exists_factor_moments (s l : ℕ) {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
+    (D : testPos →ₗ[ℂ] E)
+    (h0 : ∀ K : testPos, (∀ i, inner ℂ (phiVec s l i) (srcL K) = 0) → D K = 0) :
+    ∃ L : (DiscIdx s l → ℂ) →L[ℂ] E, ∀ K : testPos, D K = L (momentCLM s l (srcL K)) := by
   set q : testPos →ₗ[ℂ] (DiscIdx s l → ℂ) := (momentCLM s l).toLinearMap ∘ₗ srcL with hq
-  set D : testPos →ₗ[ℂ] L2Ioi := transL s l - blockSide s l with hD
   have hker : ∀ K, q K = 0 → D K = 0 := by
     intro K hK
-    have h : ∀ i, inner ℂ (phiVec s l i) (srcL K) = 0 := fun i => by
-      have := congrFun hK i
-      simpa [hq, momentCLM] using this
-    simp only [hD, LinearMap.sub_apply, blockSide, LinearMap.comp_apply, sub_eq_zero]
-    exact transL_eq_of_orth s l K h
+    refine h0 K fun i => ?_
+    have := congrFun hK i
+    simpa [hq, momentCLM] using this
   have : Module.Free ℂ (LinearMap.range q) := Module.Free.of_divisionRing ℂ _
   have : Module.Projective ℂ (LinearMap.range q) := Module.Projective.of_free
   obtain ⟨r, hr⟩ := LinearMap.exists_rightInverse_of_surjective q.rangeRestrict
@@ -418,6 +418,16 @@ theorem exists_defect_factor (s l : ℕ) :
   rw [map_add, map_smul, neg_one_smul, add_neg_eq_zero] at h3
   show D K = L (q K)
   rw [h1, h3]
+
+/-- **The defect factors through the moments**: `T χ - blockL2N (P_cont (src χ)) = L (⟪φ_i, src χ⟫)_i`
+for a continuous linear `L`, because the defect vanishes when all moments vanish
+(`transL_eq_of_orth`). -/
+theorem exists_defect_factor (s l : ℕ) :
+    ∃ L : (DiscIdx s l → ℂ) →L[ℂ] L2Ioi, ∀ K : testPos,
+      transL s l K - blockSide s l K = L (momentCLM s l (srcL K)) :=
+  exists_factor_moments s l (transL s l - blockSide s l) fun K h => by
+    simp only [LinearMap.sub_apply, blockSide, LinearMap.comp_apply, sub_eq_zero]
+    exact transL_eq_of_orth s l K h
 
 /-- **The opposite-sign block isometry is the principal-series transform on every test function**:
 for `χ` smooth with compact support in `(0, ∞)`, `blockL2N (P_cont (π √sinh χ)) = T χ`. -/
