@@ -1,6 +1,7 @@
 import Mathlib
 import Lightlike.Lorentz.SL2RPlancherel.KKParseval
 import Lightlike.Lorentz.SL2RPlancherel.SphericalL2
+import Lightlike.Lorentz.SL2RPlancherel.ParityKK
 
 /-!
 # The `K × K` decomposition of `L²(SL(2,ℝ))`
@@ -319,6 +320,80 @@ theorem inner_eq_tsum_kkL2 (G F : Lp ℂ 2 haarR) :
   rw [inner_smul_left, inner_smul_right, map_inv₀, Complex.conj_ofReal]
   have hne : ((2 * π : ℝ) : ℂ) ≠ 0 := by exact_mod_cast (by positivity : (2 * π : ℝ) ≠ 0)
   field_simp
+
+/-- Each `K × K` component is continuous in `F`. -/
+theorem continuous_kkL2_apply (m : Fin 2 → ℤ) : Continuous fun F : Lp ℂ 2 haarR => kkL2 F m := by
+  have h : (fun F : Lp ℂ 2 haarR => kkL2 F m) = fun F =>
+      (((2 * π : ℝ) : ℂ))⁻¹ • lp.evalCLM ℂ (fun _ : Fin 2 → ℤ => L2Ioi) 2 m (kkIso F) := rfl
+  rw [h]
+  exact (continuous_const (y := (((2 * π : ℝ) : ℂ))⁻¹)).smul
+    ((lp.evalCLM ℂ (fun _ : Fin 2 → ℤ => L2Ioi) 2 m).continuous.comp kkIso.continuous)
+
+/-- **The components of mixed parity vanish** for every `F ∈ L²(SL(2,ℝ))`: `F_{m,n} = 0` when
+`m - n` is odd (`kkCoeff_eq_zero_of_odd`, extended by density). -/
+theorem kkL2_eq_zero_of_odd {m n : ℤ} (h : Odd (m - n)) (F : Lp ℂ 2 haarR) : kkL2 F ![m, n] = 0 := by
+  refine denseRange_kkE.induction_on F (isClosed_eq (continuous_kkL2_apply _) continuous_const) ?_
+  intro f
+  rw [kkE_apply, kkL2_toLp f.2.1 f.2.2]
+  have hz : kkSrc f ![m, n] = 0 := by
+    funext ξ; simp [kkSrc, kkCoeff_eq_zero_of_odd f.2.1 h ξ]
+  rw [← MemLp.toLp_zero (MemLp.zero : MemLp (0 : ℝ → ℂ) 2 (volume.restrict (Ioi (0 : ℝ))))]
+  exact MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq hz)
+
+/-- The conjugate of a function has the conjugate `K × K` components with opposite index:
+`(f̄)_{-m} = conj (f_m)`. -/
+lemma kkCoeff_conj {f : SL2R → ℂ} (m : Fin 2 → ℤ) (ξ : ℝ) :
+    kkCoeff (fun g => (starRingEnd ℂ) (f g)) (-m) ξ = (starRingEnd ℂ) (kkCoeff f m ξ) := by
+  rw [kkCoeff, kkCoeff, ← integral_conj]
+  congr 1
+  funext x
+  simp only [kkProfile, map_mul, ← Complex.exp_conj, map_neg, map_sum, Complex.conj_ofReal,
+    Complex.conj_I, Pi.neg_apply, Int.cast_neg, map_intCast, Complex.conj_ofNat]
+  congr 2
+  simp only [neg_mul, Finset.sum_neg_distrib, mul_neg, neg_neg]
+
+/-- The conjugation of `L²(SL(2,ℝ))` preserves the norm. -/
+lemma norm_star_Lp (F : Lp ℂ 2 haarR) : ‖star F‖ = ‖F‖ := by
+  rw [Lp.norm_def, Lp.norm_def, eLpNorm_congr_ae (Lp.coeFn_star F), eLpNorm_star]
+
+lemma star_sub_Lp (F G : Lp ℂ 2 haarR) : star (F - G) = star F - star G := by
+  refine Lp.ext ?_
+  filter_upwards [Lp.coeFn_star (F - G), Lp.coeFn_sub (star F) (star G), Lp.coeFn_star F,
+    Lp.coeFn_star G, Lp.coeFn_sub F G] with x h1 h2 h3 h4 h5
+  rw [h1, h2, Pi.sub_apply, h3, h4, Pi.star_apply, Pi.star_apply, Pi.star_apply, h5, Pi.sub_apply,
+    star_sub]
+
+lemma continuous_star_Lp : Continuous fun F : Lp ℂ 2 haarR => star F := by
+  refine (Isometry.of_dist_eq fun F G => ?_).continuous
+  rw [dist_eq_norm, dist_eq_norm, ← star_sub_Lp, norm_star_Lp]
+
+/-- **Conjugation and the `K × K` components**: `‖kkL2 (F̄) (-m)‖ = ‖kkL2 F m‖` for every
+`F ∈ L²(SL(2,ℝ))`. -/
+theorem norm_kkL2_star (F : Lp ℂ 2 haarR) (m : Fin 2 → ℤ) :
+    ‖kkL2 (star F) (-m)‖ = ‖kkL2 F m‖ := by
+  refine denseRange_kkE.induction_on F (isClosed_eq
+    ((continuous_kkL2_apply _).comp continuous_star_Lp).norm (continuous_kkL2_apply m).norm) ?_
+  intro f
+  set g : SL2R → ℂ := fun x => (starRingEnd ℂ) ((f : SL2R → ℂ) x) with hg
+  have hgc : Continuous g := Complex.continuous_conj.comp f.2.1
+  have hgL : MemLp g 2 haarR := f.2.2.star
+  have hstar : star (kkE f) = hgL.toLp g := by
+    refine Lp.ext ?_
+    filter_upwards [Lp.coeFn_star (kkE f), MemLp.coeFn_toLp hgL, MemLp.coeFn_toLp f.2.2]
+      with x h1 h2 h3
+    rw [h1, h2, Pi.star_apply, kkE_apply, h3]
+    rfl
+  rw [hstar, kkL2_toLp hgc hgL, kkE_apply, kkL2_toLp f.2.1 f.2.2]
+  have hsrc : kkSrc g (-m) = fun ξ => (starRingEnd ℂ) (kkSrc f m ξ) := by
+    funext ξ
+    rw [kkSrc, kkSrc, hg, kkCoeff_conj, map_mul, Complex.conj_ofReal]
+  have h1 := norm_toLp_sq (memLp_kkSrc hgc hgL (-m))
+  have h2 := norm_toLp_sq (memLp_kkSrc f.2.1 f.2.2 m)
+  have h12 : ‖(memLp_kkSrc hgc hgL (-m)).toLp (kkSrc g (-m))‖ ^ 2 =
+      ‖(memLp_kkSrc f.2.1 f.2.2 m).toLp (kkSrc f m)‖ ^ 2 := by
+    rw [h1, h2, hsrc]
+    simp only [Complex.norm_conj]
+  exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h12
 
 /-- Non-vacuity: Parseval for the zero class. -/
 example : ‖(0 : Lp ℂ 2 haarR)‖ ^ 2 = (2 * π) ^ 2 * ∑' m : Fin 2 → ℤ, ‖kkL2 0 m‖ ^ 2 :=

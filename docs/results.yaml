@@ -7336,3 +7336,164 @@
   review: kernel-checked
   note: "Layer 2c-v of the Plancherel formula on SL(2,R). The continuous part is the orthocomplement of the discrete part (closure_range_blockEN); the extension uses the density of the images in their closure and LinearMap.extendOfIsometry. The identification of the discrete part with the discrete series matrix coefficients and their formal degrees is the other stream's layer 3. Standard; no source consulted."
   since: unreleased
+- id: LL-0570
+  title: On a manifold modelled with corners on any finite-dimensional real normed space, in every chart the Riemann tensor, the Ricci tensor and the scalar curvature of a Levi-Civita connection are the coordinate ones, and the Einstein equations hold iff the coordinate vacuum equations hold in every chart
+  area: Spacetime
+  file: Lightlike/Spacetime/Corners/ChartTransport.lean
+  decls: [Lightlike.riemann_coord_trans, Lightlike.ricciAt_coord_trans, Lightlike.scalarCurvatureAt_coord_trans, Lightlike.satisfiesEinstein_iff_chart_trans]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (3.91)", check: "Ricci"}
+  review: kernel-checked
+  note: "GE11 m5. For a non-degenerate metric g on a C^2 manifold modelled with corners (boundary and corners allowed, no Hausdorff hypothesis) on any finite-dimensional real normed space E, a locally smooth connection that is the Levi-Civita connection of g, and a linear equivalence e : E -> Fin n -> R, the charts e after extChartAt are the charts of the transported model. In them the components of the intrinsic curvature on the coordinate vectors e^-1 d_nu are the coordinate Riemann tensor of the chart metric (riemann_coord_trans), the intrinsic Ricci tensor is the coordinate Ricci tensor (ricciAt_coord_trans), the intrinsic scalar curvature is the coordinate one (scalarCurvatureAt_coord_trans), and g satisfies the Einstein equations with constant Lambda iff the coordinate vacuum equations hold in every chart (satisfiesEinstein_iff_chart_trans). Compared with Carroll, Lecture Notes on General Relativity, eq. (3.91) for the Ricci tensor, read at that location. KIND representation: in Carroll the coordinate formulas are the definitions; here the definitions are intrinsic and the theorems say they agree with the coordinate ones in every chart. The proof transports the connection and the metric along e (Lightlike.transCov, transMetric) and applies the theorems of ChartAgreement.lean for Fin n -> R (LL-0411); the choice of e is the choice of coordinates on E. The comparison with Wald is pending: not read."
+  since: unreleased
+- id: LL-0571
+  title: Constant curvature and maximal symmetry of a pseudo-Riemannian manifold, and constant curvature from the coordinate curvature in every chart
+  area: Spacetime
+  file: Lightlike/Spacetime/ConstantCurvature.lean
+  decls: [Lightlike.HasConstantCurvature, Lightlike.IsMaximallySymmetric, Lightlike.HasConstantCurvature.of_charts, Lightlike.curvatureAt_of_chart, Lightlike.hasConstantCurvature_minkowski]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "For a smooth symmetric nondegenerate metric (any signature) on a manifold modelled on Fin n -> R (any model with corners): HasConstantCurvature g K says that every locally smooth Levi-Civita connection has R(X, Y) Z = K (g(Y, Z) X - g(X, Z) Y) at every point (the sign convention of curvatureAt); IsMaximallySymmetric g K adds n(n+1)/2 smooth Killing fields of leviCivita g that are linearly independent (at most n(n+1)/2 exist on a connected manifold, finrank_killingFieldSpace_le for the model of R^n). HasConstantCurvature.of_charts: if in every chart the coordinate Riemann tensor of the coordinate metric is R^rho_{sigma mu nu} = K (delta^rho_mu g_{sigma nu} - delta^rho_nu g_{sigma mu}), the manifold has constant curvature K (through riemann_coord_compW, the chart formula of the curvature). Non-vacuity: Minkowski space has constant curvature 0. Compared with Carroll, Lecture Notes on General Relativity (arXiv gr-qc/9712019), read at section 5, p. 140, before eq. (5.44): 'a maximally symmetric space is one which possesses the largest possible number of Killing vectors, which on an n-dimensional manifold is n(n + 1)/2' (the definition), and section 3, p. 85, eq. (3.106): the curvature of a maximally symmetric space satisfies R_rho sigma mu nu = a^-2 (g_rho mu g_sigma nu - g_rho nu g_sigma mu) (a stated property). IsMaximallySymmetric is the count of the definition (n(n+1)/2 linearly independent smooth Killing fields) with the curvature property (3.106) for a^-2 = K, which with Carroll's convention [nabla_mu, nabla_nu] V^rho = R^rho_sigma mu nu V^sigma is HasConstantCurvature's R(X, Y) Z = K (g(Y, Z) X - g(X, Z) Y): the same statement as Carroll's, with his property in addition; HasConstantCurvature quantifies over every locally smooth Levi-Civita connection, a generalization. The cited eq. (8.1) is the FLRW metric, where maximally symmetric slices enter (p. 218, eq. (8.2))."
+  since: unreleased
+- id: LL-0572
+  title: The metric induced by an immersion into a space with a symmetric bilinear form, and its nondegeneracy on the tangent space of a quadric
+  area: Spacetime
+  file: Lightlike/Spacetime/PullbackMetric.lean
+  decls: [Lightlike.NondegMetric.pullback, Lightlike.NondegMetric.pullback_apply, Lightlike.pullback_nondeg_of_quadric, Lightlike.exists_pullback_euclidean, Lightlike.pullback_nondeg_of_quadric_circle]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "NondegMetric.pullback: for a smooth map into a normed space with a symmetric bilinear form L of any signature, the pullback L(d iota, d iota) is a NondegMetric when it is nondegenerate on every tangent space (smoothness and symmetry from pullbackForm). pullback_nondeg_of_quadric: if L is nondegenerate on V, L(x, x) is not zero and a linear map D is injective with image the L-orthogonal complement of x, the pullback L(D, D) is nondegenerate (V is the direct sum of x-perp and the line of x); this is the tangent space of the quadric L(x, x) = c, c nonzero, as used for de Sitter and anti-de Sitter space. Non-vacuity: the identity of a Euclidean space, and the unit circle at e_0. Comparison with the cited section (Carroll, chapter 8, the embedding of maximally symmetric spaces as quadrics) pending: no source was read at the location."
+  since: unreleased
+- id: LL-0573
+  title: Killing fields of an induced metric from the skew linear fields of the ambient space
+  area: Spacetime
+  file: Lightlike/Spacetime/InducedKilling.lean
+  decls: [Lightlike.dι_mlieBracket_of_related, Lightlike.lieDerivMetric_eq_zero_of_related, Lightlike.isKillingAt_of_related, Lightlike.isKillingAt_minkowski_boost]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "On a manifold with corners modelled on a finite-dimensional space, let the metric be induced by a smooth map iota into a finite-dimensional space V with a symmetric bilinear form L, g(u, v) = L(d iota u, d iota v), and let A be L-skew, L(A u, v) + L(u, A v) = 0. A field X with d iota (X q) = A (iota q) at every point satisfies d iota [X, Y] = X(d iota Y) - A(d iota Y) (dι_mlieBracket_of_related, from the commutator formula mfderiv_mlieBracketW tested against every linear functional of V), hence L_X g = 0 at every point where X is differentiable (lieDerivMetric_eq_zero_of_related), and is a Killing field of every Levi-Civita connection of g (isKillingAt_of_related). For de Sitter and anti-de Sitter space as quadrics this gives the Killing fields as restrictions of the generators x_a d_b - x_b d_a of the ambient pseudo-orthogonal algebra. Non-vacuity: the boost field of 1+1 Minkowski space (iota the identity, L the Minkowski form) is a nonzero Killing field of the Levi-Civita connection at every point. Comparison with the cited section (Carroll, chapter 8, maximally symmetric spaces as quadrics) pending: no source was read at the location."
+  since: unreleased
+- id: LL-0574
+  title: A vector field is smooth where its image under an immersion is smooth
+  area: Spacetime
+  file: Lightlike/Spacetime/ImmersionSection.lean
+  decls: [Lightlike.inTangentCoordinates_dι, Lightlike.inTangentCoordinates_dι_hat, Lightlike.contMDiffAt_section_of_immersion, Lightlike.contMDiff_linearField]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Infrastructure for the whole-space de Sitter and anti-de Sitter manifolds. On a manifold with corners modelled on a finite-dimensional space, for a smooth map iota into a finite-dimensional normed space V with injective derivative at p, a vector field X is smooth at p when q -> d iota_q (X q) is smooth at p (contMDiffAt_section_of_immersion): in the trivialization of the tangent bundle at p, the components of X are (P D_q)^(-1) P (d iota X), with D_q the derivative of iota in that trivialization (inTangentCoordinates_dι_hat) and P a fixed linear left inverse of D_p, and the inverse is smooth near p (Ring.inverse at the unit 1). This makes the restrictions of ambient linear fields to a quadric smooth vector fields. Non-vacuity: contMDiff_linearField, a linear field of V with iota the identity."
+  since: unreleased
+- id: LL-0575
+  title: De Sitter space as the whole manifold R x S^m with the metric induced from the hyperboloid, Lorentzian at every point
+  area: Spacetime
+  file: Lightlike/Spacetime/SpaceForms/DeSitter.lean
+  decls: [Lightlike.deSitterSpace, Lightlike.dSIncl, Lightlike.dSForm_dSIncl_self, Lightlike.dι_dSIncl, Lightlike.dι_dSIncl_injective, Lightlike.exists_dι_dSIncl_eq, Lightlike.deSitterSpaceMetric, Lightlike.isLorentzianForm_deSitterSpaceMetric, Lightlike.deSitterSpaceLorentzian, Lightlike.isLorentzianForm_of_frame]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "The manifold is the whole of R x S^m (Mathlib's product of the line and the unit sphere of R^(m+1), the model transported to Fin (m+1) -> R, time first), m any natural number and L any nonzero real. The metric is the pullback of the Minkowski form -ab + <x, y> of R x R^(m+1) by iota(tau, omega) = (L sinh tau, L cosh tau omega), whose image is the hyperboloid eta(x, x) = L^2 (dSForm_dSIncl_self); in the coordinates (tau, omega) it is L^2 (-dtau^2 + cosh^2 tau dOmega^2), the global form of de Sitter space. d iota is injective with image exactly the eta-orthogonal complement of the point (dι_dSIncl_injective, exists_dι_dSIncl_eq), so the metric is nondegenerate on every tangent space (deSitterSpaceMetric, through pullback_nondeg_of_quadric). MEASURED: the metric has Lorentzian signature (-, +, ..., +) at every point (isLorentzianForm_deSitterSpaceMetric), shown with an explicit eta-orthonormal frame, (1/L) d_tau and (L cosh tau)^(-1) times preimages of an orthonormal basis of the orthogonal complement of omega, and isLorentzianForm_of_frame (n eta-orthonormal vectors of an n-dimensional space form a basis); deSitterSpaceLorentzian is the resulting LorentzianMetric. Curvature and Killing fields are separate entries. Comparison with the cited section (Carroll, chapter 8, de Sitter space as a hyperboloid in Minkowski space) pending: no source was read at the location."
+  since: unreleased
+- id: LL-0576
+  title: De Sitter space R x S^m has n(n+1)/2 linearly independent smooth Killing fields, the Lorentz algebra of the ambient Minkowski space
+  area: Spacetime
+  file: Lightlike/Spacetime/SpaceForms/DeSitterKilling.lean
+  decls: [Lightlike.dSForm_eq_minkowski, Lightlike.dSField, Lightlike.dι_dSField, Lightlike.contMDiff_dSField, Lightlike.isKillingAt_dSField, Lightlike.eq_zero_of_vanish_dSIncl, Lightlike.exists_killing_deSitterSpace]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "On the whole manifold deSitterSpace m = R x S^m with the metric induced from the hyperboloid eta(x, x) = L^2 (L nonzero), every eta-skew endomorphism B of the ambient Minkowski space R x R^(m+1) gives a field dSField with d iota (dSField) = B o iota (it exists because B x is eta-orthogonal to x and the image of d iota is that orthogonal complement); it is smooth (contMDiff_dSField, through contMDiffAt_section_of_immersion) and a Killing field of the Levi-Civita connection at every point (isKillingAt_dSField, through isKillingAt_of_related). exists_killing_deSitterSpace: n(n+1)/2 such fields, n = m + 1 the dimension, smooth, Killing at every point and linearly independent, the images of a basis of the library's Lorentz algebra skewEta (m + 2) (dimension (m+2)(m+1)/2) transported by the coordinates of dSForm_eq_minkowski; independence because a linear map vanishing on the hyperboloid is zero (eq_zero_of_vanish_dSIncl). This is the Killing part of maximal symmetry; constant curvature is a separate entry. Comparison with the cited section (Carroll, chapter 8, the isometries of de Sitter space as the Lorentz group of the embedding space) pending: no source was read at the location."
+  since: unreleased
+- id: LL-0577
+  title: "The Lichnerowicz formula on a spin manifold: for a smooth spinor field of a spin structure of a Riemannian manifold (atlas form) and its Levi-Civita spin connection, D^2 psi = nabla*nabla psi + (R/4) psi, with D and nabla*nabla the frame-independent Dirac operator and rough Laplacian on spinor fields and R the scalar curvature"
+  area: GR
+  file: Lightlike/Dirac/SpinLichnerowicz.lean
+  decls: [Lightlike.Dirac.SpinStructure.dirac_sq_eq_rough_add_scal_div_four, Lightlike.Dirac.SpinStructure.dirac_sq]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location): the formula is Lawson and Michelsohn, Spin Geometry (1989), Chapter II, Theorem 8.8 (D^2 = nabla*nabla + kappa/4), to be read before the comparison is claimed. KIND representation: the spin structure is the atlas form (SpinStructure: local orthonormal frames on open domains covering M, with Spin(n) lifts of the frame changes satisfying the cocycle condition), equivalent to the principal Spin(n)-bundle form of II Def. 1.3 for every lift of the orthonormal frame bundle (SpinLift.exists_spinStructure_equiv, Lightlike/Dirac/SpinLiftSmooth.lean), so not a difference of meaning. Spinor fields are families of local representations related by rho(lift) on overlaps (SpinorField); D and nabla*nabla are defined frame-wise and shown to transform correctly (SpinStructure.dirac_lift, SpinStructure.roughLaplacian_lift), so they are operators on spinor fields. The identity is pointwise in every frame (SpinStructure.dirac_sq: for phi smooth near x), for smooth spinor fields (SpinorField.IsSmooth); no compactness, L2 or self-adjointness statement. Non-vacuity: constant spinor fields of the Euclidean spin structure of R^n. No SpinStructure instance for the 2-sphere is constructed: the trust check on the unit 2-sphere (sphere_spectrum, Lightlike/Dirac/SphereSpectrum.lean: spectrum ±(k+1), real multiplicity 4(k+1)) uses, KIND representation, the two-chart model of its spinors (a smooth V-valued f on the stereographic chart of the north pole with D f = λ f for the chart operator diracF, whose transfer f_S(y/|y|²) = |y|⁻¹ ρ(y) J f(y) extends smoothly to the chart of the south pole), not sections of a spinor bundle of this SpinStructure, and its charts are not tied to Mathlib's stereographic atlas of the sphere."
+  since: unreleased
+- id: LL-0578
+  title: "Spin structures: the principal-bundle definition and the atlas form are equivalent; every lift of the orthonormal frame bundle through Spin(n) -> SO(n) is the principal bundle of a spin structure in atlas form, and has a smooth spin atlas"
+  area: GR
+  file: Lightlike/Dirac/SpinLiftSmooth.lean
+  decls: [Lightlike.Dirac.SpinLift.exists_spinStructure_equiv, Lightlike.Dirac.SpinLift.smoothSpinAtlas]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location): the definition is Lawson and Michelsohn, Spin Geometry (1989), Chapter II, Definition 1.3 (a principal Spin(n)-bundle with an equivariant map to the oriented orthonormal frame bundle), to be read before the comparison is claimed. What is proved: for a smooth manifold M without boundary (model with I.Boundaryless, M : Type) with a smooth positive definite metric g, EVERY lift L of the orthonormal frame bundle of TM through the vector action Spin(n) -> SO(n) (any OrthonormalFrameLift over the Riemannian bundle of g: a topological principal bundle with a continuous equivariant frame map, no smoothness assumed) has a smooth spin atlas (SpinLift.smoothSpinAtlas: local sections with smooth frames and smooth transition elements), so it is equivalent, as a lift, to the principal bundle SpinStructure.principal of a spin structure in atlas form (SpinLift.exists_spinStructure_equiv, via SpinStructure.ofSmoothAtlas and SpinStructure.ofSmoothAtlasEquiv in Lightlike/Dirac/SpinPrincipalEquiv.lean); conversely every atlas spin structure gives such a lift (SpinStructure.principal), and reading back its unit sections gives its frames and lifts (SpinStructure.ofSmoothAtlas_frame, SpinStructure.ofSmoothAtlas_lift). Ingredients: the kernel of the vector action is {±1} (vecConj_eq_id_iff, Lightlike/Bundles/SpinKernel.lean), an explicit smooth local inverse of the vector action near the identity (spinOfFrame, Lightlike/Bundles/SpinLocalSection.lean), smooth orthonormal frames by Gram-Schmidt (ported from Tau Ceti, Lightlike/Bundles/Manifold/VectorBundle/GramSchmidt.lean). The double-cover property of L is not assumed nor stated. Non-vacuity: the principal bundle of the standard spin structure of R^n."
+  since: unreleased
+- id: LL-0579
+  title: A quadric with the induced metric has constant curvature 1/c, intrinsically on the manifold
+  area: Spacetime
+  file: Lightlike/Spacetime/QuadricCurvature.lean
+  decls: [Lightlike.mvfderiv_mlieBracket_vec, Lightlike.g_cov_eq_of_induced, Lightlike.dι_cov_quadric, Lightlike.hasConstantCurvature_of_quadric]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "For a manifold modelled on Fin n -> R (any model with corners) with a smooth map iota into a finite-dimensional space V with a symmetric bilinear form L of any signature, a metric with g(u, v) = L(d iota u, d iota v), the image on the quadric L(x, x) = c with c nonzero, and d iota injective onto the L-orthogonal complement of the point: every locally smooth Levi-Civita connection has R(X, Y) Z = (1/c) (g(Y, Z) X - g(X, Z) Y) at every point (hasConstantCurvature_of_quadric, HasConstantCurvature g (1/c)). The proof is the Gauss formula on the manifold: the flat derivative D of V-valued functions satisfies D_[X,Y] = D_X D_Y - D_Y D_X (mvfderiv_mlieBracket_vec, from mfderiv_mlieBracketW and linear functionals); the Koszul formula gives g(nabla_X Y, Z) = L(D_X d iota Y, d iota Z) (g_cov_eq_of_induced); on the quadric d iota (nabla_Y Z) = D_Y (d iota Z) + (g(Y, Z)/c) iota (dι_cov_quadric); applying it twice, with D flat and nabla torsion free, gives the curvature. Instances: the sphere (c = r^2), de Sitter space (c = L^2, hasConstantCurvature_deSitterSpace, the non-vacuity), anti-de Sitter space (c = -L^2) and the hyperboloid model of hyperbolic space (c = -1). Comparison with the cited section (Carroll, chapter 8) and with the Gauss formula (O'Neill, Semi-Riemannian Geometry, ch. 4) pending: no source was read at the location."
+  since: unreleased
+- id: LL-0580
+  title: De Sitter space R x S^m is maximally symmetric with constant curvature 1/L^2
+  area: Spacetime
+  file: Lightlike/Spacetime/SpaceForms/DeSitterCurvature.lean
+  decls: [Lightlike.hasConstantCurvature_deSitterSpace, Lightlike.isMaximallySymmetric_deSitterSpace]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "On the whole manifold deSitterSpace m = R x S^m (dimension m + 1, any m) with the metric induced from the hyperboloid eta(x, x) = L^2 of R x R^(m+1), L nonzero: every locally smooth Levi-Civita connection has constant curvature 1/L^2 at every point (hasConstantCurvature_deSitterSpace, an instance of hasConstantCurvature_of_quadric), and with the n(n+1)/2 linearly independent smooth Killing fields of exists_killing_deSitterSpace (n = m + 1) the metric is maximally symmetric in the sense of IsMaximallySymmetric (isMaximallySymmetric_deSitterSpace). The metric is Lorentzian at every point (isLorentzianForm_deSitterSpaceMetric). Compared with Carroll, Lecture Notes on General Relativity (arXiv gr-qc/9712019), read at section 5, p. 140, before eq. (5.44): 'a maximally symmetric space is one which possesses the largest possible number of Killing vectors, which on an n-dimensional manifold is n(n + 1)/2', and section 3, p. 85, eq. (3.106): in any dimension the curvature of a maximally symmetric space satisfies R_rho sigma mu nu = a^-2 (g_rho mu g_sigma nu - g_rho nu g_sigma mu), stated without proof. IsMaximallySymmetric is the count of (5.44), as n(n+1)/2 linearly independent smooth Killing fields (that no metric has more is a general bound, not part of the statement), together with the curvature form (3.106) with a^-2 = K: with Carroll's convention [nabla_mu, nabla_nu] V^rho = R^rho_sigma mu nu V^sigma, (3.106) is R(X, Y) Z = K (g(Y, Z) X - g(X, Z) Y), the form of HasConstantCurvature. So the theorem is Carroll's definition with his curvature property in addition, not a weaker statement; the curvature is stated for every locally smooth Levi-Civita connection, a generalization. The cited location eq. (8.1) is the FLRW metric, where the maximally symmetric slices are introduced (p. 218, eq. (8.2) the same curvature form in three dimensions)."
+  since: unreleased
+- id: LL-0581
+  title: The Poincare ball model of hyperbolic space is maximally symmetric with constant curvature -1, on the whole ball
+  area: Spacetime
+  file: Lightlike/Spacetime/SpaceForms/HyperbolicBall.lean
+  decls: [Lightlike.poincareBallMetric, Lightlike.poincareBallMetric_apply, Lightlike.poincareBallMetric_single, Lightlike.poincareBallMetric_pos, Lightlike.hasConstantCurvature_poincareBall, Lightlike.exists_killing_poincareBall, Lightlike.isMaximallySymmetric_poincareBall, Lightlike.exists_eq_of_injective_of_ker]
+  status: proven
+  tier: established
+  source:
+    refs:
+      - {ref: carroll-1997, location: "eq. (8.1)", check: "maximally symmetric"}
+  review: kernel-checked
+  note: "The manifold is the whole open unit ball of R^n (hyperbolicDomain n as an open subset, model 𝓘(ℝ, Fin n → ℝ)), any n. Its metric poincareBallMetric n is the metric induced by iota(x) = ((1 + |x|^2)/(1 - |x|^2), 2x/(1 - |x|^2)), a map onto the upper sheet of the hyperboloid eta(x, x) = -1 of Minkowski space R^(1,n); the induced form is 4 <u, v>/(1 - |x|^2)^2 (poincareBallMetric_apply), so its components in the coordinates of R^n are exactly the library's hyperbolicMetric n x = 4 delta/(1 - |x|^2)^2 (poincareBallMetric_single): this is the Poincare ball model on which the catalogue defines H^n. MEASURED: positive definite at every point (poincareBallMetric_pos). Every locally smooth Levi-Civita connection has constant curvature -1 (hasConstantCurvature_poincareBall, hasConstantCurvature_of_quadric with c = -1; d iota is injective, and onto the eta-orthogonal complement of the point by dimension, exists_eq_of_injective_of_ker); a basis of the Lorentz algebra skewEta (n+1) gives n(n+1)/2 linearly independent smooth Killing fields (exists_killing_poincareBall, through isKillingAt_of_related and contMDiffAt_section_of_immersion); so the ball is maximally symmetric with K = -1 (isMaximallySymmetric_poincareBall). Compared with Carroll, Lecture Notes on General Relativity (arXiv gr-qc/9712019), read at section 5, p. 140, before eq. (5.44) ('a maximally symmetric space is one which possesses the largest possible number of Killing vectors, which on an n-dimensional manifold is n(n + 1)/2', the definition) and section 3, p. 85, eq. (3.106) (the curvature of a maximally symmetric space satisfies R_rho sigma mu nu = a^-2 (g_rho mu g_sigma nu - g_rho nu g_sigma mu)): IsMaximallySymmetric is that count with the curvature form (3.106), K = a^-2, which with Carroll's convention is HasConstantCurvature; the same statement with the property in addition, and the curvature is stated for every locally smooth Levi-Civita connection, a generalization. The cited eq. (8.1) is the FLRW metric, where maximally symmetric slices enter (p. 218)."
+  since: unreleased
+- id: LL-0582
+  title: "Anti-de Sitter space as the whole manifold S^1 x R^m (the quadric -|a|^2 + |x|^2 = -L^2 in R^(2,m)) is a Lorentzian manifold of constant curvature -1/L^2 with n(n+1)/2 independent Killing fields: it is maximally symmetric"
+  area: Spacetime
+  file: Lightlike/Spacetime/SpaceForms/AntiDeSitterCurvature.lean
+  decls: [Lightlike.hasConstantCurvature_antiDeSitterSpace, Lightlike.isMaximallySymmetric_antiDeSitterSpace]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending (no source was read at a cited location): anti-de Sitter space as the hyperboloid in a flat space of signature (2, n) is Carroll, Spacetime and Geometry (2004), section 8.1, to be read before the comparison is claimed. KIND representation: the space is the quadric itself, antiDeSitterSpace m = S^1 x R^m (Mathlib's unit circle of C times R^m, model transported to Fin (m+1) -> R, the circle first), whose circle is timelike, so it has closed timelike curves; in general relativity anti-de Sitter space often means its universal cover R x R^m, which is not constructed; maximal symmetry and the curvature -1/L^2 are proved on the quadric. The metric (Lightlike/Spacetime/SpaceForms/AntiDeSitter.lean) is the pullback of B((a,x),(b,y)) = -<a,b> + <x,y> on C x R^m by iota(theta, y) = (sqrt(L^2 + |y|^2) theta, y), whose image is the whole quadric B(x,x) = -L^2; d iota is injective with image the B-orthogonal complement (exists_dι_adsIncl_eq), so the metric is nondegenerate, and it is Lorentzian at every point (antiDeSitterSpaceLorentzian, explicit orthonormal frame). Killing fields (AntiDeSitterKilling.lean): the skew maps x -> B(v,x) u - B(u,x) v on the pairs of the orthogonal basis (1,0), (i,0), (0,e_k) give so(2,m), and exists_killing_antiDeSitterSpace gives (m+1)(m+2)/2 linearly independent smooth fields, Killing at every point for the Levi-Civita connection. Curvature: hasConstantCurvature_of_quadric with c = -L^2 (for every locally smooth Levi-Civita connection, at every point). L is any nonzero real, m any natural number. Non-vacuity: dimension 4, L = 1, K = -1."
+  since: unreleased
