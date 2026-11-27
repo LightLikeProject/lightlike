@@ -1,6 +1,7 @@
 import Mathlib
 import Lightlike.TemperleyLieb.KLCoef
 import Lightlike.TemperleyLieb.TopEntry
+import Lightlike.TemperleyLieb.VertexNorm
 
 /-!
 # Base values of the Kauffman–Lins coefficient
@@ -95,5 +96,55 @@ theorem Fc_eq_klCoef_zero_third (q : kˣ) (hδ : loopVal q ≠ 0) {a b e d' : �
   have hnz := qfac_ne_of_pow q (N := 2 * (a + b) + 2) (by omega) hq2
   rw [Fc_zero_third q hδ a b e d' he hd' hN hd (fun j h1 h2 => hq2 j h1 (by omega)),
     klCoef_zero_third q he (fun n hn => hnz n (by omega)) (thetaKL_ne q fun n hn => hnz n (by omega))]
+
+/-- The Gram product of the lower cup entry: `U_L'(n+1,1,1;1,0) U_R(n+1,1,1;1,0) = p_{n+1}`. -/
+theorem ULd_mul_UR_cup_low (q : kˣ) (n : ℕ) (hd : ∀ j, j ≤ n + 2 → chebD (loopVal q) j ≠ 0) :
+    ULd q (n + 1) 1 1 1 0 * UR q (n + 1) 1 1 1 0 = (1 : k) • jwAt q 0 (n + 1 + 1 - 2 * 1 + 1 - 2 * 0) := by
+  have j0 : ∀ s, (jwAt q s 0 : Module.End k (ModelSpace k)) = 1 := fun s => rfl
+  have j1 : ∀ s, (jwAt q s 1 : Module.End k (ModelSpace k)) = 1 := fun s => rfl
+  unfold ULd UR Wop Vop Qab
+  simp only [show n + 1 + 1 - 2 * 1 = n by omega, show n + 1 - 1 = n by omega, Nat.mul_zero, Nat.sub_zero,
+    Nat.add_zero, show 1 + 1 - 2 * 1 = 0 by omega, Nat.sub_self, nestCap, nestCup, j0, j1, mul_one, one_mul,
+    sh_mul, sh_jwAt, sh_cupOp, sh_one, zero_add, one_smul, show n + 1 - 0 = n + 1 from rfl]
+  have hp := jwProps_of_le (isTL_shift q 0) (n + 2) (fun j hj => hd j (by omega)) (n + 1) (by omega)
+  have hn := jwProps_of_le (isTL_shift q 0) (n + 2) (fun j hj => hd j (by omega)) n (by omega)
+  have a1 : (jwAt q 0 (n + 1) : Module.End k (ModelSpace k)) * jwAt q 0 n = jwAt q 0 (n + 1) := hp.absR n (by omega)
+  have a2 : (jwAt q 0 (n + 1) : Module.End k (ModelSpace k)) * jwAt q 0 (n + 1) = jwAt q 0 (n + 1) :=
+    hp.absR (n + 1) le_rfl
+  have a3 : (jwAt q 0 n : Module.End k (ModelSpace k)) * jwAt q 0 n = jwAt q 0 n := hn.absR n le_rfl
+  have hc := jwAt_comm_cup (k := k) q (n + 1)
+  have hcc := cap_cup_succ (k := k) q n
+  calc _ = jwAt q 0 (n + 1) * (jwAt q 0 n * jwAt q 0 n) * capOp q n * (jwAt q 0 (n + 1) * cupOp q (n + 1)) *
+        (jwAt q 0 (n + 1) * jwAt q 0 (n + 1)) := by simp only [mul_assoc]
+    _ = (jwAt q 0 (n + 1) * jwAt q 0 n) * (capOp q n * cupOp q (n + 1)) *
+        (jwAt q 0 (n + 1) * (jwAt q 0 (n + 1) * jwAt q 0 (n + 1))) := by rw [a3, hc]; simp only [mul_assoc]
+    _ = jwAt q 0 (n + 1) := by rw [a1, hcc, mul_one, a2, a2, a2]
+
+/-- `κ(n+1, 1, 1) = d_{n+1} / d_n`. -/
+lemma kapRec_succ_one_one (q : kˣ) (n : ℕ) (hd : chebD (loopVal q) n ≠ 0) :
+    kapRec q (n + 1) 1 1 = chebD (loopVal q) (n + 1) / chebD (loopVal q) n := by
+  simp only [kapRec, lamRec, sCoef, show ¬ (2 ≤ 1) by omega, if_false, mul_zero, sub_zero, add_zero, mul_one]
+  rcases n with _ | m
+  · simp [chebD]
+  · rw [if_pos (by omega), show m + 1 + 1 - 2 = m by omega, show m + 1 + 1 - 1 = m + 1 by omega,
+      chebD_succ_succ]
+    field_simp
+
+/-- **The lower entry of the cup column**: `Fc(n+1, 1, 1; 1, 0; 1, 0) = d_n / d_{n+1}`. -/
+theorem Fc_cup_low (q : kˣ) (hδ : loopVal q ≠ 0) (n : ℕ) (hd : ∀ j, j ≤ n + 3 → chebD (loopVal q) j ≠ 0) :
+    Fc q (n + 1) 1 1 1 0 1 0 = chebD (loopVal q) n / chebD (loopVal q) (n + 1) := by
+  have h1 := gram_spec q hδ (n + 1) 1 1 1 0 1 0 (by omega) (fun j hj => hd j (by omega)) (by omega) le_rfl le_rfl
+    le_rfl (Nat.zero_le _) (Nat.zero_le _) (Nat.zero_le _) (Nat.zero_le _)
+  have h2 := ULd_mul_UR_cup_low q n (fun j hj => hd j (by omega))
+  have h3 : (gramCoef q (n + 1) 1 1 1 0 1 0 - 1) •
+      (jwAt q 0 (n + 1 + 1 - 2 * 1 + 1 - 2 * 0) : Module.End k (ModelSpace k)) = 0 :=
+    (sub_smul (gramCoef q (n + 1) 1 1 1 0 1 0) (1 : k)
+      (jwAt q 0 (n + 1 + 1 - 2 * 1 + 1 - 2 * 0) : Module.End k (ModelSpace k))).trans
+      (sub_eq_zero.mpr (h1.symm.trans h2))
+  have hg : gramCoef q (n + 1) 1 1 1 0 1 0 = 1 :=
+    sub_eq_zero.mp ((smul_eq_zero.mp h3).resolve_right (jwAt_ne_zero q _))
+  unfold Fc
+  rw [if_pos ⟨by omega, Nat.zero_le _⟩, hg, kapRec_succ_one_one q n (hd n (by omega))]
+  simp only [kapRec, inv_one, mul_one, inv_div]
 
 end Lightlike.TemperleyLieb
