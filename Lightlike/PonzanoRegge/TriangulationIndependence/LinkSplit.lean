@@ -653,6 +653,25 @@ theorem forwardStep_flip {Ed : Finset (Finset V)} {opp : Finset V → Finset V �
       exact .inr ⟨fun h2 => hnot (by rw [h2]; simp), fun h2 => hnot (by rw [h2]; simp),
         .inr ⟨e', he', hadd'⟩⟩
 
+
+/-- With no edge flipped, `flipAll` is the stacked complex. -/
+lemma flipAll_empty (opp : Finset V → Finset V × Finset V) :
+    flipAll K v g ∅ opp = stackAll K (starTets K v) g :=
+  complex3_eq' fun t => by
+    simp only [flipAll, mem_filter, biUnion_empty, sdiff_empty, union_empty]
+    exact ⟨fun h1 => h1.1, fun h1 => ⟨h1, (stackAll K (starTets K v) g).card_eq t h1⟩⟩
+
+/-- **Flipping all the edges `Ed` of the original link after stacking is a chain of 2-3 moves**:
+`flipAll K v g Ed opp` is reached from the stacked complex by forward moves. -/
+theorem forwardMoves_flipAll {Ed : Finset (Finset V)} {opp : Finset V → Finset V × Finset V}
+    (h : FlipData K v g Ed opp) : ForwardMoves (stackAll K (starTets K v) g) (flipAll K v g Ed opp) := by
+  induction Ed using Finset.induction_on with
+  | empty => rw [flipAll_empty]; exact Relation.ReflTransGen.refl
+  | insert e s hes ih =>
+    have he2 : #e = 2 := h.card_e (mem_insert_self e s)
+    obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.1 he2
+    exact (ih (h.mono (subset_insert _ s))).tail (forwardStep_flip h hes hxy)
+
 end Flip
 
 end Lightlike.PR
