@@ -246,7 +246,7 @@ def IsEPRLVertexLabel (γ : ℝ) (n m : Fin 10 → ℕ) : Prop :=
   ∀ e, IsEPRLLabel γ (n e + m e) (n e) (m e)
 ```
 
-The statement that connects `eprlCoh` to the vertex (`EprlCoherentVertex.lean`, line 52; proved, not part of LL-0047):
+The statement that connects `eprlCoh` to the vertex (`EprlCoherentVertex.lean`, line 52; proved and catalogued as LL-0117, not part of LL-0047):
 
 `EprlCoherentVertex.lean`, lines 49–61:
 
@@ -318,7 +318,7 @@ theorem eprlVertex_coherent (n m : Fin 10 → ℕ) (g : Fin 10 → Fin 2 → SU2
   - EPRL formula, `γ = 1/2`, `(n, m) = (3, 1)`: the four-term leading term equals the product of the two 15j leading terms (max deviation `5.1·10⁻¹²`). `λ¹²·eprlCoh / (λ¹²·leading)` at `λ = 1..6` is `0.04, 0.26, 0.35, 0.46, 0.54, 0.71`: rising towards 1, but `λ ≤ 6` is not asymptotic and these values do not fit `1 − c/λ` (PROXY). **The numerical support for the EPRL statement is therefore the 15j convergence plus the proved identity `eprlCoh_eq_mul`, not a direct test.**
   - Gluing, stationarity, the critical set (two gauge classes, 120 solver runs at the regular simplex and 6 × 40 at random simplices, 0 other solutions), and suppression without gluing.
 - **Not done by this card:** reading the Lean proofs (stationary-phase assembly in `MaxSetFinite.lean`, `eprlAsymptoticFormula` is a short product argument, `EPRLFormula.lean:84`); BDFGH §3.1–3.3 (Regge state) and §5.1–5.5, §5.6 after (76); BFH §2 phase conventions; the comparison of `Spin4.eprlVertex` with BDFGH eq. (5)/(10) (difference 1); any simplex other than the regular one for the Hessian conditions in the kernel.
-- **A catalogue inconsistency found while writing the card (MEASURED, `docs/results.yaml`, LL-0047 `note`):** the note says "Equality of the coherent integral with the vertex Spin4.eprlVertex on Livine–Speziale intertwiners is not proven". `eprlVertex_coherent` (`EprlCoherentVertex.lean:52`) proves that the vertex, contracted with the coherent intertwiners `cohInt`, is `eprlCoh` for every spin, `γ < 1`, with clean axioms, and the docstring of `Formula.lean` already says so. The note is stale (or means something stronger that it does not say). It was not edited here: it is a stated result, so the change goes through the stream and the maintainers. `eprlVertex_coherent` should also be catalogued as its own proven entry, or added to LL-0047's `decls`; the claim "asymptotics of the EPRL vertex" is only as strong as the identification in difference 1.
+- **A catalogue inconsistency found while writing the card, now fixed (MEASURED, `docs/results.yaml`, LL-0047 `note`):** the note said "Equality of the coherent integral with the vertex Spin4.eprlVertex on Livine–Speziale intertwiners is not proven". `eprlVertex_coherent` (`EprlCoherentVertex.lean:52`) proves that the vertex, contracted with the coherent intertwiners `cohInt`, is `eprlCoh` for every spin, `γ < 1`, with clean axioms. The note was stale and now cites LL-0117 (maintainers' go, 27 Nov). The first draft of this card also said `eprlVertex_coherent` should be catalogued; it already is: LL-0117 (`decls` `k5Contract4_eprlCohNode`, `eprlVertex_coherent`; proven, kernel-checked; cited as item 37 of `Lightlike/Asymptotics/EPRL/API-map.md`), so no new entry was added. The claim "asymptotics of the EPRL vertex" is only as strong as the identification in difference 1.
 
 ## 7. One question for the reviewer
 
