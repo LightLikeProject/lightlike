@@ -2303,6 +2303,7 @@ import Lightlike.SpinFoam.EPRLStateSum.Sphere6Sign
 import Lightlike.SpinFoam.EPRLStateSum.IntrinsicVertex
 import Lightlike.SpinFoam.EPRLStateSum.Orientation
 import Lightlike.SpinFoam.EPRLStateSum.BoneAmplitude
+import Lightlike.SpinFoam.EPRLStateSum.OrderDependence
 import Lightlike.SpinFoam.Move15
 import Lightlike.SpinFoam.Move15Global
 import Lightlike.SpinFoam.BarrettCrane

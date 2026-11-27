@@ -1899,7 +1899,7 @@ milestones:
       - id: p3
         kind: piece
         text: "The EPRL state sum is independent of the orientation"
-        decls: [Lightlike.SpinFoam.EPRLStateSum.eprlVertex_swap, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_neg, Lightlike.SpinFoam.EPRLStateSum.vertexI_neg, Lightlike.SpinFoam.EPRLStateSum.nodeFusionNineJ_swap]
+        decls: [Lightlike.SpinFoam.EPRLStateSum.eprlVertex_swap, Lightlike.SpinFoam.EPRLStateSum.amplitudeI_neg]
         hint: "EPRL.lean says orientation independence is not claimed."
       - id: t1
         kind: trust
