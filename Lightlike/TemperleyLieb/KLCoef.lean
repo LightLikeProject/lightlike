@@ -89,7 +89,8 @@ noncomputable def klCoef (q : kˣ) (a b c e d f d' : ℕ) : k :=
 
 /-- **The statement `Fc = klCoef`** over the field `k`: at every `q` with `q^{2n} ≠ 1` for `1 ≤ n ≤ 2(a + b + c) + 6`,
 the recoupling coefficient `Fc` of the Temperley–Lieb model equals the Kauffman–Lins coefficient on the admissible
-indices. It is an intermediate interface (generic `q`), recorded here for the results that use it; the genericity
+indices. It is proved for every field of characteristic zero by `Fc_eq_klCoef` (`RecouplingKL.lean`); stated at
+generic `q`, it is recorded here for the results that use it; the genericity
 bound is the one the proof by the recursion in the third block needs (its telescoping certificate uses quantum
 integers up to `a + 2b + c + 3`). At `q = e^{iπ/r}` the identities are reached by the limit `θ → π/r`, where every
 such finite condition holds. -/
