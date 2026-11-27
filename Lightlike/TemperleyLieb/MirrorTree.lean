@@ -3,6 +3,8 @@ import Lightlike.TemperleyLieb.Mirror
 import Lightlike.TemperleyLieb.CupCap
 import Lightlike.TemperleyLieb.Reduction
 import Lightlike.TemperleyLieb.Expansion
+import Lightlike.TemperleyLieb.Pentagon
+import Lightlike.TemperleyLieb.FusionIdentity
 
 /-!
 # The mirror image of caps and cups
@@ -16,7 +18,7 @@ second-bracketing tree vectors of the blocks `(a, b, c)` into the first-bracketi
 
 namespace Lightlike.TemperleyLieb
 
-open Finsupp
+open Finsupp Finset
 
 variable {k : Type*} [Field k]
 
@@ -109,4 +111,96 @@ theorem reflect_UR (q : kˣ) (a b c f d' : ℕ) (hfb : f ≤ b) (hfc : f ≤ c) 
   rw [← mul_assoc (jwAt q c b), c1, mul_assoc]
   congr 3
   rw [← mul_assoc (jwAt q Y a), ← c2, mul_assoc]
+/-- The mirror of a first-bracketing tree vector: `R_{a+b+c} U_L(a,b,c;e,d) = U_R(c,b,a;e,d) R_{D}`. -/
+theorem reflect_UL (q : kˣ) (a b c e d : ℕ) (heb : e ≤ b) (hea : e ≤ a) (hdc : d ≤ c) (hdA : d ≤ a + b - 2 * e)
+    (hd : ∀ j, j < a + b + c + 1 → chebD (loopVal q) j ≠ 0) :
+    reflectOp k (a + b + c) * UL q a b c e d = UR q c b a e d * reflectOp k (a + b - 2 * e + c - 2 * d) := by
+  have h := reflect_UR (k := k) q c b a e d heb hea hdc (by omega) (fun j hj => hd j (by omega))
+  rw [show c + b + a = a + b + c by omega, show c + (b + a - 2 * e) - 2 * d = a + b - 2 * e + c - 2 * d by omega] at h
+  have hρ := reflectOp_mul_self (k := k) (a + b + c)
+  have hρ' := reflectOp_mul_self (k := k) (a + b - 2 * e + c - 2 * d)
+  calc reflectOp k (a + b + c) * UL q a b c e d
+      = reflectOp k (a + b + c) * (UL q a b c e d * reflectOp k (a + b - 2 * e + c - 2 * d)) *
+          reflectOp k (a + b - 2 * e + c - 2 * d) := by rw [mul_assoc, mul_assoc, hρ', mul_one]
+    _ = UR q c b a e d * reflectOp k (a + b - 2 * e + c - 2 * d) := by
+        rw [← h, ← mul_assoc, hρ, one_mul]
+
+/-- `gramCoef = κ κ Fc` on the admissible `(e, d)`. -/
+lemma gramCoef_eq_kap_mul_Fc (q : kˣ) {a b c e d f d' : ℕ} (he : e ≤ min a b) (hdd : d ≤ min (a + b - 2 * e) c)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1) :
+    gramCoef q a b c e d f d' = kapRec q a b e * kapRec q (a + b - 2 * e) c d * Fc q a b c e d f d' := by
+  have k1 := kapRec_ne (k := k) q e a b (he.trans (min_le_left _ _)) (he.trans (min_le_right _ _))
+    (fun x h1 h2 => hq2 x h1 (by omega))
+  have k2 := kapRec_ne (k := k) q d (a + b - 2 * e) c (hdd.trans (min_le_left _ _)) (hdd.trans (min_le_right _ _))
+    (fun x h1 h2 => hq2 x h1 (by omega))
+  unfold Fc; rw [if_pos ⟨he, hdd⟩]; field_simp
+
+/-- **The mirror inverse**: the recoupling matrices of `(a, b, c)` and `(c, b, a)` are inverse to each other. -/
+theorem Fc_mirror_inv [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b c f d' g h : ℕ}
+    (hab : 1 ≤ a + b) (hcb : 1 ≤ c + b)
+    (hd : ∀ j, j ≤ a + b + c + 1 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + c + 1 → (q : k) ^ (2 * j) ≠ 1)
+    (hfb : f ≤ b) (hfc : f ≤ c) (hda : d' ≤ a) (hdf : d' ≤ b + c - 2 * f)
+    (hgc : g ≤ c) (hgb : g ≤ b) (hhA : h ≤ c + b - 2 * g) (hha : h ≤ a) :
+    ∑ e ∈ range (a + 1), ∑ d ∈ range (c + 1), Fc q c b a g h e d * Fc q a b c e d f d' =
+      if g = f ∧ h = d' then 1 else 0 := by
+  set D := a + (b + c - 2 * f) - 2 * d' with hD
+  have hd1 : ∀ j, j ≤ a + b + c → chebD (loopVal q) j ≠ 0 := fun j hj => hd j (by omega)
+  have hE := expansion_range q hδ a b c f d' hab hd1 hq2 hfb hfc hda hdf
+  have hterm : ∀ e ∈ range (a + 1), ∀ d ∈ range (c + 1),
+      reflectOp k (a + b + c) * (Fc q a b c e d f d' • UL q a b c e d) =
+        (Fc q a b c e d f d' • UR q c b a e d) * reflectOp k D := by
+    intro e _ d _
+    by_cases h0 : Fc q a b c e d f d' = 0
+    · simp [h0]
+    · obtain ⟨he, hdd⟩ := Fc_guard h0
+      have ht := Fc_total q hδ a b c e d f d' (by omega) hd1 hfb hfc hda hdf h0
+      rw [mul_smul_comm, reflect_UL q a b c e d (he.trans (min_le_right _ _)) (he.trans (min_le_left _ _))
+        (hdd.trans (min_le_right _ _)) (hdd.trans (min_le_left _ _)) (fun j hj => hd j (by omega)), ht,
+        smul_mul_assoc]
+  have hM := reflect_UR (k := k) q a b c f d' hfb hfc hda hdf (fun j hj => hd j (by omega))
+  rw [hE] at hM
+  simp only [mul_sum] at hM
+  rw [sum_congr rfl fun e he => sum_congr rfl fun d hdm => hterm e he d hdm] at hM
+  simp only [← sum_mul] at hM
+  have hUL : UL q c b a f d' = ∑ e ∈ range (a + 1), ∑ d ∈ range (c + 1), Fc q a b c e d f d' • UR q c b a e d := by
+    have := congrArg (· * reflectOp k D) hM
+    rw [← hD] at this
+    simp only [mul_assoc, reflectOp_mul_self, mul_one] at this
+    exact this.symm
+  have hq2' : ∀ j, 1 ≤ j → j ≤ c + b + a + 1 → (q : k) ^ (2 * j) ≠ 1 := fun j h1 h2 => hq2 j h1 (by omega)
+  have hL := ULd_mul_UL q c b a (fun j hj => hd j (by omega)) hq2' (e := g) (d := h) (e' := f) (d' := d')
+    hgc hgb hfc hfb hhA hha (by omega) hda
+  set K := kapRec q c b g * kapRec q (c + b - 2 * g) a h with hK
+  have hKne : K ≠ 0 := mul_ne_zero (kapRec_ne q g c b hgc hgb (fun x h1 h2 => hq2' x h1 (by omega)))
+    (kapRec_ne q h (c + b - 2 * g) a hhA hha (fun x h1 h2 => hq2' x h1 (by omega)))
+  have hpair : ∀ e ∈ range (a + 1), ∀ d ∈ range (c + 1),
+      ULd q c b a g h * (Fc q a b c e d f d' • UR q c b a e d) =
+        (K * (Fc q c b a g h e d * Fc q a b c e d f d')) • jwAt q 0 (c + b - 2 * g + a - 2 * h) := by
+    intro e _ d _
+    by_cases h0 : Fc q a b c e d f d' = 0
+    · simp [h0]
+    · obtain ⟨he, hdd⟩ := Fc_guard h0
+      rw [mul_smul_comm, gram_spec q hδ c b a g h e d (by omega) (fun j hj => hd j (by omega)) hgc hgb
+        (he.trans (min_le_right _ _)) (he.trans (min_le_left _ _)) hha hhA (hdd.trans (min_le_right _ _))
+        (by have := hdd.trans (min_le_left _ _); omega), gramCoef_eq_kap_mul_Fc q (le_min hgc hgb) (le_min hhA hha)
+        hq2', smul_smul]
+      congr 1; ring
+  rw [hUL, mul_sum] at hL
+  simp only [mul_sum] at hL
+  rw [sum_congr rfl fun e he => sum_congr rfl fun d hdm => hpair e he d hdm] at hL
+  simp only [← sum_smul, ← mul_sum] at hL
+  have hp := jwAt_ne_zero (k := k) q (c + b - 2 * g + a - 2 * h)
+  by_cases hgf : g = f ∧ h = d'
+  · rw [if_pos hgf] at hL ⊢
+    have h3 : (K * ∑ e ∈ range (a + 1), ∑ d ∈ range (c + 1), Fc q c b a g h e d * Fc q a b c e d f d' - K) •
+        (jwAt q 0 (c + b - 2 * g + a - 2 * h) : Module.End k (ModelSpace k)) = 0 :=
+      (sub_smul _ _ (jwAt q 0 (c + b - 2 * g + a - 2 * h) : Module.End k (ModelSpace k))).trans (sub_eq_zero.mpr hL)
+    have := sub_eq_zero.mp ((smul_eq_zero.mp h3).resolve_right hp)
+    field_simp at this ⊢
+    linear_combination this
+  · rw [if_neg hgf] at hL ⊢
+    have := (smul_eq_zero.mp hL).resolve_right hp
+    exact (mul_eq_zero.mp this).resolve_left hKne
+
 end Lightlike.TemperleyLieb
