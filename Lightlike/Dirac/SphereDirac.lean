@@ -12,13 +12,16 @@ For the spin structure `sphereSpinStructure` of the round unit 2-sphere (`Lightl
 connection coefficients of the Levi-Civita connection in the north frame, read in the stereographic coordinate `y`,
 are those of the conformally flat frame `stereoF` of `Lightlike/Dirac/StereoSphere.lean`:
 `ω_abc = y_c δ_ab − y_b δ_ac` (`stereoOmega`). This identifies the Dirac operator of the spin structure in the north
-frame with the chart operator `diracF ρ stereoF stereoOmega` (work in progress).
+frame with the chart operator `diracF ρ stereoF stereoOmega`.
 
-## This layer
+## Main results
 
 * `dStereoN`: the derivative of `stereoN` is invertible (injective by conformality, `mfderiv_stereoN_injective`);
 * `mpullback_frameN`: the pullback of the north frame vector `a` along `stereoN` is `((|y|²+1)/2) eₐ`;
-* `lieBracket_frameFlat`: the flat bracket of these fields is `[Xₐ, X_b] = yₐ X_b − y_b Xₐ`.
+* `lieBracket_frameFlat`, `mlieBracket_frameN`: `[Fₐ, F_b] = yₐ F_b − y_b Fₐ`;
+* `connForm_sphere_north`: `ω_abc = y_c δ_ab − y_b δ_ac` (Koszul formula);
+* `dirac_sphere_north`: the Dirac operator of `sphereSpinStructure` in the north frame is
+  `diracF ρ stereoF stereoOmega` in the north chart.
 -/
 
 open Bundle Manifold VectorField
