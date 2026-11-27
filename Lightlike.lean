@@ -2273,6 +2273,7 @@ import Lightlike.TuraevViro.Reflect.QDougallMap
 import Lightlike.TuraevViro.Reflect.QDougallAll
 import Lightlike.TuraevViro.Reflect.RacahPhi43
 import Lightlike.TuraevViro.Reflect.SixJNormOneAll
+import Lightlike.TuraevViro.QBiedenharnElliott
 import Lightlike.TuraevViro.TuraevViroMoves
 import Lightlike.TuraevViro.Reflect.JacksonDegenerate
 import Lightlike.TuraevViro.Reflect.SixJNormOne
