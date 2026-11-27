@@ -293,4 +293,79 @@ theorem northMap_mem {σ : SpinorSection sphereSpinStructure ρ} {lam : ℝ} (h 
 
 end Membership
 
+section Surjective
+
+/-- The inverse transfer: `v = |w|⁻¹ c(w) γ₁ γ₀ (|w|⁻¹ c(w) J v)`. -/
+lemma inverse_identity (w : E 2) (hw : w ≠ 0) (v : V) :
+    ‖w‖⁻¹ • cliffV ρ w (gam ρ 1 (gam ρ 0 (sphereT ρ w v))) = v := by
+  have hn : ‖w‖ ≠ 0 := norm_ne_zero_iff.mpr hw
+  have h10 : ∀ x : V, gam ρ 1 (gam ρ 0 x) = -Jop ρ x := fun x => by
+    have := gam_anticomm ρ (show (0 : Fin 2) ≠ 1 by decide) x
+    rw [eq_neg_iff_add_eq_zero, add_comm]
+    simpa [Jop] using this
+  have h1 : ‖w‖⁻¹ * (‖w‖⁻¹ * ‖w‖ ^ 2) = 1 := by field_simp
+  simp only [sphereT, map_smul, h10, Jop_cliffV, map_neg, Jop_sq, cliffV_neg, cliffV_smul, cliffV_cliffV,
+    neg_neg, smul_neg, neg_smul, smul_smul, h1, one_smul]
+
+lemma reflY_reflY (z : Fin 2 → ℝ) : reflY (reflY z) = z := by
+  ext i; fin_cases i <;> simp [reflY]
+
+open Classical in
+/-- The smooth pair of a two-chart eigenspinor `(f, fS)`. -/
+def pairOf (f fS : E 2 → V) : (S2 → V) × (S2 → V) :=
+  (fun p => if pc p 2 ≠ 1 then f (modelEquiv2.symm (invN p)) else 0,
+   fun p => if pc p 2 ≠ -1 then gam ρ 0 (fS (modelEquiv2.symm (reflY (invS p)))) else 0)
+
+lemma contDiff_reflY : ContDiff ℝ ∞ reflY := by
+  set L : (Fin 2 → ℝ) →L[ℝ] (Fin 2 → ℝ) := ContinuousLinearMap.pi fun i =>
+    if i = 0 then ContinuousLinearMap.proj 0 else -ContinuousLinearMap.proj 1
+  have hL : reflY = L := by funext z; ext i; fin_cases i <;> simp [reflY, L]
+  rw [hL]; exact L.contDiff
+
+/-- The smooth pair of a two-chart eigenspinor. -/
+def smoothPairOf {f fS : E 2 → V} (hf : ContDiff ℝ ∞ f) (hfS : ContDiff ℝ ∞ fS)
+    (htr : ∀ y : E 2, y ≠ 0 → fS (inv2 y) = sphereT ρ y (f y)) : sphereSpinStructure.SmoothPair ρ :=
+  ⟨pairOf (ρ := ρ) f fS, by
+    refine ⟨fun p hp => ?_, fun p hp => ?_, fun p hp => ?_, fun p hp => ?_, fun p h1 h2 => ?_⟩
+    · have hp' : pc p 2 ≠ 1 := hp
+      have hc : ContMDiffAt I2 𝓘(ℝ, V) ∞ (fun q => f (modelEquiv2.symm (invN q))) p :=
+        ((hf.comp (modelEquiv2.symm : (Fin 2 → ℝ) →L[ℝ] E 2).contDiff).contMDiff.contMDiffAt).comp p
+          (contMDiffAt_invN hp')
+      refine hc.congr_of_eventuallyEq ?_
+      filter_upwards [(isOpen_pc_ne 1).mem_nhds hp'] with q hq
+      simp [pairOf, hq]
+    · have hp' : pc p 2 ≠ -1 := hp
+      have hc : ContMDiffAt I2 𝓘(ℝ, V) ∞ (fun q => gam ρ 0 (fS (modelEquiv2.symm (reflY (invS q))))) p :=
+        (((gam ρ 0).contDiff.comp ((hfS.comp (modelEquiv2.symm : (Fin 2 → ℝ) →L[ℝ] E 2).contDiff).comp
+          contDiff_reflY)).contMDiff.contMDiffAt).comp p (contMDiffAt_invS hp')
+      refine hc.congr_of_eventuallyEq ?_
+      filter_upwards [(isOpen_pc_ne (-1)).mem_nhds hp'] with q hq
+      simp [pairOf, hq]
+    · have : ¬ (pc p 2 ≠ 1) := hp
+      simp [pairOf, this]
+    · have : ¬ (pc p 2 ≠ -1) := hp
+      simp [pairOf, this]
+    · have hp1 : pc p 2 ≠ 1 := h1
+      have hp2 : pc p 2 ≠ -1 := h2
+      simp only [pairOf, if_pos hp1, if_pos hp2]
+      set y := invN p
+      set w := modelEquiv2.symm y
+      have hy : y ≠ 0 := by
+        intro h0
+        have := nsq_invN_ne_zero hp1 hp2
+        rw [show nsq (invN p) = nsq y from rfl, h0] at this
+        simp [nsq] at this
+      have hw : w ≠ 0 := fun h0 => hy (by simpa [w] using congrArg modelEquiv2 h0)
+      have hR : modelEquiv2.symm (reflY (invS p)) = inv2 w := by
+        rw [invS_eq_tau hp1 hp2, ← show reflY (modelEquiv2 (inv2 w)) = tau y by
+          rw [reflY_inv2]; simp [w, y], reflY_reflY]
+        simp
+      rw [hR, htr w hw]
+      change f w = ρ (liftNS (invN p)) _
+      rw [rho_liftNS, show modelEquiv2.symm (invN p) = w from rfl,
+        show √(nsq (invN p)) = ‖w‖ by rw [← norm_modelEquiv2_symm]]
+      exact (inverse_identity w hw (f w)).symm⟩
+
+end Surjective
+
 end Lightlike.Dirac
