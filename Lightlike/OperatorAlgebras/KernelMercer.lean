@@ -296,6 +296,81 @@ theorem sum_le_diag [μ.IsOpenPosMeasure] [SecondCountableTopology X]
     Complex.ofReal_re] at h
   linarith
 
+section Expansion
+
+variable [μ.IsOpenPosMeasure] [SecondCountableTopology X] (K : C(X × X, ℂ))
+  (hK : ∀ x y, K (y, x) = starRingEnd ℂ (K (x, y))) {ι : Type*}
+  (b : HilbertBasis ι ℂ (Lp ℂ 2 μ)) (lam : ι → ℝ)
+  (hb : ∀ i, kernelOp μ K (b i) = (lam i : ℂ) • b i) (hpos : IsPositiveKernel μ K)
+include hK hb hpos
+
+/-- The terms `λ_i φ_i(x) conj φ_i` of the row series of the kernel at `x`. -/
+def rowTerm (x : X) (i : ι) : C(X, ℂ) :=
+  (((lam i : ℂ) * eigenFun μ K (b i) (lam i) x)) • star (eigenFun μ K (b i) (lam i))
+
+/-- The tail bound `‖Σ_{i ∈ t} λ_i φ_i(x) conj φ_i‖ ≤ √(Σ_t λ_i |φ_i(x)|²) √M`. -/
+lemma norm_sum_rowTerm_le (x : X) {M : ℝ} (hM : ∀ y, (K (y, y)).re ≤ M) (t : Finset ι) :
+    ‖∑ i ∈ t, rowTerm μ K b lam x i‖ ≤
+      Real.sqrt (∑ i ∈ t, lam i * ‖eigenFun μ K (b i) (lam i) x‖ ^ 2) * Real.sqrt M := by
+  have hlam : ∀ i, 0 ≤ lam i := fun i => eigen_nonneg μ hpos (hb i) (b.orthonormal.1 i)
+  refine (ContinuousMap.norm_le _ (by positivity)).2 fun y => ?_
+  simp only [ContinuousMap.coe_sum, Finset.sum_apply, rowTerm, ContinuousMap.smul_apply,
+    ContinuousMap.star_apply, smul_eq_mul]
+  set φ := fun i => eigenFun μ K (b i) (lam i) with hφ
+  calc ‖∑ i ∈ t, (lam i : ℂ) * φ i x * star (φ i y)‖
+      ≤ ∑ i ∈ t, ‖(lam i : ℂ) * φ i x * star (φ i y)‖ := norm_sum_le _ _
+    _ = ∑ i ∈ t, Real.sqrt (lam i * ‖φ i x‖ ^ 2) * Real.sqrt (lam i * ‖φ i y‖ ^ 2) := by
+        refine Finset.sum_congr rfl fun i _ => ?_
+        rw [norm_mul, norm_mul, norm_star, Complex.norm_real, Real.norm_eq_abs,
+          abs_of_nonneg (hlam i), ← Real.sqrt_mul (mul_nonneg (hlam i) (sq_nonneg _)),
+          show lam i * ‖φ i x‖ ^ 2 * (lam i * ‖φ i y‖ ^ 2) = (lam i * ‖φ i x‖ * ‖φ i y‖) ^ 2 by ring,
+          Real.sqrt_sq (by have := hlam i; positivity)]
+    _ ≤ Real.sqrt (∑ i ∈ t, lam i * ‖φ i x‖ ^ 2) * Real.sqrt (∑ i ∈ t, lam i * ‖φ i y‖ ^ 2) :=
+        Real.sum_sqrt_mul_sqrt_le t (fun i => by have := hlam i; positivity)
+          (fun i => by have := hlam i; positivity)
+    _ ≤ Real.sqrt (∑ i ∈ t, lam i * ‖φ i x‖ ^ 2) * Real.sqrt M := by
+        gcongr
+        exact (sum_le_diag μ K hK b lam hb hpos t y).trans (hM y)
+
+/-- The diagonal series converges: `Σ_i λ_i |φ_i(x)|²` is summable. -/
+lemma summable_diag (x : X) :
+    Summable fun i => lam i * ‖eigenFun μ K (b i) (lam i) x‖ ^ 2 := by
+  have hlam : ∀ i, 0 ≤ lam i := fun i => eigen_nonneg μ hpos (hb i) (b.orthonormal.1 i)
+  exact summable_of_sum_le (fun i => mul_nonneg (hlam i) (sq_nonneg _))
+    (sum_le_diag μ K hK b lam hb hpos · x)
+
+/-- The row series converges in `C(X, ℂ)`. -/
+lemma summable_rowTerm (x : X) : Summable (rowTerm μ K b lam x) := by
+  obtain ⟨M, hM⟩ := (isCompact_univ (X := X)).exists_bound_of_continuousOn
+    (Complex.continuous_re.comp (K.continuous.comp (continuous_id.prodMk continuous_id))).continuousOn
+  have hM' : ∀ y, (K (y, y)).re ≤ M := fun y =>
+    (le_abs_self _).trans (by simpa [Real.norm_eq_abs] using hM y (Set.mem_univ y))
+  have hM0 : 0 ≤ M := (abs_nonneg _).trans (by simpa [Real.norm_eq_abs] using hM x (Set.mem_univ x))
+  rw [summable_iff_vanishing_norm]
+  intro ε hε
+  set δ := (ε / (Real.sqrt M + 1)) ^ 2 with hδ
+  have hδ0 : 0 < δ := by positivity
+  obtain ⟨s, hs⟩ := summable_iff_vanishing_norm.1 (summable_diag μ K hK b lam hb hpos x) δ hδ0
+  refine ⟨s, fun t ht => ?_⟩
+  have h1 := norm_sum_rowTerm_le μ K hK b lam hb hpos x hM' t
+  have h2 := hs t ht
+  have hlam : ∀ i, 0 ≤ lam i := fun i => eigen_nonneg μ hpos (hb i) (b.orthonormal.1 i)
+  have hnn : 0 ≤ ∑ i ∈ t, lam i * ‖eigenFun μ K (b i) (lam i) x‖ ^ 2 :=
+    Finset.sum_nonneg fun i _ => mul_nonneg (hlam i) (sq_nonneg _)
+  rw [Real.norm_of_nonneg hnn] at h2
+  have h3 : Real.sqrt (∑ i ∈ t, lam i * ‖eigenFun μ K (b i) (lam i) x‖ ^ 2) <
+      ε / (Real.sqrt M + 1) := by
+    rw [← Real.sqrt_sq (show 0 ≤ ε / (Real.sqrt M + 1) by positivity)]
+    exact Real.sqrt_lt_sqrt hnn h2
+  calc ‖∑ i ∈ t, rowTerm μ K b lam x i‖ ≤ _ := h1
+    _ ≤ ε / (Real.sqrt M + 1) * Real.sqrt M :=
+        mul_le_mul_of_nonneg_right h3.le (Real.sqrt_nonneg _)
+    _ < ε := by
+        rw [div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]
+        nlinarith [Real.sqrt_nonneg M]
+
+end Expansion
+
 end
 
 end Lightlike.OperatorAlgebras
