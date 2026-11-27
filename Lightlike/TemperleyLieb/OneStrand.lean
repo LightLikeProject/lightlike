@@ -147,4 +147,50 @@ theorem Fc_cup_low (q : kˣ) (hδ : loopVal q ≠ 0) (n : ℕ) (hd : ∀ j, j �
   rw [if_pos ⟨by omega, Nat.zero_le _⟩, hg, kapRec_succ_one_one q n (hd n (by omega))]
   simp only [kapRec, inv_one, mul_one, inv_div]
 
+/-- The Gram product of the upper cup entry: `U_L'(n,1,1;0,1) U_R(n,1,1;1,0) = (d_{n+1}/d_n) p_n`. -/
+theorem ULd_mul_UR_cup_high (q : kˣ) (n : ℕ) (hd : ∀ j, j ≤ n + 2 → chebD (loopVal q) j ≠ 0) :
+    ULd q n 1 1 0 1 * UR q n 1 1 1 0 =
+      (chebD (loopVal q) (n + 1) / chebD (loopVal q) n) • jwAt q 0 (n + 1 - 2 * 0 + 1 - 2 * 1) := by
+  have j0 : ∀ s, (jwAt q s 0 : Module.End k (ModelSpace k)) = 1 := fun s => rfl
+  have j1 : ∀ s, (jwAt q s 1 : Module.End k (ModelSpace k)) = 1 := fun s => rfl
+  unfold ULd UR Wop Vop Qab
+  simp only [show n + 1 - 2 * 0 + 1 - 2 * 1 = n by omega, show n + 1 - 2 * 0 = n + 1 by omega,
+    show n + 1 + 1 - 2 * 1 = n by omega, show n + 1 - 1 = n by omega, Nat.mul_zero, Nat.sub_zero,
+    show 1 + 1 - 2 * 1 = 0 by omega, nestCap, nestCup, j0, j1, mul_one, one_mul,
+    sh_mul, sh_jwAt, sh_cupOp, sh_one, zero_add, Nat.add_zero]
+  have hp := jwProps_of_le (isTL_shift q 0) (n + 2) (fun j hj => hd j (by omega)) (n + 1) (by omega)
+  have hn := jwProps_of_le (isTL_shift q 0) (n + 2) (fun j hj => hd j (by omega)) n (by omega)
+  have a1 : (jwAt q 0 (n + 1) : Module.End k (ModelSpace k)) * jwAt q 0 n = jwAt q 0 (n + 1) := hp.absR n (by omega)
+  have a2 : (jwAt q 0 (n + 1) : Module.End k (ModelSpace k)) * jwAt q 0 (n + 1) = jwAt q 0 (n + 1) :=
+    hp.absR (n + 1) le_rfl
+  have a3 : (jwAt q 0 n : Module.End k (ModelSpace k)) * jwAt q 0 n = jwAt q 0 n := hn.absR n le_rfl
+  have hc := jwAt_comm_cup (k := k) q n
+  have ht := cap_jwAt_cup (k := k) q hn (hd n (by omega))
+  calc _ = jwAt q 0 n * (capOp q n * (jwAt q 0 (n + 1) * jwAt q 0 (n + 1)) * (jwAt q 0 n * cupOp q n)) *
+        (jwAt q 0 n * jwAt q 0 n) := by rw [← a1]; simp only [mul_assoc]
+    _ = jwAt q 0 n * (capOp q n * jwAt q 0 (n + 1) * cupOp q n) * (jwAt q 0 n * (jwAt q 0 n * jwAt q 0 n)) := by
+        rw [a2, hc]; simp only [mul_assoc]
+    _ = _ := by rw [ht, a3, a3, mul_smul_comm, smul_mul_assoc, a3, a3]
+
+/-- **The upper entry of the cup column**: `Fc(n, 1, 1; 0, 1; 1, 0) = 1`. -/
+theorem Fc_cup_high (q : kˣ) (hδ : loopVal q ≠ 0) (n : ℕ) (hd : ∀ j, j ≤ n + 2 → chebD (loopVal q) j ≠ 0) :
+    Fc q n 1 1 0 1 1 0 = 1 := by
+  have h1 := gram_spec q hδ n 1 1 0 1 1 0 (by omega) (fun j hj => hd j (by omega)) (Nat.zero_le _) (Nat.zero_le _)
+    le_rfl le_rfl le_rfl (by omega) (Nat.zero_le _) (Nat.zero_le _)
+  have h2 := ULd_mul_UR_cup_high q n hd
+  have h3 : (gramCoef q n 1 1 0 1 1 0 - chebD (loopVal q) (n + 1) / chebD (loopVal q) n) •
+      (jwAt q 0 (n + 1 - 2 * 0 + 1 - 2 * 1) : Module.End k (ModelSpace k)) = 0 :=
+    (sub_smul (gramCoef q n 1 1 0 1 1 0) (chebD (loopVal q) (n + 1) / chebD (loopVal q) n)
+      (jwAt q 0 (n + 1 - 2 * 0 + 1 - 2 * 1) : Module.End k (ModelSpace k))).trans
+      (sub_eq_zero.mpr (h1.symm.trans h2))
+  have hg := sub_eq_zero.mp ((smul_eq_zero.mp h3).resolve_right (jwAt_ne_zero q _))
+  unfold Fc
+  rw [if_pos ⟨Nat.zero_le _, by omega⟩, hg]
+  simp only [Nat.mul_zero, Nat.sub_zero]
+  rw [kapRec_succ_one_one q n (hd n (by omega))]
+  have h0 := hd n (by omega)
+  have h1' := hd (n + 1) (by omega)
+  simp only [kapRec, inv_one, one_mul]
+  field_simp
+
 end Lightlike.TemperleyLieb
