@@ -21,7 +21,8 @@ admissible indices (`TemperleyLieb.FcEqKL ℂ`).  This file writes the Kauffman�
   edges times `racahG θ a b i c D j`;
 * `thetaKL_qE`, `deltaKL_qE`: the theta net and the loop value;
 * `gaugeI`, `gaugeJ`, `klK`, `kl_alg`: the gauge form `klCoef = (gaugeJ / gaugeI) · klK` (the gauge
-  ratios cancel in the pentagon), with its algebra over atoms.
+  ratios cancel in the pentagon), with its algebra over atoms, and `klCoef_qE`: at `q = e^{iθ}` the
+  Kauffman–Lins coefficient is `(gaugeJ / gaugeI) · klK` on the admissible indices.
 
 The dictionary between the pentagon and `GenBE` (blocks `(a,b,c,d) = (e',a',b',c')`, channels
 `I1 = r'`, `I2 = f'`, total `T = q`, `J1 = p`, `J2 = d'`, summed `x = b + c - 2f`, sign
@@ -301,4 +302,38 @@ theorem kl_alg {P₁ P₂ P₃ P₄ A B C D I J I₁ J₁ S₁ S₂ R σ σ₁ �
   field_simp
 
 
+/-- A triad product of nonvanishing quantum factorials does not vanish. -/
+theorem triPi_ne_zero (θ : ℝ) {N x y z : ℕ} (hq : ∀ n, n ≤ N → qfG θ n ≠ 0)
+    (hx : (x + y + z) / 2 - x ≤ N) (hy : (x + y + z) / 2 - y ≤ N) (hz : (x + y + z) / 2 - z ≤ N) :
+    triPi θ x y z ≠ 0 :=
+  mul_ne_zero (mul_ne_zero (hq _ hx) (hq _ hy)) (hq _ hz)
+
+/-- **The Kauffman–Lins coefficient at `q = e^{iθ}`, real form**: the coefficient is the gauge ratio
+`gaugeJ / gaugeI` times `klK`, provided the quantum factorials up to `a + b + c + 1` do not vanish. -/
+theorem klCoef_qE (θ : ℝ) {a b c e d f d' : ℕ} (hA : KLAdm a b c e d f d')
+    (hq : ∀ n, n ≤ a + b + c + 1 → qfG θ n ≠ 0) :
+    klCoef (qE θ) a b c e d f d' =
+      ((gaugeJ θ a b c (b + c - 2 * f) (a + b - 2 * e + c - 2 * d) /
+          gaugeI θ a b c (a + b - 2 * e) (a + b - 2 * e + c - 2 * d) *
+        klK θ a b c (a + b - 2 * e) (a + b - 2 * e + c - 2 * d) (b + c - 2 * f) : ℝ) : ℂ) := by
+  unfold klCoef
+  rw [ite_eq_left hA]
+  rw [tetKL_qE]
+  rw [tetPreN_eq θ hA]
+  rw [thetaKL_qE, thetaKL_qE, deltaKL_qE]
+  obtain ⟨h1, h2, h3, h4, h5⟩ := hA
+  simp only [le_min_iff] at h1 h2 h3 h4
+  simp only [← ofReal_mul, ← ofReal_div]
+  rw [ofReal_inj]
+  unfold gaugeI gaugeJ klK
+  rw [delta2G_eq_triPi, delta2G_eq_triPi, qfG_succ θ (a + b - 2 * e), qfG_succ θ (b + c - 2 * f)]
+  have hi1 : a + b - 2 * e + 1 ≤ a + b + c + 1 := by omega
+  have hj1 : b + c - 2 * f + 1 ≤ a + b + c + 1 := by omega
+  have hqn : ∀ m, m + 1 ≤ a + b + c + 1 → qnG θ (m + 1) ≠ 0 := fun m hm h => by
+    have := hq (m + 1) hm; rw [qfG_succ, h, mul_zero] at this; exact this rfl
+  refine kl_alg (hq _ (by omega)) (hq _ (by omega)) (hq _ (by omega)) (hq _ (by omega))
+    (hq _ (by omega)) (hq _ (by omega))
+    (triPi_ne_zero θ hq (by omega) (by omega) (by omega)) (triPi_ne_zero θ hq (by omega) (by omega) (by omega))
+    (hqn _ hi1) (hqn _ hj1) (hq _ (by omega)) (hq _ (by omega))
+    (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ (by norm_num)) (neg_one_pow_div _ _ _)
 end Lightlike.TV
