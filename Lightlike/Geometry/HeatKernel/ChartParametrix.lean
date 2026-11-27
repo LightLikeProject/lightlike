@@ -153,7 +153,7 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
           HasFDerivAt (fun y => V (p, y)) (ContinuousLinearMap.id ℝ (Fin n → ℝ)) p) ∧
         (∀ q ∈ Ω, σ q = Geodesic.pairing g q.1 (V q) (V q)) ∧
         (∀ z, ‖z‖ < r / 2 → θ z = 1) ∧ (∀ z, r ≤ ‖z‖ → θ z = 0) ∧ (∀ z, θ z ∈ Icc (0 : ℝ) 1) ∧
-        Continuous θ ∧
+        Continuous θ ∧ (∀ t p, ‖p - x‖ < r → Continuous (H t p)) ∧
         (∃ c : ℝ, 0 < c ∧ ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r → c * ‖y - p‖ ^ 2 ≤ σ (p, y)) ∧
         (∃ A : ℝ, ∀ t ∈ Ioc (0 : ℝ) 1, ∀ p y : Fin n → ℝ, ‖p - x‖ < r → ‖y - p‖ < r →
           |truncAnsatz (fun k y => u k (p, y)) N t y| ≤ A) ∧
@@ -274,13 +274,37 @@ theorem exists_chart_parametrix {g : (Fin n → ℝ) → Matrix (Fin n) (Fin n) 
       show |θ (y - p) * _| ≤ _
       rw [hθ0, zero_mul, abs_zero]
       positivity
+  -- continuity of `H(t, p, ·)`: the cutoff vanishes near every point outside the slice of `Ω`
+  have hHc : ∀ t p, ‖p - x‖ < r → Continuous (H t p) := by
+    intro t p hp
+    refine continuous_iff_continuousAt.2 fun y => ?_
+    by_cases hsupp : y - p ∈ tsupport θ
+    · have hyp : ‖y - p‖ < r := by
+        have := hθs hsupp; rwa [mem_ball, dist_zero_right] at this
+      have hqΩ := hKcΩ (hmemK p y hp hyp)
+      have hpy : ContinuousAt (fun z : Fin n → ℝ => (p, z)) y := continuousAt_const.prodMk continuousAt_id
+      have hσc : ContinuousAt (fun z => σ (p, z)) y :=
+        ContinuousAt.comp (f := fun z => (p, z)) (hσs.continuousOn.continuousAt (hΩo.mem_nhds hqΩ)) hpy
+      have huc : ∀ k, ContinuousAt (fun z => u k (p, z)) y := fun k =>
+        ContinuousAt.comp (f := fun z => (p, z)) ((hus k).continuousOn.continuousAt (hΩo.mem_nhds hqΩ)) hpy
+      have hθc : ContinuousAt (fun z => θ (z - p)) y :=
+        (hθ.continuous.comp (continuous_id.sub continuous_const)).continuousAt
+      simp only [hHdef, heatGaussian, gaussFactor, truncAnsatz]
+      exact hθc.mul ((continuousAt_const.mul (Real.continuous_exp.continuousAt.comp (hσc.neg.div_const _))).mul
+        (tendsto_finsetSum _ fun k _ => continuousAt_const.mul (huc k)))
+    · have h0 : ∀ᶠ w in 𝓝 (y - p), θ w = 0 := notMem_tsupport_iff_eventuallyEq.mp hsupp
+      have h1 : ∀ᶠ z in 𝓝 y, H t p z = 0 :=
+        (((continuous_id.sub continuous_const).continuousAt (x := y)).eventually h0).mono fun z hz => by
+          show θ (z - p) * _ = 0
+          rw [show θ (z - p) = 0 from hz, zero_mul]
+      exact continuousAt_const.congr (h1.mono fun z hz => hz.symm)
   refine ⟨r, u, H, hr, fun p hp => (hdiag p ?_).2, fun t ht p hp => ?_,
     ⟨CG, a, hapos, hGauss⟩, ⟨CG * (Real.pi / a) ^ ((n : ℝ) / 2), fun t ht p hp => ?_⟩,
     ⟨Ω, θ, σ, V, hΩo, hxΩ, fun p y hp hy => hKcΩ (hmemK p y hp hy), hΩU, hVs, hus, hVd, hσV,
       fun z hz => hθ1 z (hKW₀ (by rw [mem_closedBall, dist_zero_right]; exact hz.le)),
       fun z hz => image_eq_zero_of_notMem_tsupport fun h => by
         have := hθs h; rw [mem_ball, dist_zero_right] at this; linarith,
-      hθr, hθ.continuous, ⟨c, hc, fun p y hp hy => hσnn (p, y) (hmemK p y hp hy)⟩,
+      hθr, hθ.continuous, hHc, ⟨c, hc, fun p y hp hy => hσnn (p, y) (hmemK p y hp hy)⟩,
       ⟨|A2|, fun t ht p y hp hy => by
         have := hA2 _ (hmemK p y hp hy)
         rw [Real.norm_eq_abs, abs_of_nonneg (Finset.sum_nonneg fun k _ => abs_nonneg _)] at this
