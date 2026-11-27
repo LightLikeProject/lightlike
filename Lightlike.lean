@@ -327,6 +327,8 @@ import Lightlike.Geometry.HeatKernel.ParamLaplacian
 import Lightlike.Geometry.HeatKernel.ParamLaplacianTests
 import Lightlike.Geometry.HeatKernel.HeatCoeffZero
 import Lightlike.Geometry.HeatKernel.HeatCoeffZeroTests
+import Lightlike.Geometry.HeatKernel.HeatCoeffs
+import Lightlike.Geometry.HeatKernel.HeatCoeffsTests
 import Lightlike.Geometry.HeatKernel.GaussianDeriv
 import Lightlike.Geometry.HeatKernel.Potential
 import Lightlike.Geometry.HeatKernel.InducedGravity
