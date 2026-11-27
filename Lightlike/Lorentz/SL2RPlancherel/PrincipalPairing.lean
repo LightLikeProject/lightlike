@@ -21,7 +21,8 @@ with `Φ` lowers both down to the spherical base: for smooth compactly supported
 (`integral_profile_mul_conj_mcoefP`) and
 `∫_{ξ>0} Hc_{r,l} G conj Φ^ν_{-r,l} sinh
 = ∏_{j<l} conj(-(w_ν + j + 1)) · (-1)^r ∏_{j<r} conj(-(w_{-ν} + j + 1)) · (1/2) Ĝ(ν/2)`
-(`integral_Hc_mul_conj_mcoefP`), `Ĝ = sphTransformH G`.
+(`integral_Hc_mul_conj_mcoefP`), `Ĝ = sphTransformH G`.  At `ν = 2ρ` the constant has modulus
+`√(w_l(ρ) w_r(ρ))`, the block weight (`norm_sq_integral_Hc_mul_conj_mcoefP`).
 Layer 2c-v of the Plancherel formula on `SL(2,ℝ)` (pairing the ladder chains with the matrix
 coefficients), milestone HA3.
 -/
@@ -377,5 +378,32 @@ theorem integral_Hc_mul_conj_mcoefP (ν : ℝ) (r l : ℕ) {G : ℝ → ℂ} (hG
       ring
     rw [e1, hadj, e2, ih, Finset.prod_range_succ]
     ring
+
+lemma norm_sq_conj_neg_wP_add (ρ : ℝ) (j : ℕ) :
+    ‖(starRingEnd ℂ) (-(wP (2 * ρ) + ((j : ℂ) + 1)))‖ ^ 2 = 1 / 4 + ρ ^ 2 + j * (j + 1) := by
+  rw [Complex.norm_conj, norm_neg, Complex.sq_norm, Complex.normSq_apply]
+  simp [wP]
+  ring
+
+lemma norm_sq_conj_neg_wP_neg_add (ρ : ℝ) (j : ℕ) :
+    ‖(starRingEnd ℂ) (-(wP (-(2 * ρ)) + ((j : ℂ) + 1)))‖ ^ 2 = 1 / 4 + ρ ^ 2 + j * (j + 1) := by
+  rw [Complex.norm_conj, norm_neg, Complex.sq_norm, Complex.normSq_apply]
+  simp [wP]
+  ring
+
+/-- **The block weight from the matrix coefficients**: at `ν = 2ρ`,
+`|∫_{ξ>0} Hc_{r,l} G conj Φ^{2ρ}_{-r,l} sinh|² = w_l(ρ) w_r(ρ)/4 · |Ĝ(ρ)|²`, so the block transform
+`√(ρ tanh(πρ) w_l w_r)/2 · Ĝ(ρ)` has modulus `√(ρ tanh(πρ))` times the principal-series pairing. -/
+theorem norm_sq_integral_Hc_mul_conj_mcoefP (ρ : ℝ) (r l : ℕ) {G : ℝ → ℂ}
+    (hG : ContDiff ℝ ∞ G) (hc : HasCompactSupport G) :
+    ‖∫ ξ in Ioi 0, Hc r G l ξ * (starRingEnd ℂ) (mcoefP (2 * ρ) (-r) l ξ) * (Real.sinh ξ : ℂ)‖ ^ 2 =
+      wl l ρ * wl r ρ / 4 * ‖sphTransformH G ρ‖ ^ 2 := by
+  rw [integral_Hc_mul_conj_mcoefP (2 * ρ) r l hG hc,
+    show 2 * ρ / 2 = ρ by ring]
+  simp only [norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, norm_prod, mul_pow,
+    ← Finset.prod_pow, norm_sq_conj_neg_wP_add, norm_sq_conj_neg_wP_neg_add, wl]
+  rw [show ‖(1 / 2 : ℂ)‖ = 1 / 2 by simp]
+  push_cast
+  ring
 
 end Lightlike.Lorentz.SL2RPlancherel
