@@ -317,12 +317,13 @@ Done-when texts and trust checks: [milestones.md](milestones.md#pl-topology).
 |---|---|---|---|---|---|
 | [`T-PL1`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL1%22) | Simplicial complexes in every dimension; links, stars, joins, cones; stellar subdivisions and welds; … | lickorish-1999 | M | intermediate |  |
 | [`T-PL2`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL2%22) | Pachner's theorem: closed combinatorial manifolds are stellar-equivalent exactly when they are related by … | lickorish-1999 | L | advanced |  |
-| [`T-PL5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL5%22) | The topology Moise's proof needs: Jordan curve and Schoenflies theorems in the plane, and the 3-dimensional … | moise-1977, mccleary-2006 | R | research-level |  |
 | [`T-PL4`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL4%22) | Geometric realisations, PL maps and PL homeomorphisms; Newman's theorem: PL-homeomorphic realisations exactly … | lickorish-1999 | L | advanced | PL2 |
 | [`T-PL7a`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL7a%22) | Assembly up to PL homeomorphism: PL-homeomorphic closed combinatorial 3-manifolds have triangulations related … | turaev-1994, lickorish-1999 | M | intermediate | PL2, PL4 |
+| [`T-PL5`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL5%22) | The topology Moise's proof needs: Jordan curve and Schoenflies theorems in the plane, and the 3-dimensional … | moise-1977, mccleary-2006 | R | research-level |  |
 | [`T-PL6`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL6%22) | Moise's theorem: every topological 3-manifold has a triangulation, unique up to PL homeomorphism | moise-1977, Tame imbedding | R | research-level | PL5 |
 | [`T-PL7b`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL7b%22) | Assembly up to homeomorphism: homeomorphic closed 3-manifolds have triangulations related by the moves on … | turaev-1994, lickorish-1999 | R | research-level | PL7a, PL6 |
 | [`T-PL3`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL3%22) | The classification of closed combinatorial surfaces up to 2D bistellar moves | lickorish-1999, moise-1977 | L | advanced |  |
+| [`T-PL7c`](https://github.com/LightlikeProject/lightlike/issues?q=is%3Aissue+in%3Atitle+%22T-PL7c%22) | Unconditional triangulation independence of the regularised Ponzano–Regge amplitude on the PL side | adiprasito-pak-2024 | R | research-level | PL2, PL4, PL7a |
 
 ### Quantum groups and state-sum TQFTs
 

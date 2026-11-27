@@ -6798,7 +6798,7 @@
   tier: established
   source: exploratory
   review: kernel-checked
-  note: "Conditional on the Lean proposition PachnerForwardHyp Same (Same-related complexes have a common forward descendant under the 2-3 and 1-4 moves), which is not proved by this theorem or assumed true; the stellar form of Pachner's theorem for Complex3 is the theorem pachner3 (PL/PachnerMoves.lean, catalogued with milestone PL2), and whether it yields this forward form was not established here. Comparison pending: no source was read at a cited location. The cut-off is a regulator, so this is the form in which independence holds before the cut-off is removed; it is not the statement that the cut-off amplitude is a triangulation invariant."
+  note: "Conditional on the Lean proposition PachnerForwardHyp Same (Same-related complexes have a common forward descendant under the 2-3 and 1-4 moves), which is not proved by this theorem or assumed true; the stellar form of Pachner's theorem for Complex3 is the theorem pachner3 (PL/PachnerMoves.lean, catalogued with milestone PL2), and whether it yields this forward form was not established here. Comparison pending: no source was read at a cited location. The cut-off is a regulator, so this is the form in which independence holds before the cut-off is removed; it is not the statement that the cut-off amplitude is a triangulation invariant. The unconditional version, with PachnerForwardHyp proven (Adiprasito–Pak, arXiv:2404.05930), is the milestone PL7c."
   since: unreleased
 - id: LL-0523
   title: "The r = 3 Turaev–Viro state sum is the same along any chain of 3D moves: it is unchanged by the 3-2 move and by the 4-1 move (the inverses of the 2-3 and 1-4 moves), hence along any chain of moves on closed combinatorial 3-manifolds"
@@ -7633,4 +7633,15 @@
       - {ref: kitaev-2017, location: "eq. (15)", check: "irreducibility"}
   review: kernel-checked
   note: "Compared with Kitaev, arXiv:1711.08169, Section 3.2 (read; page not checked): D_lambda^- has the weights -lambda, -lambda - 1, ... . The library defines D_n^- as the twist of D_n^+ by the automorphism g to J g J, which negates the K-weights (discreteSeriesMinus_rot); that this equals the complex conjugate representation is not proved here (the antiholomorphic matrix coefficients of the Plancherel formula are stated separately). Irreducibility is inherited from D_n^+ because the automorphism is onto."
+  since: unreleased
+- id: LL-0591
+  title: "If two complexes of tetrahedra have a common forward descendant under the 2-3 and 1-4 moves, then every regularised Ponzano–Regge amplitude value of each is a value of the descendant: ampValues K ⊆ ampValues K'' and ampValues K' ⊆ ampValues K''"
+  area: PonzanoRegge
+  file: Lightlike/PonzanoRegge/TriangulationIndependence/Main.lean
+  decls: [Lightlike.PR.CommonForward.ampValues_subset]
+  status: proven
+  tier: established
+  source: exploratory
+  review: kernel-checked
+  note: "Comparison pending: no source was read at a cited location for this statement; it is a statement about this library's regularised amplitude. CommonForward K K' is an antecedent of the theorem, not an open hypothesis: the theorem says nothing about whether two triangulations of one manifold have a common forward descendant. That is the proposition PachnerForwardHyp, which the conditional entry LL-0522 assumes and which the milestone PL7c is to prove (Adiprasito–Pak, arXiv:2404.05930, common stellar subdivisions). No equality of the value sets of K and K' follows."
   since: unreleased

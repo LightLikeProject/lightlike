@@ -3,6 +3,7 @@ import Lightlike.TemperleyLieb.KLCoef
 import Lightlike.TemperleyLieb.TopEntry
 import Lightlike.TemperleyLieb.VertexNorm
 import Lightlike.TemperleyLieb.Slide
+import Lightlike.TemperleyLieb.Adjoint
 
 /-!
 # Base values of the Kauffman–Lins coefficient
@@ -11,6 +12,13 @@ With an empty third block the tetrahedral net is a theta net, `tetKL q a b 0 i i
 (`tetKL_zero_third`: its sum has the single term `z = (a+b+i)/2`), and `θ(i, 0, i) = Δ_i`
 (`thetaKL_zero_mid`), so the Kauffman–Lins coefficient is the identity matrix (`klCoef_zero_third`), as `Fc` is
 (`Fc_zero_third`). This is the base `c = 0` of the identification `Fc = klCoef`.
+
+The blocks with a third block of one strand (`c = 1`) are computed in closed form (`Fc_one_block`,
+`Fc_top_one_qb`): `F00 = [a+b-E+2][b-E+1]/([b+1][a+b-2E+2])`, `F01 = -[a-E+1]/[a+b-2E+2]`, `F10 = [E]/[b+1]`,
+`F11 = 1`. The proof is an induction on `b`: the recursion of the pentagon with blocks `(a, b, 1, 1)`
+(`Fc_b_rec_two`) gives `F11` and `F01` from the levels below (`Fc_one_11_step`, `Fc_one_01_step`), the orthogonality
+of the columns (`Fc_one_orth`, from the mirror inverse and the vertical flip) gives `F10` (`Fc_one_10_of_orth`), and
+the base values are the cup column (`Fc_cup_low`, `Fc_cup_high`) and the edge entry (`Fc_edge`).
 -/
 
 namespace Lightlike.TemperleyLieb
@@ -295,4 +303,412 @@ theorem Fc_edge [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b : ℕ) (hab 
   simp only [K]
   field_simp
 
+/-- The two columns of the one-strand block are orthogonal for the vertex-norm weights. -/
+theorem Fc_one_orth [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b E : ℕ} (hE : 1 ≤ E) (hEa : E ≤ a)
+    (hEb : E ≤ b) (hd : ∀ j, j ≤ a + b + 2 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 2 → (q : k) ^ (2 * j) ≠ 1) :
+    kapRec q a b E * kapRec q (a + b - 2 * E) 1 0 * Fc q a b 1 E 0 0 E * Fc q a b 1 E 0 1 (E - 1) +
+      kapRec q a b (E - 1) * kapRec q (a + b - 2 * (E - 1)) 1 1 *
+        Fc q a b 1 (E - 1) 1 0 E * Fc q a b 1 (E - 1) 1 1 (E - 1) = 0 := by
+  have hinv := Fc_mirror_inv (k := k) q hδ (a := a) (b := b) (c := 1) (f := 0) (d' := E) (g := 1) (h := E - 1)
+    (by omega) (by omega) (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+    (Nat.zero_le _) (Nat.zero_le _) hEa (by omega) le_rfl (by omega) (by omega) (by omega)
+  rw [if_neg (by omega)] at hinv
+  have kr1 := kapRec_ne (k := k) q 1 1 b le_rfl (by omega) (fun x h1 h2 => hq2 x h1 (by omega))
+  have kr2 := kapRec_ne (k := k) q (E - 1) (1 + b - 2 * 1) a (by omega) (by omega) (fun x h1 h2 => hq2 x h1 (by omega))
+  set KR := kapRec q 1 b 1 * kapRec q (1 + b - 2 * 1) a (E - 1)
+  have hKR : KR ≠ 0 := mul_ne_zero kr1 kr2
+  -- each term, through the flip
+  have hterm : ∀ e ∈ range (a + 1), ∀ d ∈ range (1 + 1),
+      Fc q 1 b a 1 (E - 1) e d * Fc q a b 1 e d 0 E =
+        KR⁻¹ * (kapRec q a b e * kapRec q (a + b - 2 * e) 1 d * Fc q a b 1 e d 1 (E - 1) * Fc q a b 1 e d 0 E) := by
+    intro e _ d _
+    by_cases h0 : Fc q a b 1 e d 0 E = 0
+    · simp [h0]
+    · obtain ⟨he, hdd⟩ := Fc_guard h0
+      have hf := Fc_flip (k := k) q hδ (a := a) (b := b) (c := 1) (e := e) (d := d) (f := 1) (d' := E - 1)
+        (by omega) (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+        (he.trans (min_le_left _ _)) (he.trans (min_le_right _ _)) (hdd.trans (min_le_right _ _))
+        (hdd.trans (min_le_left _ _)) (by omega) le_rfl (by omega) (by omega)
+      rw [hf]; simp only [KR]; field_simp
+  rw [sum_congr rfl fun e he => sum_congr rfl fun d hdm => hterm e he d hdm] at hinv
+  simp only [← mul_sum] at hinv
+  have hsum := (mul_eq_zero.mp hinv).resolve_left (inv_ne_zero hKR)
+  -- only (E, 0) and (E-1, 1) contribute
+  have hin : ∀ g : ℕ → k, ∑ d ∈ range (1 + 1), g d = g 0 + g 1 := fun g => by simp [sum_range_succ]
+  rw [sum_congr rfl fun e _ => hin _, sum_add_distrib] at hsum
+  have z0 : ∀ e ∈ range (a + 1), e ≠ E →
+      kapRec q a b e * kapRec q (a + b - 2 * e) 1 0 * Fc q a b 1 e 0 1 (E - 1) * Fc q a b 1 e 0 0 E = 0 := by
+    intro e _ he
+    by_cases h0 : Fc q a b 1 e 0 0 E = 0
+    · simp [h0]
+    · have := Fc_total q hδ a b 1 e 0 0 E (by omega) (fun j hj => hd j (by omega)) (Nat.zero_le _)
+        (Nat.zero_le _) hEa (by omega) h0
+      obtain ⟨he', -⟩ := Fc_guard h0
+      exact absurd this (by have := he'.trans (min_le_left _ _); have := he'.trans (min_le_right _ _); omega)
+  have z1 : ∀ e ∈ range (a + 1), e ≠ E - 1 →
+      kapRec q a b e * kapRec q (a + b - 2 * e) 1 1 * Fc q a b 1 e 1 1 (E - 1) * Fc q a b 1 e 1 0 E = 0 := by
+    intro e _ he
+    by_cases h0 : Fc q a b 1 e 1 0 E = 0
+    · simp [h0]
+    · have := Fc_total q hδ a b 1 e 1 0 E (by omega) (fun j hj => hd j (by omega)) (Nat.zero_le _)
+        (Nat.zero_le _) hEa (by omega) h0
+      obtain ⟨he', hdd⟩ := Fc_guard h0
+      exact absurd this (by have := hdd.trans (min_le_left _ _); have := he'.trans (min_le_left _ _); omega)
+  rw [sum_eq_single E z0 (fun h => absurd (mem_range.mpr (by omega)) h),
+    sum_eq_single (E - 1) z1 (fun h => absurd (mem_range.mpr (by omega)) h)] at hsum
+  linear_combination hsum
+/-- **The recursion in `b`, two terms**: the triple sum of `Fc_b_rec` has the two terms `f = 0, h = 1` and
+`f = 1, h = 0`. -/
+theorem Fc_b_rec_two [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) (a b e₀ d₀ g₀ : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (hd : ∀ x, x ≤ a + b + 1 + 1 → chebD (loopVal q) x ≠ 0)
+    (hq2 : ∀ x, 1 ≤ x → x ≤ 2 * (a + b) + 4 → (q : k) ^ (2 * x) ≠ 1)
+    (heb : e₀ ≤ b) (h₀ : ValidA a b 1 1 e₀ d₀ g₀) :
+    Fc q b 1 1 0 1 1 0 * Fc q a (b + 1) 1 (e₀ + d₀) g₀ 1 e₀ * Fc q a b 1 e₀ d₀ 0 (e₀ + d₀) +
+      Fc q b 1 1 1 0 1 0 * Fc q a (b - 1) 1 (e₀ + d₀ - 1) g₀ 0 e₀ * Fc q a b 1 e₀ d₀ 1 (e₀ + d₀ - 1) =
+      Fc q (a + b - 2 * e₀) 1 1 d₀ g₀ 1 0 := by
+  rw [← Fc_b_rec q hδ a b e₀ d₀ g₀ ha hb hd hq2 heb h₀]
+  obtain ⟨he, hd₀, hg₀, hg1⟩ := h₀
+  have hd1 : ∀ x, x ≤ a + b + 1 → chebD (loopVal q) x ≠ 0 := fun x hx => hd x (by omega)
+  -- the inner sum over d': only d' = e₀ + d₀ - f survives
+  have inner : ∀ f h, f ≤ 1 → (∀ d' ∈ range (a + 1), d' ≠ e₀ + d₀ - f →
+      Fc q a (b + 1 - 2 * f) 1 d' g₀ h e₀ * Fc q a b 1 e₀ d₀ f d' = 0) := by
+    intro f h hf d' _ hne
+    by_cases h2 : Fc q a (b + 1 - 2 * f) 1 d' g₀ h e₀ = 0
+    · simp [h2]
+    · obtain ⟨hd'1, -⟩ := Fc_guard h2
+      by_cases h3 : Fc q a b 1 e₀ d₀ f d' = 0
+      · simp [h3]
+      · have := Fc_total q hδ a b 1 e₀ d₀ f d' (by omega) hd1 (by omega) hf (hd'1.trans (min_le_left _ _))
+          (by have := hd'1.trans (min_le_right _ _); omega) h3
+        exact absurd this (by have := hd₀.trans (min_le_left _ _); have := he.trans (min_le_left _ _); omega)
+  have hF1 : ∀ f h, ¬ (f + h = 1) → Fc q b 1 1 f h 1 0 = 0 := by
+    intro f h hfh
+    by_contra h1
+    obtain ⟨hf, hh⟩ := Fc_guard h1
+    have := Fc_total q hδ b 1 1 f h 1 0 (by omega) (fun x hx => hd x (by omega)) le_rfl le_rfl (Nat.zero_le _)
+      (Nat.zero_le _) h1
+    exact hfh (by have := hf.trans (min_le_right _ _); have := hh.trans (min_le_left _ _); omega)
+  have row : ∀ f, f ≤ 1 → ∑ h ∈ range (1 + 1), ∑ d' ∈ range (a + 1),
+      Fc q b 1 1 f h 1 0 * (Fc q a (b + 1 - 2 * f) 1 d' g₀ h e₀ * Fc q a b 1 e₀ d₀ f d') =
+      Fc q b 1 1 f (1 - f) 1 0 * (Fc q a (b + 1 - 2 * f) 1 (e₀ + d₀ - f) g₀ (1 - f) e₀ *
+        Fc q a b 1 e₀ d₀ f (e₀ + d₀ - f)) := by
+    intro f hf
+    rw [sum_eq_single (1 - f) (fun h _ hne => by simp [hF1 f h (by omega)])
+      (fun hm => absurd (mem_range.mpr (by omega)) hm)]
+    rw [← mul_sum, sum_eq_single (e₀ + d₀ - f) (inner f (1 - f) hf)
+      (fun hm => by
+        have hgt : a + f < e₀ + d₀ := by simpa using hm
+        rw [show Fc q a (b + 1 - 2 * f) 1 (e₀ + d₀ - f) g₀ (1 - f) e₀ = 0 by
+          unfold Fc; rw [if_neg fun h => by have := h.1.trans (min_le_left _ _); omega]]
+        ring)]
+  rw [sum_eq_add 0 1 (by omega) (fun f _ hf => by
+      rw [sum_eq_zero fun h _ => sum_eq_zero fun d' _ => by rw [hF1 f h (by omega), zero_mul]])
+    (fun hm => absurd (mem_range.mpr (by omega)) hm) (fun hm => absurd (mem_range.mpr (by omega)) hm),
+    row 0 (by omega), row 1 le_rfl]
+  simp only [Nat.mul_zero, Nat.sub_zero, Nat.mul_one, show 1 - 0 = 1 from rfl, show 1 - 1 = 0 from rfl,
+    show b + 1 - 2 = b - 1 by omega, Nat.sub_zero]
+  ring
+lemma qfac_succ' (q : kˣ) (n : ℕ) : qfac q (n + 1) = qfac q n * qb q (n + 1) := rfl
+
+/-- The lower cup entry in quantum integers: `Fc(n+1,1,1;1,0;1,0) = -[n+1]/[n+2]`. -/
+theorem Fc_cup_low_qb (q : kˣ) (hδ : loopVal q ≠ 0) (hD : (q : k) - (q : k)⁻¹ ≠ 0) (n : ℕ)
+    (hd : ∀ j, j ≤ n + 3 → chebD (loopVal q) j ≠ 0) :
+    Fc q (n + 1) 1 1 1 0 1 0 = -(qb q (n + 1) / qb q (n + 2)) := by
+  rw [Fc_cup_low q hδ n hd, chebD_eq_qb q hD, chebD_eq_qb q hD]
+  have h1 := hd (n + 1) (by omega)
+  rw [chebD_eq_qb q hD] at h1
+  have h2 : qb q (n + 1 + 1) ≠ 0 := fun h => h1 (by rw [h, mul_zero])
+  rw [pow_succ]
+  field_simp
+
+/-- **The top entry of the one-strand block** in quantum integers. -/
+theorem Fc_top_one_qb (q : kˣ) (hδ : loopVal q ≠ 0) {a b E : ℕ} (hEa : E ≤ a) (hEb : E ≤ b) (hN : 1 ≤ a + b)
+    (hd : ∀ j, j ≤ a + b + 1 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 2 → (q : k) ^ (2 * j) ≠ 1) :
+    Fc q a b 1 E 0 0 E = qb q (a + b - E + 2) * qb q (b - E + 1) / (qb q (b + 1) * qb q (a + b - 2 * E + 2)) := by
+  rw [Fc_top q hδ a b 1 E hEa hEb (by omega) hd, kapRec_eq q E a (b + 1) hEa (by omega)
+    (fun j h1 h2 => hq2 j h1 (by omega)), kapRec_eq q E a b hEa hEb (fun j h1 h2 => hq2 j h1 (by omega))]
+  have hnz := qfac_ne_of_pow q (N := a + b + 2) (by omega) hq2
+  have hD : (q : k) - (q : k)⁻¹ ≠ 0 := by
+    have := hq2 1 le_rfl (by omega)
+    intro h; apply this
+    have hq : (q : k) ≠ 0 := q.ne_zero
+    field_simp at h
+    linear_combination h
+  obtain ⟨α, rfl⟩ : ∃ α, a = E + α := ⟨a - E, by omega⟩
+  obtain ⟨β, rfl⟩ : ∃ β, b = E + β := ⟨b - E, by omega⟩
+  have e1 : E + α + (E + β + 1) - E + 1 = E + α + β + 1 + 1 := by omega
+  have e2 : E + α + (E + β) - E + 1 = E + α + β + 1 := by omega
+  have e3 : E + β + 1 - E = β + 1 := by omega
+  have e4 : E + β - E = β := by omega
+  have e5 : E + α - E = α := by omega
+  have e6 : E + α + (E + β + 1) - 2 * E + 1 = α + β + 1 + 1 := by omega
+  have e7 : E + α + (E + β) - 2 * E + 1 = α + β + 1 := by omega
+  have e8 : E + α + (E + β) - E + 2 = E + α + β + 1 + 1 := by omega
+  have e9 : E + β - E + 1 = β + 1 := by omega
+  have e10 : E + α + (E + β) - 2 * E + 2 = α + β + 1 + 1 := by omega
+  simp only [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10]
+  rw [qfac_succ' q (E + α + β + 1), qfac_succ' q β,
+    qfac_succ' q (α + β + 1), qfac_succ' q (E + β)]
+  have := hnz (E + α + β + 1) (by omega); have := hnz β (by omega); have := hnz (α + β + 1) (by omega)
+  have := hnz (E + β) (by omega); have := hnz E (by omega); have := hnz α (by omega); have := hnz (E + α) (by omega)
+  have hb1 : qb q (E + β + 1) ≠ 0 := qb_ne q hD _ (hq2 _ (by omega) (by omega))
+  have hb2 : qb q (α + β + 1 + 1) ≠ 0 := qb_ne q hD _ (hq2 _ (by omega) (by omega))
+  field_simp
+/-- The lower-left entry of the one-strand block from the orthogonality of its columns. -/
+theorem Fc_one_10_of_orth [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a b E : ℕ} (hE : 1 ≤ E) (hEa : E ≤ a)
+    (hEb : E ≤ b) (hd : ∀ j, j ≤ a + b + 2 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ a + b + 2 → (q : k) ^ (2 * j) ≠ 1)
+    (h11 : Fc q a b 1 (E - 1) 1 1 (E - 1) = 1)
+    (h01 : Fc q a b 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + b - 2 * E + 2))) :
+    Fc q a b 1 (E - 1) 1 0 E = qb q E / qb q (b + 1) := by
+  have hD : (q : k) - (q : k)⁻¹ ≠ 0 := by
+    have := hq2 1 le_rfl (by omega)
+    intro h; apply this
+    have hq : (q : k) ≠ 0 := q.ne_zero
+    field_simp at h
+    linear_combination h
+  have hO := Fc_one_orth q hδ hE hEa hEb hd hq2
+  rw [h11, h01, Fc_top_one_qb q hδ hEa hEb (by omega) (fun j hj => hd j (by omega))
+    (fun j h1 h2 => hq2 j h1 (by omega))] at hO
+  have hk2 : kapRec q (a + b - 2 * (E - 1)) 1 1 = chebD (loopVal q) (a + b - 2 * E + 2) /
+      chebD (loopVal q) (a + b - 2 * E + 1) := by
+    rw [show a + b - 2 * (E - 1) = a + b - 2 * E + 1 + 1 by omega, kapRec_succ_one_one q _ (hd _ (by omega))]
+  rw [hk2, kapRec_eq q E a b hEa hEb (fun j h1 h2 => hq2 j h1 (by omega)),
+    kapRec_eq q (E - 1) a b (by omega) (by omega) (fun j h1 h2 => hq2 j h1 (by omega)),
+    chebD_eq_qb q hD, chebD_eq_qb q hD] at hO
+  simp only [kapRec, mul_one] at hO
+  have hnz := qfac_ne_of_pow q (N := a + b + 2) (by omega) hq2
+  set x := Fc q a b 1 (E - 1) 1 0 E
+  obtain ⟨e, rfl⟩ : ∃ e, E = e + 1 := ⟨E - 1, by omega⟩
+  obtain ⟨α, rfl⟩ : ∃ α, a = e + 1 + α := ⟨a - (e + 1), by omega⟩
+  obtain ⟨β, rfl⟩ : ∃ β, b = e + 1 + β := ⟨b - (e + 1), by omega⟩
+  have i1 : e + 1 - 1 = e := by omega
+  have i2 : e + 1 + α + (e + 1 + β) - (e + 1) + 1 = e + α + β + 1 + 1 := by omega
+  have i3 : e + 1 + α - (e + 1) = α := by omega
+  have i4 : e + 1 + β - (e + 1) = β := by omega
+  have i5 : e + 1 + α + (e + 1 + β) - 2 * (e + 1) + 1 = α + β + 1 := by omega
+  have i6 : e + 1 + α + (e + 1 + β) - e + 1 = e + α + β + 1 + 1 + 1 := by omega
+  have i7 : e + 1 + α - e = α + 1 := by omega
+  have i8 : e + 1 + β - e = β + 1 := by omega
+  have i9 : e + 1 + α + (e + 1 + β) - 2 * e + 1 = α + β + 1 + 1 + 1 := by omega
+  have i10 : e + 1 + α + (e + 1 + β) - 2 * (e + 1) + 2 = α + β + 1 + 1 := by omega
+  have i11 : e + 1 + α + (e + 1 + β) - 2 * (e + 1) + 1 + 1 = α + β + 1 + 1 := by omega
+  have i12 : e + 1 + α + (e + 1 + β) - (e + 1) + 2 = e + α + β + 1 + 1 + 1 := by omega
+  have i13 : e + 1 + β - (e + 1) + 1 = β + 1 := by omega
+  have i14 : e + 1 + α - (e + 1) + 1 = α + 1 := by omega
+  simp only [i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14] at hO ⊢
+  rw [qfac_succ' q (e + α + β + 1 + 1), qfac_succ' q (e + α + β + 1), qfac_succ' q α, qfac_succ' q β,
+    qfac_succ' q (α + β + 1 + 1), qfac_succ' q (α + β + 1), qfac_succ' q e] at hO
+  have := hnz (e + α + β + 1) (by omega); have := hnz α (by omega); have := hnz β (by omega)
+  have := hnz (α + β + 1) (by omega); have := hnz e (by omega); have := hnz (e + 1 + α) (by omega)
+  have := hnz (e + 1 + β) (by omega)
+  have q1 : ∀ n, 1 ≤ n → n ≤ e + 1 + α + (e + 1 + β) + 2 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  have := q1 (e + α + β + 1 + 1) (by omega) (by omega); have := q1 (e + α + β + 1 + 1 + 1) (by omega) (by omega)
+  have := q1 (α + 1) (by omega) (by omega); have := q1 (β + 1) (by omega) (by omega)
+  have := q1 (α + β + 1 + 1) (by omega) (by omega); have := q1 (α + β + 1 + 1 + 1) (by omega) (by omega)
+  have := q1 (e + 1) (by omega) (by omega); have := q1 (e + 1 + β + 1) (by omega) (by omega)
+  field_simp at hO
+  rw [mul_zero] at hO
+  have hb := (mul_eq_zero.mp hO).resolve_left (by simp [*])
+  set sg : k := (-1 : k) ^ e * (-1) ^ (α + β + 1 + 1)
+  have hs : sg * sg = 1 := by
+    simp only [sg]; rw [mul_mul_mul_comm, ← pow_add, ← pow_add, ← two_mul, ← two_mul, pow_mul, pow_mul]; norm_num
+  have hB := q1 (e + 1 + β + 1) (by omega) (by omega)
+  rw [eq_div_iff hB]
+  linear_combination sg * hb - (x * qb q (e + 1 + β + 1) - qb q (e + 1)) * hs
+/-- `[α+β+E+2][β+1] + [E][α+1] = [E+β+1][α+β+2]`. -/
+theorem qb_id_A (q : kˣ) (hD : (q : k) - (q : k)⁻¹ ≠ 0) (α β E : ℕ) :
+    qb q (α + β + E + 2) * qb q (β + 1) + qb q E * qb q (α + 1) = qb q (E + β + 1) * qb q (α + β + 2) := by
+  have hq : (q : k) ≠ 0 := q.ne_zero
+  simp only [qb, pow_add, inv_pow]
+  field_simp
+  ring
+
+/-- `q - q⁻¹ ≠ 0` from `q² ≠ 1`. -/
+lemma hD_of_pow (q : kˣ) {N : ℕ} (hN : 1 ≤ N) (hq2 : ∀ j, 1 ≤ j → j ≤ N → (q : k) ^ (2 * j) ≠ 1) :
+    (q : k) - (q : k)⁻¹ ≠ 0 := by
+  have := hq2 1 le_rfl hN
+  intro h; apply this
+  have hq : (q : k) ≠ 0 := q.ne_zero
+  field_simp at h
+  linear_combination h
+
+/-- Solving `x T + C = 1` against `T + C = 1`. -/
+lemma solve_one {x T C : k} (hT : T ≠ 0) (h : 1 * x * T + C = 1) (hk : T + C = 1) : x = 1 := by
+  have : (x - 1) * T = 0 := by linear_combination h - hk
+  exact sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hT)
+
+/-- The step for `F11` (the upper-right entry of the one-strand block is `1`), from the recursion in `b`. -/
+theorem Fc_one_11_step [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a L E : ℕ} (ha : 1 ≤ a) (hL : 1 ≤ L)
+    (hE : 1 ≤ E) (hEa : E ≤ a + 1) (hEb : E ≤ L + 1)
+    (hd : ∀ j, j ≤ 2 * (a + L) + 6 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ 2 * (a + L) + 6 → (q : k) ^ (2 * j) ≠ 1)
+    (h10 : 2 ≤ E → Fc q a (L - 1) 1 (E - 1 - 1) 1 0 (E - 1) = qb q (E - 1) / qb q (L - 1 + 1))
+    (h01 : 2 ≤ E → Fc q a L 1 (E - 1) 0 1 (E - 1 - 1) = -(qb q (a - (E - 1) + 1) / qb q (a + L - 2 * (E - 1) + 2))) :
+    Fc q a (L + 1) 1 (E - 1) 1 1 (E - 1) = 1 := by
+  have hD := hD_of_pow q (N := 2 * (a + L) + 6) (by omega) hq2
+  have hrec := Fc_b_rec_two q hδ a L (E - 1) 0 1 ha hL (fun x hx => hd x (by omega))
+    (fun x h1 h2 => hq2 x h1 (by omega)) (by omega) ⟨by omega, by simp, by omega, le_rfl⟩
+  obtain ⟨L, rfl⟩ : ∃ L', L = L' + 1 := ⟨L - 1, by omega⟩
+  rw [Fc_cup_high q hδ (L + 1) (fun j hj => hd j (by omega)), Fc_cup_low_qb q hδ hD L (fun j hj => hd j (by omega)),
+    Fc_cup_high q hδ _ (fun j hj => hd j (by omega))] at hrec
+  simp only [Nat.add_zero] at hrec
+  rw [Fc_top_one_qb q hδ (by omega) (by omega) (by omega) (fun j hj => hd j (by omega))
+      (fun j h1 h2 => hq2 j h1 (by omega))] at hrec
+  show Fc q a (L + 2) 1 (E - 1) 1 1 (E - 1) = 1
+  set x := Fc q a (L + 2) 1 (E - 1) 1 1 (E - 1)
+  have hq1 : ∀ n, 1 ≤ n → n ≤ 2 * (a + (L + 1)) + 6 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  rcases Nat.lt_or_ge E 2 with hE2 | hE2
+  · -- E = 1: the second term vanishes
+    obtain rfl : E = 1 := by omega
+    have hz : Fc q a (L + 1) 1 0 0 1 0 = 0 := by
+      by_contra h0
+      have := Fc_total q hδ a (L + 1) 1 0 0 1 0 (by omega) (fun j hj => hd j (by omega)) (by omega) le_rfl
+        (Nat.zero_le _) (Nat.zero_le _) h0
+      omega
+    simp only [show 1 - 1 = 0 from rfl, Nat.zero_add, hz, mul_zero, add_zero, one_mul] at hrec
+    simp only [Nat.sub_zero] at hrec
+    rw [mul_comm (qb q (L + 1 + 1)), div_self (mul_ne_zero (hq1 _ (by omega) (by omega)) (hq1 _ (by omega) (by omega))),
+      mul_one] at hrec
+    exact hrec
+  · rw [h10 hE2, h01 hE2] at hrec
+    refine solve_one ?_ hrec ?_
+    · exact div_ne_zero (mul_ne_zero (hq1 _ (by omega) (by omega)) (hq1 _ (by omega) (by omega)))
+        (mul_ne_zero (hq1 _ (by omega) (by omega)) (hq1 _ (by omega) (by omega)))
+    · obtain ⟨e, rfl⟩ : ∃ e, E = e + 2 := ⟨E - 2, by omega⟩
+      obtain ⟨α, rfl⟩ : ∃ α, a = e + 1 + α := ⟨a - (e + 1), by omega⟩
+      obtain ⟨β, rfl⟩ : ∃ β, L = e + β := ⟨L - e, by omega⟩
+      have hA := qb_id_A q hD α β (e + 1)
+      have h1 := hq1 (e + β + 1) (by omega) (by omega)
+      have h2 := hq1 (e + β + 1 + 1) (by omega) (by omega)
+      have h3 := hq1 (α + β + 2) (by omega) (by omega)
+      simp only [show e + 2 - 1 = e + 1 by omega, show e + 1 + α + (e + β + 1) - (e + 1) + 2 = α + β + (e + 1) + 2 by omega,
+        show e + β + 1 - (e + 1) + 1 = β + 1 by omega, show e + β + 2 = e + β + 1 + 1 by omega,
+        show e + 1 + α + (e + β + 1) - 2 * (e + 1) + 2 = α + β + 2 by omega,
+        show e + 1 + α - (e + 1) + 1 = α + 1 by omega, show e + β + 1 - 1 + 1 = e + β + 1 by omega]
+      rw [show α + β + (e + 1) + 2 = α + β + e + 1 + 2 by ring, show e + 1 + β + 1 = e + β + 1 + 1 by ring] at hA
+      field_simp
+      linear_combination hA
+/-- Solving `x T + C = R` against a known solution. -/
+lemma solve_eq {x y T C R : k} (hT : T ≠ 0) (h : 1 * x * T + C = R) (hk : y * T + C = R) : x = y := by
+  have : (x - y) * T = 0 := by linear_combination h - hk
+  exact sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hT)
+
+/-- The step for the upper-right entry `F01` of the one-strand block, from the recursion in `b`. -/
+theorem Fc_one_01_step [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) {a L E : ℕ} (ha : 1 ≤ a) (hL : 1 ≤ L)
+    (hE : 1 ≤ E) (hEa : E ≤ a) (hEb : E ≤ L + 1)
+    (hd : ∀ j, j ≤ 2 * (a + L) + 6 → chebD (loopVal q) j ≠ 0)
+    (hq2 : ∀ j, 1 ≤ j → j ≤ 2 * (a + L) + 6 → (q : k) ^ (2 * j) ≠ 1)
+    (h10 : Fc q a L 1 (E - 1) 1 0 E = qb q E / qb q (L + 1))
+    (h11 : E ≤ L → Fc q a L 1 (E - 1) 1 1 (E - 1) = 1) :
+    Fc q a (L + 1) 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + (L + 1) - 2 * E + 2)) := by
+  have hD := hD_of_pow q (N := 2 * (a + L) + 6) (by omega) hq2
+  have hq1 : ∀ n, 1 ≤ n → n ≤ 2 * (a + L) + 6 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  have hrec := Fc_b_rec_two q hδ a L (E - 1) 1 0 ha hL (fun x hx => hd x (by omega))
+    (fun x h1 h2 => hq2 x h1 (by omega)) (by omega) ⟨by omega, by omega, Nat.zero_le _, Nat.zero_le _⟩
+  simp only [show E - 1 + 1 = E by omega] at hrec
+  rw [h10] at hrec
+  obtain ⟨L, rfl⟩ : ∃ L', L = L' + 1 := ⟨L - 1, by omega⟩
+  have hX : a + (L + 1) - 2 * (E - 1) = a + L + 2 - 2 * E + 1 := by omega
+  rw [hX, Fc_cup_high q hδ (L + 1) (fun j hj => hd j (by omega)), Fc_cup_low_qb q hδ hD L (fun j hj => hd j (by omega)),
+    Fc_cup_low_qb q hδ hD _ (fun j hj => hd j (by omega))] at hrec
+  refine solve_eq (div_ne_zero (hq1 _ (by omega) (by omega)) (hq1 _ (by omega) (by omega))) hrec ?_
+  rcases Nat.lt_or_ge E (L + 2) with hEL | hEL
+  · -- E ≤ L + 1 = the old L: the second term is the top entry of the level below
+    rw [show L + 1 - 1 = L from rfl, Fc_top_one_qb q hδ (by omega) (by omega) (by omega) (fun j hj => hd j (by omega))
+      (fun j h1 h2 => hq2 j h1 (by omega)), h11 (by omega)]
+    obtain ⟨e, rfl⟩ : ∃ e, E = e + 1 := ⟨E - 1, by omega⟩
+    obtain ⟨α, rfl⟩ : ∃ α, a = e + 1 + α := ⟨a - (e + 1), by omega⟩
+    obtain ⟨β, rfl⟩ : ∃ β, L = e + β := ⟨L - e, by omega⟩
+    have hA := qb_id_A q hD α β (e + 1)
+    rw [show α + β + (e + 1) + 2 = e + α + β + 3 by ring, show e + 1 + β + 1 = e + β + 2 by ring] at hA
+    simp only [show e + 1 + α - (e + 1) + 1 = α + 1 by omega,
+      show e + 1 + α + (e + β + 1 + 1) - 2 * (e + 1) + 2 = α + β + 3 by omega,
+      show e + 1 + α + (e + β) + 2 - 2 * (e + 1) + 1 = α + β + 2 by omega,
+      show e + 1 + α + (e + β) + 2 - 2 * (e + 1) + 2 = α + β + 3 by omega,
+      show e + β + 1 + 1 = e + β + 2 by omega, show e + 1 - 1 = e by omega,
+      show e + 1 + α + (e + β) - e + 2 = e + α + β + 3 by omega, show e + β - e + 1 = β + 1 by omega,
+      show e + 1 + α + (e + β) - 2 * e + 2 = α + β + 3 by omega, show e + β + 1 + 2 = e + β + 3 by omega]
+    have := hq1 (e + β + 1) (by omega) (by omega); have := hq1 (e + β + 2) (by omega) (by omega)
+    have := hq1 (α + β + 3) (by omega) (by omega)
+    field_simp
+    linear_combination (-1 : k) * hA
+  · -- E = L + 2 = the old L + 1: the second term vanishes
+    obtain rfl : E = L + 2 := by omega
+    have hz : Fc q a (L + 1 - 1) 1 (L + 2 - 1) 0 0 (L + 2 - 1) = 0 := by
+      unfold Fc; rw [if_neg fun h => by have := h.1.trans (min_le_right _ _); omega]
+    rw [hz]
+    obtain ⟨α, rfl⟩ : ∃ α, a = L + 2 + α := ⟨a - (L + 2), by omega⟩
+    simp only [show L + 2 + α - (L + 2) + 1 = α + 1 by omega,
+      show L + 2 + α + (L + 1 + 1) - 2 * (L + 2) + 2 = α + 2 by omega,
+      show L + 2 + α + L + 2 - 2 * (L + 2) + 1 = α + 1 by omega,
+      show L + 2 + α + L + 2 - 2 * (L + 2) + 2 = α + 2 by omega]
+    have := hq1 (L + 2) (by omega) (by omega); have := hq1 (α + 2) (by omega) (by omega)
+    field_simp
+    ring
+/-- **The one-strand block of `Fc` in closed form**: for the blocks `(a, b, 1)` and every total channel, the entries
+are `F01 = -[a-E+1]/[a+b-2E+2]`, `F11 = 1`, `F10 = [E]/[b+1]` (and `F00` is `Fc_top_one_qb`). -/
+theorem Fc_one_block [CharZero k] (q : kˣ) (hδ : loopVal q ≠ 0) : ∀ b a, 1 ≤ a →
+    (∀ j, j ≤ 2 * (a + b) + 6 → chebD (loopVal q) j ≠ 0) →
+    (∀ j, 1 ≤ j → j ≤ 2 * (a + b) + 6 → (q : k) ^ (2 * j) ≠ 1) →
+    (∀ E, 1 ≤ E → E ≤ a → E ≤ b → Fc q a b 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + b - 2 * E + 2))) ∧
+    (∀ E, 1 ≤ E → E ≤ a + 1 → E ≤ b → Fc q a b 1 (E - 1) 1 1 (E - 1) = 1) ∧
+    (∀ E, 1 ≤ E → E ≤ a → E ≤ b + 1 → Fc q a b 1 (E - 1) 1 0 E = qb q E / qb q (b + 1)) := by
+  intro b
+  induction b using Nat.strong_induction_on with
+  | _ b ih =>
+  intro a ha hd hq2
+  have hD := hD_of_pow q (N := 2 * (a + b) + 6) (by omega) hq2
+  have hq1 : ∀ n, 1 ≤ n → n ≤ 2 * (a + b) + 6 → qb q n ≠ 0 := fun n h1 h2 => qb_ne q hD n (hq2 n h1 h2)
+  match b, ih, hd, hq2, hD, hq1 with
+  | 0, _, hd, hq2, hD, hq1 =>
+    refine ⟨fun E h1 _ h3 => absurd h3 (by omega), fun E h1 _ h3 => absurd h3 (by omega), fun E h1 h2 h3 => ?_⟩
+    obtain rfl : E = 1 := by omega
+    rw [show 1 - 1 = 0 from rfl, Fc_edge q hδ a 0 (by omega) (fun j hj => hd j (by omega))
+      (fun j h1 h2 => hq2 j h1 (by omega)), div_self (hq1 1 le_rfl (by omega))]
+  | 1, _, hd, hq2, hD, hq1 =>
+    have h01 : ∀ E, 1 ≤ E → E ≤ a → E ≤ 1 →
+        Fc q a 1 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + 1 - 2 * E + 2)) := by
+      intro E h1 h2 h3
+      obtain rfl : E = 1 := by omega
+      obtain ⟨n, rfl⟩ : ∃ n, a = n + 1 := ⟨a - 1, by omega⟩
+      rw [show 1 - 1 = 0 from rfl, Fc_cup_low_qb q hδ hD n (fun j hj => hd j (by omega)),
+        show n + 1 - 1 + 1 = n + 1 by omega, show n + 1 + 1 - 2 * 1 + 2 = n + 2 by omega]
+    have h11 : ∀ E, 1 ≤ E → E ≤ a + 1 → E ≤ 1 → Fc q a 1 1 (E - 1) 1 1 (E - 1) = 1 := by
+      intro E h1 h2 h3
+      obtain rfl : E = 1 := by omega
+      exact Fc_cup_high q hδ a (fun j hj => hd j (by omega))
+    refine ⟨h01, h11, fun E h1 h2 h3 => ?_⟩
+    rcases Nat.lt_or_ge E 2 with hE | hE
+    · obtain rfl : E = 1 := by omega
+      exact Fc_one_10_of_orth q hδ le_rfl h2 le_rfl (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+        (h11 1 le_rfl (by omega) le_rfl) (h01 1 le_rfl h2 le_rfl)
+    · obtain rfl : E = 2 := by omega
+      rw [show 2 - 1 = 1 from rfl, Fc_edge q hδ a 1 (by omega) (fun j hj => hd j (by omega))
+        (fun j h1 h2 => hq2 j h1 (by omega)), div_self (hq1 2 (by omega) (by omega))]
+  | L + 2, ih, hd, hq2, hD, hq1 =>
+    have ihL := ih (L + 1) (by omega) a ha (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+    have ihL1 := ih L (by omega) a ha (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+    have h11 : ∀ E, 1 ≤ E → E ≤ a + 1 → E ≤ L + 2 → Fc q a (L + 2) 1 (E - 1) 1 1 (E - 1) = 1 := by
+      intro E h1 h2 h3
+      exact Fc_one_11_step q hδ (L := L + 1) ha (by omega) h1 h2 h3 (fun j hj => hd j (by omega))
+        (fun j h1 h2 => hq2 j h1 (by omega))
+        (fun h => by rw [show L + 1 - 1 = L from rfl]
+                     exact ihL1.2.2 (E - 1) (by omega) (by omega) (by omega))
+        (fun h => ihL.1 (E - 1) (by omega) (by omega) (by omega))
+    have h01 : ∀ E, 1 ≤ E → E ≤ a → E ≤ L + 2 →
+        Fc q a (L + 2) 1 E 0 1 (E - 1) = -(qb q (a - E + 1) / qb q (a + (L + 2) - 2 * E + 2)) := by
+      intro E h1 h2 h3
+      exact Fc_one_01_step q hδ (L := L + 1) ha (by omega) h1 h2 h3 (fun j hj => hd j (by omega))
+        (fun j h1 h2 => hq2 j h1 (by omega)) (ihL.2.2 E h1 h2 (by omega))
+        (fun h => ihL.2.1 E h1 (by omega) h)
+    refine ⟨h01, h11, fun E h1 h2 h3 => ?_⟩
+    rcases Nat.lt_or_ge E (L + 3) with hE | hE
+    · exact Fc_one_10_of_orth q hδ h1 h2 (by omega) (fun j hj => hd j (by omega)) (fun j h1 h2 => hq2 j h1 (by omega))
+        (h11 E h1 (by omega) (by omega)) (h01 E h1 h2 (by omega))
+    · obtain rfl : E = L + 3 := by omega
+      rw [show L + 3 - 1 = L + 2 from rfl, Fc_edge q hδ a (L + 2) (by omega) (fun j hj => hd j (by omega))
+        (fun j h1 h2 => hq2 j h1 (by omega)), div_self (hq1 (L + 3) (by omega) (by omega))]
 end Lightlike.TemperleyLieb
