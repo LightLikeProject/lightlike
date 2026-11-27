@@ -235,6 +235,34 @@ theorem norm_sq_kVecL2 (ν : ℝ) (k : ℤ) : ‖kVecL2 ν k‖ ^ 2 = Real.pi :=
   norm_num
   rw [Real.rpow_neg_one]
 
+/-- **The radial matrix coefficients** `Φ^ν_{m,n}(ξ) = ⟪e_m, π(a(ξ)) e_n⟫` of the even principal
+series. -/
+def mcoefP (ν : ℝ) (m n : ℤ) (ξ : ℝ) : ℂ :=
+  inner ℂ (kVecL2 ν m) (principalSeries 0 ν (aR ξ) (kVecL2 ν n))
+
+/-- **The `KAK` form of the matrix coefficients**:
+`⟪e_m, π(k_α a(ξ) k_θ) e_n⟫ = e^{-2i(mα + nθ)} Φ^ν_{m,n}(ξ)`. -/
+theorem inner_kVecL2_kak (ν α ξ θ : ℝ) (m n : ℤ) :
+    inner ℂ (kVecL2 ν m) (principalSeries 0 ν (rot α * aR ξ * rot θ) (kVecL2 ν n)) =
+      Complex.exp (-(2 * (m * α + n * θ) * I)) * mcoefP ν m n ξ := by
+  -- `⟪e_m, π(k_α) v⟫ = ⟪π(k_{-α}) e_m, v⟫`
+  have hadj : ∀ v : L2R, inner ℂ (kVecL2 ν m) (principalSeries 0 ν (rot α) v) =
+      inner ℂ (principalSeries 0 ν (rot (-α)) (kVecL2 ν m)) v := by
+    intro v
+    have h := principalSeries_inner 0 ν (rot (-α)) (kVecL2 ν m) (principalSeries 0 ν (rot α) v)
+    rw [← h]
+    congr 1
+    rw [← ContinuousLinearMap.mul_apply, ← principalSeries_mul, ← rot_add, neg_add_cancel, rot_zero,
+      principalSeries_one, ContinuousLinearMap.one_apply]
+  rw [principalSeries_mul, principalSeries_mul, ContinuousLinearMap.mul_apply,
+    ContinuousLinearMap.mul_apply, principalSeries_rot_kVecL2, map_smul, hadj,
+    principalSeries_rot_kVecL2, inner_smul_left, inner_smul_right, mcoefP, ← mul_assoc,
+    ← Complex.exp_conj, ← Complex.exp_add]
+  congr 1
+  simp only [map_neg, map_mul, map_ofNat, map_intCast, Complex.conj_ofReal, Complex.conj_I]
+  push_cast
+  ring
+
 /-- Non-vacuity: the hypothesis `den (k_θ) x ≠ 0` holds for `θ = 0`. -/
 example (ν : ℝ) (k : ℤ) (x : ℝ) :
     act 0 ν (rot 0) (kVecP ν k) x = Complex.exp (-(2 * k * (0 : ℝ) * I)) * kVecP ν k x :=
