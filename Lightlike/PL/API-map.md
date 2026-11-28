@@ -27,7 +27,8 @@ only if they are stellar equivalent" and prove it without topology {3}. Newman's
 gives the version with PL homeomorphism in place of stellar equivalence: PL homeomorphic complexes
 are stellar equivalent [21]. Combined with the stellar version, closed combinatorial manifolds are
 PL homeomorphic exactly when they are related by bistellar moves, for complexes with the empty
-face [22].
+face [22]. On a closed combinatorial `n`-manifold every bistellar move `κ(A, B)` has `#A + #B = n + 2`,
+so it is a move of Lickorish's Definition 2.3 [72].
 
 Towards Newman's theorem, the library slices a geometric complex by affine functionals into cells,
 each with a closed part, an open part and a chosen interior point [8]. For a slicing, the closed
