@@ -1138,6 +1138,8 @@ import Lightlike.PL.Pachner
 import Lightlike.PL.PachnerMain
 import Lightlike.PL.PachnerMoves
 import Lightlike.PL.PachnerPL
+import Lightlike.PL.MoveDimension
+import Lightlike.PL.StellarBoundary
 import Lightlike.PL.VertexRelabel
 import Lightlike.PL.Polygon
 import Lightlike.PL.PolygonInside
@@ -1327,6 +1329,8 @@ import Lightlike.PL.Surface
 import Lightlike.PL.Tests
 import Lightlike.PL.Tests4
 import Lightlike.PL.TestsPachner
+import Lightlike.PL.TestsMoveDimension
+import Lightlike.PL.TestsStellarBoundary
 import Lightlike.PL.TestsVertexRelabel
 import Lightlike.PL.TestsNewman
 import Lightlike.PL.TestsPolygon
