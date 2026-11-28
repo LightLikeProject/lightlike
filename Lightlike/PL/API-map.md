@@ -223,6 +223,9 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
 70. Lightlike/PL/Realisation.lean - `PL.SComplex.isGeom_real`
 71. Lightlike/PL/Links.lean - `PL.SComplex.IsPLSphere.isClosedCombManifold`,
     `PL.SComplex.IsClosedCombManifold.link_face`
+72. Lightlike/PL/VertexRelabel.lean - `PL.SComplex.IsRelabelling`, `PL.SComplex.StellarEquivIn.image_iso`,
+    `PL.SComplex.StellarEquivIn.image₂`, `PL.SComplex.StellarEquiv.image`,
+    `PL.SComplex.IsClosedCombManifold.image`, `PL.SComplex.bistellarEquiv_iff_of_isRelabelling`
 
 ## References
 
