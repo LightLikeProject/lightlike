@@ -30,7 +30,9 @@ PL homeomorphic exactly when they are related by bistellar moves, for complexes 
 face [22]. On a closed combinatorial `n`-manifold every bistellar move `κ(A, B)` has `#A + #B = n + 2`,
 so it is a move of Lickorish's Definition 2.3 [72]. No complex is both a stellar ball and a stellar sphere, and
 for a stellar `n`-manifold the faces whose link is a stellar ball, and the faces whose link is not a
-stellar sphere, are both empty exactly when it is a closed combinatorial `n`-manifold [73].
+stellar sphere, are both empty exactly when it is a closed combinatorial `n`-manifold [73]. Relabellings by maps
+injective on the vertices preserve stellar equivalence and closed combinatorial manifolds, and
+transport bistellar equivalence between complexes on different vertex types [74].
 
 Towards Newman's theorem, the library slices a geometric complex by affine functionals into cells,
 each with a closed part, an open part and a chosen interior point [8]. For a slicing, the closed
@@ -231,6 +233,9 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
     `PL.SComplex.not_isStellarBall_and_isStellarSphere`, `PL.SComplex.stellarBoundary`,
     `PL.SComplex.stellarBoundary'`, `PL.SComplex.IsCombManifold.stellarBoundary_eq_empty_iff`,
     `PL.SComplex.IsCombManifold.stellarBoundary'_eq_empty_iff`
+74. Lightlike/PL/VertexRelabel.lean - `PL.SComplex.IsRelabelling`, `PL.SComplex.StellarEquivIn.image_iso`,
+    `PL.SComplex.StellarEquivIn.image₂`, `PL.SComplex.StellarEquiv.image`,
+    `PL.SComplex.IsClosedCombManifold.image`, `PL.SComplex.bistellarEquiv_iff_of_isRelabelling`
 
 ## References
 
