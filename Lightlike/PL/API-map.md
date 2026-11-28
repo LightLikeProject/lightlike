@@ -27,7 +27,10 @@ only if they are stellar equivalent" and prove it without topology {3}. Newman's
 gives the version with PL homeomorphism in place of stellar equivalence: PL homeomorphic complexes
 are stellar equivalent [21]. Combined with the stellar version, closed combinatorial manifolds are
 PL homeomorphic exactly when they are related by bistellar moves, for complexes with the empty
-face [22].
+face [22]. On a closed combinatorial `n`-manifold every bistellar move `κ(A, B)` has `#A + #B = n + 2`,
+so it is a move of Lickorish's Definition 2.3 [72]. No complex is both a stellar ball and a stellar sphere, and
+for a stellar `n`-manifold the faces whose link is a stellar ball, and the faces whose link is not a
+stellar sphere, are both empty exactly when it is a closed combinatorial `n`-manifold [73].
 
 Towards Newman's theorem, the library slices a geometric complex by affine functionals into cells,
 each with a closed part, an open part and a chosen interior point [8]. For a slicing, the closed
@@ -223,7 +226,8 @@ interior point, and of loops about points outside them [66]. The Jordan curve th
 70. Lightlike/PL/Realisation.lean - `PL.SComplex.isGeom_real`
 71. Lightlike/PL/Links.lean - `PL.SComplex.IsPLSphere.isClosedCombManifold`,
     `PL.SComplex.IsClosedCombManifold.link_face`
-72. Lightlike/PL/StellarBoundary.lean - `PL.SComplex.IsStellarBall`, `PL.SComplex.IsStellarSphere`,
+72. Lightlike/PL/MoveDimension.lean - `PL.SComplex.IsClosedCombManifold.card_add_card_of_isBistellar`
+73. Lightlike/PL/StellarBoundary.lean - `PL.SComplex.IsStellarBall`, `PL.SComplex.IsStellarSphere`,
     `PL.SComplex.not_isStellarBall_and_isStellarSphere`, `PL.SComplex.stellarBoundary`,
     `PL.SComplex.stellarBoundary'`, `PL.SComplex.IsCombManifold.stellarBoundary_eq_empty_iff`,
     `PL.SComplex.IsCombManifold.stellarBoundary'_eq_empty_iff`
