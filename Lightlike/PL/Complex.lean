@@ -54,7 +54,12 @@ open Finset
 namespace Lightlike.PL
 
 /-- A **finite abstract simplicial complex** on the vertex type `V`: a finite family of finite
-vertex sets closed under subsets. The empty set is a face of every non-void complex. -/
+vertex sets closed under subsets. The empty set is a face of every non-void complex.
+
+Finiteness is needed: the quadrant `[0, ∞)²` cut into unit squares, every square split along its `/` diagonal,
+versus every square split along its `\` diagonal, are PL homeomorphic, but no finite sequence of bistellar moves
+and isomorphisms joins them. The boundary is essential: on the whole plane the two grids are mirror images, hence
+isomorphic. -/
 @[ext]
 structure SComplex (V : Type*) where
   /-- The faces, as finite vertex sets. -/

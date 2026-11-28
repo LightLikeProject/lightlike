@@ -836,7 +836,12 @@ theorem StellarEquivIn.bistellarEquivIn [Infinite V] {n : ℕ} {K L : SComplex V
 iff related by bistellar moves** (no renamings of the vertices are needed). The closed
 combinatorial manifolds are the stellar ones of `Lightlike/PL/Manifold.lean` (Lickorish 1999,
 Definition 3.1). Lickorish's Theorem 5.9 (Newman, Pachner) has "PL homeomorphic" in place of
-"stellar equivalent"; that form is `pachner_plHomeomorphic`, from this theorem and Newman's theorem. -/
+"stellar equivalent"; that form is `pachner_plHomeomorphic`, from this theorem and Newman's theorem.
+
+The complexes are finite (`SComplex`). Finiteness is needed: the quadrant `[0, ∞)²` cut into unit squares, every square split along its `/` diagonal,
+versus every square split along its `\` diagonal, are PL homeomorphic, but no finite sequence of bistellar moves
+and isomorphisms joins them. The boundary is essential: on the whole plane the two grids are mirror images, hence
+isomorphic. -/
 theorem pachner {n : ℕ} {K L : SComplex V} (hK : IsClosedCombManifold n K) :
     StellarEquiv K L ↔ BistellarEquiv K L :=
   ⟨fun h => StellarEquivIn.bistellarEquivIn h (isMfdIn_false_iff.2 hK),
