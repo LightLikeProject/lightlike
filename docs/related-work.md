@@ -15,6 +15,9 @@ reconstruction theorem); [grlab](https://github.com/BrandonMYates/grlab) (curvat
 and exact solutions of Einstein's equations); and [aqft-lean](https://github.com/Deicyde/aqft-lean)
 (algebraic quantum field theory, from pseudo-Riemannian geometry and Minkowski spacetime).
 
+The library's simplicial complexes (`SComplex`, `Lightlike/PL/Complex.lean`) are independent of Mathlib's
+simplicial complexes; upstreaming them would need a rework.
+
 In the physics literature, the spin-foam and Regge parts follow two lines of work (IDs from the
 [catalog](RESULTS.md)). From covariant loop quantum gravity and its EPRL model ([Engle,
 Pereira, Rovelli and Livine](https://arxiv.org/abs/0711.0146); review:
